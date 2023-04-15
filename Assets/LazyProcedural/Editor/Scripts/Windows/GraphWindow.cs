@@ -104,6 +104,7 @@ namespace LazyProcedural
 
             _graph = _root.Q("Graph");
             _graph.Add(graph);
+
         }
 
         private void SetupBindings()

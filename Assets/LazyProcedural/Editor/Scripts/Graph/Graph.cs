@@ -18,7 +18,7 @@ namespace LazyProcedural
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new FreehandSelector());
-            this.AddManipulator(new ClickSelector());
+            this.AddManipulator(new ClickSelector()); 
 
             var zoomer = new ContentZoomer();
             zoomer.maxScale = 10;
