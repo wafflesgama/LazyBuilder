@@ -150,8 +150,8 @@ namespace Sceelix.Loading
                         if (_sceelixAssemblies.Any(x => x.FullName == loadedAssembly.FullName))
                             continue;
 
-                        if (loadedAssembly.HasCustomAttribute<SceelixLibraryAttribute>())
-                            _sceelixAssemblies.Add(loadedAssembly);
+                        //if (loadedAssembly.HasCustomAttribute<SceelixLibraryAttribute>())
+                        //    _sceelixAssemblies.Add(loadedAssembly);
                     }
                     catch (Exception ex)
                     {
@@ -173,7 +173,7 @@ namespace Sceelix.Loading
         /// </summary>
         public static void LoadFromCurrentDomain()
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => x.HasCustomAttribute<SceelixLibraryAttribute>()).ToList()) _sceelixAssemblies.Add(assembly);
+            //foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => x.HasCustomAttribute<SceelixLibraryAttribute>()).ToList()) _sceelixAssemblies.Add(assembly);
         }
     }
 }

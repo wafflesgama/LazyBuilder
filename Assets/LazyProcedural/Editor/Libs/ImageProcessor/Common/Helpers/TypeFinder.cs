@@ -190,7 +190,9 @@ namespace ImageProcessor.Common.Helpers
                 using (new WriteLock(Locker))
                 {
                     Assembly[] assemblies = GetAssembliesWithKnownExclusions().ToArray();
-                    DirectoryInfo binFolder = Assembly.GetExecutingAssembly().GetAssemblyFile().Directory;
+                    //DirectoryInfo binFolder = Assembly.GetExecutingAssembly().GetAssemblyFile().Directory;
+                    DirectoryInfo binFolder = null;
+
                     // ReSharper disable once PossibleNullReferenceException
                     var binAssemblyFiles = Directory.GetFiles(binFolder.FullName, "*.dll", SearchOption.TopDirectoryOnly).ToList();
                     IEnumerable<AssemblyName> domainAssemblyNames = binAssemblyFiles.Select(AssemblyName.GetAssemblyName);
@@ -204,13 +206,13 @@ namespace ImageProcessor.Common.Helpers
 
                     foreach (AssemblyName assemblyName in domainAssemblyNames)
                     {
-                        Assembly foundAssembly = safeDomainAssemblies
-                                 .FirstOrDefault(a => a.GetAssemblyFile() == assemblyName.GetAssemblyFile());
+                        //Assembly foundAssembly = safeDomainAssemblies
+                        //         .FirstOrDefault(a => a.GetFile() == assemblyName.g());
 
-                        if (foundAssembly != null)
-                        {
-                            binFolderAssemblyList.Add(foundAssembly);
-                        }
+                        //if (foundAssembly != null)
+                        //{
+                        //    binFolderAssemblyList.Add(foundAssembly);
+                        //}
                     }
 
                     binFolderAssemblies = new HashSet<Assembly>(binFolderAssemblyList);

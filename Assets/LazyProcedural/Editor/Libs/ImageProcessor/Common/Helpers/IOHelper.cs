@@ -70,7 +70,9 @@ namespace ImageProcessor.Common.Helpers
             string binFolder = string.Empty;
             if (string.IsNullOrEmpty(rootDirectory))
             {
-                DirectoryInfo directoryInfo = Assembly.GetExecutingAssembly().GetAssemblyFile().Directory;
+                
+                //DirectoryInfo directoryInfo = Assembly.GetExecutingAssembly().GetFile();
+                DirectoryInfo directoryInfo = null;
                 if (directoryInfo != null)
                 {
                     binFolder = directoryInfo.FullName;

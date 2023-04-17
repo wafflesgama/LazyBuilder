@@ -91,19 +91,19 @@ namespace ImageProcessor.Configuration
                 new TiffFormat()
             };
 
-            Type type = typeof(ISupportedImageFormat);
-            if (this.SupportedImageFormats == null)
-            {
-                var availableTypes =
-                    TypeFinder.GetAssembliesWithKnownExclusions()
-                        .SelectMany(a => a.GetLoadableTypes())
-                        .Where(t => type.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
-                        .ToList();
+            //Type type = typeof(ISupportedImageFormat);
+            //if (this.SupportedImageFormats == null)
+            //{
+            //    var availableTypes =
+            //        TypeFinder.GetAssembliesWithKnownExclusions()
+            //            .SelectMany(a => a.GetLoadableTypes())
+            //            .Where(t => type.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
+            //            .ToList();
 
-                formats.AddRange(availableTypes.Select(f => Activator.CreateInstance(f) as ISupportedImageFormat).ToList());
+            //    formats.AddRange(availableTypes.Select(f => Activator.CreateInstance(f) as ISupportedImageFormat).ToList());
 
-                this.SupportedImageFormats = formats;
-            }
+            //    this.SupportedImageFormats = formats;
+            //}
         }
 
         /// <summary>
@@ -112,26 +112,26 @@ namespace ImageProcessor.Configuration
         private void LoadLogger()
         {
             Type type = typeof(ILogger);
-            if (this.Logger == null)
-            {
-                var availableTypes =
-                    TypeFinder.GetAssembliesWithKnownExclusions()
-                        .SelectMany(a => a.GetLoadableTypes())
-                        .Where(t => type.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
-                        .ToList();
+            //if (this.Logger == null)
+            //{
+            //    var availableTypes =
+            //        TypeFinder.GetAssembliesWithKnownExclusions()
+            //            .SelectMany(a => a.GetLoadableTypes())
+            //            .Where(t => type.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
+            //            .ToList();
 
-                // Load the first that is not our default.
-                if (availableTypes.Count > 0)
-                {
-                    this.Logger = availableTypes.Where(l => l != typeof(DefaultLogger))
-                                                .Select(f => (Activator.CreateInstance(f) as ILogger))
-                                                .First();
-                }
-                else
-                {
-                    this.Logger = new DefaultLogger();
-                }
-            }
+            //    // Load the first that is not our default.
+            //    if (availableTypes.Count > 0)
+            //    {
+            //        this.Logger = availableTypes.Where(l => l != typeof(DefaultLogger))
+            //                                    .Select(f => (Activator.CreateInstance(f) as ILogger))
+            //                                    .First();
+            //    }
+            //    else
+            //    {
+            //        this.Logger = new DefaultLogger();
+            //    }
+            //}
         }
     }
 }

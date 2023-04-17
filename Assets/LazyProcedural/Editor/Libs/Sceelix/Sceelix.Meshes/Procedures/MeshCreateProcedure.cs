@@ -77,7 +77,7 @@ namespace Sceelix.Meshes.Procedures
 
 
             public CubeMeshParameter()
-                : base("Cube")
+                : base("Box")
             {
             }
 
