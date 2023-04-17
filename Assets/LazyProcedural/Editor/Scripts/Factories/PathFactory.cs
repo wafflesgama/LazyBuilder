@@ -15,6 +15,8 @@ namespace LazyProcedural
         public const string IMAGES_PATH = "Editor/Images";
         public const string MESHES_PATH = "Editor/Meshes";
 
+        public const string SCEELIX_PATH = "Editor/Libs/Sceelix";
+
         public const string IMAGE_TYPE = "png";
 
         public const string LAYOUT_TYPE = "uxml";

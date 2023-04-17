@@ -39,7 +39,7 @@ namespace LazyProcedural
             ScriptableObject scriptSource = new MainController();
             PathFactory.Init(scriptSource);
 
-            SceelixDomain.LoadAssembliesFrom("");
+            SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
 
             EngineManager.Initialize();
 
