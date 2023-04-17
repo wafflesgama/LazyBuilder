@@ -1,7 +1,0 @@
-C:\Projects\Sceelix\Build\Linux\Debug\Bin\Sceelix.dll
-C:\Projects\Sceelix\Build\Linux\Debug\Bin\Sceelix.pdb
-C:\Projects\Sceelix\Source\Sceelix\obj\Linux\Debug\Sceelix.csproj.AssemblyReference.cache
-C:\Projects\Sceelix\Source\Sceelix\obj\Linux\Debug\Sceelix.csproj.CoreCompileInputs.cache
-C:\Projects\Sceelix\Source\Sceelix\obj\Linux\Debug\Sceelix.csproj.CopyComplete
-C:\Projects\Sceelix\Source\Sceelix\obj\Linux\Debug\Sceelix.dll
-C:\Projects\Sceelix\Source\Sceelix\obj\Linux\Debug\Sceelix.pdb
