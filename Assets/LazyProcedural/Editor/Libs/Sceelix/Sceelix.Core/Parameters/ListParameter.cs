@@ -211,29 +211,30 @@ namespace Sceelix.Core.Parameters
 
         protected static IEnumerable<Func<Parameter, Parameter>> GetCreationFunctions(Type type)
         {
-            return CachedParameterCreationFuncs.GetOrCompute(type, () =>
-            {
-                var types = ParameterManager.ParameterTypes.Where(paramType => type.IsAssignableFrom(paramType)
-                                                                               && typeof(Parameter).IsAssignableFrom(paramType)
-                                                                               && !paramType.IsAbstract).OrderBy(x => x.Name);
-                var funcList = new List<Func<Parameter, Parameter>>();
+            var val = CachedParameterCreationFuncs.GetOrCompute(type, () =>
+             {
+                 var types = ParameterManager.ParameterTypes.Where(paramType => type.IsAssignableFrom(paramType)
+                                                                                && typeof(Parameter).IsAssignableFrom(paramType)
+                                                                                && !paramType.IsAbstract).OrderBy(x => x.Name);
+                 var funcList = new List<Func<Parameter, Parameter>>();
 
-                foreach (Type source in types)
-                {
-                    var expression = Expression.New(source);
+                 foreach (Type source in types)
+                 {
+                     var expression = Expression.New(source);
 
-                    var compiledExpression = Expression.Lambda<Func<Parameter>>(expression).Compile();
+                     var compiledExpression = Expression.Lambda<Func<Parameter>>(expression).Compile();
 
-                    funcList.Add(parent =>
-                    {
-                        var parameter = compiledExpression.Invoke();
-                        parameter.Parent = parent;
-                        return parameter;
-                    });
-                }
+                     funcList.Add(parent =>
+                     {
+                         var parameter = compiledExpression.Invoke();
+                         parameter.Parent = parent;
+                         return parameter;
+                     });
+                 }
 
-                return funcList;
-            });
+                 return funcList;
+             });
+            return val;
         }
 
 
@@ -302,7 +303,8 @@ namespace Sceelix.Core.Parameters
             foreach (var func in CreationFunctionsList)
             {
                 string label = func.Invoke(this).Label;
-                _creationFunctionsDictionary.Add(label, func);
+                if (!_creationFunctionsDictionary.ContainsKey(label))
+                    _creationFunctionsDictionary.Add(label, func);
             }
         }
 
@@ -344,7 +346,7 @@ namespace Sceelix.Core.Parameters
             }
             else
             {
-                var primitiveArgument = (ListParameterInfo) argument;
+                var primitiveArgument = (ListParameterInfo)argument;
                 Items.Clear();
 
                 foreach (var parameterInfo in primitiveArgument.Items)
@@ -373,25 +375,25 @@ namespace Sceelix.Core.Parameters
             else if (value is string)
             {
                 //if is
-                Add((string) value);
+                Add((string)value);
             }
             else if (value is IEnumerable<string>)
             {
                 //if is
-                foreach (var str in (IEnumerable<string>) value)
+                foreach (var str in (IEnumerable<string>)value)
                     Add(str);
             }
             else if (value is IEnumerable<KeyValuePair<string, object>>)
             {
-                ProcessKeyValueList((IEnumerable<KeyValuePair<string, object>>) value);
+                ProcessKeyValueList((IEnumerable<KeyValuePair<string, object>>)value);
             }
             else if (value is SceeList)
             {
-                ProcessKeyValueList(((SceeList) value).KeyValues);
+                ProcessKeyValueList(((SceeList)value).KeyValues);
             }
             else if (value is int)
             {
-                var count = (int) value;
+                var count = (int)value;
                 var key = _creationFunctionsDictionary.First().Key;
                 var creationFunction = _creationFunctionsDictionary[key];
 
@@ -402,7 +404,7 @@ namespace Sceelix.Core.Parameters
             {
                 Items.Clear();
 
-                var enumerable = (IEnumerable<object>) value;
+                var enumerable = (IEnumerable<object>)value;
 
                 var key = _creationFunctionsDictionary.First().Key;
                 var creationFunction = _creationFunctionsDictionary[key];
@@ -434,7 +436,7 @@ namespace Sceelix.Core.Parameters
     public class ListParameter<T> : ListParameter where T : Parameter
     {
         public ListParameter(string label, params Func<T>[] creationFunctions)
-            : base(label, (IEnumerable<Func<T>>) creationFunctions)
+            : base(label, (IEnumerable<Func<T>>)creationFunctions)
         {
         }
 

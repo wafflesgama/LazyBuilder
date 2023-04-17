@@ -43,7 +43,17 @@ namespace Sceelix.Loading
         /// <value> The types defined in all the loaded Sceelix assemblies </value>
         public static ReadOnlyCollection<Type> Types
         {
-            get { return new ReadOnlyCollection<Type>(_sceelixAssemblies.SelectMany(x => x.GetTypes()).ToList()); }
+            get
+            {
+                var alllTypes = new ReadOnlyCollection<Type>(_sceelixAssemblies.SelectMany(x => x.GetTypes()).ToList());
+                var test = true;
+                var filteredTypes = alllTypes.Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Sceelix")).ToList();
+                var filteredTypes2 = filteredTypes.Distinct().ToList();
+                test = true;
+                return new ReadOnlyCollection<Type>(filteredTypes2);
+                //return new ReadOnlyCollection<Type>(_sceelixAssemblies.SelectMany(x => x.GetTypes()).Where(x=>x.IsClass && x.Namespace.StartsWith("Sceelix")).ToList()); 
+
+            }
         }
 
 
@@ -115,6 +125,12 @@ namespace Sceelix.Loading
         }
 
 
+        static bool CheckValidAssembly(string assemblyName)
+        {
+            return !assemblyName.StartsWith("Unity") && !assemblyName.StartsWith("System") && !assemblyName.StartsWith("Mono")
+                 && !assemblyName.StartsWith("com.unity") && !assemblyName.StartsWith("mscorlib");
+        }
+
 
         /// <summary>
         /// Loads assemblies located at the given directory. Only assemblies imbued with a SceelixLibraryAttribute will be loaded.
@@ -123,40 +139,47 @@ namespace Sceelix.Loading
         /// <param name="directory">The directory.</param>
         public static void LoadAssembliesFrom(string directory)
         {
-            //assume the current directory if null or empty is passed
-            directory = string.IsNullOrWhiteSpace(directory) ? Directory.GetCurrentDirectory() : directory;
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => CheckValidAssembly(x.FullName)).ToList();
 
-            string[] fileNames = Directory.GetFiles(directory);
+            foreach (var assembly in assemblies)
+            {
+                _sceelixAssemblies.Add(assembly);
 
-            HashSet<string> excludedFileNames = new HashSet<string>();
+            }
+            ////assume the current directory if null or empty is passed
+            //directory = string.IsNullOrWhiteSpace(directory) ? Directory.GetCurrentDirectory() : directory;
 
-            //read all the files with the exclude extension and add its contents as filepaths to be excluded
-            foreach (string fileName in fileNames.Where(fileName => Path.GetExtension(fileName) == ".exclude"))
-            foreach (string line in File.ReadAllLines(fileName).Where(x => !string.IsNullOrWhiteSpace(x)))
-                excludedFileNames.Add(Path.Combine(directory, line));
+            //string[] fileNames = Directory.GetFiles(directory);
 
-            //load only the files with the dll extension and that are NOT in the list of excluded files
-            foreach (string fileName in fileNames.Where(fileName => Path.GetExtension(fileName) == ".dll" && !excludedFileNames.Contains(fileName)))
-                //Check if the dll is a valid C# assembly
-                if (IsManagedAssembly(fileName))
-                    try
-                    {
-                        Logger.Log("Loading '" + fileName + "' assembly.");
+            //HashSet<string> excludedFileNames = new HashSet<string>();
 
-                        //doing the unsafeloadfrom releases us from the need to do the "unblock" files 
-                        //for portable versions coming from the web
-                        var loadedAssembly = Assembly.UnsafeLoadFrom(fileName);
-                        
-                        if (_sceelixAssemblies.Any(x => x.FullName == loadedAssembly.FullName))
-                            continue;
+            ////read all the files with the exclude extension and add its contents as filepaths to be excluded
+            //foreach (string fileName in fileNames.Where(fileName => Path.GetExtension(fileName) == ".exclude"))
+            //foreach (string line in File.ReadAllLines(fileName).Where(x => !string.IsNullOrWhiteSpace(x)))
+            //    excludedFileNames.Add(Path.Combine(directory, line));
 
-                        if (loadedAssembly.HasCustomAttribute<SceelixLibraryAttribute>())
-                            _sceelixAssemblies.Add(loadedAssembly);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log(new Exception("Could not load assembly.", ex));
-                    }
+            ////load only the files with the dll extension and that are NOT in the list of excluded files
+            //foreach (string fileName in fileNames.Where(fileName => Path.GetExtension(fileName) == ".dll" && !excludedFileNames.Contains(fileName)))
+            //    //Check if the dll is a valid C# assembly
+            //    if (IsManagedAssembly(fileName))
+            //        try
+            //        {
+            //            Logger.Log("Loading '" + fileName + "' assembly.");
+
+            //            //doing the unsafeloadfrom releases us from the need to do the "unblock" files 
+            //            //for portable versions coming from the web
+            //            var loadedAssembly = Assembly.UnsafeLoadFrom(fileName);
+
+            //            if (_sceelixAssemblies.Any(x => x.FullName == loadedAssembly.FullName))
+            //                continue;
+
+            //            if (loadedAssembly.HasCustomAttribute<SceelixLibraryAttribute>())
+            //                _sceelixAssemblies.Add(loadedAssembly);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Logger.Log(new Exception("Could not load assembly.", ex));
+            //        }
         }
 
 
