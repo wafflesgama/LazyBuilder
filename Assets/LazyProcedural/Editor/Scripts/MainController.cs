@@ -18,6 +18,7 @@ using Sceelix.Core.Data;
 using System.Resources;
 using System.Reflection;
 using Sceelix.Meshes.Procedures;
+using Sceelix.Core.Parameters;
 
 namespace LazyProcedural
 {
@@ -41,7 +42,11 @@ namespace LazyProcedural
 
             SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
 
+            var checkTypes= SceelixDomain.Types.ToList();
+
             EngineManager.Initialize();
+
+            ParameterManager.Initialize();
 
             CallSystemProcedureSample();
         }
@@ -50,7 +55,7 @@ namespace LazyProcedural
         private static void CallSystemProcedureSample()
         {
             //you should create a LoadEnvironment instance and pass it to your procedures, so that it can find resources (files, textures, etc.)
-            ProcedureEnvironment environment = new ProcedureEnvironment(new ResourceManager(PathFactory.absoluteToolPath, Assembly.GetExecutingAssembly()));
+            ProcedureEnvironment environment = new ProcedureEnvironment(new ResourceManager($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}", Assembly.GetExecutingAssembly()));
 
 
             MeshCreateProcedure meshProc = new MeshCreateProcedure();
