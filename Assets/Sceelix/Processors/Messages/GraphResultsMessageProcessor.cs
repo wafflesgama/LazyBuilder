@@ -20,6 +20,8 @@ namespace Assets.Sceelix.Processors.Messages
         {
             context.ReportStart();
 
+            var mark = true;
+
             //first, clear all prevous Sceelix Scene Object marked with "Remove"
             foreach (GameObject existingGameObject in UnityEngine.Object.FindObjectsOfType<GameObject>().ToList())
             {

@@ -52,6 +52,7 @@ namespace Assets.Sceelix.Runtime
 
         private void MessageClientOnTokenMessageReceived(JToken token)
         {
+            var marked = true;
             var subject = token.Value<String>("Subject");
             var data = token["Data"];
 
