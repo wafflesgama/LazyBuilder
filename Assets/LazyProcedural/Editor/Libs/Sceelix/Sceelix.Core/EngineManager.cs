@@ -63,8 +63,7 @@ namespace Sceelix.Core
         /// <returns></returns>
         public static bool IsEngineLibrary(Assembly assembly)
         {
-            //return assembly.HasCustomAttribute<EngineLibraryAttribute>();
-            return assembly.GetCustomAttribute<EngineLibraryAttribute>()!=null;
+            return assembly.HasCustomAttribute<EngineLibraryAttribute>();
         }
     }
 }

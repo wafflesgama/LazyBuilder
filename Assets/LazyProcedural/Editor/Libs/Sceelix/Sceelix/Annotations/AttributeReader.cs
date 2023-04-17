@@ -32,10 +32,10 @@ namespace Sceelix.Annotations
     {
         public AttributeReader(IEnumerable<Assembly> assemblies)
         {
-            Assemblies = assemblies.Where(x => x.GetType().HasCustomAttribute<SceelixLibraryAttribute>()).ToList();
+            Assemblies = assemblies.Where(x => x.HasCustomAttribute<SceelixLibraryAttribute>()).ToList();
 
             if (!Assemblies.Any())
-                Assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetType().HasCustomAttribute<SceelixLibraryAttribute>()).ToList();
+                Assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.HasCustomAttribute<SceelixLibraryAttribute>()).ToList();
 
             //_assemblies.Sort();
         }

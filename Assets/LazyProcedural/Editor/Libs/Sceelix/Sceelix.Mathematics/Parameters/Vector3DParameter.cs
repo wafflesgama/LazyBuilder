@@ -28,7 +28,7 @@ namespace Sceelix.Mathematics.Parameters
 
 
 
-        protected internal override ParameterInfo ToParameterInfo()
+        protected override ParameterInfo ToParameterInfo()
         {
             return new Vector3DParameterInfo(this);
         }

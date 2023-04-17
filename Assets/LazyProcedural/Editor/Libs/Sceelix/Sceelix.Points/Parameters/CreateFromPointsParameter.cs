@@ -203,7 +203,7 @@ namespace Sceelix.Points.Parameters
 
 
 
-        protected internal override PathEntity CreatePath()
+        protected override PathEntity CreatePath()
         {
             return _parameterMethod.SelectedItem.CreatePath(_inputPoints.Read());
         }

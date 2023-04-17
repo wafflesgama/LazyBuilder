@@ -44,7 +44,6 @@ namespace Sceelix.Extensions
         /// <returns></returns>
         public static Bitmap CreateColorBitmap(Color color, PixelFormat format = PixelFormat.Format32bppArgb)
         {
-
             Bitmap bitmap = new Bitmap(1, 1, format);
 
             using (Graphics gr = Graphics.FromImage(bitmap))

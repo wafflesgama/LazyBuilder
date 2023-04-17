@@ -77,7 +77,7 @@ namespace Sceelix.Meshes.Procedures
 
 
             public CubeMeshParameter()
-                : base("Box")
+                : base("Cube")
             {
             }
 
@@ -1298,12 +1298,12 @@ namespace Sceelix.Meshes.Procedures
 
                 MeshEntity meshEntity = new MeshEntity(allFaces);
 
-                ////by default, the letters are facing down (not quite inverted), so we have to rotate it back
-                //meshEntity.Rotate(180, Vector3D.XVector, Vector3D.Zero);
-                ////RotateShapeProcedure.Rotate(meshEntity, Vector3D.XVector, Vector3D.Zero, (float)MathHelper.Pi, false);
+                //by default, the letters are facing down (not quite inverted), so we have to rotate it back
+                meshEntity.Rotate(180, Vector3D.XVector, Vector3D.Zero);
+                //RotateShapeProcedure.Rotate(meshEntity, Vector3D.XVector, Vector3D.Zero, (float)MathHelper.Pi, false);
 
-                ////resets the scope
-                //meshEntity.BoxScope = BoxScope.Identity;
+                //resets the scope
+                meshEntity.BoxScope = BoxScope.Identity;
 
                 return meshEntity;
             }

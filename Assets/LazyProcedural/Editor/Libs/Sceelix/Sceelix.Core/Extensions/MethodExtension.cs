@@ -6,14 +6,14 @@ namespace Sceelix.Core.Extensions
 {
     internal static class MethodExtension
     {
-        //public static T GetCustomAttribute<T>(this MemberInfo type) where T : Attribute
-        //{
-        //    object firstOrDefault = type.GetCustomAttributes(true).FirstOrDefault(val => val is T);
-        //    if (firstOrDefault != null)
-        //        return (T) firstOrDefault;
+        public static T GetCustomAttribute<T>(this MemberInfo type) where T : Attribute
+        {
+            object firstOrDefault = type.GetCustomAttributes(true).FirstOrDefault(val => val is T);
+            if (firstOrDefault != null)
+                return (T) firstOrDefault;
 
-        //    return null;
-        //}
+            return null;
+        }
 
 
 
@@ -30,6 +30,5 @@ namespace Sceelix.Core.Extensions
         {
             return type.GetCustomAttributes(true).Any(val => val is T);
         }
-
     }
 }
