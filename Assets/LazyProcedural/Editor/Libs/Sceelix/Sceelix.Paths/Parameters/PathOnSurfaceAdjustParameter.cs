@@ -53,7 +53,7 @@ namespace Sceelix.Paths.Parameters
 
 
 
-        protected override void Run(IEnumerable<SurfaceEntity> surfaces)
+        protected internal override void Run(IEnumerable<SurfaceEntity> surfaces)
         {
             var pathEntities = _input.Read().ToList();
 

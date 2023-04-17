@@ -29,7 +29,7 @@ namespace Sceelix.Mathematics.Parameters
 
 
 
-        protected override ParameterInfo ToParameterInfo()
+        protected internal override ParameterInfo ToParameterInfo()
         {
             return new ColorParameterInfo(this);
         }

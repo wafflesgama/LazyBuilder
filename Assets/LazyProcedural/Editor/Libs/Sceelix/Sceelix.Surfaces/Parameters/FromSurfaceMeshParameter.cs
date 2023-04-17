@@ -27,7 +27,7 @@ namespace Sceelix.Surfaces.Parameters
 
 
 
-        protected override MeshEntity CreateMesh()
+        protected internal override MeshEntity CreateMesh()
         {
             var surfaceEntity = _input.Read();
 

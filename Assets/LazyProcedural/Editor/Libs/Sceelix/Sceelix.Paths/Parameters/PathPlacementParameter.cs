@@ -32,7 +32,7 @@ namespace Sceelix.Paths.Parameters
 
 
 
-        protected override void Run(IEnumerable<SurfaceEntity> surfaceEntities)
+        protected internal override void Run(IEnumerable<SurfaceEntity> surfaceEntities)
         {
             IEnumerable<PathEntity> pathEntities = _input.Read().ToList();
 

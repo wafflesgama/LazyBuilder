@@ -335,7 +335,7 @@ namespace Sceelix.Paths.Parameters
 
 
 
-        protected override MeshEntity CreateMesh()
+        protected internal override MeshEntity CreateMesh()
         {
             var pathEntity = _input.Read();
 
