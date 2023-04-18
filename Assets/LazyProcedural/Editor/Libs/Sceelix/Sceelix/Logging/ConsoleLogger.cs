@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Sceelix.Logging
 {
@@ -14,7 +15,19 @@ namespace Sceelix.Logging
         /// <param name="logType">Type of message to log. Auto means that the type will be inferred from the message</param>
         public void Log(object message, LogType logType = LogType.Information)
         {
-            Console.WriteLine(message);
+            switch (logType)
+            {
+                case LogType.Warning:
+                    Debug.LogWarning(message);
+                    break;
+                case LogType.Error:
+                    Debug.LogError(message);
+                    break;
+                default:
+                    Debug.Log(message);
+                    break;
+            }
+            //Console.WriteLine(message);
         }
     }
 }
