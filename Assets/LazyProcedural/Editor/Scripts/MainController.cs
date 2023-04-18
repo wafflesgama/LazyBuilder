@@ -42,7 +42,7 @@ namespace LazyProcedural
 
             SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
 
-            var checkTypes= SceelixDomain.Types.ToList();
+            var checkTypes = SceelixDomain.Types.ToList();
 
             EngineManager.Initialize();
 
@@ -59,6 +59,8 @@ namespace LazyProcedural
 
 
             MeshCreateProcedure meshProc = new MeshCreateProcedure();
+
+
             meshProc.Parameters["Primitive"].Set("Cone");
 
 
@@ -69,6 +71,26 @@ namespace LazyProcedural
             //parameters are set in this way, using the same labels as viewed in the Sceelix Designer
             procedure.Parameters["Inputs"].Set("Single");
 
+            //procedure.Inputs[0].Input.Enqueue
+
+            meshProc.Execute();
+
+            MeshModifyProcedure meshModifyProc = new MeshModifyProcedure();
+
+            var test = meshModifyProc.Inputs[0];
+            //var test2 = meshModifyProc.Parameters[0].Inputs[0];
+
+            meshModifyProc.Inputs[0].Enqueue(meshProc.Outputs[0].Peek());
+
+            CopyProcedure copyProcedure = new CopyProcedure();
+
+            //copyProcedure.Parameters["Operation"].Set("Standard");
+
+            //copyProcedure.Parameters["Number of Copies"]
+            //copyProcedure.Parameters["Operation"].Inputs[0].Enqueue(meshProc.Outputs[0].Peek());
+            //copyProcedure.Inputs[0].Enqueue(meshProc.Outputs[0].Peek());
+
+            //procedure.Outputs
             //for lists, there are several options for settings data
             //1) Set a string, which will add an item with that label to the list
             //alternatively, you could use the same Set function for lists, which does the same as Add
@@ -120,14 +142,16 @@ namespace LazyProcedural
 
             //once we have finished the parameterization, execute it!
             //it will execute twice since we have added 2 entities to the input
-            meshProc.Execute();
+         
+            meshModifyProc.Execute();
 
             //now we can get the data from the outputs
             //this peeks (but not removes) one item from the first ouput
             IEntity entity = meshProc.Outputs[0].Peek();
+            IEntity entity2 = meshModifyProc.Outputs[0].Peek();
 
             //this peeks all the data from all the output ports
-            IEnumerable<IEntity> entities = meshProc.Outputs.PeekAll();
+            List<IEntity> entities = meshProc.Outputs.PeekAll().ToList();
 
             //this gets (and removes) all the data from all the output ports
             IEnumerable<IEntity> poppedEntities = meshProc.Outputs.DequeueAll();
