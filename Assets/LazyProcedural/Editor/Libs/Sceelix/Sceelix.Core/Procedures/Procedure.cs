@@ -427,7 +427,7 @@ namespace Sceelix.Core.Procedures
             }
             catch (Exception ex)
             {
-                Logger.Log(ex);
+                Logger.Log(ex,LogType.Error);
 
                 foreach (var input in _inputs)
                     _unprocessedEntities.AddRange(input.RoundEntities);
