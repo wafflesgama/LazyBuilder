@@ -6,19 +6,19 @@ using KVPair = System.Collections.Generic.KeyValuePair<string, object>;
 
 namespace Sceelix.Mathematics.Graphs.Functions
 {
-    [ExpressionFunctions("Color")]
+    [ExpressionFunctions("UnityEngine.Color")]
     public class ColorFunctions
     {
         public static object Color(dynamic red, dynamic green, dynamic blue)
         {
-            return new Color(ConvertHelper.Convert<byte>(red), ConvertHelper.Convert<byte>(green), ConvertHelper.Convert<byte>(blue));
+            return new UnityEngine.Color(ConvertHelper.Convert<byte>(red), ConvertHelper.Convert<byte>(green), ConvertHelper.Convert<byte>(blue));
         }
 
 
 
         public static object Color(dynamic red, dynamic green, dynamic blue, dynamic alpha)
         {
-            return new Color(ConvertHelper.Convert<byte>(red), ConvertHelper.Convert<byte>(green), ConvertHelper.Convert<byte>(blue), ConvertHelper.Convert<byte>(alpha));
+            return new UnityEngine.Color(ConvertHelper.Convert<byte>(red), ConvertHelper.Convert<byte>(green), ConvertHelper.Convert<byte>(blue), ConvertHelper.Convert<byte>(alpha));
         }
 
 
@@ -38,18 +38,18 @@ namespace Sceelix.Mathematics.Graphs.Functions
 
         public static object Hsva(dynamic hue, dynamic saturation, dynamic value)
         {
-            Color color = Data.Color.HsvToRgb(hue, saturation, value);
+            UnityEngine.Color color = UnityEngine.Color.HSVToRGB(hue, saturation, value);
 
-            return new SceeList(new KVPair("Red", color.R), new KVPair("Green", color.G), new KVPair("Blue", color.B), new KVPair("Alpha", (byte) 255));
+            return new SceeList(new KVPair("Red", color.r), new KVPair("Green", color.g), new KVPair("Blue", color.b), new KVPair("Alpha", (byte) 255));
         }
 
 
 
         public static object Hsva(dynamic hue, dynamic saturation, dynamic value, dynamic alpha)
         {
-            Color color = Data.Color.HsvToRgb(hue, saturation, value);
+            UnityEngine.Color color = UnityEngine.Color.HSVToRGB(hue, saturation, value);
 
-            return new SceeList(new KVPair("Red", color.R), new KVPair("Green", color.G), new KVPair("Blue", color.B), new KVPair("Alpha", alpha));
+            return new SceeList(new KVPair("Red", color.r), new KVPair("Green", color.g), new KVPair("Blue", color.b), new KVPair("Alpha", alpha));
         }
     }
 }

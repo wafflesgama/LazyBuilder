@@ -20,10 +20,10 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         public BoxScope(BoundingBox boundingBox)
         {
-            XAxis = Vector3D.XVector;
-            YAxis = Vector3D.YVector;
-            ZAxis = Vector3D.ZVector;
-            Sizes = new Vector3D(boundingBox.Width, boundingBox.Length, boundingBox.Height);
+            XAxis = UnityEngine.Vector3.right;
+            YAxis = UnityEngine.Vector3.up;
+            ZAxis = UnityEngine.Vector3.forward;
+            Sizes = new UnityEngine.Vector3(boundingBox.Width, boundingBox.Length, boundingBox.Height);
             Translation = boundingBox.Min;
         }
 
@@ -37,18 +37,18 @@ namespace Sceelix.Mathematics.Data
         /// <param name="yAxis"></param>
         /// <param name="zAxis"></param>
         /// <param name="translation"></param>
-        public BoxScope(Vector3D xAxis, Vector3D yAxis, Vector3D zAxis, Vector3D translation)
+        public BoxScope(UnityEngine.Vector3 xAxis, UnityEngine.Vector3 yAxis, UnityEngine.Vector3 zAxis, UnityEngine.Vector3 translation)
         {
             XAxis = xAxis;
             YAxis = yAxis;
             ZAxis = zAxis;
             Translation = translation;
-            Sizes = Vector3D.Zero;
+            Sizes = UnityEngine.Vector3.zero;
         }
 
 
 
-        public BoxScope(Vector3D xAxis, Vector3D yAxis, Vector3D zAxis, Vector3D translation, Vector3D sizes)
+        public BoxScope(UnityEngine.Vector3 xAxis, UnityEngine.Vector3 yAxis, UnityEngine.Vector3 zAxis, UnityEngine.Vector3 translation, UnityEngine.Vector3 sizes)
         {
             XAxis = xAxis;
             YAxis = yAxis;
@@ -67,17 +67,17 @@ namespace Sceelix.Mathematics.Data
         /// <param name="zAxis">The z axis direction. If null, will be set to (0,0,1), unless the other two axes are not null, in which case it will be calculated from their cross product.</param>
         /// <param name="translation">The boxscope offset/translation. If null, will be set to (0,0,0).</param>
         /// <param name="sizes">The sizes of the 3 axes. If null, will be set to (0,0,0).</param>
-        public BoxScope(Vector3D? xAxis = null, Vector3D? yAxis = null, Vector3D? zAxis = null, Vector3D? translation = null, Vector3D? sizes = null)
+        public BoxScope(UnityEngine.Vector3? xAxis = null, UnityEngine.Vector3? yAxis = null, UnityEngine.Vector3? zAxis = null, UnityEngine.Vector3? translation = null, UnityEngine.Vector3? sizes = null)
         {
-            XAxis = xAxis ?? (yAxis.HasValue && zAxis.HasValue ? yAxis.Value.Cross(zAxis.Value) : Vector3D.XVector);
-            YAxis = yAxis ?? (xAxis.HasValue && zAxis.HasValue ? zAxis.Value.Cross(xAxis.Value) : Vector3D.YVector);
-            ZAxis = zAxis ?? (xAxis.HasValue && yAxis.HasValue ? xAxis.Value.Cross(yAxis.Value) : Vector3D.ZVector);
+            XAxis = xAxis ?? (yAxis.HasValue && zAxis.HasValue ? yAxis.Value.Cross(zAxis.Value) : UnityEngine.Vector3.right);
+            YAxis = yAxis ?? (xAxis.HasValue && zAxis.HasValue ? zAxis.Value.Cross(xAxis.Value) : UnityEngine.Vector3.up);
+            ZAxis = zAxis ?? (xAxis.HasValue && yAxis.HasValue ? xAxis.Value.Cross(yAxis.Value) : UnityEngine.Vector3.forward);
 
-            /*_xAxis = xAxis ?? Vector3D.XVector;
-            _yAxis = yAxis ?? Vector3D.YVector;
-            _zAxis = zAxis ?? Vector3D.ZVector;*/
-            Translation = translation ?? Vector3D.Zero;
-            Sizes = sizes ?? Vector3D.Zero;
+            /*_xAxis = xAxis ?? UnityEngine.Vector3.right;
+            _yAxis = yAxis ?? UnityEngine.Vector3.up;
+            _zAxis = zAxis ?? UnityEngine.Vector3.forward;*/
+            Translation = translation ?? UnityEngine.Vector3.zero;
+            Sizes = sizes ?? UnityEngine.Vector3.zero;
         }
 
 
@@ -86,14 +86,14 @@ namespace Sceelix.Mathematics.Data
         /// Creates an axis-oriented scope based on the given positions.
         /// </summary>
         /// <param name="positions"></param>
-        public BoxScope(IEnumerable<Vector3D> positions)
+        public BoxScope(IEnumerable<UnityEngine.Vector3> positions)
             : this(BoundingBox.FromPoints(positions))
         {
         }
 
 
 
-        public BoxScope(BoxScope boxScope, Vector3D? xAxis = null, Vector3D? yAxis = null, Vector3D? zAxis = null, Vector3D? translation = null, Vector3D? sizes = null)
+        public BoxScope(BoxScope boxScope, UnityEngine.Vector3? xAxis = null, UnityEngine.Vector3? yAxis = null, UnityEngine.Vector3? zAxis = null, UnityEngine.Vector3? translation = null, UnityEngine.Vector3? sizes = null)
         {
             XAxis = xAxis ?? boxScope.XAxis;
             YAxis = yAxis ?? boxScope.YAxis;
@@ -113,22 +113,22 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="positions"></param>
         /// <returns></returns>
-        public BoxScope Grow(IEnumerable<Vector3D> positions)
+        public BoxScope Grow(IEnumerable<UnityEngine.Vector3> positions)
         {
             Plane3D planeX = new Plane3D(XAxis, Translation);
             Plane3D planeY = new Plane3D(YAxis, Translation);
             Plane3D planeZ = new Plane3D(ZAxis, Translation);
 
-            var sizes = Sizes; //new Vector3D();
+            var sizes = Sizes; //new UnityEngine.Vector3();
 
             //Different from above: this needs to check every point of the face
-            foreach (Vector3D vector3D in positions)
+            foreach (UnityEngine.Vector3 vector3D in positions)
             {
-                float x = Plane3DHelper.MovePlane(ref planeX, vector3D, sizes.X);
-                float y = Plane3DHelper.MovePlane(ref planeY, vector3D, sizes.Y);
-                float z = Plane3DHelper.MovePlane(ref planeZ, vector3D, sizes.Z);
+                float x = Plane3DHelper.MovePlane(ref planeX, vector3D, sizes.x);
+                float y = Plane3DHelper.MovePlane(ref planeY, vector3D, sizes.y);
+                float z = Plane3DHelper.MovePlane(ref planeZ, vector3D, sizes.z);
 
-                sizes = new Vector3D(x, y, z);
+                sizes = new UnityEngine.Vector3(x, y, z);
             }
 
             var xAxis = planeX.Normal;
@@ -148,13 +148,13 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="positions"></param>
         /// <returns></returns>
-        public BoxScope Adjust(IEnumerable<Vector3D> positions)
+        public BoxScope Adjust(IEnumerable<UnityEngine.Vector3> positions)
         {
             var positionsList = positions.ToList();
             if (!positionsList.Any())
                 return this;
 
-            var resettedScope = new BoxScope(XAxis, YAxis, ZAxis, positionsList.First(), new Vector3D());
+            var resettedScope = new BoxScope(XAxis, YAxis, ZAxis, positionsList.First(), new UnityEngine.Vector3());
 
             return resettedScope.Grow(positionsList.Skip(1));
         }
@@ -166,15 +166,15 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        public Vector3D ToScopePosition(Vector3D position)
+        public UnityEngine.Vector3 ToScopePosition(UnityEngine.Vector3 position)
         {
-            Vector3D relativePosition = position - Translation;
+            UnityEngine.Vector3 relativePosition = position - Translation;
 
             float dX = relativePosition.Dot(XAxis);
             float dY = relativePosition.Dot(YAxis);
             float dZ = relativePosition.Dot(ZAxis);
 
-            return new Vector3D(dX, dY, dZ);
+            return new UnityEngine.Vector3(dX, dY, dZ);
         }
 
 
@@ -184,7 +184,7 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        public Vector3D ToRelativeScopePosition(Vector3D position)
+        public UnityEngine.Vector3 ToRelativeScopePosition(UnityEngine.Vector3 position)
         {
             return (ToScopePosition(position) / Sizes).MakeValid();
         }
@@ -196,9 +196,9 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        public Vector3D ToWorldPosition(Vector3D position)
+        public UnityEngine.Vector3 ToWorldPosition(UnityEngine.Vector3 position)
         {
-            return XAxis * position.X + YAxis * position.Y + ZAxis * position.Z + Translation;
+            return XAxis * position.x + YAxis * position.y + ZAxis * position.z + Translation;
         }
 
 
@@ -208,7 +208,7 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        public Vector3D ToRelativeWorldPosition(Vector3D position)
+        public UnityEngine.Vector3 ToRelativeWorldPosition(UnityEngine.Vector3 position)
         {
             return ToWorldPosition(position * Sizes);
         }
@@ -220,13 +220,13 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="direction">The direction.</param>
         /// <returns></returns>
-        public Vector3D ToScopeDirection(Vector3D direction)
+        public UnityEngine.Vector3 ToScopeDirection(UnityEngine.Vector3 direction)
         {
             float dX = direction.Dot(XAxis);
             float dY = direction.Dot(YAxis);
             float dZ = direction.Dot(ZAxis);
 
-            return new Vector3D(dX, dY, dZ);
+            return new UnityEngine.Vector3(dX, dY, dZ);
         }
 
 
@@ -236,9 +236,9 @@ namespace Sceelix.Mathematics.Data
         /// </summary>
         /// <param name="scopeDirection"></param>
         /// <returns></returns>
-        public Vector3D ToWorldDirection(Vector3D scopeDirection)
+        public UnityEngine.Vector3 ToWorldDirection(UnityEngine.Vector3 scopeDirection)
         {
-            return XAxis * scopeDirection.X + YAxis * scopeDirection.Y + ZAxis * scopeDirection.Z;
+            return XAxis * scopeDirection.x + YAxis * scopeDirection.y + ZAxis * scopeDirection.z;
         }
 
 
@@ -249,11 +249,11 @@ namespace Sceelix.Mathematics.Data
         /// <param name="firstDirection"></param>
         /// <param name="secondDirection"></param>
         /// <returns></returns>
-        public BoxScope OrientTo(Vector3D firstDirection, Vector3D secondDirection, Vector3D pivot)
+        public BoxScope OrientTo(UnityEngine.Vector3 firstDirection, UnityEngine.Vector3 secondDirection, UnityEngine.Vector3 pivot)
         {
             float angleTo = firstDirection.AngleTo(secondDirection);
 
-            Vector3D rotationAxis = firstDirection.Cross(secondDirection).Normalize();
+            UnityEngine.Vector3 rotationAxis = firstDirection.Cross(secondDirection).normalized;
             if (!rotationAxis.IsNumericallyZero && !rotationAxis.IsInfinityOrNaN)
             {
                 var rotation = Matrix.CreateTranslation(pivot) * Matrix.CreateAxisAngle(rotationAxis, angleTo) * Matrix.CreateTranslation(-pivot);
@@ -270,13 +270,13 @@ namespace Sceelix.Mathematics.Data
         /// Gets the coordinates, in world space, of the 8 corners of the scope.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Vector3D> CornerPositions
+        public IEnumerable<UnityEngine.Vector3> CornerPositions
         {
             get
             {
-                Vector3D sizedXAxis = SizedXAxis;
-                Vector3D sizedYAxis = SizedYAxis;
-                Vector3D sizedZAxis = SizedZAxis;
+                UnityEngine.Vector3 sizedXAxis = SizedXAxis;
+                UnityEngine.Vector3 sizedYAxis = SizedYAxis;
+                UnityEngine.Vector3 sizedZAxis = SizedZAxis;
 
                 yield return Translation;
                 yield return Translation + sizedXAxis;
@@ -300,7 +300,7 @@ namespace Sceelix.Mathematics.Data
             {
                 BoundingBox boundingBox = new BoundingBox();
 
-                foreach (Vector3D point in CornerPositions)
+                foreach (UnityEngine.Vector3 point in CornerPositions)
                     boundingBox.AddPoint(point);
 
                 return boundingBox;
@@ -336,16 +336,16 @@ namespace Sceelix.Mathematics.Data
             newSizedZAxis = transposeInverse.Transform(ZAxis);
 
 
-            return new BoxScope(newSizedXAxis.Normalize(), newSizedYAxis.Normalize(), newSizedZAxis.Normalize(), newTranslation, new Vector3D(Sizes.X * percentageSizeX, Sizes.Y * percentageSizeY, Sizes.Z * percentageSizeZ).MakeValid());
+            return new BoxScope(newSizedXAxis.normalized, newSizedYAxis.normalized, newSizedZAxis.normalized, newTranslation, new UnityEngine.Vector3(Sizes.x * percentageSizeX, Sizes.y * percentageSizeY, Sizes.z * percentageSizeZ).MakeValid());
         }
 
 
 
         public Matrix ToWorldPositionMatrix()
         {
-            return new Matrix(XAxis.X, YAxis.X, ZAxis.X, Translation.X,
-                XAxis.Y, YAxis.Y, ZAxis.Y, Translation.Y,
-                XAxis.Z, YAxis.Z, ZAxis.Z, Translation.Z,
+            return new Matrix(XAxis.x, YAxis.x, ZAxis.x, Translation.x,
+                XAxis.y, YAxis.y, ZAxis.y, Translation.y,
+                XAxis.z, YAxis.z, ZAxis.z, Translation.z,
                 0, 0, 0, 1);
         }
 
@@ -360,9 +360,9 @@ namespace Sceelix.Mathematics.Data
 
         public Matrix ToWorldDirectionMatrix()
         {
-            return new Matrix(XAxis.X, YAxis.X, ZAxis.X, 0,
-                XAxis.Y, YAxis.Y, ZAxis.Y, 0,
-                XAxis.Z, YAxis.Z, ZAxis.Z, 0,
+            return new Matrix(XAxis.x, YAxis.x, ZAxis.x, 0,
+                XAxis.y, YAxis.y, ZAxis.y, 0,
+                XAxis.z, YAxis.z, ZAxis.z, 0,
                 0, 0, 0, 1);
         }
 
@@ -375,20 +375,20 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public BoxScope Translate(Vector3D translation)
+        public BoxScope Translate(UnityEngine.Vector3 translation)
         {
             return new BoxScope(XAxis, YAxis, ZAxis, Translation + translation, Sizes);
         }
 
 
 
-        public Vector3D[] ToRelativeMainPoints(BoxScope subScope)
+        public UnityEngine.Vector3[] ToRelativeMainPoints(BoxScope subScope)
         {
-            Vector3D sizedXAxis = subScope.SizedXAxis;
-            Vector3D sizedYAxis = subScope.SizedYAxis;
-            Vector3D sizedZAxis = subScope.SizedZAxis;
+            UnityEngine.Vector3 sizedXAxis = subScope.SizedXAxis;
+            UnityEngine.Vector3 sizedYAxis = subScope.SizedYAxis;
+            UnityEngine.Vector3 sizedZAxis = subScope.SizedZAxis;
 
-            Vector3D[] mainPoints = new Vector3D[7];
+            UnityEngine.Vector3[] mainPoints = new UnityEngine.Vector3[7];
             mainPoints[0] = ToRelativeScopePosition(subScope.Translation);
             mainPoints[1] = ToRelativeScopePosition(subScope.Translation + sizedXAxis);
             mainPoints[2] = ToRelativeScopePosition(subScope.Translation + sizedYAxis);
@@ -402,7 +402,7 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public BoxScope FromRelativeMainPoints(Vector3D[] mainFeatures)
+        public BoxScope FromRelativeMainPoints(UnityEngine.Vector3[] mainFeatures)
         {
             var translation = ToRelativeWorldPosition(mainFeatures[0]);
             var cornerX = ToRelativeWorldPosition(mainFeatures[1]);
@@ -423,7 +423,7 @@ namespace Sceelix.Mathematics.Data
             directionZ = ToWorldDirection(mainFeatures[6]);
 
             return new BoxScope(directionX, directionY, directionZ,
-                translation, new Vector3D(sizeX, sizeY, sizeZ));
+                translation, new UnityEngine.Vector3(sizeX, sizeY, sizeZ));
         }
 
 
@@ -437,8 +437,8 @@ namespace Sceelix.Mathematics.Data
             var newTranslation = ToRelativeScopePosition(subScope.Translation);
 
 
-            var newSizeX = ToWorldDirection(subScope.XAxis) * Sizes.X;
-            var newSizeY = ToWorldDirection(subScope.YAxis) * Sizes.Y;
+            var newSizeX = ToWorldDirection(subScope.XAxis) * Sizes.x;
+            var newSizeY = ToWorldDirection(subScope.YAxis) * Sizes.y;
 
             //newSizeX.
 
@@ -480,40 +480,40 @@ namespace Sceelix.Mathematics.Data
 
         #region Properties
 
-        public Vector3D XAxis
+        public UnityEngine.Vector3 XAxis
         {
             get;
         }
 
 
-        public Vector3D SizedXAxis => XAxis * Sizes.X;
+        public UnityEngine.Vector3 SizedXAxis => XAxis * Sizes.x;
 
 
-        public Vector3D YAxis
+        public UnityEngine.Vector3 YAxis
         {
             get;
         }
 
 
-        public Vector3D SizedYAxis => YAxis * Sizes.Y;
+        public UnityEngine.Vector3 SizedYAxis => YAxis * Sizes.y;
 
 
-        public Vector3D ZAxis
+        public UnityEngine.Vector3 ZAxis
         {
             get;
         }
 
 
-        public Vector3D SizedZAxis => ZAxis * Sizes.Z;
+        public UnityEngine.Vector3 SizedZAxis => ZAxis * Sizes.z;
 
 
-        public Vector3D Translation
+        public UnityEngine.Vector3 Translation
         {
             get;
         }
 
 
-        public Vector3D Sizes
+        public UnityEngine.Vector3 Sizes
         {
             get;
         }
@@ -522,7 +522,7 @@ namespace Sceelix.Mathematics.Data
         /// <summary>
         /// A scope located at the origin, coincident with the world axes, and with unit sizes.
         /// </summary>
-        public static BoxScope Identity => new BoxScope(Vector3D.XVector, Vector3D.YVector, Vector3D.ZVector, Vector3D.Zero, Vector3D.One);
+        public static BoxScope Identity => new BoxScope(UnityEngine.Vector3.right, UnityEngine.Vector3.up, UnityEngine.Vector3.forward, UnityEngine.Vector3.zero, UnityEngine.Vector3.one);
 
 
         public Plane3D FrontPlane => new Plane3D(YAxis, Translation + SizedYAxis);
@@ -543,7 +543,7 @@ namespace Sceelix.Mathematics.Data
         public Plane3D BottomPlane => new Plane3D(-ZAxis, Translation);
 
 
-        public Vector3D Centroid => Translation + SizedXAxis / 2f + SizedYAxis / 2f + SizedZAxis / 2f;
+        public UnityEngine.Vector3 Centroid => Translation + SizedXAxis / 2f + SizedYAxis / 2f + SizedZAxis / 2f;
 
 
 
@@ -553,8 +553,8 @@ namespace Sceelix.Mathematics.Data
             {
                 BoundingRectangle boundingRectangle = new BoundingRectangle();
 
-                foreach (Vector3D point in CornerPositions)
-                    boundingRectangle.AddPoint(point.ToVector2D());
+                foreach (UnityEngine.Vector3 point in CornerPositions)
+                    boundingRectangle.AddPoint(point.ToVector2());
 
                 return boundingRectangle;
             }

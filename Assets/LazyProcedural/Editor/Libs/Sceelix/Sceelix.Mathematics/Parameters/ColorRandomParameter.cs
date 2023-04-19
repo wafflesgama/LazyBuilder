@@ -23,12 +23,12 @@ namespace Sceelix.Mathematics.Parameters
         /// <summary>
         /// Attribute where to store the random color.
         /// </summary>
-        private readonly AttributeParameter<Color> _attributeValue = new AttributeParameter<Color>("Value", AttributeAccess.Write);
+        private readonly AttributeParameter<UnityEngine.Color> _attributeValue = new AttributeParameter<UnityEngine.Color>("Value", AttributeAccess.Write);
 
 
 
         public ColorRandomParameter()
-            : base("Color")
+            : base("UnityEngine.Color")
         {
         }
 
@@ -40,11 +40,11 @@ namespace Sceelix.Mathematics.Parameters
             {
                 case "Standard":
                     foreach (var baseEntity in entities)
-                        _attributeValue[baseEntity] = new Color((byte) random.Next(0, 256), (byte) random.Next(0, 256), (byte) random.Next(0, 256));
+                        _attributeValue[baseEntity] = new UnityEngine.Color((byte) random.Next(0, 256), (byte) random.Next(0, 256), (byte) random.Next(0, 256));
                     break;
                 case "Offset":
                 {
-                    var baseColor = new Color((byte) random.Next(0, 256), (byte) random.Next(0, 256), (byte) random.Next(0, 256));
+                    var baseColor = new UnityEngine.Color((byte) random.Next(0, 256), (byte) random.Next(0, 256), (byte) random.Next(0, 256));
                     var startingColor = baseColor;
 
                     foreach (var baseEntity in entities)
@@ -55,7 +55,7 @@ namespace Sceelix.Mathematics.Parameters
                 }
                     break;
                 case "Hue":
-                    foreach (var baseEntity in entities) _attributeValue[baseEntity] = Color.HsvToRgb(random.Next(361), 1, 1);
+                    foreach (var baseEntity in entities) _attributeValue[baseEntity] = UnityEngine.Color.HSVToRGB(random.Next(361), 1, 1);
                     break;
             }
         }

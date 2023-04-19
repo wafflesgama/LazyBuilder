@@ -105,15 +105,15 @@ namespace Sceelix.Points.Parameters
             }).ToList();
 
 
-            var boundingBox = new BoundingRectangle(pathVertices.Select(x => x.Position.ToVector2D()));
+            var boundingBox = new BoundingRectangle(pathVertices.Select(x => x.Position.ToVector2()));
 
-            var doublesX = pathVertices.Select(x => (double) x.Position.X);
-            var doublesY = pathVertices.Select(x => (double) x.Position.Y);
+            var doublesX = pathVertices.Select(x => (double) x.Position.x);
+            var doublesY = pathVertices.Select(x => (double) x.Position.y);
 
             Voronoi voronoiGenerator = new Voronoi(0.1);
             List<PathEdge> newEdges = new List<PathEdge>();
 
-            var points = voronoiGenerator.GenerateVoronoi(doublesX.ToArray(), doublesY.ToArray(), boundingBox.Min.X, boundingBox.Max.X, boundingBox.Min.Y, boundingBox.Max.Y);
+            var points = voronoiGenerator.GenerateVoronoi(doublesX.ToArray(), doublesY.ToArray(), boundingBox.Min.x, boundingBox.Max.x, boundingBox.Min.y, boundingBox.Max.y);
 
 
             foreach (var graphEdge in points)
@@ -141,21 +141,21 @@ namespace Sceelix.Points.Parameters
         public override PathEntity CreatePath(IEnumerable<PointEntity> pointEntities)
         {
             var pointEntityList = pointEntities as IList<PointEntity> ?? pointEntities.ToList();
-            var boundingBox = new BoundingRectangle(pointEntityList.Select(x => x.Position.ToVector2D()));
+            var boundingBox = new BoundingRectangle(pointEntityList.Select(x => x.Position.ToVector2()));
 
-            var doublesX = pointEntityList.Select(x => (double) x.Position.X);
-            var doublesY = pointEntityList.Select(x => (double) x.Position.Y);
+            var doublesX = pointEntityList.Select(x => (double) x.Position.x);
+            var doublesY = pointEntityList.Select(x => (double) x.Position.y);
 
             Voronoi voronoiGenerator = new Voronoi(0.1);
             List<PathEdge> newEdges = new List<PathEdge>();
 
-            var points = voronoiGenerator.GenerateVoronoi(doublesX.ToArray(), doublesY.ToArray(), boundingBox.Min.X, boundingBox.Max.X, boundingBox.Min.Y, boundingBox.Max.Y);
+            var points = voronoiGenerator.GenerateVoronoi(doublesX.ToArray(), doublesY.ToArray(), boundingBox.Min.x, boundingBox.Max.x, boundingBox.Min.y, boundingBox.Max.y);
 
-            Dictionary<Vector3D, PathVertex> vertices = new Dictionary<Vector3D, PathVertex>();
+            Dictionary<UnityEngine.Vector3, PathVertex> vertices = new Dictionary<UnityEngine.Vector3, PathVertex>();
             foreach (var graphEdge in points)
             {
-                Vector3D v1 = new Vector3D((float) graphEdge.x1, (float) graphEdge.y1);
-                Vector3D v2 = new Vector3D((float) graphEdge.x2, (float) graphEdge.y2);
+                UnityEngine.Vector3 v1 = new UnityEngine.Vector3((float) graphEdge.x1, (float) graphEdge.y1);
+                UnityEngine.Vector3 v2 = new UnityEngine.Vector3((float) graphEdge.x2, (float) graphEdge.y2);
 
                 PathVertex vertex1, vertex2;
 

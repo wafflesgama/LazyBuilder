@@ -16,16 +16,16 @@ namespace Sceelix.Points.Data
         /// Initializes a new instance of <see cref="PointEntity"/> at the given location, oriented to the world.
         /// </summary>
         /// <param name="position">The position.</param>
-        public PointEntity(Vector3D position)
+        public PointEntity(UnityEngine.Vector3 position)
         {
-            _boxScope = new BoxScope(translation: position, sizes: new Vector3D(0, 0, 0));
+            _boxScope = new BoxScope(translation: position, sizes: new UnityEngine.Vector3(0, 0, 0));
         }
 
 
 
         public PointEntity(BoxScope scope)
         {
-            _boxScope = new BoxScope(scope, sizes: new Vector3D(0, 0, 0));
+            _boxScope = new BoxScope(scope, sizes: new UnityEngine.Vector3(0, 0, 0));
         }
 
 
@@ -41,7 +41,7 @@ namespace Sceelix.Points.Data
         /// <summary>
         /// The position of the pointEntity. Same as the boxscope.translation.
         /// </summary>
-        public Vector3D Position => _boxScope.Translation;
+        public UnityEngine.Vector3 Position => _boxScope.Translation;
 
 
 

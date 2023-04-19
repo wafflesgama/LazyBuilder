@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sceelix.Extensions;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Actors.Data
 {
@@ -37,9 +38,9 @@ namespace Sceelix.Actors.Data
 
 
 
-        public Color GetColor(string name)
+        public UnityEngine.Color GetColor(string name)
         {
-            return (Color) _properties.GetOrDefault(name, Color.White);
+            return (UnityEngine.Color) _properties.GetOrDefault(name, UnityEngine.Color.white);
         }
 
 
@@ -51,7 +52,7 @@ namespace Sceelix.Actors.Data
 
 
 
-        public void SetColor(string name, Color value)
+        public void SetColor(string name, UnityEngine.Color value)
         {
             _properties[name] = value;
         }

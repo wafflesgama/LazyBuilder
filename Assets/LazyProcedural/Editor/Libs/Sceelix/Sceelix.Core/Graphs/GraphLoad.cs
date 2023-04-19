@@ -44,7 +44,7 @@ namespace Sceelix.Core.Graphs
             graph.Guid = root.GetAttributeOrDefault("Guid", Guid.NewGuid());
             graph.Author = root.GetAttributeOrDefault("Author", string.Empty);
             graph.Description = root.GetAttributeOrDefault("Description", string.Empty);
-            graph.Color = root.GetAttributeOrDefault("Color", "ffffff");
+            graph.UnityEngine.Color = root.GetAttributeOrDefault("UnityEngine.Color", "ffffff");
             //graph.OutputStyle = root.GetAttributeOrDefault("OutputStyle", OutputStyle.Standard);
             graph.Tags = root.GetAttributeOrDefault("Tags", string.Empty);
             graph.Category = root.GetAttributeOrDefault("Category", string.Empty);
@@ -184,7 +184,7 @@ namespace Sceelix.Core.Graphs
             var guid = root.GetAttributeOrDefault("Guid", Guid.NewGuid()).ToString();
             var author = root.GetAttributeOrDefault("Author", string.Empty);
             var description = root.GetAttributeOrDefault("Description", string.Empty);
-            var color = root.GetAttributeOrDefault("Color", "ffffff");
+            var color = root.GetAttributeOrDefault("UnityEngine.Color", "ffffff");
             var tags = root.GetAttributeOrDefault("Tags", string.Empty);
             var category = root.GetAttributeOrDefault("Category", string.Empty);
             var obsolete = root.GetAttributeOrDefault("Obsolete", string.Empty);

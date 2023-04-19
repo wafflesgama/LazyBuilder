@@ -5,7 +5,7 @@ using Sceelix.Mathematics.Parameters.Infos;
 
 namespace Sceelix.Mathematics.Parameters
 {
-    public class Vector3DParameter : PrimitiveParameter<Vector3D>
+    public class Vector3Parameter : PrimitiveParameter<UnityEngine.Vector3>
     {
         /*public FloatParameter X = new FloatParameter("X", 0);
         public FloatParameter Y = new FloatParameter("Y", 0);
@@ -13,14 +13,14 @@ namespace Sceelix.Mathematics.Parameters
 
 
 
-        public Vector3DParameter(string label)
-            : base(label, Vector3D.Zero)
+        public Vector3Parameter(string label)
+            : base(label, UnityEngine.Vector3.zero)
         {
         }
 
 
 
-        public Vector3DParameter(string label, Vector3D vector3D)
+        public Vector3Parameter(string label, UnityEngine.Vector3 vector3D)
             : base(label, vector3D)
         {
             //Value = vector3D;
@@ -30,32 +30,32 @@ namespace Sceelix.Mathematics.Parameters
 
         protected internal override ParameterInfo ToParameterInfo()
         {
-            return new Vector3DParameterInfo(this);
+            return new Vector3ParameterInfo(this);
         }
 
 
 
-        /*public new Vector3D Value
+        /*public new UnityEngine.Vector3 Value
         {
-            get { return new Vector3D(X.Value, Y.Value, Z.Value); }
+            get { return new UnityEngine.Vector3(X.Value, Y.Value, Z.Value); }
             set
             {
-                X.Value = value.X;
-                Y.Value = value.Y;
-                Z.Value = value.Z;
+                X.Value = value.x;
+                Y.Value = value.y;
+                Z.Value = value.z;
             }
         }*/
 
-        /*public Vector3D GetVector3F()
+        /*public UnityEngine.Vector3 GetVector3F()
         {
-            return new Vector3D(X.Value, Y.Value, Z.Value);
+            return new UnityEngine.Vector3(X.Value, Y.Value, Z.Value);
         }
 
-        public void SetVector3F(Vector3D vector3F)
+        public void SetVector3F(UnityEngine.Vector3 vector3F)
         {
-            X.Value = vector3F.X;
-            Y.Value = vector3F.Y;
-            Z.Value = vector3F.Z;
+            X.Value = vector3F.x;
+            Y.Value = vector3F.y;
+            Z.Value = vector3F.z;
         }*/
     }
 }

@@ -259,7 +259,7 @@ namespace Sceelix.Surfaces.Procedures
                 int columns = bitmap.Width;
                 int rows = bitmap.Height;
 
-                var normals = new Vector3D[columns, rows];
+                var normals = new UnityEngine.Vector3[columns, rows];
 
                 using (Bitmap normalMapImage = resources.Load<Bitmap>(_parameterNormalMap.Value).ConvertFormat(PixelFormat.Format32bppArgb))
                 {
@@ -271,7 +271,7 @@ namespace Sceelix.Surfaces.Procedures
                             {
                                 var systemColor = normalFastBitmap.GetPixel(i, j);
 
-                                normals[i, j] = new Vector3D(systemColor.R / 255f, systemColor.G / 255f, systemColor.B / 255f);
+                                normals[i, j] = new UnityEngine.Vector3(systemColor.R / 255f, systemColor.G / 255f, systemColor.B / 255f);
                             }
                         });
                     }

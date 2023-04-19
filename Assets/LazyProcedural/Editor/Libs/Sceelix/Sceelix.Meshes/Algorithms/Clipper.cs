@@ -51,16 +51,16 @@ namespace Sceelix.Meshes.Algorithms
 
         public DoublePoint(DoublePoint dp)
         {
-            X = dp.X;
-            Y = dp.Y;
+            X = dp.x;
+            Y = dp.y;
         }
 
 
 
         public DoublePoint(IntPoint ip)
         {
-            X = ip.X;
-            Y = ip.Y;
+            X = ip.x;
+            Y = ip.y;
         }
     }
 
@@ -376,28 +376,28 @@ namespace Sceelix.Meshes.Algorithms
 	
 	public IntPoint(cInt x, cInt y, cInt z = 0)
 	{
-	  this.X = x; this.Y = y; this.Z = z;
+	  this.x = x; this.y = y; this.z = z;
 	}
 	
 	public IntPoint(double x, double y, double z = 0)
 	{
-	  this.X = (cInt)x; this.Y = (cInt)y; this.Z = (cInt)z;
+	  this.x = (cInt)x; this.y = (cInt)y; this.z = (cInt)z;
 	}
 	
 	public IntPoint(DoublePoint dp)
 	{
-	  this.X = (cInt)dp.X; this.Y = (cInt)dp.Y; this.Z = 0;
+	  this.x = (cInt)dp.x; this.y = (cInt)dp.y; this.z = 0;
 	}
 
 	public IntPoint(IntPoint pt)
 	{
-	  this.X = pt.X; this.Y = pt.Y; this.Z = pt.Z;
+	  this.x = pt.x; this.y = pt.y; this.z = pt.z;
 	}
 #else
         public IntPoint(long X, long Y)
         {
-            this.X = X;
-            this.Y = Y;
+            this.x = X;
+            this.y = Y;
         }
 
 
@@ -412,8 +412,8 @@ namespace Sceelix.Meshes.Algorithms
 
         public IntPoint(IntPoint pt)
         {
-            X = pt.X;
-            Y = pt.Y;
+            X = pt.x;
+            Y = pt.y;
         }
 #endif
 
@@ -421,14 +421,14 @@ namespace Sceelix.Meshes.Algorithms
 
         public static bool operator ==(IntPoint a, IntPoint b)
         {
-            return a.X == b.X && a.Y == b.Y;
+            return a.x == b.x && a.y == b.y;
         }
 
 
 
         public static bool operator !=(IntPoint a, IntPoint b)
         {
-            return a.X != b.X || a.Y != b.Y;
+            return a.x != b.x || a.y != b.y;
         }
 
 
@@ -439,7 +439,7 @@ namespace Sceelix.Meshes.Algorithms
             if (obj is IntPoint)
             {
                 IntPoint a = (IntPoint) obj;
-                return X == a.X && Y == a.Y;
+                return X == a.x && Y == a.y;
             }
 
             return false;
@@ -569,7 +569,7 @@ namespace Sceelix.Meshes.Algorithms
     {
         public int Compare(IntersectNode node1, IntersectNode node2)
         {
-            long i = node2.Pt.Y - node1.Pt.Y;
+            long i = node2.Pt.y - node1.Pt.y;
             if (i > 0) return 1;
             if (i < 0) return -1;
             return 0;
@@ -686,7 +686,7 @@ namespace Sceelix.Meshes.Algorithms
 
         internal static bool IsHorizontal(TEdge e)
         {
-            return e.Delta.Y == 0;
+            return e.Delta.y == 0;
         }
 
 
@@ -717,18 +717,18 @@ namespace Sceelix.Meshes.Algorithms
             IntPoint linePt1, IntPoint linePt2, bool UseFullRange)
         {
             if (UseFullRange)
-                return pt.X == linePt1.X && pt.Y == linePt1.Y ||
-                       pt.X == linePt2.X && pt.Y == linePt2.Y ||
-                       pt.X > linePt1.X == pt.X < linePt2.X &&
-                       pt.Y > linePt1.Y == pt.Y < linePt2.Y &&
-                       Int128.Int128Mul(pt.X - linePt1.X, linePt2.Y - linePt1.Y) ==
-                       Int128.Int128Mul(linePt2.X - linePt1.X, pt.Y - linePt1.Y);
-            return pt.X == linePt1.X && pt.Y == linePt1.Y ||
-                   pt.X == linePt2.X && pt.Y == linePt2.Y ||
-                   pt.X > linePt1.X == pt.X < linePt2.X &&
-                   pt.Y > linePt1.Y == pt.Y < linePt2.Y &&
-                   (pt.X - linePt1.X) * (linePt2.Y - linePt1.Y) ==
-                   (linePt2.X - linePt1.X) * (pt.Y - linePt1.Y);
+                return pt.x == linePt1.x && pt.y == linePt1.y ||
+                       pt.x == linePt2.x && pt.y == linePt2.y ||
+                       pt.x > linePt1.x == pt.x < linePt2.x &&
+                       pt.y > linePt1.y == pt.y < linePt2.y &&
+                       Int128.Int128Mul(pt.x - linePt1.x, linePt2.y - linePt1.y) ==
+                       Int128.Int128Mul(linePt2.x - linePt1.x, pt.y - linePt1.y);
+            return pt.x == linePt1.x && pt.y == linePt1.y ||
+                   pt.x == linePt2.x && pt.y == linePt2.y ||
+                   pt.x > linePt1.x == pt.x < linePt2.x &&
+                   pt.y > linePt1.y == pt.y < linePt2.y &&
+                   (pt.x - linePt1.x) * (linePt2.y - linePt1.y) ==
+                   (linePt2.x - linePt1.x) * (pt.y - linePt1.y);
         }
 
 
@@ -760,10 +760,10 @@ namespace Sceelix.Meshes.Algorithms
         internal static bool SlopesEqual(TEdge e1, TEdge e2, bool UseFullRange)
         {
             if (UseFullRange)
-                return Int128.Int128Mul(e1.Delta.Y, e2.Delta.X) ==
-                       Int128.Int128Mul(e1.Delta.X, e2.Delta.Y);
-            return e1.Delta.Y * e2.Delta.X ==
-                   e1.Delta.X * e2.Delta.Y;
+                return Int128.Int128Mul(e1.Delta.y, e2.Delta.x) ==
+                       Int128.Int128Mul(e1.Delta.x, e2.Delta.y);
+            return e1.Delta.y * e2.Delta.x ==
+                   e1.Delta.x * e2.Delta.y;
         }
 
 
@@ -776,10 +776,10 @@ namespace Sceelix.Meshes.Algorithms
             IntPoint pt3, bool UseFullRange)
         {
             if (UseFullRange)
-                return Int128.Int128Mul(pt1.Y - pt2.Y, pt2.X - pt3.X) ==
-                       Int128.Int128Mul(pt1.X - pt2.X, pt2.Y - pt3.Y);
+                return Int128.Int128Mul(pt1.y - pt2.y, pt2.x - pt3.x) ==
+                       Int128.Int128Mul(pt1.x - pt2.x, pt2.y - pt3.y);
             return
-                (pt1.Y - pt2.Y) * (pt2.X - pt3.X) - (pt1.X - pt2.X) * (pt2.Y - pt3.Y) == 0;
+                (pt1.y - pt2.y) * (pt2.x - pt3.x) - (pt1.x - pt2.x) * (pt2.y - pt3.y) == 0;
         }
 
 
@@ -792,10 +792,10 @@ namespace Sceelix.Meshes.Algorithms
             IntPoint pt3, IntPoint pt4, bool UseFullRange)
         {
             if (UseFullRange)
-                return Int128.Int128Mul(pt1.Y - pt2.Y, pt3.X - pt4.X) ==
-                       Int128.Int128Mul(pt1.X - pt2.X, pt3.Y - pt4.Y);
+                return Int128.Int128Mul(pt1.y - pt2.y, pt3.x - pt4.x) ==
+                       Int128.Int128Mul(pt1.x - pt2.x, pt3.y - pt4.y);
             return
-                (pt1.Y - pt2.Y) * (pt3.X - pt4.X) - (pt1.X - pt2.X) * (pt3.Y - pt4.Y) == 0;
+                (pt1.y - pt2.y) * (pt3.x - pt4.x) - (pt1.x - pt2.x) * (pt3.y - pt4.y) == 0;
         }
 
 
@@ -860,10 +860,10 @@ namespace Sceelix.Meshes.Algorithms
         {
             if (useFullRange)
             {
-                if (Pt.X > hiRange || Pt.Y > hiRange || -Pt.X > hiRange || -Pt.Y > hiRange)
+                if (Pt.x > hiRange || Pt.y > hiRange || -Pt.x > hiRange || -Pt.y > hiRange)
                     throw new ClipperException("Coordinate outside allowed range");
             }
-            else if (Pt.X > loRange || Pt.Y > loRange || -Pt.X > loRange || -Pt.Y > loRange)
+            else if (Pt.x > loRange || Pt.y > loRange || -Pt.x > loRange || -Pt.y > loRange)
             {
                 useFullRange = true;
                 RangeTest(Pt, ref useFullRange);
@@ -893,7 +893,7 @@ namespace Sceelix.Meshes.Algorithms
 
         private void InitEdge2(TEdge e, PolyType polyType)
         {
-            if (e.Curr.Y >= e.Next.Curr.Y)
+            if (e.Curr.y >= e.Next.Curr.y)
             {
                 e.Bot = e.Curr;
                 e.Top = e.Next.Curr;
@@ -924,8 +924,8 @@ namespace Sceelix.Meshes.Algorithms
                 while (E.Prev.Dx == horizontal) E = E.Prev;
                 E2 = E;
                 while (E.Dx == horizontal) E = E.Next;
-                if (E.Top.Y == E.Prev.Bot.Y) continue; //ie just an intermediate horz.
-                if (E2.Prev.Bot.X < E.Bot.X) E = E2;
+                if (E.Top.y == E.Prev.Bot.y) continue; //ie just an intermediate horz.
+                if (E2.Prev.Bot.x < E.Bot.x) E = E2;
                 break;
             }
 
@@ -950,12 +950,12 @@ namespace Sceelix.Meshes.Algorithms
                 E = Result;
                 if (LeftBoundIsForward)
                 {
-                    while (E.Top.Y == E.Next.Bot.Y) E = E.Next;
+                    while (E.Top.y == E.Next.Bot.y) E = E.Next;
                     while (E != Result && E.Dx == horizontal) E = E.Prev;
                 }
                 else
                 {
-                    while (E.Top.Y == E.Prev.Bot.Y) E = E.Prev;
+                    while (E.Top.y == E.Prev.Bot.y) E = E.Prev;
                     while (E != Result && E.Dx == horizontal) E = E.Next;
                 }
 
@@ -973,7 +973,7 @@ namespace Sceelix.Meshes.Algorithms
                         E = Result.Prev;
                     LocalMinima locMin = new LocalMinima();
                     locMin.Next = null;
-                    locMin.Y = E.Bot.Y;
+                    locMin.y = E.Bot.y;
                     locMin.LeftBound = null;
                     locMin.RightBound = E;
                     E.WindDelta = 0;
@@ -993,10 +993,10 @@ namespace Sceelix.Meshes.Algorithms
                 else EStart = E.Next;
                 if (EStart.Dx == horizontal) //ie an adjoining horizontal skip edge
                 {
-                    if (EStart.Bot.X != E.Bot.X && EStart.Top.X != E.Bot.X)
+                    if (EStart.Bot.x != E.Bot.x && EStart.Top.x != E.Bot.x)
                         ReverseHorizontal(E);
                 }
-                else if (EStart.Bot.X != E.Bot.X)
+                else if (EStart.Bot.x != E.Bot.x)
                 {
                     ReverseHorizontal(E);
                 }
@@ -1005,7 +1005,7 @@ namespace Sceelix.Meshes.Algorithms
             EStart = E;
             if (LeftBoundIsForward)
             {
-                while (Result.Top.Y == Result.Next.Bot.Y && Result.Next.OutIdx != Skip)
+                while (Result.Top.y == Result.Next.Bot.y && Result.Next.OutIdx != Skip)
                     Result = Result.Next;
                 if (Result.Dx == horizontal && Result.Next.OutIdx != Skip)
                 {
@@ -1014,42 +1014,42 @@ namespace Sceelix.Meshes.Algorithms
                     //unless a Skip edge is encountered when that becomes the top divide
                     Horz = Result;
                     while (Horz.Prev.Dx == horizontal) Horz = Horz.Prev;
-                    if (Horz.Prev.Top.X > Result.Next.Top.X) Result = Horz.Prev;
+                    if (Horz.Prev.Top.x > Result.Next.Top.x) Result = Horz.Prev;
                 }
 
                 while (E != Result)
                 {
                     E.NextInLML = E.Next;
-                    if (E.Dx == horizontal && E != EStart && E.Bot.X != E.Prev.Top.X)
+                    if (E.Dx == horizontal && E != EStart && E.Bot.x != E.Prev.Top.x)
                         ReverseHorizontal(E);
                     E = E.Next;
                 }
 
-                if (E.Dx == horizontal && E != EStart && E.Bot.X != E.Prev.Top.X)
+                if (E.Dx == horizontal && E != EStart && E.Bot.x != E.Prev.Top.x)
                     ReverseHorizontal(E);
                 Result = Result.Next; //move to the edge just beyond current bound
             }
             else
             {
-                while (Result.Top.Y == Result.Prev.Bot.Y && Result.Prev.OutIdx != Skip)
+                while (Result.Top.y == Result.Prev.Bot.y && Result.Prev.OutIdx != Skip)
                     Result = Result.Prev;
                 if (Result.Dx == horizontal && Result.Prev.OutIdx != Skip)
                 {
                     Horz = Result;
                     while (Horz.Next.Dx == horizontal) Horz = Horz.Next;
-                    if (Horz.Next.Top.X == Result.Prev.Top.X ||
-                        Horz.Next.Top.X > Result.Prev.Top.X) Result = Horz.Next;
+                    if (Horz.Next.Top.x == Result.Prev.Top.x ||
+                        Horz.Next.Top.x > Result.Prev.Top.x) Result = Horz.Next;
                 }
 
                 while (E != Result)
                 {
                     E.NextInLML = E.Prev;
-                    if (E.Dx == horizontal && E != EStart && E.Bot.X != E.Next.Top.X)
+                    if (E.Dx == horizontal && E != EStart && E.Bot.x != E.Next.Top.x)
                         ReverseHorizontal(E);
                     E = E.Prev;
                 }
 
-                if (E.Dx == horizontal && E != EStart && E.Bot.X != E.Next.Top.X)
+                if (E.Dx == horizontal && E != EStart && E.Bot.x != E.Next.Top.x)
                     ReverseHorizontal(E);
                 Result = Result.Prev; //move to the edge just beyond current bound
             }
@@ -1151,7 +1151,7 @@ namespace Sceelix.Meshes.Algorithms
             {
                 InitEdge2(E, polyType);
                 E = E.Next;
-                if (IsFlat && E.Curr.Y != eStart.Curr.Y) IsFlat = false;
+                if (IsFlat && E.Curr.y != eStart.Curr.y) IsFlat = false;
             } while (E != eStart);
 
             //4. Finally, add edge bounds to LocalMinima list ...
@@ -1164,14 +1164,14 @@ namespace Sceelix.Meshes.Algorithms
                 E.Prev.OutIdx = Skip;
                 LocalMinima locMin = new LocalMinima();
                 locMin.Next = null;
-                locMin.Y = E.Bot.Y;
+                locMin.y = E.Bot.y;
                 locMin.LeftBound = null;
                 locMin.RightBound = E;
                 locMin.RightBound.Side = EdgeSide.esRight;
                 locMin.RightBound.WindDelta = 0;
                 for (;;)
                 {
-                    if (E.Bot.X != E.Prev.Top.X) ReverseHorizontal(E);
+                    if (E.Bot.x != E.Prev.Top.x) ReverseHorizontal(E);
                     if (E.Next.OutIdx == Skip) break;
                     E.NextInLML = E.Next;
                     E = E.Next;
@@ -1200,7 +1200,7 @@ namespace Sceelix.Meshes.Algorithms
                 //Compare their slopes to find which starts which bound ...
                 LocalMinima locMin = new LocalMinima();
                 locMin.Next = null;
-                locMin.Y = E.Bot.Y;
+                locMin.y = E.Bot.y;
                 if (E.Dx < E.Prev.Dx)
                 {
                     locMin.LeftBound = E.Prev;
@@ -1264,8 +1264,8 @@ namespace Sceelix.Meshes.Algorithms
         internal bool Pt2IsBetweenPt1AndPt3(IntPoint pt1, IntPoint pt2, IntPoint pt3)
         {
             if (pt1 == pt3 || pt1 == pt2 || pt3 == pt2) return false;
-            if (pt1.X != pt3.X) return pt2.X > pt1.X == pt2.X < pt3.X;
-            return pt2.Y > pt1.Y == pt2.Y < pt3.Y;
+            if (pt1.x != pt3.x) return pt2.x > pt1.x == pt2.x < pt3.x;
+            return pt2.y > pt1.y == pt2.y < pt3.y;
         }
 
 
@@ -1292,10 +1292,10 @@ namespace Sceelix.Meshes.Algorithms
 
         private void SetDx(TEdge e)
         {
-            e.Delta.X = e.Top.X - e.Bot.X;
-            e.Delta.Y = e.Top.Y - e.Bot.Y;
-            if (e.Delta.Y == 0) e.Dx = horizontal;
-            else e.Dx = (double) e.Delta.X / e.Delta.Y;
+            e.Delta.x = e.Top.x - e.Bot.x;
+            e.Delta.y = e.Top.y - e.Bot.y;
+            if (e.Delta.y == 0) e.Dx = horizontal;
+            else e.Dx = (double) e.Delta.x / e.Delta.y;
         }
 
 
@@ -1310,7 +1310,7 @@ namespace Sceelix.Meshes.Algorithms
             {
                 m_MinimaList = newLm;
             }
-            else if (newLm.Y >= m_MinimaList.Y)
+            else if (newLm.y >= m_MinimaList.y)
             {
                 newLm.Next = m_MinimaList;
                 m_MinimaList = newLm;
@@ -1318,7 +1318,7 @@ namespace Sceelix.Meshes.Algorithms
             else
             {
                 LocalMinima tmpLm = m_MinimaList;
-                while (tmpLm.Next != null && newLm.Y < tmpLm.Next.Y)
+                while (tmpLm.Next != null && newLm.y < tmpLm.Next.y)
                     tmpLm = tmpLm.Next;
                 newLm.Next = tmpLm.Next;
                 tmpLm.Next = newLm;
@@ -1334,7 +1334,7 @@ namespace Sceelix.Meshes.Algorithms
         internal bool PopLocalMinima(long Y, out LocalMinima current)
         {
             current = m_CurrentLM;
-            if (m_CurrentLM != null && m_CurrentLM.Y == Y)
+            if (m_CurrentLM != null && m_CurrentLM.y == Y)
             {
                 m_CurrentLM = m_CurrentLM.Next;
                 return true;
@@ -1354,9 +1354,9 @@ namespace Sceelix.Meshes.Algorithms
             //swap horizontal edges' top and bottom x's so they follow the natural
             //progression of the bounds - ie so their xbots will align with the
             //adjoining lower edge. [Helpful in the ProcessHorizontal() method.]
-            Swap(ref e.Top.X, ref e.Bot.X);
+            Swap(ref e.Top.x, ref e.Bot.x);
 #if use_xyz
-	  Swap(ref e.Top.Z, ref e.Bot.Z);
+	  Swap(ref e.Top.z, ref e.Bot.z);
 #endif
         }
 
@@ -1376,7 +1376,7 @@ namespace Sceelix.Meshes.Algorithms
             LocalMinima lm = m_MinimaList;
             while (lm != null)
             {
-                InsertScanbeam(lm.Y);
+                InsertScanbeam(lm.y);
                 TEdge e = lm.LeftBound;
                 if (e != null)
                 {
@@ -1409,17 +1409,17 @@ namespace Sceelix.Meshes.Algorithms
             while (i < cnt && paths[i].Count == 0) i++;
             if (i == cnt) return new IntRect(0, 0, 0, 0);
             IntRect result = new IntRect();
-            result.left = paths[i][0].X;
+            result.left = paths[i][0].x;
             result.right = result.left;
-            result.top = paths[i][0].Y;
+            result.top = paths[i][0].y;
             result.bottom = result.top;
             for (; i < cnt; i++)
             for (int j = 0; j < paths[i].Count; j++)
             {
-                if (paths[i][j].X < result.left) result.left = paths[i][j].X;
-                else if (paths[i][j].X > result.right) result.right = paths[i][j].X;
-                if (paths[i][j].Y < result.top) result.top = paths[i][j].Y;
-                else if (paths[i][j].Y > result.bottom) result.bottom = paths[i][j].Y;
+                if (paths[i][j].x < result.left) result.left = paths[i][j].x;
+                else if (paths[i][j].x > result.right) result.right = paths[i][j].x;
+                if (paths[i][j].y < result.top) result.top = paths[i][j].y;
+                else if (paths[i][j].y > result.bottom) result.bottom = paths[i][j].y;
             }
 
             return result;
@@ -1438,22 +1438,22 @@ namespace Sceelix.Meshes.Algorithms
             {
                 m_Scanbeam = new Scanbeam();
                 m_Scanbeam.Next = null;
-                m_Scanbeam.Y = Y;
+                m_Scanbeam.y = Y;
             }
-            else if (Y > m_Scanbeam.Y)
+            else if (Y > m_Scanbeam.y)
             {
                 Scanbeam newSb = new Scanbeam();
-                newSb.Y = Y;
+                newSb.y = Y;
                 newSb.Next = m_Scanbeam;
                 m_Scanbeam = newSb;
             }
             else
             {
                 Scanbeam sb2 = m_Scanbeam;
-                while (sb2.Next != null && Y <= sb2.Next.Y) sb2 = sb2.Next;
-                if (Y == sb2.Y) return; //ie ignores duplicates
+                while (sb2.Next != null && Y <= sb2.Next.y) sb2 = sb2.Next;
+                if (Y == sb2.y) return; //ie ignores duplicates
                 Scanbeam newSb = new Scanbeam();
-                newSb.Y = Y;
+                newSb.y = Y;
                 newSb.Next = sb2.Next;
                 sb2.Next = newSb;
             }
@@ -1473,7 +1473,7 @@ namespace Sceelix.Meshes.Algorithms
                 return false;
             }
 
-            Y = m_Scanbeam.Y;
+            Y = m_Scanbeam.y;
             m_Scanbeam = m_Scanbeam.Next;
             return true;
         }
@@ -1698,14 +1698,14 @@ namespace Sceelix.Meshes.Algorithms
         {
             //double-linked list: sorted ascending, ignoring dups.
             Maxima newMax = new Maxima();
-            newMax.X = X;
+            newMax.x = X;
             if (m_Maxima == null)
             {
                 m_Maxima = newMax;
                 m_Maxima.Next = null;
                 m_Maxima.Prev = null;
             }
-            else if (X < m_Maxima.X)
+            else if (X < m_Maxima.x)
             {
                 newMax.Next = m_Maxima;
                 newMax.Prev = null;
@@ -1714,8 +1714,8 @@ namespace Sceelix.Meshes.Algorithms
             else
             {
                 Maxima m = m_Maxima;
-                while (m.Next != null && X >= m.Next.X) m = m.Next;
-                if (X == m.X) return; //ie ignores duplicates (& CG to clean up newMax)
+                while (m.Next != null && X >= m.Next.x) m = m.Next;
+                if (X == m.x) return; //ie ignores duplicates (& CG to clean up newMax)
                 //insert newMax between m and m.Next ...
                 newMax.Next = m.Next;
                 newMax.Prev = m;
@@ -1957,11 +1957,11 @@ namespace Sceelix.Meshes.Algorithms
 #if use_xyz
 	  internal void SetZ(ref IntPoint pt, TEdge e1, TEdge e2)
 	  {
-		if (pt.Z != 0 || ZFillFunction == null) return;
-		else if (pt == e1.Bot) pt.Z = e1.Bot.Z;
-		else if (pt == e1.Top) pt.Z = e1.Top.Z;
-		else if (pt == e2.Bot) pt.Z = e2.Bot.Z;
-		else if (pt == e2.Top) pt.Z = e2.Top.Z;
+		if (pt.z != 0 || ZFillFunction == null) return;
+		else if (pt == e1.Bot) pt.z = e1.Bot.z;
+		else if (pt == e1.Top) pt.z = e1.Top.z;
+		else if (pt == e2.Bot) pt.z = e2.Bot.z;
+		else if (pt == e2.Top) pt.z = e2.Top.z;
 		else ZFillFunction(e1.Bot, e1.Top, e2.Bot, e2.Top, ref pt);
 	  }
 	  //------------------------------------------------------------------------------
@@ -1991,7 +1991,7 @@ namespace Sceelix.Meshes.Algorithms
                     SetWindingCount(lb);
                     if (IsContributing(lb))
                         Op1 = AddOutPt(lb, lb.Bot);
-                    InsertScanbeam(lb.Top.Y);
+                    InsertScanbeam(lb.Top.y);
                 }
                 else
                 {
@@ -2002,7 +2002,7 @@ namespace Sceelix.Meshes.Algorithms
                     rb.WindCnt2 = lb.WindCnt2;
                     if (IsContributing(lb))
                         Op1 = AddLocalMinPoly(lb, rb, lb.Bot);
-                    InsertScanbeam(lb.Top.Y);
+                    InsertScanbeam(lb.Top.y);
                 }
 
                 if (rb != null)
@@ -2010,12 +2010,12 @@ namespace Sceelix.Meshes.Algorithms
                     if (IsHorizontal(rb))
                     {
                         if (rb.NextInLML != null)
-                            InsertScanbeam(rb.NextInLML.Top.Y);
+                            InsertScanbeam(rb.NextInLML.Top.y);
                         AddEdgeToSEL(rb);
                     }
                     else
                     {
-                        InsertScanbeam(rb.Top.Y);
+                        InsertScanbeam(rb.Top.y);
                     }
                 }
 
@@ -2029,12 +2029,12 @@ namespace Sceelix.Meshes.Algorithms
                         //if the horizontal Rb and a 'ghost' horizontal overlap, then convert
                         //the 'ghost' join to a real join ready for later ...
                         Join j = m_GhostJoins[i];
-                        if (HorzSegmentsOverlap(j.OutPt1.Pt.X, j.OffPt.X, rb.Bot.X, rb.Top.X))
+                        if (HorzSegmentsOverlap(j.OutPt1.Pt.x, j.OffPt.x, rb.Bot.x, rb.Top.x))
                             AddJoin(j.OutPt1, Op1, j.OffPt);
                     }
 
                 if (lb.OutIdx >= 0 && lb.PrevInAEL != null &&
-                    lb.PrevInAEL.Curr.X == lb.Bot.X &&
+                    lb.PrevInAEL.Curr.x == lb.Bot.x &&
                     lb.PrevInAEL.OutIdx >= 0 &&
                     SlopesEqual(lb.PrevInAEL.Curr, lb.PrevInAEL.Top, lb.Curr, lb.Top, m_UseFullRange) &&
                     lb.WindDelta != 0 && lb.PrevInAEL.WindDelta != 0)
@@ -2108,14 +2108,14 @@ namespace Sceelix.Meshes.Algorithms
 
         private bool E2InsertsBeforeE1(TEdge e1, TEdge e2)
         {
-            if (e2.Curr.X == e1.Curr.X)
+            if (e2.Curr.x == e1.Curr.x)
             {
-                if (e2.Top.Y > e1.Top.Y)
-                    return e2.Top.X < TopX(e1, e2.Top.Y);
-                return e1.Top.X > TopX(e2, e1.Top.Y);
+                if (e2.Top.y > e1.Top.y)
+                    return e2.Top.x < TopX(e1, e2.Top.y);
+                return e1.Top.x > TopX(e2, e1.Top.y);
             }
 
-            return e2.Curr.X < e1.Curr.X;
+            return e2.Curr.x < e1.Curr.x;
         }
 
 
@@ -2542,10 +2542,10 @@ namespace Sceelix.Meshes.Algorithms
 
             if (prevE != null && prevE.OutIdx >= 0)
             {
-                long xPrev = TopX(prevE, pt.Y);
-                long xE = TopX(e, pt.Y);
+                long xPrev = TopX(prevE, pt.y);
+                long xE = TopX(e, pt.y);
                 if (xPrev == xE && e.WindDelta != 0 && prevE.WindDelta != 0 &&
-                    SlopesEqual(new IntPoint(xPrev, pt.Y), prevE.Top, new IntPoint(xE, pt.Y), e.Top, m_UseFullRange))
+                    SlopesEqual(new IntPoint(xPrev, pt.y), prevE.Top, new IntPoint(xE, pt.y), e.Top, m_UseFullRange))
                 {
                     OutPt outPt = AddOutPt(prevE, pt);
                     AddJoin(result, outPt, e.Top);
@@ -2682,8 +2682,8 @@ namespace Sceelix.Meshes.Algorithms
 
         private double GetDx(IntPoint pt1, IntPoint pt2)
         {
-            if (pt1.Y == pt2.Y) return horizontal;
-            return (double) (pt2.X - pt1.X) / (pt2.Y - pt1.Y);
+            if (pt1.y == pt2.y) return horizontal;
+            return (double) (pt2.x - pt1.x) / (pt2.y - pt1.y);
         }
 
 
@@ -2726,14 +2726,14 @@ namespace Sceelix.Meshes.Algorithms
             OutPt p = pp.Next;
             while (p != pp)
             {
-                if (p.Pt.Y > pp.Pt.Y)
+                if (p.Pt.y > pp.Pt.y)
                 {
                     pp = p;
                     dups = null;
                 }
-                else if (p.Pt.Y == pp.Pt.Y && p.Pt.X <= pp.Pt.X)
+                else if (p.Pt.y == pp.Pt.y && p.Pt.x <= pp.Pt.x)
                 {
-                    if (p.Pt.X < pp.Pt.X)
+                    if (p.Pt.x < pp.Pt.x)
                     {
                         dups = null;
                         pp = p;
@@ -2774,10 +2774,10 @@ namespace Sceelix.Meshes.Algorithms
                 outRec2.BottomPt = GetBottomPt(outRec2.Pts);
             OutPt bPt1 = outRec1.BottomPt;
             OutPt bPt2 = outRec2.BottomPt;
-            if (bPt1.Pt.Y > bPt2.Pt.Y) return outRec1;
-            if (bPt1.Pt.Y < bPt2.Pt.Y) return outRec2;
-            if (bPt1.Pt.X < bPt2.Pt.X) return outRec1;
-            if (bPt1.Pt.X > bPt2.Pt.X) return outRec2;
+            if (bPt1.Pt.y > bPt2.Pt.y) return outRec1;
+            if (bPt1.Pt.y < bPt2.Pt.y) return outRec2;
+            if (bPt1.Pt.x < bPt2.Pt.x) return outRec1;
+            if (bPt1.Pt.x > bPt2.Pt.x) return outRec2;
             if (bPt1.Next == bPt1) return outRec2;
             if (bPt2.Next == bPt2) return outRec1;
             if (FirstIsBottomPt(bPt1, bPt2)) return outRec1;
@@ -3243,16 +3243,16 @@ namespace Sceelix.Meshes.Algorithms
 
         private void GetHorzDirection(TEdge HorzEdge, out Direction Dir, out long Left, out long Right)
         {
-            if (HorzEdge.Bot.X < HorzEdge.Top.X)
+            if (HorzEdge.Bot.x < HorzEdge.Top.x)
             {
-                Left = HorzEdge.Bot.X;
-                Right = HorzEdge.Top.X;
+                Left = HorzEdge.Bot.x;
+                Right = HorzEdge.Top.x;
                 Dir = Direction.dLeftToRight;
             }
             else
             {
-                Left = HorzEdge.Top.X;
-                Right = HorzEdge.Bot.X;
+                Left = HorzEdge.Top.x;
+                Right = HorzEdge.Bot.x;
                 Dir = Direction.dRightToLeft;
             }
         }
@@ -3283,16 +3283,16 @@ namespace Sceelix.Meshes.Algorithms
                 //get the first maxima in range (X) ...
                 if (dir == Direction.dLeftToRight)
                 {
-                    while (currMax != null && currMax.X <= horzEdge.Bot.X)
+                    while (currMax != null && currMax.x <= horzEdge.Bot.x)
                         currMax = currMax.Next;
-                    if (currMax != null && currMax.X >= eLastHorz.Top.X)
+                    if (currMax != null && currMax.x >= eLastHorz.Top.x)
                         currMax = null;
                 }
                 else
                 {
-                    while (currMax.Next != null && currMax.Next.X < horzEdge.Bot.X)
+                    while (currMax.Next != null && currMax.Next.x < horzEdge.Bot.x)
                         currMax = currMax.Next;
-                    if (currMax.X <= eLastHorz.Top.X) currMax = null;
+                    if (currMax.x <= eLastHorz.Top.x) currMax = null;
                 }
             }
 
@@ -3309,29 +3309,29 @@ namespace Sceelix.Meshes.Algorithms
                     if (currMax != null)
                     {
                         if (dir == Direction.dLeftToRight)
-                            while (currMax != null && currMax.X < e.Curr.X)
+                            while (currMax != null && currMax.x < e.Curr.x)
                             {
                                 if (horzEdge.OutIdx >= 0 && !IsOpen)
-                                    AddOutPt(horzEdge, new IntPoint(currMax.X, horzEdge.Bot.Y));
+                                    AddOutPt(horzEdge, new IntPoint(currMax.x, horzEdge.Bot.y));
                                 currMax = currMax.Next;
                             }
                         else
-                            while (currMax != null && currMax.X > e.Curr.X)
+                            while (currMax != null && currMax.x > e.Curr.x)
                             {
                                 if (horzEdge.OutIdx >= 0 && !IsOpen)
-                                    AddOutPt(horzEdge, new IntPoint(currMax.X, horzEdge.Bot.Y));
+                                    AddOutPt(horzEdge, new IntPoint(currMax.x, horzEdge.Bot.y));
                                 currMax = currMax.Prev;
                             }
                     }
 
                     ;
 
-                    if (dir == Direction.dLeftToRight && e.Curr.X > horzRight ||
-                        dir == Direction.dRightToLeft && e.Curr.X < horzLeft) break;
+                    if (dir == Direction.dLeftToRight && e.Curr.x > horzRight ||
+                        dir == Direction.dRightToLeft && e.Curr.x < horzLeft) break;
 
                     //Also break if we've got to the end of an intermediate horizontal edge ...
                     //nb: Smaller Dx's are to the right of larger Dx's ABOVE the horizontal.
-                    if (e.Curr.X == horzEdge.Top.X && horzEdge.NextInLML != null &&
+                    if (e.Curr.x == horzEdge.Top.x && horzEdge.NextInLML != null &&
                         e.Dx < horzEdge.NextInLML.Dx) break;
 
                     if (horzEdge.OutIdx >= 0 && !IsOpen) //note: may be done multiple times
@@ -3341,8 +3341,8 @@ namespace Sceelix.Meshes.Algorithms
                         while (eNextHorz != null)
                         {
                             if (eNextHorz.OutIdx >= 0 &&
-                                HorzSegmentsOverlap(horzEdge.Bot.X,
-                                    horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X))
+                                HorzSegmentsOverlap(horzEdge.Bot.x,
+                                    horzEdge.Top.x, eNextHorz.Bot.x, eNextHorz.Top.x))
                             {
                                 OutPt op2 = GetLastOutPt(eNextHorz);
                                 AddJoin(op2, op1, eNextHorz.Top);
@@ -3367,12 +3367,12 @@ namespace Sceelix.Meshes.Algorithms
 
                     if (dir == Direction.dLeftToRight)
                     {
-                        IntPoint Pt = new IntPoint(e.Curr.X, horzEdge.Curr.Y);
+                        IntPoint Pt = new IntPoint(e.Curr.x, horzEdge.Curr.y);
                         IntersectEdges(horzEdge, e, Pt);
                     }
                     else
                     {
-                        IntPoint Pt = new IntPoint(e.Curr.X, horzEdge.Curr.Y);
+                        IntPoint Pt = new IntPoint(e.Curr.x, horzEdge.Curr.y);
                         IntersectEdges(e, horzEdge, Pt);
                     }
 
@@ -3396,8 +3396,8 @@ namespace Sceelix.Meshes.Algorithms
                 while (eNextHorz != null)
                 {
                     if (eNextHorz.OutIdx >= 0 &&
-                        HorzSegmentsOverlap(horzEdge.Bot.X,
-                            horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X))
+                        HorzSegmentsOverlap(horzEdge.Bot.x,
+                            horzEdge.Top.x, eNextHorz.Bot.x, eNextHorz.Top.x))
                     {
                         OutPt op2 = GetLastOutPt(eNextHorz);
                         AddJoin(op2, op1, eNextHorz.Top);
@@ -3420,15 +3420,15 @@ namespace Sceelix.Meshes.Algorithms
                     //nb: HorzEdge is no longer horizontal here
                     TEdge ePrev = horzEdge.PrevInAEL;
                     TEdge eNext = horzEdge.NextInAEL;
-                    if (ePrev != null && ePrev.Curr.X == horzEdge.Bot.X &&
-                        ePrev.Curr.Y == horzEdge.Bot.Y && ePrev.WindDelta != 0 && ePrev.OutIdx >= 0 && ePrev.Curr.Y > ePrev.Top.Y && SlopesEqual(horzEdge, ePrev, m_UseFullRange))
+                    if (ePrev != null && ePrev.Curr.x == horzEdge.Bot.x &&
+                        ePrev.Curr.y == horzEdge.Bot.y && ePrev.WindDelta != 0 && ePrev.OutIdx >= 0 && ePrev.Curr.y > ePrev.Top.y && SlopesEqual(horzEdge, ePrev, m_UseFullRange))
                     {
                         OutPt op2 = AddOutPt(ePrev, horzEdge.Bot);
                         AddJoin(op1, op2, horzEdge.Top);
                     }
-                    else if (eNext != null && eNext.Curr.X == horzEdge.Bot.X &&
-                             eNext.Curr.Y == horzEdge.Bot.Y && eNext.WindDelta != 0 &&
-                             eNext.OutIdx >= 0 && eNext.Curr.Y > eNext.Top.Y &&
+                    else if (eNext != null && eNext.Curr.x == horzEdge.Bot.x &&
+                             eNext.Curr.y == horzEdge.Bot.y && eNext.WindDelta != 0 &&
+                             eNext.OutIdx >= 0 && eNext.Curr.y > eNext.Top.y &&
                              SlopesEqual(horzEdge, eNext, m_UseFullRange))
                     {
                         OutPt op2 = AddOutPt(eNext, horzEdge.Bot);
@@ -3477,7 +3477,7 @@ namespace Sceelix.Meshes.Algorithms
 
         private bool IsMaxima(TEdge e, double Y)
         {
-            return e != null && e.Top.Y == Y && e.NextInLML == null;
+            return e != null && e.Top.y == Y && e.NextInLML == null;
         }
 
 
@@ -3488,7 +3488,7 @@ namespace Sceelix.Meshes.Algorithms
 
         private bool IsIntermediate(TEdge e, double Y)
         {
-            return e.Top.Y == Y && e.NextInLML != null;
+            return e.Top.y == Y && e.NextInLML != null;
         }
 
 
@@ -3567,7 +3567,7 @@ namespace Sceelix.Meshes.Algorithms
             {
                 e.PrevInSEL = e.PrevInAEL;
                 e.NextInSEL = e.NextInAEL;
-                e.Curr.X = TopX(e, topY);
+                e.Curr.x = TopX(e, topY);
                 e = e.NextInAEL;
             }
 
@@ -3581,10 +3581,10 @@ namespace Sceelix.Meshes.Algorithms
                 {
                     TEdge eNext = e.NextInSEL;
                     IntPoint pt;
-                    if (e.Curr.X > eNext.Curr.X)
+                    if (e.Curr.x > eNext.Curr.x)
                     {
                         IntersectPoint(e, eNext, out pt);
-                        if (pt.Y < topY)
+                        if (pt.y < topY)
                             pt = new IntPoint(TopX(e, topY), topY);
                         IntersectNode newNode = new IntersectNode();
                         newNode.Edge1 = e;
@@ -3628,9 +3628,9 @@ namespace Sceelix.Meshes.Algorithms
 
         private static int IntersectNodeSort(IntersectNode node1, IntersectNode node2)
         {
-            //the following typecast is safe because the differences in Pt.Y will
+            //the following typecast is safe because the differences in Pt.y will
             //be limited to the height of the scanbeam.
-            return (int) (node2.Pt.Y - node1.Pt.Y);
+            return (int) (node2.Pt.y - node1.Pt.y);
         }
 
 
@@ -3706,9 +3706,9 @@ namespace Sceelix.Meshes.Algorithms
 
         private static long TopX(TEdge edge, long currentY)
         {
-            if (currentY == edge.Top.Y)
-                return edge.Top.X;
-            return edge.Bot.X + Round(edge.Dx * (currentY - edge.Bot.Y));
+            if (currentY == edge.Top.y)
+                return edge.Top.x;
+            return edge.Bot.x + Round(edge.Dx * (currentY - edge.Bot.y));
         }
 
 
@@ -3725,70 +3725,70 @@ namespace Sceelix.Meshes.Algorithms
             //return false but for the edge.Dx value be equal due to double precision rounding.
             if (edge1.Dx == edge2.Dx)
             {
-                ip.Y = edge1.Curr.Y;
-                ip.X = TopX(edge1, ip.Y);
+                ip.y = edge1.Curr.y;
+                ip.x = TopX(edge1, ip.y);
                 return;
             }
 
-            if (edge1.Delta.X == 0)
+            if (edge1.Delta.x == 0)
             {
-                ip.X = edge1.Bot.X;
+                ip.x = edge1.Bot.x;
                 if (IsHorizontal(edge2))
                 {
-                    ip.Y = edge2.Bot.Y;
+                    ip.y = edge2.Bot.y;
                 }
                 else
                 {
-                    b2 = edge2.Bot.Y - edge2.Bot.X / edge2.Dx;
-                    ip.Y = Round(ip.X / edge2.Dx + b2);
+                    b2 = edge2.Bot.y - edge2.Bot.x / edge2.Dx;
+                    ip.y = Round(ip.x / edge2.Dx + b2);
                 }
             }
-            else if (edge2.Delta.X == 0)
+            else if (edge2.Delta.x == 0)
             {
-                ip.X = edge2.Bot.X;
+                ip.x = edge2.Bot.x;
                 if (IsHorizontal(edge1))
                 {
-                    ip.Y = edge1.Bot.Y;
+                    ip.y = edge1.Bot.y;
                 }
                 else
                 {
-                    b1 = edge1.Bot.Y - edge1.Bot.X / edge1.Dx;
-                    ip.Y = Round(ip.X / edge1.Dx + b1);
+                    b1 = edge1.Bot.y - edge1.Bot.x / edge1.Dx;
+                    ip.y = Round(ip.x / edge1.Dx + b1);
                 }
             }
             else
             {
-                b1 = edge1.Bot.X - edge1.Bot.Y * edge1.Dx;
-                b2 = edge2.Bot.X - edge2.Bot.Y * edge2.Dx;
+                b1 = edge1.Bot.x - edge1.Bot.y * edge1.Dx;
+                b2 = edge2.Bot.x - edge2.Bot.y * edge2.Dx;
                 double q = (b2 - b1) / (edge1.Dx - edge2.Dx);
-                ip.Y = Round(q);
+                ip.y = Round(q);
                 if (Math.Abs(edge1.Dx) < Math.Abs(edge2.Dx))
-                    ip.X = Round(edge1.Dx * q + b1);
+                    ip.x = Round(edge1.Dx * q + b1);
                 else
-                    ip.X = Round(edge2.Dx * q + b2);
+                    ip.x = Round(edge2.Dx * q + b2);
             }
 
-            if (ip.Y < edge1.Top.Y || ip.Y < edge2.Top.Y)
+            if (ip.y < edge1.Top.y || ip.y < edge2.Top.y)
             {
-                if (edge1.Top.Y > edge2.Top.Y)
-                    ip.Y = edge1.Top.Y;
+                if (edge1.Top.y > edge2.Top.y)
+                    ip.y = edge1.Top.y;
                 else
-                    ip.Y = edge2.Top.Y;
+                    ip.y = edge2.Top.y;
                 if (Math.Abs(edge1.Dx) < Math.Abs(edge2.Dx))
-                    ip.X = TopX(edge1, ip.Y);
+                    ip.x = TopX(edge1, ip.y);
                 else
-                    ip.X = TopX(edge2, ip.Y);
+                    ip.x = TopX(edge2, ip.y);
             }
 
-            //finally, don't allow 'ip' to be BELOW curr.Y (ie bottom of scanbeam) ...
-            if (ip.Y > edge1.Curr.Y)
+            //finally, don't allow 'ip' to be BELOW curr.y (ie bottom of scanbeam) ...
+            if (ip.y > edge1.Curr.y)
             {
-                ip.Y = edge1.Curr.Y;
+                ip.y = edge1.Curr.y;
                 //better to use the more vertical edge to derive X ...
                 if (Math.Abs(edge1.Dx) > Math.Abs(edge2.Dx))
-                    ip.X = TopX(edge2, ip.Y);
+                    ip.x = TopX(edge2, ip.y);
                 else
-                    ip.X = TopX(edge1, ip.Y);
+                    ip.x = TopX(edge1, ip.y);
             }
         }
 
@@ -3815,7 +3815,7 @@ namespace Sceelix.Meshes.Algorithms
 
                 if (IsMaximaEdge)
                 {
-                    if (StrictlySimple) InsertMaxima(e.Top.X);
+                    if (StrictlySimple) InsertMaxima(e.Top.x);
                     TEdge ePrev = e.PrevInAEL;
                     DoMaxima(e);
                     if (ePrev == null) e = m_ActiveEdges;
@@ -3823,7 +3823,7 @@ namespace Sceelix.Meshes.Algorithms
                 }
                 else
                 {
-                    //2. promote horizontal edges, otherwise update Curr.X and Curr.Y ...
+                    //2. promote horizontal edges, otherwise update Curr.x and Curr.y ...
                     if (IsIntermediate(e, topY) && IsHorizontal(e.NextInLML))
                     {
                         UpdateEdgeIntoAEL(ref e);
@@ -3833,8 +3833,8 @@ namespace Sceelix.Meshes.Algorithms
                     }
                     else
                     {
-                        e.Curr.X = TopX(e, topY);
-                        e.Curr.Y = topY;
+                        e.Curr.x = TopX(e, topY);
+                        e.Curr.y = topY;
                     }
 
                     //When StrictlySimple and 'e' is being touched by another edge, then
@@ -3843,7 +3843,7 @@ namespace Sceelix.Meshes.Algorithms
                     {
                         TEdge ePrev = e.PrevInAEL;
                         if (e.OutIdx >= 0 && e.WindDelta != 0 && ePrev != null &&
-                            ePrev.OutIdx >= 0 && ePrev.Curr.X == e.Curr.X &&
+                            ePrev.OutIdx >= 0 && ePrev.Curr.x == e.Curr.x &&
                             ePrev.WindDelta != 0)
                         {
                             IntPoint ip = new IntPoint(e.Curr);
@@ -3878,18 +3878,18 @@ namespace Sceelix.Meshes.Algorithms
                     //if output polygons share an edge, they'll need joining later ...
                     TEdge ePrev = e.PrevInAEL;
                     TEdge eNext = e.NextInAEL;
-                    if (ePrev != null && ePrev.Curr.X == e.Bot.X &&
-                        ePrev.Curr.Y == e.Bot.Y && op != null &&
-                        ePrev.OutIdx >= 0 && ePrev.Curr.Y > ePrev.Top.Y &&
+                    if (ePrev != null && ePrev.Curr.x == e.Bot.x &&
+                        ePrev.Curr.y == e.Bot.y && op != null &&
+                        ePrev.OutIdx >= 0 && ePrev.Curr.y > ePrev.Top.y &&
                         SlopesEqual(e.Curr, e.Top, ePrev.Curr, ePrev.Top, m_UseFullRange) &&
                         e.WindDelta != 0 && ePrev.WindDelta != 0)
                     {
                         OutPt op2 = AddOutPt(ePrev, e.Bot);
                         AddJoin(op, op2, e.Top);
                     }
-                    else if (eNext != null && eNext.Curr.X == e.Bot.X &&
-                             eNext.Curr.Y == e.Bot.Y && op != null &&
-                             eNext.OutIdx >= 0 && eNext.Curr.Y > eNext.Top.Y &&
+                    else if (eNext != null && eNext.Curr.x == e.Bot.x &&
+                             eNext.Curr.y == e.Bot.y && op != null &&
+                             eNext.OutIdx >= 0 && eNext.Curr.y > eNext.Top.y &&
                              SlopesEqual(e.Curr, e.Top, eNext.Curr, eNext.Top, m_UseFullRange) &&
                              e.WindDelta != 0 && eNext.WindDelta != 0)
                     {
@@ -4237,8 +4237,8 @@ namespace Sceelix.Meshes.Algorithms
         private bool JoinHorz(OutPt op1, OutPt op1b, OutPt op2, OutPt op2b,
             IntPoint Pt, bool DiscardLeft)
         {
-            Direction Dir1 = op1.Pt.X > op1b.Pt.X ? Direction.dRightToLeft : Direction.dLeftToRight;
-            Direction Dir2 = op2.Pt.X > op2b.Pt.X ? Direction.dRightToLeft : Direction.dLeftToRight;
+            Direction Dir1 = op1.Pt.x > op1b.Pt.x ? Direction.dRightToLeft : Direction.dLeftToRight;
+            Direction Dir2 = op2.Pt.x > op2b.Pt.x ? Direction.dRightToLeft : Direction.dLeftToRight;
             if (Dir1 == Dir2) return false;
 
             //When DiscardLeft, we want Op1b to be on the Left of Op1, otherwise we
@@ -4248,10 +4248,10 @@ namespace Sceelix.Meshes.Algorithms
             //otherwise make sure we're AT or LEFT of Pt. (Likewise with Op2b.)
             if (Dir1 == Direction.dLeftToRight)
             {
-                while (op1.Next.Pt.X <= Pt.X &&
-                       op1.Next.Pt.X >= op1.Pt.X && op1.Next.Pt.Y == Pt.Y)
+                while (op1.Next.Pt.x <= Pt.x &&
+                       op1.Next.Pt.x >= op1.Pt.x && op1.Next.Pt.y == Pt.y)
                     op1 = op1.Next;
-                if (DiscardLeft && op1.Pt.X != Pt.X) op1 = op1.Next;
+                if (DiscardLeft && op1.Pt.x != Pt.x) op1 = op1.Next;
                 op1b = DupOutPt(op1, !DiscardLeft);
                 if (op1b.Pt != Pt)
                 {
@@ -4262,10 +4262,10 @@ namespace Sceelix.Meshes.Algorithms
             }
             else
             {
-                while (op1.Next.Pt.X >= Pt.X &&
-                       op1.Next.Pt.X <= op1.Pt.X && op1.Next.Pt.Y == Pt.Y)
+                while (op1.Next.Pt.x >= Pt.x &&
+                       op1.Next.Pt.x <= op1.Pt.x && op1.Next.Pt.y == Pt.y)
                     op1 = op1.Next;
-                if (!DiscardLeft && op1.Pt.X != Pt.X) op1 = op1.Next;
+                if (!DiscardLeft && op1.Pt.x != Pt.x) op1 = op1.Next;
                 op1b = DupOutPt(op1, DiscardLeft);
                 if (op1b.Pt != Pt)
                 {
@@ -4277,10 +4277,10 @@ namespace Sceelix.Meshes.Algorithms
 
             if (Dir2 == Direction.dLeftToRight)
             {
-                while (op2.Next.Pt.X <= Pt.X &&
-                       op2.Next.Pt.X >= op2.Pt.X && op2.Next.Pt.Y == Pt.Y)
+                while (op2.Next.Pt.x <= Pt.x &&
+                       op2.Next.Pt.x >= op2.Pt.x && op2.Next.Pt.y == Pt.y)
                     op2 = op2.Next;
-                if (DiscardLeft && op2.Pt.X != Pt.X) op2 = op2.Next;
+                if (DiscardLeft && op2.Pt.x != Pt.x) op2 = op2.Next;
                 op2b = DupOutPt(op2, !DiscardLeft);
                 if (op2b.Pt != Pt)
                 {
@@ -4293,10 +4293,10 @@ namespace Sceelix.Meshes.Algorithms
             }
             else
             {
-                while (op2.Next.Pt.X >= Pt.X &&
-                       op2.Next.Pt.X <= op2.Pt.X && op2.Next.Pt.Y == Pt.Y)
+                while (op2.Next.Pt.x >= Pt.x &&
+                       op2.Next.Pt.x <= op2.Pt.x && op2.Next.Pt.y == Pt.y)
                     op2 = op2.Next;
-                if (!DiscardLeft && op2.Pt.X != Pt.X) op2 = op2.Next;
+                if (!DiscardLeft && op2.Pt.x != Pt.x) op2 = op2.Next;
                 op2b = DupOutPt(op2, DiscardLeft);
                 if (op2b.Pt != Pt)
                 {
@@ -4346,7 +4346,7 @@ namespace Sceelix.Meshes.Algorithms
             //location at the Bottom of the overlapping segment (& Join.OffPt is above).
             //3. StrictlySimple joins where edges touch but are not collinear and where
             //Join.OutPt1, Join.OutPt2 & Join.OffPt all share the same point.
-            bool isHorizontal = j.OutPt1.Pt.Y == j.OffPt.Y;
+            bool isHorizontal = j.OutPt1.Pt.y == j.OffPt.y;
 
             if (isHorizontal && j.OffPt == j.OutPt1.Pt && j.OffPt == j.OutPt2.Pt)
             {
@@ -4355,11 +4355,11 @@ namespace Sceelix.Meshes.Algorithms
                 op1b = j.OutPt1.Next;
                 while (op1b != op1 && op1b.Pt == j.OffPt)
                     op1b = op1b.Next;
-                bool reverse1 = op1b.Pt.Y > j.OffPt.Y;
+                bool reverse1 = op1b.Pt.y > j.OffPt.y;
                 op2b = j.OutPt2.Next;
                 while (op2b != op2 && op2b.Pt == j.OffPt)
                     op2b = op2b.Next;
-                bool reverse2 = op2b.Pt.Y > j.OffPt.Y;
+                bool reverse2 = op2b.Pt.y > j.OffPt.y;
                 if (reverse1 == reverse2) return false;
                 if (reverse1)
                 {
@@ -4391,22 +4391,22 @@ namespace Sceelix.Meshes.Algorithms
                 //them we're not yet sure where the overlapping is. OutPt1.Pt & OutPt2.Pt
                 //may be anywhere along the horizontal edge.
                 op1b = op1;
-                while (op1.Prev.Pt.Y == op1.Pt.Y && op1.Prev != op1b && op1.Prev != op2)
+                while (op1.Prev.Pt.y == op1.Pt.y && op1.Prev != op1b && op1.Prev != op2)
                     op1 = op1.Prev;
-                while (op1b.Next.Pt.Y == op1b.Pt.Y && op1b.Next != op1 && op1b.Next != op2)
+                while (op1b.Next.Pt.y == op1b.Pt.y && op1b.Next != op1 && op1b.Next != op2)
                     op1b = op1b.Next;
                 if (op1b.Next == op1 || op1b.Next == op2) return false; //a flat 'polygon'
 
                 op2b = op2;
-                while (op2.Prev.Pt.Y == op2.Pt.Y && op2.Prev != op2b && op2.Prev != op1b)
+                while (op2.Prev.Pt.y == op2.Pt.y && op2.Prev != op2b && op2.Prev != op1b)
                     op2 = op2.Prev;
-                while (op2b.Next.Pt.Y == op2b.Pt.Y && op2b.Next != op2 && op2b.Next != op1)
+                while (op2b.Next.Pt.y == op2b.Pt.y && op2b.Next != op2 && op2b.Next != op1)
                     op2b = op2b.Next;
                 if (op2b.Next == op2 || op2b.Next == op1) return false; //a flat 'polygon'
 
                 long Left, Right;
                 //Op1 -. Op1b & Op2 -. Op2b are the extremites of the horizontal edges
-                if (!GetOverlap(op1.Pt.X, op1b.Pt.X, op2.Pt.X, op2b.Pt.X, out Left, out Right))
+                if (!GetOverlap(op1.Pt.x, op1b.Pt.x, op2.Pt.x, op2b.Pt.x, out Left, out Right))
                     return false;
 
                 //DiscardLeftSide: when overlapping edges are joined, a spike will created
@@ -4414,25 +4414,25 @@ namespace Sceelix.Meshes.Algorithms
                 //on the discard Side as either may still be needed for other joins ...
                 IntPoint Pt;
                 bool DiscardLeftSide;
-                if (op1.Pt.X >= Left && op1.Pt.X <= Right)
+                if (op1.Pt.x >= Left && op1.Pt.x <= Right)
                 {
                     Pt = op1.Pt;
-                    DiscardLeftSide = op1.Pt.X > op1b.Pt.X;
+                    DiscardLeftSide = op1.Pt.x > op1b.Pt.x;
                 }
-                else if (op2.Pt.X >= Left && op2.Pt.X <= Right)
+                else if (op2.Pt.x >= Left && op2.Pt.x <= Right)
                 {
                     Pt = op2.Pt;
-                    DiscardLeftSide = op2.Pt.X > op2b.Pt.X;
+                    DiscardLeftSide = op2.Pt.x > op2b.Pt.x;
                 }
-                else if (op1b.Pt.X >= Left && op1b.Pt.X <= Right)
+                else if (op1b.Pt.x >= Left && op1b.Pt.x <= Right)
                 {
                     Pt = op1b.Pt;
-                    DiscardLeftSide = op1b.Pt.X > op1.Pt.X;
+                    DiscardLeftSide = op1b.Pt.x > op1.Pt.x;
                 }
                 else
                 {
                     Pt = op2b.Pt;
-                    DiscardLeftSide = op2b.Pt.X > op2.Pt.X;
+                    DiscardLeftSide = op2b.Pt.x > op2.Pt.x;
                 }
 
                 j.OutPt1 = op1;
@@ -4440,32 +4440,32 @@ namespace Sceelix.Meshes.Algorithms
                 return JoinHorz(op1, op1b, op2, op2b, Pt, DiscardLeftSide);
             }
             //nb: For non-horizontal joins ...
-            //    1. Jr.OutPt1.Pt.Y == Jr.OutPt2.Pt.Y
-            //    2. Jr.OutPt1.Pt > Jr.OffPt.Y
+            //    1. Jr.OutPt1.Pt.y == Jr.OutPt2.Pt.y
+            //    2. Jr.OutPt1.Pt > Jr.OffPt.y
 
             //make sure the polygons are correctly oriented ...
             op1b = op1.Next;
             while (op1b.Pt == op1.Pt && op1b != op1) op1b = op1b.Next;
-            bool Reverse1 = op1b.Pt.Y > op1.Pt.Y ||
+            bool Reverse1 = op1b.Pt.y > op1.Pt.y ||
                             !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt, m_UseFullRange);
             if (Reverse1)
             {
                 op1b = op1.Prev;
                 while (op1b.Pt == op1.Pt && op1b != op1) op1b = op1b.Prev;
-                if (op1b.Pt.Y > op1.Pt.Y ||
+                if (op1b.Pt.y > op1.Pt.y ||
                     !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt, m_UseFullRange)) return false;
             }
 
             ;
             op2b = op2.Next;
             while (op2b.Pt == op2.Pt && op2b != op2) op2b = op2b.Next;
-            bool Reverse2 = op2b.Pt.Y > op2.Pt.Y ||
+            bool Reverse2 = op2b.Pt.y > op2.Pt.y ||
                             !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt, m_UseFullRange);
             if (Reverse2)
             {
                 op2b = op2.Prev;
                 while (op2b.Pt == op2.Pt && op2b != op2) op2b = op2b.Prev;
-                if (op2b.Pt.Y > op2.Pt.Y ||
+                if (op2b.Pt.y > op2.Pt.y ||
                     !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt, m_UseFullRange)) return false;
             }
 
@@ -4513,34 +4513,34 @@ namespace Sceelix.Meshes.Algorithms
             for (int i = 1; i <= cnt; ++i)
             {
                 IntPoint ipNext = i == cnt ? path[0] : path[i];
-                if (ipNext.Y == pt.Y)
-                    if (ipNext.X == pt.X || ip.Y == pt.Y &&
-                        ipNext.X > pt.X == ip.X < pt.X)
+                if (ipNext.y == pt.y)
+                    if (ipNext.x == pt.x || ip.y == pt.y &&
+                        ipNext.x > pt.x == ip.x < pt.x)
                         return -1;
-                if (ip.Y < pt.Y != ipNext.Y < pt.Y)
+                if (ip.y < pt.y != ipNext.y < pt.y)
                 {
-                    if (ip.X >= pt.X)
+                    if (ip.x >= pt.x)
                     {
-                        if (ipNext.X > pt.X)
+                        if (ipNext.x > pt.x)
                         {
                             result = 1 - result;
                         }
                         else
                         {
-                            double d = (double) (ip.X - pt.X) * (ipNext.Y - pt.Y) -
-                                       (double) (ipNext.X - pt.X) * (ip.Y - pt.Y);
+                            double d = (double) (ip.x - pt.x) * (ipNext.y - pt.y) -
+                                       (double) (ipNext.x - pt.x) * (ip.y - pt.y);
                             if (d == 0) return -1;
-                            if (d > 0 == ipNext.Y > ip.Y) result = 1 - result;
+                            if (d > 0 == ipNext.y > ip.y) result = 1 - result;
                         }
                     }
                     else
                     {
-                        if (ipNext.X > pt.X)
+                        if (ipNext.x > pt.x)
                         {
-                            double d = (double) (ip.X - pt.X) * (ipNext.Y - pt.Y) -
-                                       (double) (ipNext.X - pt.X) * (ip.Y - pt.Y);
+                            double d = (double) (ip.x - pt.x) * (ipNext.y - pt.y) -
+                                       (double) (ipNext.x - pt.x) * (ip.y - pt.y);
                             if (d == 0) return -1;
-                            if (d > 0 == ipNext.Y > ip.Y) result = 1 - result;
+                            if (d > 0 == ipNext.y > ip.y) result = 1 - result;
                         }
                     }
                 }
@@ -4564,12 +4564,12 @@ namespace Sceelix.Meshes.Algorithms
             //returns 0 if false, +1 if true, -1 if pt ON polygon boundary
             int result = 0;
             OutPt startOp = op;
-            long ptx = pt.X, pty = pt.Y;
-            long poly0x = op.Pt.X, poly0y = op.Pt.Y;
+            long ptx = pt.x, pty = pt.y;
+            long poly0x = op.Pt.x, poly0y = op.Pt.y;
             do
             {
                 op = op.Next;
-                long poly1x = op.Pt.X, poly1y = op.Pt.Y;
+                long poly1x = op.Pt.x, poly1y = op.Pt.y;
 
                 if (poly1y == pty)
                     if (poly1x == ptx || poly0y == pty &&
@@ -4896,7 +4896,7 @@ namespace Sceelix.Meshes.Algorithms
             double a = 0;
             for (int i = 0, j = cnt - 1; i < cnt; ++i)
             {
-                a += ((double) poly[j].X + poly[i].X) * ((double) poly[j].Y - poly[i].Y);
+                a += ((double) poly[j].x + poly[i].x) * ((double) poly[j].y - poly[i].y);
                 j = i;
             }
 
@@ -4927,7 +4927,7 @@ namespace Sceelix.Meshes.Algorithms
             double a = 0;
             do
             {
-                a = a + (op.Prev.Pt.X + op.Pt.X) * (double) (op.Prev.Pt.Y - op.Pt.Y);
+                a = a + (op.Prev.Pt.x + op.Pt.x) * (double) (op.Prev.Pt.y - op.Pt.y);
                 op = op.Next;
             } while (op != opFirst);
 
@@ -4979,8 +4979,8 @@ namespace Sceelix.Meshes.Algorithms
 
         private static double DistanceSqrd(IntPoint pt1, IntPoint pt2)
         {
-            double dx = (double) pt1.X - pt2.X;
-            double dy = (double) pt1.Y - pt2.Y;
+            double dx = (double) pt1.x - pt2.x;
+            double dy = (double) pt1.y - pt2.y;
             return dx * dx + dy * dy;
         }
 
@@ -4998,10 +4998,10 @@ namespace Sceelix.Meshes.Algorithms
             //A = (y¹ - y²); B = (x² - x¹); C = (y² - y¹)x¹ - (x² - x¹)y¹
             //perpendicular distance of point (x³,y³) = (Ax³ + By³ + C)/Sqrt(A² + B²)
             //see http://en.wikipedia.org/wiki/Perpendicular_distance
-            double A = ln1.Y - ln2.Y;
-            double B = ln2.X - ln1.X;
-            double C = A * ln1.X + B * ln1.Y;
-            C = A * pt.X + B * pt.Y - C;
+            double A = ln1.y - ln2.y;
+            double B = ln2.x - ln1.x;
+            double C = A * ln1.x + B * ln1.y;
+            C = A * pt.x + B * pt.y - C;
             return C * C / (A * A + B * B);
         }
 
@@ -5017,18 +5017,18 @@ namespace Sceelix.Meshes.Algorithms
             //this function is more accurate when the point that's GEOMETRICALLY 
             //between the other 2 points is the one that's tested for distance.  
             //nb: with 'spikes', either pt1 or pt3 is geometrically between the other pts                    
-            if (Math.Abs(pt1.X - pt2.X) > Math.Abs(pt1.Y - pt2.Y))
+            if (Math.Abs(pt1.x - pt2.x) > Math.Abs(pt1.y - pt2.y))
             {
-                if (pt1.X > pt2.X == pt1.X < pt3.X)
+                if (pt1.x > pt2.x == pt1.x < pt3.x)
                     return DistanceFromLineSqrd(pt1, pt2, pt3) < distSqrd;
-                if (pt2.X > pt1.X == pt2.X < pt3.X)
+                if (pt2.x > pt1.x == pt2.x < pt3.x)
                     return DistanceFromLineSqrd(pt2, pt1, pt3) < distSqrd;
                 return DistanceFromLineSqrd(pt3, pt1, pt2) < distSqrd;
             }
 
-            if (pt1.Y > pt2.Y == pt1.Y < pt3.Y)
+            if (pt1.y > pt2.y == pt1.y < pt3.y)
                 return DistanceFromLineSqrd(pt1, pt2, pt3) < distSqrd;
-            if (pt2.Y > pt1.Y == pt2.Y < pt3.Y)
+            if (pt2.y > pt1.y == pt2.y < pt3.y)
                 return DistanceFromLineSqrd(pt2, pt1, pt3) < distSqrd;
             return DistanceFromLineSqrd(pt3, pt1, pt2) < distSqrd;
         }
@@ -5041,8 +5041,8 @@ namespace Sceelix.Meshes.Algorithms
 
         private static bool PointsAreClose(IntPoint pt1, IntPoint pt2, double distSqrd)
         {
-            double dx = (double) pt1.X - pt2.X;
-            double dy = (double) pt1.Y - pt2.Y;
+            double dx = (double) pt1.x - pt2.x;
+            double dy = (double) pt1.y - pt2.y;
             return dx * dx + dy * dy <= distSqrd;
         }
 
@@ -5157,7 +5157,7 @@ namespace Sceelix.Meshes.Algorithms
                 {
                     Path p = new Path(polyCnt);
                     foreach (IntPoint ip in pattern)
-                        p.Add(new IntPoint(path[i].X + ip.X, path[i].Y + ip.Y));
+                        p.Add(new IntPoint(path[i].x + ip.x, path[i].y + ip.y));
                     result.Add(p);
                 }
             else
@@ -5165,7 +5165,7 @@ namespace Sceelix.Meshes.Algorithms
                 {
                     Path p = new Path(polyCnt);
                     foreach (IntPoint ip in pattern)
-                        p.Add(new IntPoint(path[i].X - ip.X, path[i].Y - ip.Y));
+                        p.Add(new IntPoint(path[i].x - ip.x, path[i].y - ip.y));
                     result.Add(p);
                 }
 
@@ -5210,7 +5210,7 @@ namespace Sceelix.Meshes.Algorithms
         {
             Path outPath = new Path(path.Count);
             for (int i = 0; i < path.Count; i++)
-                outPath.Add(new IntPoint(path[i].X + delta.X, path[i].Y + delta.Y));
+                outPath.Add(new IntPoint(path[i].x + delta.x, path[i].y + delta.y));
             return outPath;
         }
 
@@ -5356,7 +5356,7 @@ namespace Sceelix.Meshes.Algorithms
         {
             MiterLimit = miterLimit;
             ArcTolerance = arcTolerance;
-            m_lowest.X = -1;
+            m_lowest.x = -1;
         }
 
 
@@ -5399,9 +5399,9 @@ namespace Sceelix.Meshes.Algorithms
                 {
                     j++;
                     newNode.m_polygon.Add(path[i]);
-                    if (path[i].Y > newNode.m_polygon[k].Y ||
-                        path[i].Y == newNode.m_polygon[k].Y &&
-                        path[i].X < newNode.m_polygon[k].X) k = j;
+                    if (path[i].y > newNode.m_polygon[k].y ||
+                        path[i].y == newNode.m_polygon[k].y &&
+                        path[i].x < newNode.m_polygon[k].x) k = j;
                 }
 
             if (endType == EndType.etClosedPolygon && j < 2) return;
@@ -5410,16 +5410,16 @@ namespace Sceelix.Meshes.Algorithms
 
             //if this path's lowest pt is lower than all the others then update m_lowest
             if (endType != EndType.etClosedPolygon) return;
-            if (m_lowest.X < 0)
+            if (m_lowest.x < 0)
             {
                 m_lowest = new IntPoint(m_polyNodes.ChildCount - 1, k);
             }
             else
             {
-                IntPoint ip = m_polyNodes.Childs[(int) m_lowest.X].m_polygon[(int) m_lowest.Y];
-                if (newNode.m_polygon[k].Y > ip.Y ||
-                    newNode.m_polygon[k].Y == ip.Y &&
-                    newNode.m_polygon[k].X < ip.X)
+                IntPoint ip = m_polyNodes.Childs[(int) m_lowest.x].m_polygon[(int) m_lowest.y];
+                if (newNode.m_polygon[k].y > ip.y ||
+                    newNode.m_polygon[k].y == ip.y &&
+                    newNode.m_polygon[k].x < ip.x)
                     m_lowest = new IntPoint(m_polyNodes.ChildCount - 1, k);
             }
         }
@@ -5445,7 +5445,7 @@ namespace Sceelix.Meshes.Algorithms
         public void Clear()
         {
             m_polyNodes.Childs.Clear();
-            m_lowest.X = -1;
+            m_lowest.x = -1;
         }
 
 
@@ -5457,8 +5457,8 @@ namespace Sceelix.Meshes.Algorithms
         internal void DoMiter(int j, int k, double r)
         {
             double q = m_delta / r;
-            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + (m_normals[k].X + m_normals[j].X) * q),
-                Round(m_srcPoly[j].Y + (m_normals[k].Y + m_normals[j].Y) * q)));
+            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].x + (m_normals[k].x + m_normals[j].x) * q),
+                Round(m_srcPoly[j].y + (m_normals[k].y + m_normals[j].y) * q)));
         }
 
 
@@ -5526,8 +5526,8 @@ namespace Sceelix.Meshes.Algorithms
                         for (int j = 1; j <= steps; j++)
                         {
                             m_destPoly.Add(new IntPoint(
-                                Round(m_srcPoly[0].X + X * delta),
-                                Round(m_srcPoly[0].Y + Y * delta)));
+                                Round(m_srcPoly[0].x + X * delta),
+                                Round(m_srcPoly[0].y + Y * delta)));
                             double X2 = X;
                             X = X * m_cos - m_sin * Y;
                             Y = X2 * m_sin + Y * m_cos;
@@ -5539,8 +5539,8 @@ namespace Sceelix.Meshes.Algorithms
                         for (int j = 0; j < 4; ++j)
                         {
                             m_destPoly.Add(new IntPoint(
-                                Round(m_srcPoly[0].X + X * delta),
-                                Round(m_srcPoly[0].Y + Y * delta)));
+                                Round(m_srcPoly[0].x + X * delta),
+                                Round(m_srcPoly[0].y + Y * delta)));
                             if (X < 0) X = 1;
                             else if (Y < 0) Y = 1;
                             else X = -1;
@@ -5579,8 +5579,8 @@ namespace Sceelix.Meshes.Algorithms
                     //re-build m_normals ...
                     DoublePoint n = m_normals[len - 1];
                     for (int j = len - 1; j > 0; j--)
-                        m_normals[j] = new DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
-                    m_normals[0] = new DoublePoint(-n.X, -n.Y);
+                        m_normals[j] = new DoublePoint(-m_normals[j - 1].x, -m_normals[j - 1].y);
+                    m_normals[0] = new DoublePoint(-n.x, -n.y);
                     k = 0;
                     for (int j = len - 1; j >= 0; j--)
                         OffsetPoint(j, ref k, node.m_jointype);
@@ -5596,11 +5596,11 @@ namespace Sceelix.Meshes.Algorithms
                     if (node.m_endtype == EndType.etOpenButt)
                     {
                         int j = len - 1;
-                        pt1 = new IntPoint(Round(m_srcPoly[j].X + m_normals[j].X *
-                            delta), Round(m_srcPoly[j].Y + m_normals[j].Y * delta));
+                        pt1 = new IntPoint(Round(m_srcPoly[j].x + m_normals[j].x *
+                            delta), Round(m_srcPoly[j].y + m_normals[j].y * delta));
                         m_destPoly.Add(pt1);
-                        pt1 = new IntPoint(Round(m_srcPoly[j].X - m_normals[j].X *
-                            delta), Round(m_srcPoly[j].Y - m_normals[j].Y * delta));
+                        pt1 = new IntPoint(Round(m_srcPoly[j].x - m_normals[j].x *
+                            delta), Round(m_srcPoly[j].y - m_normals[j].y * delta));
                         m_destPoly.Add(pt1);
                     }
                     else
@@ -5608,7 +5608,7 @@ namespace Sceelix.Meshes.Algorithms
                         int j = len - 1;
                         k = len - 2;
                         m_sinA = 0;
-                        m_normals[j] = new DoublePoint(-m_normals[j].X, -m_normals[j].Y);
+                        m_normals[j] = new DoublePoint(-m_normals[j].x, -m_normals[j].y);
                         if (node.m_endtype == EndType.etOpenSquare)
                             DoSquare(j, k);
                         else
@@ -5617,9 +5617,9 @@ namespace Sceelix.Meshes.Algorithms
 
                     //re-build m_normals ...
                     for (int j = len - 1; j > 0; j--)
-                        m_normals[j] = new DoublePoint(-m_normals[j - 1].X, -m_normals[j - 1].Y);
+                        m_normals[j] = new DoublePoint(-m_normals[j - 1].x, -m_normals[j - 1].y);
 
-                    m_normals[0] = new DoublePoint(-m_normals[1].X, -m_normals[1].Y);
+                    m_normals[0] = new DoublePoint(-m_normals[1].x, -m_normals[1].y);
 
                     k = len - 1;
                     for (int j = k - 1; j > 0; --j)
@@ -5627,11 +5627,11 @@ namespace Sceelix.Meshes.Algorithms
 
                     if (node.m_endtype == EndType.etOpenButt)
                     {
-                        pt1 = new IntPoint(Round(m_srcPoly[0].X - m_normals[0].X * delta),
-                            Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
+                        pt1 = new IntPoint(Round(m_srcPoly[0].x - m_normals[0].x * delta),
+                            Round(m_srcPoly[0].y - m_normals[0].y * delta));
                         m_destPoly.Add(pt1);
-                        pt1 = new IntPoint(Round(m_srcPoly[0].X + m_normals[0].X * delta),
-                            Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
+                        pt1 = new IntPoint(Round(m_srcPoly[0].x + m_normals[0].x * delta),
+                            Round(m_srcPoly[0].y + m_normals[0].y * delta));
                         m_destPoly.Add(pt1);
                     }
                     else
@@ -5658,23 +5658,23 @@ namespace Sceelix.Meshes.Algorithms
         internal void DoRound(int j, int k)
         {
             double a = Math.Atan2(m_sinA,
-                m_normals[k].X * m_normals[j].X + m_normals[k].Y * m_normals[j].Y);
+                m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y);
             int steps = Math.Max((int) Round(m_StepsPerRad * Math.Abs(a)), 1);
 
-            double X = m_normals[k].X, Y = m_normals[k].Y, X2;
+            double X = m_normals[k].x, Y = m_normals[k].y, X2;
             for (int i = 0; i < steps; ++i)
             {
                 m_destPoly.Add(new IntPoint(
-                    Round(m_srcPoly[j].X + X * m_delta),
-                    Round(m_srcPoly[j].Y + Y * m_delta)));
+                    Round(m_srcPoly[j].x + X * m_delta),
+                    Round(m_srcPoly[j].y + Y * m_delta)));
                 X2 = X;
                 X = X * m_cos - m_sin * Y;
                 Y = X2 * m_sin + Y * m_cos;
             }
 
             m_destPoly.Add(new IntPoint(
-                Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
-                Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta)));
+                Round(m_srcPoly[j].x + m_normals[j].x * m_delta),
+                Round(m_srcPoly[j].y + m_normals[j].y * m_delta)));
         }
 
 
@@ -5686,13 +5686,13 @@ namespace Sceelix.Meshes.Algorithms
         internal void DoSquare(int j, int k)
         {
             double dx = Math.Tan(Math.Atan2(m_sinA,
-                m_normals[k].X * m_normals[j].X + m_normals[k].Y * m_normals[j].Y) / 4);
+                m_normals[k].x * m_normals[j].x + m_normals[k].y * m_normals[j].y) / 4);
             m_destPoly.Add(new IntPoint(
-                Round(m_srcPoly[j].X + m_delta * (m_normals[k].X - m_normals[k].Y * dx)),
-                Round(m_srcPoly[j].Y + m_delta * (m_normals[k].Y + m_normals[k].X * dx))));
+                Round(m_srcPoly[j].x + m_delta * (m_normals[k].x - m_normals[k].y * dx)),
+                Round(m_srcPoly[j].y + m_delta * (m_normals[k].y + m_normals[k].x * dx))));
             m_destPoly.Add(new IntPoint(
-                Round(m_srcPoly[j].X + m_delta * (m_normals[j].X + m_normals[j].Y * dx)),
-                Round(m_srcPoly[j].Y + m_delta * (m_normals[j].Y - m_normals[j].X * dx))));
+                Round(m_srcPoly[j].x + m_delta * (m_normals[j].x + m_normals[j].y * dx)),
+                Round(m_srcPoly[j].y + m_delta * (m_normals[j].y - m_normals[j].x * dx))));
         }
 
 
@@ -5791,8 +5791,8 @@ namespace Sceelix.Meshes.Algorithms
         {
             //fixup orientations of all closed paths if the orientation of the
             //closed path with the lowermost vertex is wrong ...
-            if (m_lowest.X >= 0 &&
-                !Clipper.Orientation(m_polyNodes.Childs[(int) m_lowest.X].m_polygon))
+            if (m_lowest.x >= 0 &&
+                !Clipper.Orientation(m_polyNodes.Childs[(int) m_lowest.x].m_polygon))
                 for (int i = 0; i < m_polyNodes.ChildCount; i++)
                 {
                     PolyNode node = m_polyNodes.Childs[i];
@@ -5819,8 +5819,8 @@ namespace Sceelix.Meshes.Algorithms
 
         internal static DoublePoint GetUnitNormal(IntPoint pt1, IntPoint pt2)
         {
-            double dx = pt2.X - pt1.X;
-            double dy = pt2.Y - pt1.Y;
+            double dx = pt2.x - pt1.x;
+            double dy = pt2.y - pt1.y;
             if (dx == 0 && dy == 0) return new DoublePoint();
 
             double f = 1 * 1.0 / Math.Sqrt(dx * dx + dy * dy);
@@ -5839,16 +5839,16 @@ namespace Sceelix.Meshes.Algorithms
         private void OffsetPoint(int j, ref int k, JoinType jointype)
         {
             //cross product ...
-            m_sinA = m_normals[k].X * m_normals[j].Y - m_normals[j].X * m_normals[k].Y;
+            m_sinA = m_normals[k].x * m_normals[j].y - m_normals[j].x * m_normals[k].y;
 
             if (Math.Abs(m_sinA * m_delta) < 1.0)
             {
                 //dot product ...
-                double cosA = m_normals[k].X * m_normals[j].X + m_normals[j].Y * m_normals[k].Y;
+                double cosA = m_normals[k].x * m_normals[j].x + m_normals[j].y * m_normals[k].y;
                 if (cosA > 0) // angle ==> 0 degrees
                 {
-                    m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
-                        Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta)));
+                    m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].x + m_normals[k].x * m_delta),
+                        Round(m_srcPoly[j].y + m_normals[k].y * m_delta)));
                     return;
                 }
 
@@ -5865,11 +5865,11 @@ namespace Sceelix.Meshes.Algorithms
 
             if (m_sinA * m_delta < 0)
             {
-                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
-                    Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta)));
+                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].x + m_normals[k].x * m_delta),
+                    Round(m_srcPoly[j].y + m_normals[k].y * m_delta)));
                 m_destPoly.Add(m_srcPoly[j]);
-                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
-                    Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta)));
+                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].x + m_normals[j].x * m_delta),
+                    Round(m_srcPoly[j].y + m_normals[j].y * m_delta)));
             }
             else
             {
@@ -5877,8 +5877,8 @@ namespace Sceelix.Meshes.Algorithms
                 {
                     case JoinType.jtMiter:
                     {
-                        double r = 1 + (m_normals[j].X * m_normals[k].X +
-                                        m_normals[j].Y * m_normals[k].Y);
+                        double r = 1 + (m_normals[j].x * m_normals[k].x +
+                                        m_normals[j].y * m_normals[k].y);
                         if (r >= m_miterLim) DoMiter(j, k, r);
                         else DoSquare(j, k);
                         break;

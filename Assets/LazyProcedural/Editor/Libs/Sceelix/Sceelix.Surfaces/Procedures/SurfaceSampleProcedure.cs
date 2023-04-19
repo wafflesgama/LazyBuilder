@@ -85,10 +85,10 @@ namespace Sceelix.Surfaces.Procedures
                     {
                         List<Coordinate> coordinates = new List<Coordinate>();
 
-                        for (float i = actorRectangle.Min.X; i < actorRectangle.Max.X; i += surfaceEntity.CellSize)
-                        for (float j = actorRectangle.Min.Y; j < actorRectangle.Max.Y; j += surfaceEntity.CellSize)
+                        for (float i = actorRectangle.Min.x; i < actorRectangle.Max.x; i += surfaceEntity.CellSize)
+                        for (float j = actorRectangle.Min.y; j < actorRectangle.Max.y; j += surfaceEntity.CellSize)
                         {
-                            var position = new Vector2D(i, j);
+                            var position = new UnityEngine.Vector2(i, j);
                             if (surfaceEntity.Contains(position))
                                 coordinates.Add(surfaceEntity.ToCoordinates(position));
                         }
@@ -259,7 +259,7 @@ namespace Sceelix.Surfaces.Procedures
                         return normalLayer.GetValue(coordinates.Last());
                     case "Average":
                         var heightsToAverage = coordinates.Select(coord => normalLayer.GetGenericValue(coord));
-                        return heightsToAverage.Aggregate((result, next) => result + next).Normalize();
+                        return heightsToAverage.Aggregate((result, next) => result + next).normalized;
                     case "List":
                         return new SceeList(coordinates.Select(coord => normalLayer.GetValue(coord)));
                     default:
@@ -274,7 +274,7 @@ namespace Sceelix.Surfaces.Procedures
                 if (_parameterSampling.Value == "List")
                     return new SceeList();
 
-                return Vector3D.Zero;
+                return UnityEngine.Vector3.zero;
             }
         }
 
@@ -312,7 +312,7 @@ namespace Sceelix.Surfaces.Procedures
                 if (_parameterSampling.Value == "List")
                     return new SceeList();
 
-                return Color.Transparent;
+                return UnityEngine.Color.Transparent;
             }
 
 
@@ -338,7 +338,7 @@ namespace Sceelix.Surfaces.Procedures
                         var blue = colors.Select(x => (int) x.B).Average();
                         var alpha = colors.Select(x => (int) x.A).Average();
 
-                        return new Color((byte) red, (byte) green, (byte) blue, (byte) alpha);
+                        return new UnityEngine.Color((byte) red, (byte) green, (byte) blue, (byte) alpha);
                     case "List":
                         return new SceeList(coordinates.Select(coord => colorLayer.GetValue(coord[0], coord[1])).Cast<Object>());
                     default:
@@ -366,7 +366,7 @@ namespace Sceelix.Surfaces.Procedures
             /// </summary>
             private readonly ChoiceParameter _parameterSampling = new ChoiceParameter("Sampling", "Average", "First", "Last", "Average", "List");
 
-            private Color[,] _colorArray;
+            private UnityEngine.Color[,] _colorArray;
 
 
 
@@ -392,21 +392,21 @@ namespace Sceelix.Surfaces.Procedures
                     case "First":
                         var firstCoordinates = coordinates.First();
 
-                        return _colorArray[firstCoordinates.X, firstCoordinates.Y];
+                        return _colorArray[firstCoordinates.x, firstCoordinates.y];
                     case "Last":
                         var lastCoordinates = coordinates.Last();
-                        return _colorArray[lastCoordinates.X, lastCoordinates.Y];
+                        return _colorArray[lastCoordinates.x, lastCoordinates.y];
                     case "Average":
-                        var colors = coordinates.Select(coord => _colorArray[coord.X, coord.Y]).ToList();
+                        var colors = coordinates.Select(coord => _colorArray[coord.x, coord.y]).ToList();
 
                         var red = colors.Select(x => (int) x.R).Average();
                         var green = colors.Select(x => (int) x.G).Average();
                         var blue = colors.Select(x => (int) x.B).Average();
                         var alpha = colors.Select(x => (int) x.A).Average();
 
-                        return new Color((byte) red, (byte) green, (byte) blue, (byte) alpha);
+                        return new UnityEngine.Color((byte) red, (byte) green, (byte) blue, (byte) alpha);
                     case "List":
-                        return new SceeList(coordinates.Select(coord => _colorArray[coord.X, coord.Y]).Cast<object>());
+                        return new SceeList(coordinates.Select(coord => _colorArray[coord.x, coord.y]).Cast<object>());
                     default:
                         throw new Exception("Invalid Sampling Choice.");
                 }
@@ -419,7 +419,7 @@ namespace Sceelix.Surfaces.Procedures
                 if (_parameterSampling.Value == "List")
                     return new SceeList();
 
-                return Color.Transparent;
+                return UnityEngine.Color.Transparent;
             }
 
 

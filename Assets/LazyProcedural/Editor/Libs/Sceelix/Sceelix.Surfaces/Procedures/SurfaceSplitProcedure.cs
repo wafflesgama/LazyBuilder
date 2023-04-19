@@ -91,16 +91,16 @@ namespace Sceelix.Surfaces.Procedures
 
             var sliceParameters = GetSplitList(_parameterSplits).ToList();
 
-            var increment = _parameterAxis.Value == "X" ? new Vector2D(normalOrInvertSign, 0) : new Vector2D(0, normalOrInvertSign);
-            var otherAxisSize = _parameterAxis.Value == "X" ? new Vector2D(0, surfaceEntity.Length) : new Vector2D(surfaceEntity.Width, 0);
-            var initialOffset = _parameterAxis.Value == "X" ? new Vector2D(surfaceEntity.Width * normalOrInvertInclusion, 0) : new Vector2D(0, surfaceEntity.Length * normalOrInvertInclusion);
+            var increment = _parameterAxis.Value == "X" ? new UnityEngine.Vector2(normalOrInvertSign, 0) : new UnityEngine.Vector2(0, normalOrInvertSign);
+            var otherAxisSize = _parameterAxis.Value == "X" ? new UnityEngine.Vector2(0, surfaceEntity.Length) : new UnityEngine.Vector2(surfaceEntity.Width, 0);
+            var initialOffset = _parameterAxis.Value == "X" ? new UnityEngine.Vector2(surfaceEntity.Width * normalOrInvertInclusion, 0) : new UnityEngine.Vector2(0, surfaceEntity.Length * normalOrInvertInclusion);
 
             List<SurfaceLayer>[] dividedLayers = new List<SurfaceLayer>[sliceParameters.Count];
             for (int i = 0; i < dividedLayers.Length; i++)
                 dividedLayers[i] = new List<SurfaceLayer>();
 
 
-            Vector2D startingPoint = surfaceEntity.Origin + initialOffset;
+            UnityEngine.Vector2 startingPoint = surfaceEntity.Origin + initialOffset;
             for (int i = 0; i < sliceParameters.Count; i++)
             {
                 var sliceParameter = sliceParameters[i];
@@ -110,18 +110,18 @@ namespace Sceelix.Surfaces.Procedures
                 var sliceStartingPoint = startingPoint;
                 var sliceEndingPoint = startingPoint + sizedIncrement + otherAxisSize;
 
-                var temp = Vector2D.Minimize(sliceStartingPoint, sliceEndingPoint);
-                sliceEndingPoint = Vector2D.Maximize(sliceStartingPoint, sliceEndingPoint);
+                var temp = UnityEngine.Vector2.Minimize(sliceStartingPoint, sliceEndingPoint);
+                sliceEndingPoint = UnityEngine.Vector2.Maximize(sliceStartingPoint, sliceEndingPoint);
                 sliceStartingPoint = temp;
 
-                //if (sliceStartingPoint.X > sliceEndingPoint.X || sliceStartingPoint.Y > sliceEndingPoint.Y)
+                //if (sliceStartingPoint.x > sliceEndingPoint.x || sliceStartingPoint.y > sliceEndingPoint.y)
                 //    ObjectHelper.Swap(ref sliceStartingPoint, ref sliceEndingPoint);
 
                 var sliceStartingPointCoordinates = surfaceEntity.ToCoordinates(sliceStartingPoint, roundingMethod: RoundingMethod.Nearest);
                 var sliceEndingPointCoordinates = surfaceEntity.ToCoordinates(sliceEndingPoint, roundingMethod: RoundingMethod.Nearest);
 
-                var numColumns = Math.Abs(sliceEndingPointCoordinates.X - sliceStartingPointCoordinates.X) + 1;
-                var numRows = Math.Abs(sliceStartingPointCoordinates.Y - sliceEndingPointCoordinates.Y) + 1;
+                var numColumns = Math.Abs(sliceEndingPointCoordinates.x - sliceStartingPointCoordinates.x) + 1;
+                var numRows = Math.Abs(sliceStartingPointCoordinates.y - sliceEndingPointCoordinates.y) + 1;
 
                 var cellSize = surfaceEntity.CellSize;
                 if (sliceParameter.ActualSize % surfaceEntity.CellSize > 0)

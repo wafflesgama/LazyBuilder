@@ -95,7 +95,7 @@ namespace Sceelix.Surfaces.Procedures
             /// Location to use as placement reference.
             /// </summary>
             private readonly CompoundParameter _parameterSampleLocation = new CompoundParameter("Sample Location",
-                new Vector3DParameter("Position", new Vector3D(0f, 0f, 0f)) {Description = "Position relative to the actor scope origin."},
+                new Vector3Parameter("Position", new UnityEngine.Vector3(0f, 0f, 0f)) {Description = "Position relative to the actor scope origin."},
                 new ChoiceParameter("Offset", "Relative", "Absolute", "Relative") {Description = "Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1)"});
 
 
@@ -116,22 +116,22 @@ namespace Sceelix.Surfaces.Procedures
                     //BoundingBox shapeBB = entities.BoxScope.GetBoundingBox();
                     BoundingRectangle surfaceBoundingRectangle = surfaceEntity.BoundingRectangle;
 
-                    var position = (Vector3D) _parameterSampleLocation["Position"].Get();
+                    var position = (UnityEngine.Vector3) _parameterSampleLocation["Position"].Get();
                     var offsetChoice = (string) _parameterSampleLocation["Offset"].Get();
 
                     foreach (IActor actor in entities)
                     {
-                        Vector3D offset = offsetChoice == "Relative" ? actor.BoxScope.ToRelativeWorldPosition(position) : actor.BoxScope.ToWorldPosition(position);
-                        Vector2D flatlocation = offset.ToVector2D();
+                        UnityEngine.Vector3 offset = offsetChoice == "Relative" ? actor.BoxScope.ToRelativeWorldPosition(position) : actor.BoxScope.ToWorldPosition(position);
+                        UnityEngine.Vector2 flatlocation = offset.ToVector2();
 
-                        //BoundingRectangle shapeBoundingRectangle = new BoundingRectangle(new Vector2D(shapeBoundingBox.Min.X, shapeBoundingBox.Min.Y), new Vector2D(shapeBoundingBox.Max.X, shapeBoundingBox.Max.Y));
+                        //BoundingRectangle shapeBoundingRectangle = new BoundingRectangle(new UnityEngine.Vector2(shapeBoundingBox.Min.x, shapeBoundingBox.Min.y), new UnityEngine.Vector2(shapeBoundingBox.Max.x, shapeBoundingBox.Max.y));
 
                         if (surfaceBoundingRectangle.Contains(flatlocation))
                         {
-                            //var absoluteHeightAt = surfaceEntity.GetAbsoluteHeightAt(new Vector2D(flatlocation.X, flatlocation.Y));
-                            var absoluteHeightAt = surfaceEntity.GetLayer<HeightLayer>().GetGenericValue(new Vector2D(flatlocation.X, flatlocation.Y));
+                            //var absoluteHeightAt = surfaceEntity.GetAbsoluteHeightAt(new UnityEngine.Vector2(flatlocation.x, flatlocation.y));
+                            var absoluteHeightAt = surfaceEntity.GetLayer<HeightLayer>().GetGenericValue(new UnityEngine.Vector2(flatlocation.x, flatlocation.y));
 
-                            actor.InsertInto(new BoxScope(actor.BoxScope, translation: actor.BoxScope.Translation + new Vector3D(0, 0, absoluteHeightAt - actor.BoxScope.Translation.Z)));
+                            actor.InsertInto(new BoxScope(actor.BoxScope, translation: actor.BoxScope.Translation + new UnityEngine.Vector3(0, 0, absoluteHeightAt - actor.BoxScope.Translation.z)));
                         }
                     }
                 }
@@ -194,10 +194,10 @@ namespace Sceelix.Surfaces.Procedures
                             {
                                 foreach (Vertex vertex in face.AllVertices)
                                 {
-                                    var height = heightLayer != null ? heightLayer.GetGenericValue(vertex.Position.ToVector2D()) : 0;
+                                    var height = heightLayer != null ? heightLayer.GetGenericValue(vertex.Position.ToVector2()) : 0;
 
                                     if (!float.IsNaN(height) && !float.IsInfinity(height))
-                                        vertex.Position = new Vector3D(vertex.Position.X, vertex.Position.Y, height);
+                                        vertex.Position = new UnityEngine.Vector3(vertex.Position.x, vertex.Position.y, height);
                                 }
 
                                 if (keepPlanar && !face.RecalculateIsPlanar())
@@ -211,11 +211,11 @@ namespace Sceelix.Surfaces.Procedures
 
                                     foreach (Vertex vertex in face.AllVertices)
                                     {
-                                        var height = plane3D.GetHeightAt(vertex.Position.ToVector2D());
+                                        var height = plane3D.GetHeightAt(vertex.Position.ToVector2());
 
                                         //if a valid height has been found
                                         if (!float.IsNaN(height) && !float.IsInfinity(height))
-                                            vertex.Position = new Vector3D(vertex.Position.X, vertex.Position.Y, height);
+                                            vertex.Position = new UnityEngine.Vector3(vertex.Position.x, vertex.Position.y, height);
                                     }
                                 }
                             }

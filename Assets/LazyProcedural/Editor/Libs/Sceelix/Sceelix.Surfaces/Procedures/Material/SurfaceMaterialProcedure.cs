@@ -204,12 +204,12 @@ namespace Sceelix.Surfaces.Procedures
                 /// <summary>
                 /// The vector2 value.
                 /// </summary>
-                private readonly Vector2DParameter _parameterValue = new Vector2DParameter("Value", Vector2D.Zero);
+                private readonly Vector2Parameter _parameterValue = new Vector2Parameter("Value", UnityEngine.Vector2.zero);
 
 
 
                 public Vector2PropertyParameter()
-                    : base("Vector2")
+                    : base("UnityEngine.Vector2")
                 {
                 }
 
@@ -229,12 +229,12 @@ namespace Sceelix.Surfaces.Procedures
                 /// <summary>
                 /// The vector3 value.
                 /// </summary>
-                private readonly Vector3DParameter _parameterValue = new Vector3DParameter("Value", Vector3D.Zero);
+                private readonly Vector3Parameter _parameterValue = new Vector3Parameter("Value", UnityEngine.Vector3.zero);
 
 
 
                 public Vector3PropertyParameter()
-                    : base("Vector3")
+                    : base("UnityEngine.Vector3")
                 {
                 }
 
@@ -254,12 +254,12 @@ namespace Sceelix.Surfaces.Procedures
                 /// <summary>
                 /// The color value.
                 /// </summary>
-                private readonly ColorParameter _parameterValue = new ColorParameter("Value", Color.White);
+                private readonly ColorParameter _parameterValue = new ColorParameter("Value", UnityEngine.Color.white);
 
 
 
                 public ColorPropertyParameter()
-                    : base("Color")
+                    : base("UnityEngine.Color")
                 {
                 }
 

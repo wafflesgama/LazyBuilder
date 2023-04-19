@@ -10,16 +10,16 @@ namespace Sceelix.Meshes.Materials
 
 
 
-        public ColorMaterial(Color defaultColor)
+        public ColorMaterial(UnityEngine.Color defaultColor)
         {
             DefaultColor = defaultColor;
         }
 
 
 
-        public Color DefaultColor
+        public UnityEngine.Color DefaultColor
         {
-            get { return this.GetAttribute<Color>(ColorKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorKey); }
             set { this.SetAttribute(ColorKey, value); }
         }
     }

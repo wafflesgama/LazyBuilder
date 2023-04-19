@@ -150,49 +150,49 @@ namespace Sceelix.Meshes.Materials
 
 
 
-        public Color ColorAmbient
+        public UnityEngine.Color ColorAmbient
         {
-            get { return this.GetAttribute<Color>(ColorAmbientKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorAmbientKey); }
             set { this.SetAttribute(ColorAmbientKey, value); }
         }
 
 
 
-        public Color ColorDiffuse
+        public UnityEngine.Color ColorDiffuse
         {
-            get { return this.GetAttribute<Color>(ColorDiffuseKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorDiffuseKey); }
             set { this.SetAttribute(ColorDiffuseKey, value); }
         }
 
 
 
-        public Color ColorEmissive
+        public UnityEngine.Color ColorEmissive
         {
-            get { return this.GetAttribute<Color>(ColorEmissiveKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorEmissiveKey); }
             set { this.SetAttribute(ColorEmissiveKey, value); }
         }
 
 
 
-        public Color ColorReflective
+        public UnityEngine.Color ColorReflective
         {
-            get { return this.GetAttribute<Color>(ColorReflectiveKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorReflectiveKey); }
             set { this.SetAttribute(ColorReflectiveKey, value); }
         }
 
 
 
-        public Color ColorSpecular
+        public UnityEngine.Color ColorSpecular
         {
-            get { return this.GetAttribute<Color>(ColorSpecularKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorSpecularKey); }
             set { this.SetAttribute(ColorSpecularKey, value); }
         }
 
 
 
-        public Color ColorTransparent
+        public UnityEngine.Color ColorTransparent
         {
-            get { return this.GetAttribute<Color>(ColorTransparentKey); }
+            get { return this.GetAttribute<UnityEngine.Color>(ColorTransparentKey); }
             set { this.SetAttribute(ColorTransparentKey, value); }
         }
 

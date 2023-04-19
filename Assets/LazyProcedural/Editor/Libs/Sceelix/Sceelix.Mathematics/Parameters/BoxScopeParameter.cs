@@ -5,11 +5,11 @@ namespace Sceelix.Mathematics.Parameters
 {
     public class BoxScopeParameter : CompoundParameter
     {
-        private readonly Vector3DParameter _sizeParameter = new Vector3DParameter("Size", Vector3D.One);
-        private readonly Vector3DParameter _translationParameter = new Vector3DParameter("Translation", Vector3D.Zero);
-        private readonly Vector3DParameter _xAxisParameter = new Vector3DParameter("XAxis", Vector3D.XVector);
-        private readonly Vector3DParameter _yAxisParameter = new Vector3DParameter("YAxis", Vector3D.YVector);
-        private readonly Vector3DParameter _zAxisParameter = new Vector3DParameter("ZAxis", Vector3D.ZVector);
+        private readonly Vector3Parameter _sizeParameter = new Vector3Parameter("Size", UnityEngine.Vector3.one);
+        private readonly Vector3Parameter _translationParameter = new Vector3Parameter("Translation", UnityEngine.Vector3.zero);
+        private readonly Vector3Parameter _xAxisParameter = new Vector3Parameter("XAxis", UnityEngine.Vector3.right);
+        private readonly Vector3Parameter _yAxisParameter = new Vector3Parameter("YAxis", UnityEngine.Vector3.up);
+        private readonly Vector3Parameter _zAxisParameter = new Vector3Parameter("ZAxis", UnityEngine.Vector3.forward);
 
 
 

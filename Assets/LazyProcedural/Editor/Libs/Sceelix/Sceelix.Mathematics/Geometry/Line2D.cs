@@ -11,12 +11,12 @@ namespace Sceelix.Mathematics.Geometry
     /// </summary>
     public struct Line2D
     {
-        private readonly Vector2D _direction;
-        private readonly Vector2D _point0;
+        private readonly UnityEngine.Vector2 _direction;
+        private readonly UnityEngine.Vector2 _point0;
 
 
 
-        public Line2D(Vector2D direction, Vector2D point0)
+        public Line2D(UnityEngine.Vector2 direction, UnityEngine.Vector2 point0)
         {
             _direction = direction;
             _point0 = point0;
@@ -24,9 +24,9 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public float MinDistanceToPoint(Vector2D point)
+        public float MinDistanceToPoint(UnityEngine.Vector2 point)
         {
-            return Math.Abs(_direction.Y * point.X - _direction.X * point.Y + Point1.X * _point0.Y - Point1.Y * _point0.X) / _direction.Length;
+            return Math.Abs(_direction.y * point.x - _direction.x * point.y + Point1.x * _point0.y - Point1.y * _point0.x) / _direction.Length;
         }
 
 
@@ -36,28 +36,28 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public Vector2D this[float m] => _direction * m + _point0;
+        public UnityEngine.Vector2 this[float m] => _direction * m + _point0;
 
 
 
-        public Vector2D Direction => _direction;
+        public UnityEngine.Vector2 Direction => _direction;
 
 
-        public Vector2D Point0 => _point0;
+        public UnityEngine.Vector2 Point0 => _point0;
 
 
-        public Vector2D Point1 => _point0 + _direction;
+        public UnityEngine.Vector2 Point1 => _point0 + _direction;
 
 
 
-        public static Line2D FromEndPoints(Vector2D pointBegin, Vector2D pointEnd)
+        public static Line2D FromEndPoints(UnityEngine.Vector2 pointBegin, UnityEngine.Vector2 pointEnd)
         {
             return new Line2D(pointEnd - pointBegin, pointBegin);
         }
 
 
 
-        public static Line2D FromPointAndDirection(Vector2D direction, Vector2D point0)
+        public static Line2D FromPointAndDirection(UnityEngine.Vector2 direction, UnityEngine.Vector2 point0)
         {
             return new Line2D(direction, point0);
         }
@@ -71,20 +71,20 @@ namespace Sceelix.Mathematics.Geometry
         /// <param name="radius">The circle radius.</param>
         /// <returns>The array of intersected locations. Could be empty (if there were no intersections), or have up to 2 elements/intersections.</returns>
         /// <remarks>See http://csharphelper.com/blog/2014/09/determine-where-a-line-intersects-a-circle-in-c/ for original code.</remarks>
-        public Vector2D[] FindLineCircleIntersections(Vector2D circleCenter, float radius)
+        public UnityEngine.Vector2[] FindLineCircleIntersections(UnityEngine.Vector2 circleCenter, float radius)
         {
-            var dx = Point1.X - Point0.X;
-            var dy = Point1.Y - Point0.Y;
+            var dx = Point1.x - Point0.x;
+            var dy = Point1.y - Point0.y;
 
             var a = dx * dx + dy * dy;
-            var b = 2 * (dx * (Point0.X - circleCenter.X) + dy * (Point0.Y - circleCenter.Y));
-            var c = (Point0.X - circleCenter.X) * (Point0.X - circleCenter.X) + (Point0.Y - circleCenter.Y) * (Point0.Y - circleCenter.Y) - radius * radius;
+            var b = 2 * (dx * (Point0.x - circleCenter.x) + dy * (Point0.y - circleCenter.y));
+            var c = (Point0.x - circleCenter.x) * (Point0.x - circleCenter.x) + (Point0.y - circleCenter.y) * (Point0.y - circleCenter.y) - radius * radius;
 
             var det = b * b - 4 * a * c;
             if (a <= 0.0000001 || det < 0)
             {
                 // No real solutions.
-                return new Vector2D[0];
+                return new UnityEngine.Vector2[0];
             }
 
             if (Math.Abs(det) < float.Epsilon)
@@ -92,16 +92,16 @@ namespace Sceelix.Mathematics.Geometry
                 // One solution.
                 float t = -b / (2 * a);
 
-                return new[] {new Vector2D(Point0.X + t * dx, Point0.Y + t * dy)};
+                return new[] {new UnityEngine.Vector2(Point0.x + t * dx, Point0.y + t * dy)};
             }
             else
             {
                 // Two solutions.
                 float t = (float) ((-b + Math.Sqrt(det)) / (2 * a));
-                var intersection1 = new Vector2D(Point0.X + t * dx, Point0.Y + t * dy);
+                var intersection1 = new UnityEngine.Vector2(Point0.x + t * dx, Point0.y + t * dy);
 
                 t = (float) ((-b - Math.Sqrt(det)) / (2 * a));
-                var intersection2 = new Vector2D(Point0.X + t * dx, Point0.Y + t * dy);
+                var intersection2 = new UnityEngine.Vector2(Point0.x + t * dx, Point0.y + t * dy);
 
                 return new[] {intersection1, intersection2};
             }

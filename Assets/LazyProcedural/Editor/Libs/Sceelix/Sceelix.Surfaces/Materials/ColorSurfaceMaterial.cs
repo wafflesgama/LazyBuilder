@@ -6,12 +6,12 @@ namespace Sceelix.Surfaces.Materials
     {
         public ColorSurfaceMaterial()
         {
-            DefaultColor = Color.White;
+            DefaultColor = UnityEngine.Color.white;
         }
 
 
 
-        public Color DefaultColor
+        public UnityEngine.Color DefaultColor
         {
             get;
             set;

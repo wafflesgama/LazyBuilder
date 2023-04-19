@@ -8,17 +8,17 @@ namespace Sceelix.Meshes.Operations
     {
         public static Projection2DInfo ProjectTo2D(this Face face)
         {
-            return ProjectTo2D(face, Vector3D.ZVector);
+            return ProjectTo2D(face, UnityEngine.Vector3.forward);
         }
 
 
 
-        public static Projection2DInfo ProjectTo2D(this Face face, Vector3D planeNormal)
+        public static Projection2DInfo ProjectTo2D(this Face face, UnityEngine.Vector3 planeNormal)
         {
-            List<Vector3D> projectedPoints = new List<Vector3D>();
+            List<UnityEngine.Vector3> projectedPoints = new List<UnityEngine.Vector3>();
             float angle = face.Normal.AngleTo(planeNormal);
 
-            Vector3D axis = Vector3D.Cross(face.Normal, planeNormal);
+            UnityEngine.Vector3 axis = UnityEngine.Vector3.Cross(face.Normal, planeNormal);
             foreach (Vertex vertex in face.Vertices) projectedPoints.Add(vertex.Position.Rotate(axis, angle));
 
             return new Projection2DInfo(projectedPoints, angle, axis);
@@ -28,7 +28,7 @@ namespace Sceelix.Meshes.Operations
 
         public struct Projection2DInfo
         {
-            public List<Vector3D> ProjectedPoints
+            public List<UnityEngine.Vector3> ProjectedPoints
             {
                 get;
             }
@@ -40,14 +40,14 @@ namespace Sceelix.Meshes.Operations
             }
 
 
-            public Vector3D Axis
+            public UnityEngine.Vector3 Axis
             {
                 get;
             }
 
 
 
-            public Projection2DInfo(List<Vector3D> projectedPoints, float angle, Vector3D axis)
+            public Projection2DInfo(List<UnityEngine.Vector3> projectedPoints, float angle, UnityEngine.Vector3 axis)
                 : this()
             {
                 ProjectedPoints = projectedPoints;

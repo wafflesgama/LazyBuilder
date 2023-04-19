@@ -140,7 +140,7 @@ namespace Sceelix.Paths.Parameters
 
 
 
-        private IEnumerable<Face> CreateJuntionFaces(Vertex centerVertex, PathVertex currentVertex, Vector3D normal, List<PathEdge> orderedEdges, List<Vertex> midVertices)
+        private IEnumerable<Face> CreateJuntionFaces(Vertex centerVertex, PathVertex currentVertex, UnityEngine.Vector3 normal, List<PathEdge> orderedEdges, List<Vertex> midVertices)
         {
             //now that we have the vertexBetweenEdges, let's go again over the outgoing edges
             for (int i = 0; i < orderedEdges.Count; i++)
@@ -150,11 +150,11 @@ namespace Sceelix.Paths.Parameters
 
                 var edge = orderedEdges[i];
                 var edgeDirection = edge.GetDirectionFrom(currentVertex).ProjectToPlane(normal);
-                var edgeDirectionNormalized = edgeDirection.Normalize();
+                var edgeDirectionNormalized = edgeDirection.normalized;
                 var vectorLeft = leftVertex.Position - centerVertex.Position;
                 var vectorRight = rightVertex.Position - centerVertex.Position;
-                var normalizedVectorLeft = vectorLeft.Normalize();
-                var normalizedVectorRight = vectorRight.Normalize();
+                var normalizedVectorLeft = vectorLeft.normalized;
+                var normalizedVectorRight = vectorRight.normalized;
 
 
                 var leftAngle = normalizedVectorLeft.AngleTo(edgeDirectionNormalized);
@@ -170,7 +170,7 @@ namespace Sceelix.Paths.Parameters
                     var leftWidth = edge.GetLocalAttribute<float>("LeftWidth", Procedure);
 
                     var middlePoint = centerVertex.Position + edgeDirectionNormalized * distanceFromRight;
-                    var oppositePoint = middlePoint + (middlePoint - rightVertex.Position).Normalize() * leftWidth;
+                    var oppositePoint = middlePoint + (middlePoint - rightVertex.Position).normalized * leftWidth;
                     var oppositeVertex = new Vertex(oppositePoint);
                     var middleVertex = new Vertex(middlePoint); //rightVertex.Position + (oppositeVertex.Position - rightVertex.Position)/2f
 
@@ -179,11 +179,11 @@ namespace Sceelix.Paths.Parameters
 
                     if (currentVertex == edge.Source)
                     {
-                        oppositeVertex[newFace].UV0 = new Vector2D(0, 0);
-                        middleVertex[newFace].UV0 = new Vector2D(0.5f, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(1, 0);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, -1);
-                        leftVertex[newFace].UV0 = new Vector2D(0, -1);
+                        oppositeVertex[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        middleVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, -1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(0, -1);
 
                         edge.SetLocalAttribute("SourceLeft", Procedure, oppositeVertex);
                         edge.SetLocalAttribute("SourceCenter", Procedure, middleVertex);
@@ -191,11 +191,11 @@ namespace Sceelix.Paths.Parameters
                     }
                     else if (currentVertex == edge.Target)
                     {
-                        oppositeVertex[newFace].UV0 = new Vector2D(1, 0);
-                        middleVertex[newFace].UV0 = new Vector2D(0.5f, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(0, 0);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, 1);
-                        leftVertex[newFace].UV0 = new Vector2D(1, 1);
+                        oppositeVertex[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        middleVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(1, 1);
 
                         edge.SetLocalAttribute("TargetLeft", Procedure, rightVertex);
                         edge.SetLocalAttribute("TargetCenter", Procedure, middleVertex);
@@ -213,7 +213,7 @@ namespace Sceelix.Paths.Parameters
 
                     var middlePoint = centerVertex.Position + edgeDirectionNormalized * distanceFromLeft;
                     //var middleVertex = new Vertex(middlePoint);
-                    var oppositePoint = middlePoint + (middlePoint - leftVertex.Position).Normalize() * rightWidth;
+                    var oppositePoint = middlePoint + (middlePoint - leftVertex.Position).normalized * rightWidth;
                     var oppositeVertex = new Vertex(oppositePoint);
                     var middleVertex = new Vertex(middlePoint); //leftVertex.Position + (oppositeVertex.Position - leftVertex.Position)/2f
 
@@ -222,11 +222,11 @@ namespace Sceelix.Paths.Parameters
 
                     if (currentVertex == edge.Source)
                     {
-                        leftVertex[newFace].UV0 = new Vector2D(0, 0);
-                        middleVertex[newFace].UV0 = new Vector2D(0.5f, 0);
-                        oppositeVertex[newFace].UV0 = new Vector2D(1, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(1, -1);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, -1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        middleVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                        oppositeVertex[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(1, -1);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, -1);
 
                         edge.SetLocalAttribute("SourceLeft", Procedure, leftVertex);
                         edge.SetLocalAttribute("SourceCenter", Procedure, middleVertex);
@@ -234,11 +234,11 @@ namespace Sceelix.Paths.Parameters
                     }
                     else if (currentVertex == edge.Target)
                     {
-                        leftVertex[newFace].UV0 = new Vector2D(1, 0);
-                        middleVertex[newFace].UV0 = new Vector2D(0.5f, 0);
-                        oppositeVertex[newFace].UV0 = new Vector2D(0, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(0, 1);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, 1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        middleVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                        oppositeVertex[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(0, 1);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 1);
 
                         edge.SetLocalAttribute("TargetLeft", Procedure, oppositeVertex);
                         edge.SetLocalAttribute("TargetCenter", Procedure, middleVertex);
@@ -254,7 +254,7 @@ namespace Sceelix.Paths.Parameters
                     var leftWidth = edge.GetLocalAttribute<float>("LeftWidth", Procedure);
                     var rightWidth = edge.GetLocalAttribute<float>("RightWidth", Procedure);
 
-                    var edge1Right = edgeDirection.Cross(normal).Normalize();
+                    var edge1Right = edgeDirection.Cross(normal).normalized;
                     var edge1Left = -edge1Right;
 
                     var newVertexLeft = new Vertex(centerVertex.Position + edge1Left * leftWidth);
@@ -265,22 +265,22 @@ namespace Sceelix.Paths.Parameters
 
                     if (currentVertex == edge.Source)
                     {
-                        newVertexLeft[newFace].UV0 = new Vector2D(0, 0);
-                        newVertexRight[newFace].UV0 = new Vector2D(1, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(1, -1);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, -1);
-                        leftVertex[newFace].UV0 = new Vector2D(0, -1);
+                        newVertexLeft[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        newVertexRight[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(1, -1);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, -1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(0, -1);
 
                         edge.SetLocalAttribute("SourceLeft", Procedure, newVertexLeft);
                         edge.SetLocalAttribute("SourceRight", Procedure, newVertexRight);
                     }
                     else if (currentVertex == edge.Target)
                     {
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, 1);
-                        rightVertex[newFace].UV0 = new Vector2D(0, 1);
-                        newVertexRight[newFace].UV0 = new Vector2D(0, 0);
-                        leftVertex[newFace].UV0 = new Vector2D(1, 1);
-                        newVertexLeft[newFace].UV0 = new Vector2D(1, 0);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 1);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(0, 1);
+                        newVertexRight[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(1, 1);
+                        newVertexLeft[newFace].UV0 = new UnityEngine.Vector2(1, 0);
 
 
                         edge.SetLocalAttribute("TargetLeft", Procedure, newVertexRight);
@@ -290,7 +290,7 @@ namespace Sceelix.Paths.Parameters
                     _attributeSectionType[newFace] = "Joint";
                     newFace.CalculateTangentAndBinormal();
 
-                    //newFace.Material = new Sceelix.Meshes.Materials.ColorMaterial(Color.Red);
+                    //newFace.Material = new Sceelix.Meshes.Materials.ColorMaterial(UnityEngine.Color.red);
                     yield return newFace;
                 }
                 //for 180ª cases and for straight crossroads
@@ -303,10 +303,10 @@ namespace Sceelix.Paths.Parameters
 
                     if (currentVertex == edge.Source)
                     {
-                        leftVertex[newFace].UV0 = new Vector2D(0, 0);
-                        middleVertex[newFace].UV0 = new Vector2D(0.5f, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(1, 0);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, -1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        middleVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, -1);
 
 
                         edge.SetLocalAttribute("SourceLeft", Procedure, leftVertex);
@@ -315,10 +315,10 @@ namespace Sceelix.Paths.Parameters
                     }
                     else if (currentVertex == edge.Target)
                     {
-                        leftVertex[newFace].UV0 = new Vector2D(1, 0);
-                        middleVertex[newFace].UV0 = new Vector2D(0.5f, 0);
-                        rightVertex[newFace].UV0 = new Vector2D(0, 0);
-                        centerVertex[newFace].UV0 = new Vector2D(0.5f, 1);
+                        leftVertex[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                        middleVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                        rightVertex[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                        centerVertex[newFace].UV0 = new UnityEngine.Vector2(0.5f, 1);
 
                         edge.SetLocalAttribute("TargetLeft", Procedure, rightVertex);
                         edge.SetLocalAttribute("TargetCenter", Procedure, middleVertex);
@@ -346,7 +346,7 @@ namespace Sceelix.Paths.Parameters
 
             foreach (PathVertex currentVertex in pathEntity.Vertices)
             {
-                var normal = Vector3D.ZVector;
+                var normal = UnityEngine.Vector3.forward;
 
                 //determine the first edge, as we are ordering the vertices around this one
                 var firstEdgeDirection = currentVertex.Edges.First().GetDirectionFrom(currentVertex).ProjectToPlane(normal);
@@ -363,7 +363,7 @@ namespace Sceelix.Paths.Parameters
                     var edge1 = currentVertex.Edges[0];
                     var edge1Direction = edge1.GetDirectionFrom(currentVertex);
                     var edge1HalfWidth = _parameterWidth.Get(edge1) / 2f;
-                    var edge1Right = edge1Direction.Cross(normal).Normalize();
+                    var edge1Right = edge1Direction.Cross(normal).normalized;
                     var edge1Left = -edge1Right;
 
                     var vertexLeft = new Vertex(currentVertex.Position + edge1Left * edge1HalfWidth);
@@ -399,19 +399,19 @@ namespace Sceelix.Paths.Parameters
                     var edge1 = orderedEdges[i];
                     var edge1Direction = edge1.GetDirectionFrom(currentVertex).ProjectToPlane(normal);
                     var edge1HalfWidth = _parameterWidth.Get(edge1) / 2f;
-                    var edge1Right = edge1Direction.Cross(normal).Normalize();
+                    var edge1Right = edge1Direction.Cross(normal).normalized;
 
                     var edge2 = orderedEdges[(i + 1) % orderedEdges.Count];
                     var edge2Direction = edge2.GetDirectionFrom(currentVertex).ProjectToPlane(normal);
                     var edge2HalfWidth = _parameterWidth.Get(edge2) / 2f;
-                    var edge2Left = -edge2Direction.Cross(normal).Normalize();
+                    var edge2Left = -edge2Direction.Cross(normal).normalized;
 
                     var sideADot = edge2Direction.Dot(edge1Right);
                     var sideBDot = edge1Direction.Dot(edge2Left);
 
 
                     //there is a special case, when the edges are at 180º
-                    Vector3D sumVector;
+                    UnityEngine.Vector3 sumVector;
                     if (MathHelper.ToDegrees(edge1Direction.AngleTo(edge2Direction)) > 180 - AngleTolerance)
                     {
                         var halfWidth = (edge1HalfWidth + edge2HalfWidth) / 2f;
@@ -467,7 +467,7 @@ namespace Sceelix.Paths.Parameters
             //reject faces that are facing the opposite direction
             if (_parameterCloseInsides.Value)
                 foreach (var newFace in CloseInsideAreas(faces))
-                    if (newFace.Normal.Dot(Vector3D.ZVector) < 0)
+                    if (newFace.Normal.Dot(UnityEngine.Vector3.forward) < 0)
                     {
                         newFace.Detach();
                     }
@@ -511,12 +511,12 @@ namespace Sceelix.Paths.Parameters
 
                     var newFace = new Face(sourceRight, sourceCenter, sourceLeft, targetLeft, targetCenter, targetRight);
 
-                    sourceRight[newFace].UV0 = new Vector2D(1, 0);
-                    sourceCenter[newFace].UV0 = new Vector2D(0.5f, 0);
-                    sourceLeft[newFace].UV0 = new Vector2D(0, 0);
-                    targetLeft[newFace].UV0 = new Vector2D(0, 1);
-                    targetCenter[newFace].UV0 = new Vector2D(0.5f, 1);
-                    targetRight[newFace].UV0 = new Vector2D(1, 1);
+                    sourceRight[newFace].UV0 = new UnityEngine.Vector2(1, 0);
+                    sourceCenter[newFace].UV0 = new UnityEngine.Vector2(0.5f, 0);
+                    sourceLeft[newFace].UV0 = new UnityEngine.Vector2(0, 0);
+                    targetLeft[newFace].UV0 = new UnityEngine.Vector2(0, 1);
+                    targetCenter[newFace].UV0 = new UnityEngine.Vector2(0.5f, 1);
+                    targetRight[newFace].UV0 = new UnityEngine.Vector2(1, 1);
 
                     //copy the attributes of the original edge
                     pathEdge.Attributes.SetAttributesTo(newFace.Attributes);
@@ -541,7 +541,7 @@ namespace Sceelix.Paths.Parameters
         /// Function used in a ordering function to determine the angle around a vertex (and a given axis normal).
         /// </summary>
         /// <returns>The angle between that edge and the first edge direction.</returns>
-        private double GetAngle(PathVertex centralVertex, Vector3D firstDirection, Vector3D normalVector, PathEdge pathEdge)
+        private double GetAngle(PathVertex centralVertex, UnityEngine.Vector3 firstDirection, UnityEngine.Vector3 normalVector, PathEdge pathEdge)
         {
             var direction = pathEdge.GetDirectionFrom(centralVertex).ProjectToPlane(normalVector);
 

@@ -8,9 +8,9 @@ namespace Sceelix.Meshes.Data
     [Entity("Billboard")]
     public class BillboardEntity : Entity, IActor
     {
-        public BillboardEntity(Vector2D value, Color color)
+        public BillboardEntity(UnityEngine.Vector2 value, UnityEngine.Color color)
         {
-            BoxScope = new BoxScope(sizes: new Vector3D(value.X, 0, value.Y));
+            BoxScope = new BoxScope(sizes: new UnityEngine.Vector3(value.x, 0, value.y));
             Color = color;
         }
 
@@ -23,7 +23,7 @@ namespace Sceelix.Meshes.Data
         }
 
 
-        public Color Color
+        public UnityEngine.Color Color
         {
             get;
             set;
@@ -48,12 +48,12 @@ namespace Sceelix.Meshes.Data
 
 
 
-        /*public void Translate(Vector3D direction, bool scopeRelative)
+        /*public void Translate(UnityEngine.Vector3 direction, bool scopeRelative)
         {
             _boxScope.Translation += direction;
         }
 
-        public void Scale(Vector3D scaling, Vector3D pivot, bool scopeRelative)
+        public void Scale(UnityEngine.Vector3 scaling, UnityEngine.Vector3 pivot, bool scopeRelative)
         {
             _boxScope.Scale(scaling,pivot,scopeRelative);
         }*/

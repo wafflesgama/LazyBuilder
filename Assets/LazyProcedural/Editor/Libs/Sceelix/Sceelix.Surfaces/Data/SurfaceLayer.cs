@@ -67,7 +67,7 @@ namespace Sceelix.Surfaces.Data
         /// </returns>
         public bool Contains(Coordinate layerCoordinate)
         {
-            return layerCoordinate.X >= 0 && layerCoordinate.Y >= 0 && layerCoordinate.X < NumColumns && layerCoordinate.Y < NumRows;
+            return layerCoordinate.x >= 0 && layerCoordinate.y >= 0 && layerCoordinate.x < NumColumns && layerCoordinate.y < NumRows;
         }
 
 
@@ -78,7 +78,7 @@ namespace Sceelix.Surfaces.Data
 
         public abstract object GetValue(Coordinate surfaceCoordinate, SampleMethod sampleMethod);
 
-        public abstract object GetValue(Vector2D worldPosition, SampleMethod sampleMethod = SampleMethod.Clamp);
+        public abstract object GetValue(UnityEngine.Vector2 worldPosition, SampleMethod sampleMethod = SampleMethod.Clamp);
 
         public abstract object Invert(object value);
 

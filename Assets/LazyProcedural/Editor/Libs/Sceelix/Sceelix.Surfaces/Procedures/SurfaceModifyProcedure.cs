@@ -370,14 +370,14 @@ namespace Sceelix.Surfaces.Procedures
                     var heightLayer = surfaceEntity.GetLayer<HeightLayer>();
                     if (heightLayer == null)
                     {
-                        surfaceEntity.AddLayer(new NormalLayer(new Vector3D[surfaceEntity.NumColumns, surfaceEntity.NumRows], Vector3D.ZVector));
+                        surfaceEntity.AddLayer(new NormalLayer(new UnityEngine.Vector3[surfaceEntity.NumColumns, surfaceEntity.NumRows], UnityEngine.Vector3.forward));
                     }
                     else
                     {
                         var numColumns = heightLayer.NumColumns;
                         var numRows = heightLayer.NumRows;
 
-                        Vector3D[,] values = new Vector3D[numColumns, numRows];
+                        UnityEngine.Vector3[,] values = new UnityEngine.Vector3[numColumns, numRows];
                         ParallelHelper.For(0, numColumns, x =>
                         {
                             for (int y = 0; y < numRows; y++) values[x, y] = heightLayer.CalculateNormal(new Coordinate(x, y));
@@ -393,7 +393,7 @@ namespace Sceelix.Surfaces.Procedures
                     var heightLayer = surfaceEntity.GetLayer<HeightLayer>();
                     if (heightLayer == null)
                     {
-                        normalLayer.Fill(Vector3D.ZVector);
+                        normalLayer.Fill(UnityEngine.Vector3.forward);
                     }
                     else
                     {

@@ -48,12 +48,12 @@ namespace Sceelix.Paths.Parameters
                         continue;
 
                     foreach (var pathVertex in pathEntity.Vertices)
-                        if (surfaceEntity.Contains(pathVertex.Position.ToVector2D()))
+                        if (surfaceEntity.Contains(pathVertex.Position.ToVector2()))
                         {
-                            float z = heightLayer != null ? heightLayer.GetGenericValue(new Vector2D(pathVertex.Position.X, pathVertex.Position.Y)) : 0;
+                            float z = heightLayer != null ? heightLayer.GetGenericValue(new UnityEngine.Vector2(pathVertex.Position.x, pathVertex.Position.y)) : 0;
 
                             if (!float.IsInfinity(z))
-                                pathVertex.Position = new Vector3D(pathVertex.Position.X, pathVertex.Position.Y, z);
+                                pathVertex.Position = new UnityEngine.Vector3(pathVertex.Position.x, pathVertex.Position.y, z);
                         }
 
                     pathEntity.AdjustScope();

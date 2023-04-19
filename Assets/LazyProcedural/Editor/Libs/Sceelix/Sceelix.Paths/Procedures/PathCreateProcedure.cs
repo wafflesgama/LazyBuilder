@@ -74,7 +74,7 @@ namespace Sceelix.Paths.Procedures
             /// List of points that define the path.
             /// </summary>
             public ListParameter Points = new ListParameter("Points",
-                () => new Vector3DParameter("Point") {Description = "Coordinate of the point."});
+                () => new Vector3Parameter("Point") {Description = "Coordinate of the point."});
 
 
 
@@ -88,7 +88,7 @@ namespace Sceelix.Paths.Procedures
             protected internal override PathEntity CreatePath()
             {
                 PathEntity pathEntity =
-                    PathEntity.CreateSequence(Points.Items.OfType<Vector3DParameter>().Select(x => x.Value));
+                    PathEntity.CreateSequence(Points.Items.OfType<Vector3Parameter>().Select(x => x.Value));
 
 #if DEBUG
 
@@ -149,7 +149,7 @@ namespace Sceelix.Paths.Procedures
                 for (int i = 0; i < _parameterColumns.Value + 1; i++)
                 for (int j = 0; j < _parameterRows.Value + 1; j++)
                 {
-                    vertices[i, j] = new PathVertex(new Vector3D(i * _parameterColumnWidth.Value,
+                    vertices[i, j] = new PathVertex(new UnityEngine.Vector3(i * _parameterColumnWidth.Value,
                         j * _parameterRowHeight.Value));
 
                     if (j > 0)
@@ -246,15 +246,15 @@ namespace Sceelix.Paths.Procedures
                 }
 
 
-                Dictionary<Vector3D, PathVertex> vertices = new Dictionary<Vector3D, PathVertex>();
+                Dictionary<UnityEngine.Vector3, PathVertex> vertices = new Dictionary<UnityEngine.Vector3, PathVertex>();
                 List<PathEdge> newEdges = new List<PathEdge>();
 
                 var points = voronoiGenerator.GenerateVoronoi(doublesX.ToArray(), doublesY.ToArray(), 0,
                     _widthParameter.Value, 0, _heightParameter.Value);
                 foreach (var graphEdge in points)
                 {
-                    Vector3D v1 = new Vector3D((float) graphEdge.x1, (float) graphEdge.y1);
-                    Vector3D v2 = new Vector3D((float) graphEdge.x2, (float) graphEdge.y2);
+                    UnityEngine.Vector3 v1 = new UnityEngine.Vector3((float) graphEdge.x1, (float) graphEdge.y1);
+                    UnityEngine.Vector3 v2 = new UnityEngine.Vector3((float) graphEdge.x2, (float) graphEdge.y2);
 
                     PathVertex vertex1, vertex2;
 

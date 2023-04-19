@@ -6,8 +6,8 @@ using Sceelix.Mathematics.Data;
 
 namespace Sceelix.Mathematics.Serialization
 {
-    [StandardJsonConverter(typeof(Vector3D))]
-    public class Vector3DConverter : JsonConverter
+    [StandardJsonConverter(typeof(UnityEngine.Vector3))]
+    public class Vector3Converter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -25,9 +25,9 @@ namespace Sceelix.Mathematics.Serialization
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Vector3D vector = (Vector3D) value;
+            UnityEngine.Vector3 vector = (UnityEngine.Vector3) value;
 
-            writer.WriteValue(vector.X.ToString(CultureInfo.InvariantCulture) + "," + vector.Y.ToString(CultureInfo.InvariantCulture) + "," + vector.Z.ToString(CultureInfo.InvariantCulture));
+            writer.WriteValue(vector.x.ToString(CultureInfo.InvariantCulture) + "," + vector.y.ToString(CultureInfo.InvariantCulture) + "," + vector.z.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

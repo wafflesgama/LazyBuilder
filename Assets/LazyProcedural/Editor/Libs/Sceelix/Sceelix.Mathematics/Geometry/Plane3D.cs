@@ -25,12 +25,12 @@ namespace Sceelix.Mathematics.Geometry
         /// <summary>
         /// A plane can be defined by its normal n = (A,B,C)... 
         /// </summary>
-        private readonly Vector3D _normal;
+        private readonly UnityEngine.Vector3 _normal;
 
         /// <summary>
         /// ...and any point on the plane P0 = (x0, y0, z0)
         /// </summary>
-        private readonly Vector3D _point0;
+        private readonly UnityEngine.Vector3 _point0;
 
 
 
@@ -39,9 +39,9 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="normal">Normal of the plane. Does not need to be normalized.</param>
         /// <param name="point">Point of the plane.</param>
-        public Plane3D(Vector3D normal, Vector3D point)
+        public Plane3D(UnityEngine.Vector3 normal, UnityEngine.Vector3 point)
         {
-            _normal = normal.Normalize();
+            _normal = normal.normalized;
             _point0 = point;
         }
 
@@ -52,7 +52,7 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="point">Point to be verified.</param>
         /// <returns>True if it lies on the plane, false otherwise.</returns>
-        public bool PointInPlane(Vector3D point)
+        public bool PointInPlane(UnityEngine.Vector3 point)
         {
             //if the point equals 
             if (point == _point0)
@@ -70,12 +70,12 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="point">Location in world space where the height is to be determined.</param>
         /// <returns>The height at that point, Infinity if infinite solutions are found or NaN if none is found</returns>
-        public float GetHeightAt(Vector2D point)
+        public float GetHeightAt(UnityEngine.Vector2 point)
         {
-            var numerator = -_normal.X * (point.X - _point0.X) - _normal.Y * (point.Y - _point0.Y);
+            var numerator = -_normal.x * (point.x - _point0.x) - _normal.y * (point.y - _point0.y);
 
             //if the plane is vertical, it either has infinite solutions or none...
-            if (Math.Abs(_normal.Z) < float.Epsilon)
+            if (Math.Abs(_normal.z) < float.Epsilon)
             {
                 //infinite solutions are found
                 if (Math.Abs(numerator) < float.Epsilon)
@@ -86,7 +86,7 @@ namespace Sceelix.Mathematics.Geometry
             }
 
             //solving the equation normal.(point - p0) = 0
-            return numerator / _normal.Z + _point0.Z;
+            return numerator / _normal.z + _point0.z;
         }
 
 
@@ -97,7 +97,7 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public float DistanceToPoint(Vector3D point)
+        public float DistanceToPoint(UnityEngine.Vector3 point)
         {
             //should be divided by the size of the normal, but it is 1...
             return (point - _point0).Dot(_normal);
@@ -111,7 +111,7 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public PointToPlaneLocation LocationToPlane(Vector3D point)
+        public PointToPlaneLocation LocationToPlane(UnityEngine.Vector3 point)
         {
             float dot = (point - Point0).Dot(_normal);
 
@@ -123,10 +123,10 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public Vector3D Normal => _normal;
+        public UnityEngine.Vector3 Normal => _normal;
 
 
-        public Vector3D Point0 => _point0;
+        public UnityEngine.Vector3 Point0 => _point0;
         //set { _point0 = value; }
 
 
@@ -138,9 +138,9 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public static Vector3D CalculateIntersection(Plane3D planeX, Plane3D planeY, Plane3D planeZ)
+        public static UnityEngine.Vector3 CalculateIntersection(Plane3D planeX, Plane3D planeY, Plane3D planeZ)
         {
-            float denominator = Vector3D.Dot(planeX.Normal, Vector3D.Cross(planeY.Normal, planeZ.Normal));
+            float denominator = UnityEngine.Vector3.Dot(planeX.Normal, UnityEngine.Vector3.Cross(planeY.Normal, planeZ.Normal));
 
             //if the denominator is not zero, then the planes DO intersect at one point
             if (Math.Abs(denominator - 0) > float.Epsilon)
@@ -149,22 +149,22 @@ namespace Sceelix.Mathematics.Geometry
                 float d2 = planeY.Normal.Dot(planeY.Point0);
                 float d3 = planeZ.Normal.Dot(planeZ.Point0);
 
-                Vector3D p = Vector3D.Cross(planeY.Normal, planeZ.Normal) * d1 +
-                             Vector3D.Cross(planeZ.Normal, planeX.Normal) * d2 +
-                             Vector3D.Cross(planeX.Normal, planeY.Normal) * d3;
+                UnityEngine.Vector3 p = UnityEngine.Vector3.Cross(planeY.Normal, planeZ.Normal) * d1 +
+                             UnityEngine.Vector3.Cross(planeZ.Normal, planeX.Normal) * d2 +
+                             UnityEngine.Vector3.Cross(planeX.Normal, planeY.Normal) * d3;
                 return p / denominator;
             }
 
-            return Vector3D.Zero;
+            return UnityEngine.Vector3.zero;
 
-            /*Vector3D N23 = Vector3D.Cross(planeY.Normal, planeZ.Normal);
-            Vector3D N31 = Vector3D.Cross(planeZ.Normal, planeX.Normal);
-            Vector3D N12 = Vector3D.Cross(planeX.Normal, planeY.Normal);
+            /*UnityEngine.Vector3 N23 = UnityEngine.Vector3.Cross(planeY.Normal, planeZ.Normal);
+            UnityEngine.Vector3 N31 = UnityEngine.Vector3.Cross(planeZ.Normal, planeX.Normal);
+            UnityEngine.Vector3 N12 = UnityEngine.Vector3.Cross(planeX.Normal, planeY.Normal);
 
-            double NdN23 = Math.Round(Vector3D.Dot(planeX.Normal, N23), 6);
+            double NdN23 = Math.Round(UnityEngine.Vector3.Dot(planeX.Normal, N23), 6);
 
         if NdN23 != 0.0:
-            Vector3D numer = Point(self.k*N23.x, self.k*N23.y, self.k*N23.z) + (self.d2*N31.x, self.d2*N31.y, self.d2*N31.z) + \
+            UnityEngine.Vector3 numer = Point(self.k*N23.x, self.k*N23.y, self.k*N23.z) + (self.d2*N31.x, self.d2*N31.y, self.d2*N31.z) + \
                      (self.d3*N12.x, self.d3*N12.y, self.d3*N12.z)
 
             self.M = Point(numer.x/NdN23, numer.y/NdN23, numer.z/NdN23)
@@ -183,7 +183,7 @@ namespace Sceelix.Mathematics.Geometry
         /// <param name="direction"></param>
         /// <param name="maxDistance"></param>
         /// <returns></returns>
-        public static Plane3D GetBackPlane(IList<Vector3D> points, Vector3D direction, out float maxDistance)
+        public static Plane3D GetBackPlane(IList<UnityEngine.Vector3> points, UnityEngine.Vector3 direction, out float maxDistance)
         {
             Plane3D plane = new Plane3D(direction, points[0]);
             maxDistance = 0;
@@ -206,7 +206,7 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public static Plane3D GetBackPlane(IList<Vector3D> points, Vector3D direction)
+        public static Plane3D GetBackPlane(IList<UnityEngine.Vector3> points, UnityEngine.Vector3 direction)
         {
             float maxDistance = 0;
             return GetBackPlane(points, direction, out maxDistance);
@@ -245,23 +245,23 @@ namespace Sceelix.Mathematics.Geometry
         /// To verify this is one step (for the sake of grouping)
         /// </summary>
         /// <returns></returns>
-        public Vector3D NormalDistanceToZero()
+        public UnityEngine.Vector3 NormalDistanceToZero()
         {
-            return _normal * DistanceToPoint(Vector3D.Zero);
+            return _normal * DistanceToPoint(UnityEngine.Vector3.zero);
         }
 
 
 
-        public Vector3D RoundedNormalDistanceToZero()
+        public UnityEngine.Vector3 RoundedNormalDistanceToZero()
         {
-            return _normal * DistanceToPoint(Vector3D.Zero);
+            return _normal * DistanceToPoint(UnityEngine.Vector3.zero);
         }
 
 
 
         public override string ToString()
         {
-            return string.Format("Distance: {0}, Normal: {1}", DistanceToPoint(Vector3D.Zero), _normal);
+            return string.Format("Distance: {0}, Normal: {1}", DistanceToPoint(UnityEngine.Vector3.zero), _normal);
         }
     }
 }

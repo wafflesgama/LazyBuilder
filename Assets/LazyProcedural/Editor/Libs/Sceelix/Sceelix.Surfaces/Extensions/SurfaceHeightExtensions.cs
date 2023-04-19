@@ -5,9 +5,9 @@ namespace Sceelix.Surfaces.Extensions
 {
     public static class SurfaceHeightExtensions
     {
-        public static Vector3D CalculateFlatPosition(this SurfaceEntity surfaceEntity, Coordinate surfaceCoordinates)
+        public static UnityEngine.Vector3 CalculateFlatPosition(this SurfaceEntity surfaceEntity, Coordinate surfaceCoordinates)
         {
-            return new Vector3D(surfaceEntity.ToWorldPosition(surfaceCoordinates), surfaceEntity.MinimumZ);
+            return new UnityEngine.Vector3(surfaceEntity.ToWorldPosition(surfaceCoordinates), surfaceEntity.MinimumZ);
         }
 
 
@@ -32,7 +32,7 @@ namespace Sceelix.Surfaces.Extensions
         /// <param name="heightLayer">The height layer.</param>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        public static float SafeGetHeight(this HeightLayer heightLayer, Vector2D position)
+        public static float SafeGetHeight(this HeightLayer heightLayer, UnityEngine.Vector2 position)
         {
             return heightLayer != null ? heightLayer.GetGenericValue(position) : 0;
         }

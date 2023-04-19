@@ -18,7 +18,7 @@ using Sceelix.Helpers;
 using Sceelix.Mathematics.Data;
 using Sceelix.Meshes.Data;
 using Sceelix.Meshes.Materials;
-using Color = System.Drawing.Color;
+
 
 namespace Sceelix.Meshes.Procedures
 {
@@ -187,9 +187,9 @@ namespace Sceelix.Meshes.Procedures
                 StringBuilder textureUVsCode = new StringBuilder();
                 StringBuilder facesCode = new StringBuilder();
 
-                Dictionary<Vector3D, int> customPositionIndices = new Dictionary<Vector3D, int>();
-                Dictionary<Vector3D, int> customNormalIndices = new Dictionary<Vector3D, int>();
-                Dictionary<Vector2D, int> customTextureUVIndices = new Dictionary<Vector2D, int>();
+                Dictionary<UnityEngine.Vector3, int> customPositionIndices = new Dictionary<UnityEngine.Vector3, int>();
+                Dictionary<UnityEngine.Vector3, int> customNormalIndices = new Dictionary<UnityEngine.Vector3, int>();
+                Dictionary<UnityEngine.Vector2, int> customTextureUVIndices = new Dictionary<UnityEngine.Vector2, int>();
 
                 Dictionary<Material, string> _materials = new Dictionary<Material, string>();
 
@@ -248,9 +248,9 @@ namespace Sceelix.Meshes.Procedures
                             {
                                 facesCode.Append(" ");
 
-                                Vector3D position = vertex.Position;
-                                Vector3D normal = vertex[face].Normal;
-                                Vector2D textureUV = vertex[face].UV0; //.Fix()
+                                UnityEngine.Vector3 position = vertex.Position;
+                                UnityEngine.Vector3 normal = vertex[face].Normal;
+                                UnityEngine.Vector2 textureUV = vertex[face].UV0; //.Fix()
 
                                 if (_parameterFlipYZ.Value)
                                 {
@@ -258,11 +258,11 @@ namespace Sceelix.Meshes.Procedures
                                     normal = normal.FlipYZ();
                                 }
 
-                                facesCode.Append(ListBuilder("v", vertex.Position, customPositionIndices, positionsCode, position.X, position.Y, position.Z));
+                                facesCode.Append(ListBuilder("v", vertex.Position, customPositionIndices, positionsCode, position.x, position.y, position.z));
                                 facesCode.Append("/");
-                                facesCode.Append(ListBuilder("vt", textureUV, customTextureUVIndices, textureUVsCode, textureUV.X, textureUV.Y));
+                                facesCode.Append(ListBuilder("vt", textureUV, customTextureUVIndices, textureUVsCode, textureUV.x, textureUV.y));
                                 facesCode.Append("/");
-                                facesCode.Append(ListBuilder("vn", normal, customNormalIndices, normalsCode, normal.X, normal.Y, normal.Z));
+                                facesCode.Append(ListBuilder("vn", normal, customNormalIndices, normalsCode, normal.x, normal.y, normal.z));
                             }
 
                             facesCode.AppendLine();
@@ -365,7 +365,7 @@ namespace Sceelix.Meshes.Procedures
                     materialCode.AppendLine("map_Kd " + Path.Combine(relativeTextureFolderPath, fileName));
 
                     Bitmap bitmap = new Bitmap(1, 1);
-                    bitmap.SetPixel(0, 0, Color.FromArgb(textureMaterial.DefaultColor.A, textureMaterial.DefaultColor.R, textureMaterial.DefaultColor.G, textureMaterial.DefaultColor.B));
+                    bitmap.SetPixel(0, 0, new UnityEngine.Color(textureMaterial.DefaultColor.A, textureMaterial.DefaultColor.R, textureMaterial.DefaultColor.G, textureMaterial.DefaultColor.B));
                     bitmap.Save(Path.Combine(absoluteExportDirPath, fileName), ImageFormat.Png);
 
 
@@ -547,7 +547,7 @@ namespace Sceelix.Meshes.Procedures
                 documentBuilder.AppendTabs(2).AppendLine("P: \"OriginalUpAxisSign\", \"int\", \"Integer\", \"\",1");
                 documentBuilder.AppendTabs(2).AppendLine("P: \"UnitScaleFactor\", \"double\", \"Number\", \"\",0.1");
                 documentBuilder.AppendTabs(2).AppendLine("P: \"OriginalUnitScaleFactor\", \"double\", \"Number\", \"\",0.1");
-                documentBuilder.AppendTabs(2).AppendLine("P: \"AmbientColor\", \"ColorRGB\", \"Color\", \"\",0,0,0");
+                documentBuilder.AppendTabs(2).AppendLine("P: \"AmbientColor\", \"ColorRGB\", \"UnityEngine.Color\", \"\",0,0,0");
                 documentBuilder.AppendTabs(2).AppendLine("P: \"DefaultCamera\", \"KString\", \"\", \"\", \"Producer Perspective\"");
                 documentBuilder.AppendTabs(2).AppendLine("P: \"TimeMode\", \"enum\", \"\", \"\",6");
                 documentBuilder.AppendTabs(2).AppendLine("P: \"TimeProtocol\", \"enum\", \"\", \"\",2");
@@ -646,7 +646,7 @@ namespace Sceelix.Meshes.Procedures
                     documentBuilder.AppendTabs(2).AppendLine("Version: 232");
                     documentBuilder.AppendTabs(2).AppendLine("Properties70:  {");
                     documentBuilder.AppendTabs(3).AppendLine("P:\"InheritType\", \"enum\", \"\", \"\",1");
-                    documentBuilder.AppendTabs(3).AppendLine("P:\"ScalingMax\", \"Vector3D\", \"Vector\", \"\",0,0,0");
+                    documentBuilder.AppendTabs(3).AppendLine("P:\"ScalingMax\", \"UnityEngine.Vector3\", \"Vector\", \"\",0,0,0");
                     documentBuilder.AppendTabs(3).AppendLine("P:\"DefaultAttributeIndex\", \"int\", \"Integer\", \"\",0");
                     documentBuilder.AppendTabs(3).AppendLine("P:\"Lcl Translation\", \"Lcl Translation\", \"\", \"A\",0,0,0");
                     documentBuilder.AppendTabs(3).AppendLine("P:\"MaxHandle\", \"int\", \"Integer\", \"UH\",3");
@@ -659,16 +659,16 @@ namespace Sceelix.Meshes.Procedures
                     //the geometry will be child of the model and contains the actual 3d data
                     documentBuilder.AppendTabs(1).AppendLine("Geometry: " + (startingGeometryId + baseId) + ",\"Geometry::Geometry" + (startingGeometryId + baseId) + "\", \"Mesh\" {");
                     documentBuilder.AppendTabs(2).AppendLine("Properties70: {");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"Color\", \"ColorRGB\", \"Color\", \"\",0.72156862745098,0.894117647058823,0.6");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"UnityEngine.Color\", \"ColorRGB\", \"UnityEngine.Color\", \"\",0.72156862745098,0.894117647058823,0.6");
                     documentBuilder.AppendTabs(2).AppendLine("}");
 
 
-                    List<Vector3D> positions = new List<Vector3D>();
-                    //List<Color> colors = new List<Color>();
-                    List<Vector3D> normals = new List<Vector3D>();
-                    List<Vector2D> textureCoords = new List<Vector2D>();
-                    List<Vector3D> tangents = new List<Vector3D>();
-                    List<Vector3D> binormals = new List<Vector3D>();
+                    List<UnityEngine.Vector3> positions = new List<UnityEngine.Vector3>();
+                    //List<UnityEngine.Color> colors = new List<UnityEngine.Color>();
+                    List<UnityEngine.Vector3> normals = new List<UnityEngine.Vector3>();
+                    List<UnityEngine.Vector2> textureCoords = new List<UnityEngine.Vector2>();
+                    List<UnityEngine.Vector3> tangents = new List<UnityEngine.Vector3>();
+                    List<UnityEngine.Vector3> binormals = new List<UnityEngine.Vector3>();
                     List<int> indices = new List<int>();
 
                     foreach (Face face in grouping)
@@ -682,7 +682,7 @@ namespace Sceelix.Meshes.Procedures
                             indices.Add(positions.Count);
 
                             positions.Add(halfVertex.Vertex.Position);
-                            //colors.Add(halfVertex.Color);
+                            //colors.Add(halfVertex.UnityEngine.Color);
                             normals.Add(halfVertex.Normal);
                             textureCoords.Add(halfVertex.UV0);
                             tangents.Add(halfVertex.Tangent);
@@ -808,15 +808,15 @@ namespace Sceelix.Meshes.Procedures
                     documentBuilder.AppendTabs(2).AppendLine("ShadingModel: \"phong\"");
                     documentBuilder.AppendTabs(2).AppendLine("MultiLayer: 0");
                     documentBuilder.AppendTabs(2).AppendLine("Properties70:  {");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"AmbientColor\", \"Color\", \"\", \"A\",0,0,0");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"DiffuseColor\", \"Color\", \"\", \"A\",0.47843137254902,0.47843137254902,0.6");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"TransparentColor\", \"Color\", \"\", \"A\",1,1,1");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"SpecularColor\", \"Color\", \"\", \"A\",0.33,0.33,0.33");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"AmbientColor\", \"UnityEngine.Color\", \"\", \"A\",0,0,0");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"DiffuseColor\", \"UnityEngine.Color\", \"\", \"A\",0.47843137254902,0.47843137254902,0.6");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"TransparentColor\", \"UnityEngine.Color\", \"\", \"A\",1,1,1");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"SpecularColor\", \"UnityEngine.Color\", \"\", \"A\",0.33,0.33,0.33");
                     documentBuilder.AppendTabs(3).AppendLine("P: \"ReflectionFactor\", \"Number\", \"\", \"A\",0");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"Emissive\", \"Vector3D\", \"Vector\", \"\",0,0,0");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"Ambient\", \"Vector3D\", \"Vector\", \"\",0,0,0");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"Diffuse\", \"Vector3D\", \"Vector\", \"\",0.47843137254902,0.47843137254902,0.6");
-                    documentBuilder.AppendTabs(3).AppendLine("P: \"Specular\", \"Vector3D\", \"Vector\", \"\",0.33,0.33,0.33");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"Emissive\", \"UnityEngine.Vector3\", \"Vector\", \"\",0,0,0");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"Ambient\", \"UnityEngine.Vector3\", \"Vector\", \"\",0,0,0");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"Diffuse\", \"UnityEngine.Vector3\", \"Vector\", \"\",0.47843137254902,0.47843137254902,0.6");
+                    documentBuilder.AppendTabs(3).AppendLine("P: \"Specular\", \"UnityEngine.Vector3\", \"Vector\", \"\",0.33,0.33,0.33");
                     documentBuilder.AppendTabs(3).AppendLine("P: \"Shininess\", \"double\", \"Number\", \"\",20");
                     documentBuilder.AppendTabs(3).AppendLine("P: \"Opacity\", \"double\", \"Number\", \"\",1");
                     documentBuilder.AppendTabs(3).AppendLine("P: \"Reflectivity\", \"double\", \"Number\", \"\",0");
@@ -931,7 +931,7 @@ namespace Sceelix.Meshes.Procedures
 
                     //and copy the textures there
                     Bitmap bitmap = new Bitmap(1, 1);
-                    bitmap.SetPixel(0, 0, Color.FromArgb(defaultColor.A, defaultColor.R, defaultColor.G, defaultColor.B));
+                    bitmap.SetPixel(0, 0, new UnityEngine.Color(defaultColor.A, defaultColor.R, defaultColor.G, defaultColor.B));
                     bitmap.Save(absoluteFilePath, ImageFormat.Png);
 
                     return PathHelper.ToUniversalPath(relativeFilePath);
@@ -1046,10 +1046,10 @@ namespace Sceelix.Meshes.Procedures
                     documentBuilder.AppendTabs(3).AppendLine("}");
 
 
-                    List<Vector3D> positions = new List<Vector3D>();
-                    List<Color> colors = new List<Color>();
-                    List<Vector3D> normals = new List<Vector3D>();
-                    List<Vector2D> textureCoords = new List<Vector2D>();
+                    List<UnityEngine.Vector3> positions = new List<UnityEngine.Vector3>();
+                    List<UnityEngine.Color> colors = new List<UnityEngine.Color>();
+                    List<UnityEngine.Vector3> normals = new List<UnityEngine.Vector3>();
+                    List<UnityEngine.Vector2> textureCoords = new List<UnityEngine.Vector2>();
                     List<int> indices = new List<int>();
 
 
@@ -1060,7 +1060,7 @@ namespace Sceelix.Meshes.Procedures
                             indices.Add(positions.Count);
 
                             positions.Add(halfVertex.Vertex.Position);
-                            colors.Add(halfVertex.Color);
+                            colors.Add(halfVertex.UnityEngine.Color);
                             normals.Add(halfVertex.Normal);
                             textureCoords.Add(halfVertex.UV0);
                         }
@@ -1079,22 +1079,22 @@ namespace Sceelix.Meshes.Procedures
 
                     //add the vertex positions
                     documentBuilder.AppendTabs(4).AppendLine("coord Coordinate {");
-                    documentBuilder.AppendTabs(5).Append("point [").Append(string.Join(",", positions.Select(val => string.Format("{0} {1} {2}", val.X.ToString(CultureInfo.InvariantCulture), val.Y.ToString(CultureInfo.InvariantCulture), val.Z.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
+                    documentBuilder.AppendTabs(5).Append("point [").Append(string.Join(",", positions.Select(val => string.Format("{0} {1} {2}", val.x.ToString(CultureInfo.InvariantCulture), val.y.ToString(CultureInfo.InvariantCulture), val.z.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
                     documentBuilder.AppendTabs(4).AppendLine("}");
 
                     //add the vertex colors
-                    /*documentBuilder.AppendTabs(4).AppendLine("color Color {");
+                    /*documentBuilder.AppendTabs(4).AppendLine("color UnityEngine.Color {");
                     documentBuilder.AppendTabs(5).Append("color [").Append(String.Join(",", colors.Select(val => String.Format("{0} {1} {2}", val.R.ToString(CultureInfo.InvariantCulture), val.G.ToString(CultureInfo.InvariantCulture), val.B.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
                     documentBuilder.AppendTabs(4).AppendLine("}");*/
 
                     //add the vertex normals
                     documentBuilder.AppendTabs(4).AppendLine("normal Normal {");
-                    documentBuilder.AppendTabs(5).Append("vector [").Append(string.Join(",", normals.Select(val => string.Format("{0} {1} {2}", val.X.ToString(CultureInfo.InvariantCulture), val.Y.ToString(CultureInfo.InvariantCulture), val.Z.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
+                    documentBuilder.AppendTabs(5).Append("vector [").Append(string.Join(",", normals.Select(val => string.Format("{0} {1} {2}", val.x.ToString(CultureInfo.InvariantCulture), val.y.ToString(CultureInfo.InvariantCulture), val.z.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
                     documentBuilder.AppendTabs(4).AppendLine("}");
 
                     //add the vertex textures
                     documentBuilder.AppendTabs(4).AppendLine("texCoord TextureCoordinate {");
-                    documentBuilder.AppendTabs(5).Append("point [").Append(string.Join(",", textureCoords.Select(val => string.Format("{0} {1}", val.X.ToString(CultureInfo.InvariantCulture), val.Y.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
+                    documentBuilder.AppendTabs(5).Append("point [").Append(string.Join(",", textureCoords.Select(val => string.Format("{0} {1}", val.x.ToString(CultureInfo.InvariantCulture), val.y.ToString(CultureInfo.InvariantCulture))))).AppendLine("]");
                     documentBuilder.AppendTabs(4).AppendLine("}");
 
                     //add the indices
@@ -1158,7 +1158,7 @@ namespace Sceelix.Meshes.Procedures
                         Directory.CreateDirectory(absoluteExportDirPath);
 
                     Bitmap bitmap = new Bitmap(1, 1);
-                    bitmap.SetPixel(0, 0, Color.FromArgb(textureMaterial.DefaultColor.A, textureMaterial.DefaultColor.R, textureMaterial.DefaultColor.G, textureMaterial.DefaultColor.B));
+                    bitmap.SetPixel(0, 0, new UnityEngine.Color(textureMaterial.DefaultColor.A, textureMaterial.DefaultColor.R, textureMaterial.DefaultColor.G, textureMaterial.DefaultColor.B));
                     bitmap.Save(absoluteFilePath, ImageFormat.Png);
                 }
             }

@@ -67,9 +67,9 @@ namespace Sceelix.Unity.Procedures
             private readonly ChoiceParameter _parameterType = new ChoiceParameter("Type", "Directional", "Area", "Point", "Spot", "Directional");
 
             /// <summary>
-            /// Color of the light.
+            /// UnityEngine.Color of the light.
             /// </summary>
-            private readonly ColorParameter _parameterColor = new ColorParameter("Color", Color.White);
+            private readonly ColorParameter _parameterColor = new ColorParameter("UnityEngine.Color", UnityEngine.Color.white);
 
             /// <summary>
             /// The light intensity, which is multiplied with the color.
@@ -112,7 +112,7 @@ namespace Sceelix.Unity.Procedures
 
                 component.SetGlobalAttribute("LightType", _parameterType.Value);
                 component.SetGlobalAttribute("Range", _parameterRange.Value);
-                component.SetGlobalAttribute("Color", _parameterColor.Value);
+                component.SetGlobalAttribute("UnityEngine.Color", _parameterColor.Value);
                 component.SetGlobalAttribute("Intensity", _parameterIntensity.Value);
                 component.SetGlobalAttribute("Bounce Intensity", _parameterBounceIntensity.Value);
                 component.SetGlobalAttribute("Render Mode", _parameterRenderMode.Value);
@@ -135,12 +135,12 @@ namespace Sceelix.Unity.Procedures
             /// <summary>
             /// How the camera clears the background.
             /// </summary>
-            private readonly ChoiceParameter _parameterClearFlags = new ChoiceParameter("Clear Flags", "Skybox", "Color", "Depth", "Nothing", "Skybox", "SolidColor");
+            private readonly ChoiceParameter _parameterClearFlags = new ChoiceParameter("Clear Flags", "Skybox", "UnityEngine.Color", "Depth", "Nothing", "Skybox", "SolidColor");
 
             /// <summary>
             /// The background color.
             /// </summary>
-            private readonly ColorParameter _parameterBackground = new ColorParameter("Background", new Color(49, 77, 121, 255));
+            private readonly ColorParameter _parameterBackground = new ColorParameter("Background", new UnityEngine.Color(49, 77, 121, 255));
 
             /// <summary>
             /// The parameter field of view
@@ -688,12 +688,12 @@ namespace Sceelix.Unity.Procedures
                 /// <summary>
                 /// The color value.
                 /// </summary>
-                private readonly ColorParameter _parameterValue = new ColorParameter("Value", Color.White);
+                private readonly ColorParameter _parameterValue = new ColorParameter("Value", UnityEngine.Color.white);
 
 
 
                 public ColorComponentParameterType()
-                    : base("Color")
+                    : base("UnityEngine.Color")
                 {
                 }
 
@@ -711,12 +711,12 @@ namespace Sceelix.Unity.Procedures
                 /// <summary>
                 /// The vector2D value.
                 /// </summary>
-                private readonly Vector2DParameter _parameterValue = new Vector2DParameter("Value", Vector2D.Zero);
+                private readonly Vector2Parameter _parameterValue = new Vector2Parameter("Value", UnityEngine.Vector2.zero);
 
 
 
                 public Vector2ComponentParameterType()
-                    : base("Vector2")
+                    : base("UnityEngine.Vector2")
                 {
                 }
 
@@ -734,12 +734,12 @@ namespace Sceelix.Unity.Procedures
                 /// <summary>
                 /// The vector3D value.
                 /// </summary>
-                private readonly Vector3DParameter _parameterValue = new Vector3DParameter("Value", Vector3D.Zero);
+                private readonly Vector3Parameter _parameterValue = new Vector3Parameter("Value", UnityEngine.Vector3.zero);
 
 
 
                 public Vector3ComponentParameterType()
-                    : base("Vector3")
+                    : base("UnityEngine.Vector3")
                 {
                 }
 

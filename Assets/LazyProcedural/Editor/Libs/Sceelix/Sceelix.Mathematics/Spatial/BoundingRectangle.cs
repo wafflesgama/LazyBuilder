@@ -6,15 +6,15 @@ namespace Sceelix.Mathematics.Spatial
 {
     public class BoundingRectangle
     {
-        private Vector2D _max;
-        private Vector2D _min;
+        private UnityEngine.Vector2 _max;
+        private UnityEngine.Vector2 _min;
 
 
 
         public BoundingRectangle()
         {
-            _min = Vector2D.Infinity;
-            _max = -Vector2D.Infinity;
+            _min = UnityEngine.Vector2.Infinity;
+            _max = -UnityEngine.Vector2.Infinity;
         }
 
 
@@ -27,7 +27,7 @@ namespace Sceelix.Mathematics.Spatial
 
 
 
-        public BoundingRectangle(Vector2D min, Vector2D max)
+        public BoundingRectangle(UnityEngine.Vector2 min, UnityEngine.Vector2 max)
         {
             _min = min;
             _max = max;
@@ -37,37 +37,37 @@ namespace Sceelix.Mathematics.Spatial
 
         public BoundingRectangle(float x, float y, float width, float height)
         {
-            _min = new Vector2D(x, y);
-            _max = new Vector2D(x + width, y + height);
+            _min = new UnityEngine.Vector2(x, y);
+            _max = new UnityEngine.Vector2(x + width, y + height);
         }
 
 
 
-        public BoundingRectangle(params Vector2D[] points)
-            : this((IEnumerable<Vector2D>) points)
+        public BoundingRectangle(params UnityEngine.Vector2[] points)
+            : this((IEnumerable<UnityEngine.Vector2>) points)
         {
         }
 
 
 
-        public BoundingRectangle(IEnumerable<Vector2D> points) : this()
+        public BoundingRectangle(IEnumerable<UnityEngine.Vector2> points) : this()
         {
-            foreach (Vector2D vector2D in points) AddPoint(vector2D);
+            foreach (UnityEngine.Vector2 vector2D in points) AddPoint(vector2D);
         }
 
 
 
-        public Vector2D Center => _min + (_max - _min) / 2f;
+        public UnityEngine.Vector2 Center => _min + (_max - _min) / 2f;
 
 
-        public float Height => _max.Y - _min.Y;
+        public float Height => _max.y - _min.y;
 
 
         public bool IsEmpty => Width == 0 || Height == 0;
 
 
 
-        public Vector2D Max
+        public UnityEngine.Vector2 Max
         {
             get { return _max; }
             set { _max = value; }
@@ -75,7 +75,7 @@ namespace Sceelix.Mathematics.Spatial
 
 
 
-        public Vector2D Min
+        public UnityEngine.Vector2 Min
         {
             get { return _min; }
             set { _min = value; }
@@ -83,22 +83,22 @@ namespace Sceelix.Mathematics.Spatial
 
 
 
-        public Vector2D Size => new Vector2D(Width, Height);
+        public UnityEngine.Vector2 Size => new UnityEngine.Vector2(Width, Height);
 
 
-        public float Width => _max.X - _min.X;
+        public float Width => _max.x - _min.x;
 
 
-        public static BoundingRectangle Zero => new BoundingRectangle(new Vector2D(0, 0), new Vector2D(0, 0));
+        public static BoundingRectangle Zero => new BoundingRectangle(new UnityEngine.Vector2(0, 0), new UnityEngine.Vector2(0, 0));
 
 
 
-        public void AddPoint(Vector2D point)
+        public void AddPoint(UnityEngine.Vector2 point)
         {
             if (!Contains(point))
             {
-                _min = Vector2D.Minimize(point, _min);
-                _max = Vector2D.Maximize(point, _max);
+                _min = UnityEngine.Vector2.Minimize(point, _min);
+                _max = UnityEngine.Vector2.Maximize(point, _max);
             }
         }
 
@@ -109,9 +109,9 @@ namespace Sceelix.Mathematics.Spatial
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <returns></returns>
-        public bool Contains(Vector2D point)
+        public bool Contains(UnityEngine.Vector2 point)
         {
-            return point.X >= _min.X && point.X <= _max.X && point.Y >= _min.Y && point.Y <= _max.Y;
+            return point.x >= _min.x && point.x <= _max.x && point.y >= _min.y && point.y <= _max.y;
         }
 
 
@@ -144,15 +144,15 @@ namespace Sceelix.Mathematics.Spatial
 
         public void Expand(float value)
         {
-            _min -= new Vector2D(value, value);
-            _max += new Vector2D(value, value);
+            _min -= new UnityEngine.Vector2(value, value);
+            _max += new UnityEngine.Vector2(value, value);
         }
 
 
 
         public BoundingRectangle GetExpanded(float value)
         {
-            return new BoundingRectangle(_min - new Vector2D(value, value), _max + new Vector2D(value, value));
+            return new BoundingRectangle(_min - new UnityEngine.Vector2(value, value), _max + new UnityEngine.Vector2(value, value));
         }
 
 
@@ -169,10 +169,10 @@ namespace Sceelix.Mathematics.Spatial
 
         public BoundingRectangle Intersection(BoundingRectangle boundingRectangle)
         {
-            var newMin = Vector2D.Maximize(boundingRectangle.Min, Min);
-            var newMax = Vector2D.Minimize(boundingRectangle.Max, Max);
+            var newMin = UnityEngine.Vector2.Maximize(boundingRectangle.Min, Min);
+            var newMax = UnityEngine.Vector2.Minimize(boundingRectangle.Max, Max);
 
-            if (newMin.X < newMax.X && newMin.Y < newMax.Y)
+            if (newMin.x < newMax.x && newMin.y < newMax.y)
                 return new BoundingRectangle(newMin, newMax);
 
             return null;
@@ -191,12 +191,12 @@ namespace Sceelix.Mathematics.Spatial
         public bool Intersects(BoundingRectangle target)
         {
             //combine
-            Vector2D combinedMin = Vector2D.Minimize(_min, target._min);
-            Vector2D combinedMax = Vector2D.Maximize(_max, target._max);
+            UnityEngine.Vector2 combinedMin = UnityEngine.Vector2.Minimize(_min, target._min);
+            UnityEngine.Vector2 combinedMax = UnityEngine.Vector2.Maximize(_max, target._max);
 
             if (
-                combinedMax.X - combinedMin.X > Width + target.Width ||
-                combinedMax.Y - combinedMin.Y > Height + target.Height
+                combinedMax.x - combinedMin.x > Width + target.Width ||
+                combinedMax.y - combinedMin.y > Height + target.Height
             ) return false;
 
             return true;
@@ -206,7 +206,7 @@ namespace Sceelix.Mathematics.Spatial
 
         public BoundingRectangle Union(BoundingRectangle boundingBox)
         {
-            return new BoundingRectangle(Vector2D.Minimize(boundingBox.Min, Min), Vector2D.Maximize(boundingBox.Max, Max));
+            return new BoundingRectangle(UnityEngine.Vector2.Minimize(boundingBox.Min, Min), UnityEngine.Vector2.Maximize(boundingBox.Max, Max));
         }
 
 

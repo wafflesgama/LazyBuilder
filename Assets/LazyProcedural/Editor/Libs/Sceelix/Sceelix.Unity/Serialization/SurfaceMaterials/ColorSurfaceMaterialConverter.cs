@@ -43,7 +43,7 @@ namespace Sceelix.Unity.Serialization.SurfaceMaterials
                     writer.WriteStartObject();
 
                     writer.WritePropertyName("TileSize");
-                    serializer.Serialize(writer, new Vector2D(1, 1));
+                    serializer.Serialize(writer, new UnityEngine.Vector2(1, 1));
 
                     writer.WritePropertyName("DiffuseMap");
                     var colorName = string.Join("-", material.DefaultColor.ToArray().Select(x => x.ToString()));

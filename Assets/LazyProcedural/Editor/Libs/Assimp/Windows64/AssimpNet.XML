@@ -2656,9 +2656,9 @@
             Metadata is a string.
             </summary>
         </member>
-        <member name="F:Assimp.MetaDataType.Vector3D">
+        <member name="F:Assimp.MetaDataType.Vector3">
             <summary>
-            Metadata is a <see cref="F:Assimp.MetaDataType.Vector3D"/>.
+            Metadata is a <see cref="F:Assimp.MetaDataType.Vector3"/>.
             </summary>
         </member>
         <member name="T:Assimp.PostProcessSteps">
@@ -6114,7 +6114,7 @@
             <param name="quat">Quaternion struct to fill</param>
             <param name="mat">Rotation matrix</param>
         </member>
-        <member name="M:Assimp.Unmanaged.AssimpLibrary.DecomposeMatrix(Assimp.Matrix4x4@,Assimp.Vector3D@,Assimp.Quaternion@,Assimp.Vector3D@)">
+        <member name="M:Assimp.Unmanaged.AssimpLibrary.DecomposeMatrix(Assimp.Matrix4x4@,Assimp.Vector3@,Assimp.Quaternion@,Assimp.Vector3@)">
             <summary>
             Decomposes a 4x4 matrix into its scaling, rotation, and translation parts.
             </summary>
@@ -6135,14 +6135,14 @@
             </summary>
             <param name="mat">Matrix to transpose</param>
         </member>
-        <member name="M:Assimp.Unmanaged.AssimpLibrary.TransformVecByMatrix3(Assimp.Vector3D@,Assimp.Matrix3x3@)">
+        <member name="M:Assimp.Unmanaged.AssimpLibrary.TransformVecByMatrix3(Assimp.Vector3@,Assimp.Matrix3x3@)">
             <summary>
             Transforms the vector by the 3x3 rotation matrix.
             </summary>
             <param name="vec">Vector to transform</param>
             <param name="mat">Rotation matrix</param>
         </member>
-        <member name="M:Assimp.Unmanaged.AssimpLibrary.TransformVecByMatrix4(Assimp.Vector3D@,Assimp.Matrix4x4@)">
+        <member name="M:Assimp.Unmanaged.AssimpLibrary.TransformVecByMatrix4(Assimp.Vector3@,Assimp.Matrix4x4@)">
             <summary>
             Transforms the vector by the 4x4 matrix.
             </summary>
@@ -6334,7 +6334,7 @@
             The 3D vector value of this key.
             </summary>
         </member>
-        <member name="M:Assimp.VectorKey.#ctor(System.Double,Assimp.Vector3D)">
+        <member name="M:Assimp.VectorKey.#ctor(System.Double,Assimp.Vector3)">
             <summary>
             Constructs a new VectorKey.
             </summary>
@@ -6765,7 +6765,7 @@
             <param name="z">Rotation angle about the z-axis, in radians.</param>
             <returns>The rotation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix3x3.FromEulerAnglesXYZ(Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix3x3.FromEulerAnglesXYZ(Assimp.Vector3)">
             <summary>
             Creates a rotation matrix from a set of euler angles.
             </summary>
@@ -6793,7 +6793,7 @@
             <param name="radians">Rotation angle in radians.</param>
             <returns>The rotation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix3x3.FromAngleAxis(System.Single,Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix3x3.FromAngleAxis(System.Single,Assimp.Vector3)">
             <summary>
             Creates a rotation matrix for a rotation about an arbitrary axis.
             </summary>
@@ -6801,14 +6801,14 @@
             <param name="axis">Rotation axis, which should be a normalized vector.</param>
             <returns>The rotation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix3x3.FromScaling(Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix3x3.FromScaling(Assimp.Vector3)">
             <summary>
             Creates a scaling matrix.
             </summary>
             <param name="scaling">Scaling vector</param>
             <returns>The scaling vector</returns>
         </member>
-        <member name="M:Assimp.Matrix3x3.FromToMatrix(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix3x3.FromToMatrix(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Creates a rotation matrix that rotates a vector called "from" into another
             vector called "to". Based on an algorithm by Tomas Moller and John Hudges:
@@ -7035,7 +7035,7 @@
             </summary>
             <returns>The determinant</returns>
         </member>
-        <member name="M:Assimp.Matrix4x4.Decompose(Assimp.Vector3D@,Assimp.Quaternion@,Assimp.Vector3D@)">
+        <member name="M:Assimp.Matrix4x4.Decompose(Assimp.Vector3@,Assimp.Quaternion@,Assimp.Vector3@)">
             <summary>
             Decomposes a transformation matrix into its original scale, rotation, and translation components. The
             scaling vector receives the scaling for the x, y, z axes. The rotation is returned as a hamilton quaternion. And
@@ -7045,7 +7045,7 @@
             <param name="rotation">Quaternion to hold the rotation component</param>
             <param name="translation">Vector to hold the translation component</param>
         </member>
-        <member name="M:Assimp.Matrix4x4.DecomposeNoScaling(Assimp.Quaternion@,Assimp.Vector3D@)">
+        <member name="M:Assimp.Matrix4x4.DecomposeNoScaling(Assimp.Quaternion@,Assimp.Vector3@)">
             <summary>
             Decomposes a transformation matrix with no scaling. The rotation is returned as a hamilton
             quaternion. The translation receives the output position for the x, y, z axes.
@@ -7062,7 +7062,7 @@
             <param name="z">Rotation angle about the z-axis, in radians.</param>
             <returns>The rotation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix4x4.FromEulerAnglesXYZ(Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix4x4.FromEulerAnglesXYZ(Assimp.Vector3)">
             <summary>
             Creates a rotation matrix from a set of euler angles.
             </summary>
@@ -7090,7 +7090,7 @@
             <param name="radians">Rotation angle in radians.</param>
             <returns>The rotation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix4x4.FromAngleAxis(System.Single,Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix4x4.FromAngleAxis(System.Single,Assimp.Vector3)">
             <summary>
             Creates a rotation matrix for a rotation about an arbitrary axis.
             </summary>
@@ -7098,21 +7098,21 @@
             <param name="axis">Rotation axis, which should be a normalized vector.</param>
             <returns>The rotation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix4x4.FromTranslation(Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix4x4.FromTranslation(Assimp.Vector3)">
             <summary>
             Creates a translation matrix.
             </summary>
             <param name="translation">Translation vector</param>
             <returns>The translation matrix</returns>
         </member>
-        <member name="M:Assimp.Matrix4x4.FromScaling(Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix4x4.FromScaling(Assimp.Vector3)">
             <summary>
             Creates a scaling matrix.
             </summary>
             <param name="scaling">Scaling vector</param>
             <returns>The scaling vector</returns>
         </member>
-        <member name="M:Assimp.Matrix4x4.FromToMatrix(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Matrix4x4.FromToMatrix(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Creates a rotation matrix that rotates a vector called "from" into another
             vector called "to". Based on an algorithm by Tomas Moller and John Hudges:
@@ -8163,7 +8163,7 @@
             <param name="yaw">Yaw</param>
             <param name="roll">Roll</param>
         </member>
-        <member name="M:Assimp.Quaternion.#ctor(Assimp.Vector3D,System.Single)">
+        <member name="M:Assimp.Quaternion.#ctor(Assimp.Vector3,System.Single)">
             <summary>
             Constructs a new Quaternion from an axis-angle.
             </summary>
@@ -8195,7 +8195,7 @@
             <param name="factor">Interpolation factor between 0 and 1, values beyond this range yield undefined values</param>
             <returns>Interpolated quaternion.</returns>
         </member>
-        <member name="M:Assimp.Quaternion.Rotate(Assimp.Vector3D,Assimp.Quaternion)">
+        <member name="M:Assimp.Quaternion.Rotate(Assimp.Vector3,Assimp.Quaternion)">
             <summary>
             Rotates a point by this quaternion.
             </summary>
@@ -8272,7 +8272,7 @@
             Direction of the ray.
             </summary>
         </member>
-        <member name="M:Assimp.Ray.#ctor(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Ray.#ctor(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Constructs a new Ray.
             </summary>
@@ -9041,22 +9041,22 @@
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.Vertices">
             <summary>
-            aiVector3D*, array of positions.
+            aiVector3*, array of positions.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.Normals">
             <summary>
-            aiVector3D*, array of normals.
+            aiVector3*, array of normals.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.Tangents">
             <summary>
-            aiVector3D*, array of tangents.
+            aiVector3*, array of tangents.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.BiTangents">
             <summary>
-            aiVector3D*, array of bitangents.
+            aiVector3*, array of bitangents.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.Colors">
@@ -9066,7 +9066,7 @@
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.TextureCoords">
             <summary>
-            aiVector3D*[Max_Value], array of arrays of texture coordinates. Max_Value is defined as <see cref="F:Assimp.Unmanaged.AiDefines.AI_MAX_NUMBER_OF_TEXTURECOORDS"/>.
+            aiVector3*[Max_Value], array of arrays of texture coordinates. Max_Value is defined as <see cref="F:Assimp.Unmanaged.AiDefines.AI_MAX_NUMBER_OF_TEXTURECOORDS"/>.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiMesh.NumUVComponents">
@@ -9580,22 +9580,22 @@
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.Vertices">
             <summary>
-            aiVector3D*, replacement position array.
+            aiVector3*, replacement position array.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.Normals">
             <summary>
-            aiVector3D*, replacement normal array.
+            aiVector3*, replacement normal array.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.Tangents">
             <summary>
-            aiVector3D*, replacement tangent array.
+            aiVector3*, replacement tangent array.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.BiTangents">
             <summary>
-            aiVector3D*, replacement bitangent array.
+            aiVector3*, replacement bitangent array.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.Colors">
@@ -9605,7 +9605,7 @@
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.TextureCoords">
             <summary>
-            aiVector3D*[Max_Value], array of arrays of texture coordinates. Max_Value is defined as <see cref="F:Assimp.Unmanaged.AiDefines.AI_MAX_NUMBER_OF_TEXTURECOORDS"/>.
+            aiVector3*[Max_Value], array of arrays of texture coordinates. Max_Value is defined as <see cref="F:Assimp.Unmanaged.AiDefines.AI_MAX_NUMBER_OF_TEXTURECOORDS"/>.
             </summary>
         </member>
         <member name="F:Assimp.Unmanaged.AiAnimMesh.NumVertices">
@@ -9835,66 +9835,66 @@
             </summary>
             <param name="index">Zero-based index.</param>
         </member>
-        <member name="T:Assimp.Vector2D">
+        <member name="T:Assimp.Vector2">
             <summary>
             Represents a two-dimensional vector.
             </summary>
         </member>
-        <member name="F:Assimp.Vector2D.X">
+        <member name="F:Assimp.Vector2.X">
             <summary>
             X component.
             </summary>
         </member>
-        <member name="F:Assimp.Vector2D.Y">
+        <member name="F:Assimp.Vector2.Y">
             <summary>
             Y component
             </summary>
         </member>
-        <member name="M:Assimp.Vector2D.#ctor(System.Single,System.Single)">
+        <member name="M:Assimp.Vector2.#ctor(System.Single,System.Single)">
             <summary>
-            Constructs a new Vector2D.
+            Constructs a new Vector2.
             </summary>
             <param name="x">X component</param>
             <param name="y">Y component</param>
         </member>
-        <member name="M:Assimp.Vector2D.#ctor(System.Single)">
+        <member name="M:Assimp.Vector2.#ctor(System.Single)">
             <summary>
-            Constructs a new Vector2D with both components
+            Constructs a new Vector2 with both components
             set the same value.
             </summary>
             <param name="value">Value to set both X and Y to</param>
         </member>
-        <member name="M:Assimp.Vector2D.Set(System.Single,System.Single)">
+        <member name="M:Assimp.Vector2.Set(System.Single,System.Single)">
             <summary>
             Sets the X and Y values.
             </summary>
             <param name="x">X component</param>
             <param name="y">Y component</param>
         </member>
-        <member name="M:Assimp.Vector2D.Length">
+        <member name="M:Assimp.Vector2.Length">
             <summary>
             Calculates the length of the vector.
             </summary>
             <returns>Vector's length</returns>
         </member>
-        <member name="M:Assimp.Vector2D.LengthSquared">
+        <member name="M:Assimp.Vector2.LengthSquared">
             <summary>
             Calculates the length of the vector squared.
             </summary>
             <returns>Vector's length squared</returns>
         </member>
-        <member name="M:Assimp.Vector2D.Normalize">
+        <member name="M:Assimp.Vector2.Normalize">
             <summary>
             Normalizes the vector where all components add to one (Unit Vector), but preserves
             the direction that the vector represents.
             </summary>
         </member>
-        <member name="M:Assimp.Vector2D.Negate">
+        <member name="M:Assimp.Vector2.Negate">
             <summary>
             Negates the vector.
             </summary>
         </member>
-        <member name="M:Assimp.Vector2D.op_Addition(Assimp.Vector2D,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Addition(Assimp.Vector2,Assimp.Vector2)">
             <summary>
             Adds two vectors together.
             </summary>
@@ -9902,7 +9902,7 @@
             <param name="b">Second vector</param>
             <returns>Added vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Subtraction(Assimp.Vector2D,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Subtraction(Assimp.Vector2,Assimp.Vector2)">
             <summary>
             Subtracts the second vector from the first vector.
             </summary>
@@ -9910,7 +9910,7 @@
             <param name="b">Second vector</param>
             <returns>Resulting vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Multiply(Assimp.Vector2D,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Multiply(Assimp.Vector2,Assimp.Vector2)">
             <summary>
             Multiplies two vectors together.
             </summary>
@@ -9918,7 +9918,7 @@
             <param name="b">Second vector</param>
             <returns>Multiplied vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Multiply(Assimp.Vector2D,System.Single)">
+        <member name="M:Assimp.Vector2.op_Multiply(Assimp.Vector2,System.Single)">
             <summary>
             Multiplies a vector by a scalar.
             </summary>
@@ -9926,7 +9926,7 @@
             <param name="scale">Scalar value</param>
             <returns>Scaled vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Multiply(System.Single,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Multiply(System.Single,Assimp.Vector2)">
             <summary>
             Multiplies a vector by a scalar.
             </summary>
@@ -9934,7 +9934,7 @@
             <param name="value">Source vector</param>
             <returns>Scaled vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Division(Assimp.Vector2D,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Division(Assimp.Vector2,Assimp.Vector2)">
             <summary>
             Divides the first vector by the second vector.
             </summary>
@@ -9942,7 +9942,7 @@
             <param name="b">Second vector</param>
             <returns>Divided vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Division(Assimp.Vector2D,System.Single)">
+        <member name="M:Assimp.Vector2.op_Division(Assimp.Vector2,System.Single)">
             <summary>
             Divides the vector by a divisor value.
             </summary>
@@ -9950,14 +9950,14 @@
             <param name="divisor">Divisor</param>
             <returns>Divided vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_UnaryNegation(Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_UnaryNegation(Assimp.Vector2)">
             <summary>
             Negates the vector.
             </summary>
             <param name="value">Source vector</param>
             <returns>Negated vector</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Equality(Assimp.Vector2D,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Equality(Assimp.Vector2,Assimp.Vector2)">
             <summary>
             Tests equality between two vectors.
             </summary>
@@ -9965,7 +9965,7 @@
             <param name="b">Second vector</param>
             <returns>True if the vectors are equal, false otherwise</returns>
         </member>
-        <member name="M:Assimp.Vector2D.op_Inequality(Assimp.Vector2D,Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.op_Inequality(Assimp.Vector2,Assimp.Vector2)">
             <summary>
             Tests inequality between two vectors.
             </summary>
@@ -9973,21 +9973,21 @@
             <param name="b">Second vector</param>
             <returns>True if the vectors are not equal, false otherwise</returns>
         </member>
-        <member name="M:Assimp.Vector2D.Equals(Assimp.Vector2D)">
+        <member name="M:Assimp.Vector2.Equals(Assimp.Vector2)">
             <summary>
             Tests equality between this vector and another vector.
             </summary>
             <param name="other">Vector to test against</param>
             <returns>True if components are equal</returns>
         </member>
-        <member name="M:Assimp.Vector2D.Equals(System.Object)">
+        <member name="M:Assimp.Vector2.Equals(System.Object)">
             <summary>
             Tests equality between this vector and another object.
             </summary>
             <param name="obj">Object to test against</param>
             <returns>True if the object is a vector and the components are equal</returns>
         </member>
-        <member name="M:Assimp.Vector2D.GetHashCode">
+        <member name="M:Assimp.Vector2.GetHashCode">
             <summary>
             Returns a hash code for this instance.
             </summary>
@@ -9995,7 +9995,7 @@
             A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
             </returns>
         </member>
-        <member name="M:Assimp.Vector2D.ToString">
+        <member name="M:Assimp.Vector2.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
             </summary>
@@ -10003,7 +10003,7 @@
             A <see cref="T:System.String"/> that represents this instance.
             </returns>
         </member>
-        <member name="P:Assimp.Vector2D.Item(System.Int32)">
+        <member name="P:Assimp.Vector2.Item(System.Int32)">
             <summary>
             Gets or sets the component value at the specified zero-based index
             in the order of XY (index 0 access X, 1 access Y. If
@@ -10012,49 +10012,49 @@
             <param name="index">Zero-based index.</param>
             <returns>The component value</returns>
         </member>
-        <member name="T:Assimp.Vector3D">
+        <member name="T:Assimp.Vector3">
             <summary>
             Represents a three-dimensional vector.
             </summary>
         </member>
-        <member name="F:Assimp.Vector3D.X">
+        <member name="F:Assimp.Vector3.X">
             <summary>
             X component.
             </summary>
         </member>
-        <member name="F:Assimp.Vector3D.Y">
+        <member name="F:Assimp.Vector3.Y">
             <summary>
             Y component.
             </summary>
         </member>
-        <member name="F:Assimp.Vector3D.Z">
+        <member name="F:Assimp.Vector3.Z">
             <summary>
             Z component.
             </summary>
         </member>
-        <member name="M:Assimp.Vector3D.#ctor(System.Single,System.Single,System.Single)">
+        <member name="M:Assimp.Vector3.#ctor(System.Single,System.Single,System.Single)">
             <summary>
-            Constructs a new Vector3D.
+            Constructs a new Vector3.
             </summary>
             <param name="x">X component</param>
             <param name="y">Y component</param>
             <param name="z">Z component</param>
         </member>
-        <member name="M:Assimp.Vector3D.#ctor(Assimp.Vector2D,System.Single)">
+        <member name="M:Assimp.Vector3.#ctor(Assimp.Vector2,System.Single)">
             <summary>
-            Constructs a new Vector3D.
+            Constructs a new Vector3.
             </summary>
-            <param name="value">Vector2D containing the X, Y values</param>
+            <param name="value">Vector2 containing the X, Y values</param>
             <param name="z">Z component</param>
         </member>
-        <member name="M:Assimp.Vector3D.#ctor(System.Single)">
+        <member name="M:Assimp.Vector3.#ctor(System.Single)">
             <summary>
-            Constructs a new Vector3D where each component is set
+            Constructs a new Vector3 where each component is set
             to the same value.
             </summary>
             <param name="value">Value to set X, Y, and Z to</param>
         </member>
-        <member name="M:Assimp.Vector3D.Set(System.Single,System.Single,System.Single)">
+        <member name="M:Assimp.Vector3.Set(System.Single,System.Single,System.Single)">
             <summary>
             Sets the X, Y, and Z values.
             </summary>
@@ -10062,30 +10062,30 @@
             <param name="y">Y component</param>
             <param name="z">Z component</param>
         </member>
-        <member name="M:Assimp.Vector3D.Length">
+        <member name="M:Assimp.Vector3.Length">
             <summary>
             Calculates the length of the vector.
             </summary>
             <returns>Vector's length</returns>
         </member>
-        <member name="M:Assimp.Vector3D.LengthSquared">
+        <member name="M:Assimp.Vector3.LengthSquared">
             <summary>
             Calculates the length of the vector squared.
             </summary>
             <returns>Vector's length squared</returns>
         </member>
-        <member name="M:Assimp.Vector3D.Normalize">
+        <member name="M:Assimp.Vector3.Normalize">
             <summary>
             Normalizes the vector where all components add to one (Unit Vector), but preserves
             the direction that the vector represents.
             </summary>
         </member>
-        <member name="M:Assimp.Vector3D.Negate">
+        <member name="M:Assimp.Vector3.Negate">
             <summary>
             Negates the vector.
             </summary>
         </member>
-        <member name="M:Assimp.Vector3D.Cross(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.Cross(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Calculates the cross product of two vectors.
             </summary>
@@ -10093,7 +10093,7 @@
             <param name="b">Second vector</param>
             <returns>Resulting vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.Dot(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.Dot(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Calculates the dot product of two vectors.
             </summary>
@@ -10101,7 +10101,7 @@
             <param name="b">Second vector</param>
             <returns>Resulting vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Addition(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Addition(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Adds two vectors together.
             </summary>
@@ -10109,7 +10109,7 @@
             <param name="b">Second vector</param>
             <returns>Added vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Subtraction(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Subtraction(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Subtracts the second vector from the first vector.
             </summary>
@@ -10117,7 +10117,7 @@
             <param name="b">Second vector</param>
             <returns>Resulting vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Multiply(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Multiply(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Multiplies two vectors together.
             </summary>
@@ -10125,7 +10125,7 @@
             <param name="b">Second vector</param>
             <returns>Multiplied vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Multiply(Assimp.Vector3D,System.Single)">
+        <member name="M:Assimp.Vector3.op_Multiply(Assimp.Vector3,System.Single)">
             <summary>
             Multiplies a vector by a scalar.
             </summary>
@@ -10133,7 +10133,7 @@
             <param name="scale">Scalar value</param>
             <returns>Scaled vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Multiply(System.Single,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Multiply(System.Single,Assimp.Vector3)">
             <summary>
             Multiplies a vector by a scalar.
             </summary>
@@ -10141,7 +10141,7 @@
             <param name="value">Source vector</param>
             <returns>Scaled vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Multiply(Assimp.Matrix3x3,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Multiply(Assimp.Matrix3x3,Assimp.Vector3)">
             <summary>
             Transforms this vector by a 3x3 matrix. This "post-multiplies" the two.
             </summary>
@@ -10149,7 +10149,7 @@
             <param name="vector">Source vector</param>
             <returns>Transformed vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Multiply(Assimp.Matrix4x4,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Multiply(Assimp.Matrix4x4,Assimp.Vector3)">
             <summary>
             Transforms this vector by a 4x4 matrix. This "post-multiplies" the two.
             </summary>
@@ -10157,7 +10157,7 @@
             <param name="vector">Source vector</param>
             <returns>Transformed vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Division(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Division(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Divides the first vector by the second vector.
             </summary>
@@ -10165,7 +10165,7 @@
             <param name="b">Second vector</param>
             <returns>Divided vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Division(Assimp.Vector3D,System.Single)">
+        <member name="M:Assimp.Vector3.op_Division(Assimp.Vector3,System.Single)">
             <summary>
             Divides the vector by a divisor value.
             </summary>
@@ -10173,14 +10173,14 @@
             <param name="divisor">Divisor</param>
             <returns>Divided vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_UnaryNegation(Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_UnaryNegation(Assimp.Vector3)">
             <summary>
             Negates the vector.
             </summary>
             <param name="value">Source vector</param>
             <returns>Negated vector</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Equality(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Equality(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Tests equality between two vectors.
             </summary>
@@ -10188,7 +10188,7 @@
             <param name="b">Second vector</param>
             <returns>True if the vectors are equal, false otherwise</returns>
         </member>
-        <member name="M:Assimp.Vector3D.op_Inequality(Assimp.Vector3D,Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.op_Inequality(Assimp.Vector3,Assimp.Vector3)">
             <summary>
             Tests inequality between two vectors.
             </summary>
@@ -10196,21 +10196,21 @@
             <param name="b">Second vector</param>
             <returns>True if the vectors are not equal, false otherwise</returns>
         </member>
-        <member name="M:Assimp.Vector3D.Equals(Assimp.Vector3D)">
+        <member name="M:Assimp.Vector3.Equals(Assimp.Vector3)">
             <summary>
             Tests equality between this vector and another vector.
             </summary>
             <param name="other">Vector to test against</param>
             <returns>True if components are equal</returns>
         </member>
-        <member name="M:Assimp.Vector3D.Equals(System.Object)">
+        <member name="M:Assimp.Vector3.Equals(System.Object)">
             <summary>
             Tests equality between this vector and another object.
             </summary>
             <param name="obj">Object to test against</param>
             <returns>True if the object is a vector and the components are equal</returns>
         </member>
-        <member name="M:Assimp.Vector3D.GetHashCode">
+        <member name="M:Assimp.Vector3.GetHashCode">
             <summary>
             Returns a hash code for this instance.
             </summary>
@@ -10218,7 +10218,7 @@
             A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
             </returns>
         </member>
-        <member name="M:Assimp.Vector3D.ToString">
+        <member name="M:Assimp.Vector3.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
             </summary>
@@ -10226,7 +10226,7 @@
             A <see cref="T:System.String"/> that represents this instance.
             </returns>
         </member>
-        <member name="P:Assimp.Vector3D.Item(System.Int32)">
+        <member name="P:Assimp.Vector3.Item(System.Int32)">
             <summary>
             Gets or sets the component value at the specified zero-based index
             in the order of XYZ (index 0 access X, 1 access Y, etc). If

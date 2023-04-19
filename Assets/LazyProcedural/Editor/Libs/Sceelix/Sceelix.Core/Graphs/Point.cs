@@ -31,14 +31,14 @@ namespace Sceelix.Core.Graphs
 
         public static Point operator +(Point a, Point b)
         {
-            return new Point(a.X + b.X, a.Y + b.Y);
+            return new Point(a.x + b.x, a.y + b.y);
         }
 
 
 
         public static Point operator -(Point a, Point b)
         {
-            return new Point(a.X - b.X, a.Y - b.Y);
+            return new Point(a.x - b.x, a.y - b.y);
         }
 
 
@@ -60,8 +60,8 @@ namespace Sceelix.Core.Graphs
 
         public static Point Minimize(Point v1, Point v2)
         {
-            float x = Math.Min(v1.X, v2.X);
-            float y = Math.Min(v1.Y, v2.Y);
+            float x = Math.Min(v1.x, v2.x);
+            float y = Math.Min(v1.y, v2.y);
 
             return new Point(x, y);
         }

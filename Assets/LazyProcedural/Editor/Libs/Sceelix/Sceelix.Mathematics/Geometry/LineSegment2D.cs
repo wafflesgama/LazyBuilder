@@ -8,12 +8,12 @@ namespace Sceelix.Mathematics.Geometry
     /// </summary>
     public class LineSegment2D
     {
-        private Vector2D _start;
-        private Vector2D _end;
+        private UnityEngine.Vector2 _start;
+        private UnityEngine.Vector2 _end;
 
 
 
-        public LineSegment2D(Vector2D start, Vector2D end)
+        public LineSegment2D(UnityEngine.Vector2 start, UnityEngine.Vector2 end)
         {
             _start = start;
             _end = end;
@@ -24,13 +24,13 @@ namespace Sceelix.Mathematics.Geometry
         /// <summary> 
         /// Gets the center of this line segment
         /// </summary>
-        public Vector2D Center => new Vector2D(0.5f * (_start.X + _end.X), 0.5f * (_start.Y + _end.Y));
+        public UnityEngine.Vector2 Center => new UnityEngine.Vector2(0.5f * (_start.x + _end.x), 0.5f * (_start.y + _end.y));
 
 
-        public Vector2D Direction => _end - _start;
+        public UnityEngine.Vector2 Direction => _end - _start;
 
 
-        public Vector2D End => _end;
+        public UnityEngine.Vector2 End => _end;
 
 
         /// <summary>
@@ -48,21 +48,21 @@ namespace Sceelix.Mathematics.Geometry
         /// <summary> 
         /// Gets the normal of the line Segment. 
         /// </summary>
-        public Vector2D Normal => new Vector2D(_start.Y - _end.Y, _end.X - _start.X).Normalize();
+        public UnityEngine.Vector2 Normal => new UnityEngine.Vector2(_start.y - _end.y, _end.x - _start.x).normalized;
 
 
-        public Vector2D Start => _start;
+        public UnityEngine.Vector2 Start => _start;
 
 
 
         /// <summary>
         /// Find the closest point between <see cref="_start"/> and <see cref="_end"/>.
         /// </summary>
-        public Vector2D ClosestPointOnLine(Vector2D point)
+        public UnityEngine.Vector2 ClosestPointOnLine(UnityEngine.Vector2 point)
         {
             var lineLength = Length;
             var lineDir = Direction / lineLength;
-            var distance = Vector2D.Dot(point - _start, lineDir);
+            var distance = UnityEngine.Vector2.Dot(point - _start, lineDir);
 
             distance = Math.Min(Math.Max(0, distance), lineLength);
             /*if (distance <= 0)
@@ -76,19 +76,19 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public Vector2D? Intersection(LineSegment2D value, bool includeEnds)
+        public UnityEngine.Vector2? Intersection(LineSegment2D value, bool includeEnds)
         {
-            float x1 = _end.X - _start.X;
-            float y1 = _end.Y - _start.Y;
-            float x2 = value._end.X - value._start.X;
-            float y2 = value._end.Y - value._start.Y;
+            float x1 = _end.x - _start.x;
+            float y1 = _end.y - _start.y;
+            float x2 = value._end.x - value._start.x;
+            float y2 = value._end.y - value._start.y;
             float d = x1 * y2 - y1 * x2;
 
             if (Math.Abs(d) < float.Epsilon)
                 return null;
 
-            float x3 = value._start.X - _start.X;
-            float y3 = value._start.Y - _start.Y;
+            float x3 = value._start.x - _start.x;
+            float y3 = value._start.y - _start.y;
             float t = (x3 * y2 - y3 * x2) / d;
             float u = (x3 * y1 - y3 * x1) / d;
 
@@ -103,7 +103,7 @@ namespace Sceelix.Mathematics.Geometry
                     return null;
             }
 
-            return new Vector2D(_start.X + t * x1, _start.Y + t * y1);
+            return new UnityEngine.Vector2(_start.x + t * x1, _start.y + t * y1);
         }
 
 
@@ -118,7 +118,7 @@ namespace Sceelix.Mathematics.Geometry
         /// <summary>
         /// Find the minimum distance from this line segment to the given point.
         /// </summary>
-        public float MinDistanceTo(Vector2D point)
+        public float MinDistanceTo(UnityEngine.Vector2 point)
         {
             return (ClosestPointOnLine(point) - point).Length;
         }

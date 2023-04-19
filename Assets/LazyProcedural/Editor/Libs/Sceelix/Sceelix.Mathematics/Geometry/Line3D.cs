@@ -12,7 +12,7 @@ namespace Sceelix.Mathematics.Geometry
     /// </summary>
     public struct Line3D
     {
-        public Line3D(Vector3D direction, Vector3D point0)
+        public Line3D(UnityEngine.Vector3 direction, UnityEngine.Vector3 point0)
         {
             Direction = direction;
             Point0 = point0;
@@ -28,21 +28,21 @@ namespace Sceelix.Mathematics.Geometry
         /// <returns></returns>
         public LineSegment3D? ShortestLineBetweenTwoLines(Line3D line)
         {
-            Vector3D p1 = Point0;
-            Vector3D p3 = line.Point0;
+            UnityEngine.Vector3 p1 = Point0;
+            UnityEngine.Vector3 p3 = line.Point0;
 
-            Vector3D p21 = Direction;
-            Vector3D p43 = line.Direction;
-            Vector3D p13 = p1 - p3;
+            UnityEngine.Vector3 p21 = Direction;
+            UnityEngine.Vector3 p43 = line.Direction;
+            UnityEngine.Vector3 p13 = p1 - p3;
 
             if (Direction.Length < float.Epsilon || line.Direction.Length < float.Epsilon)
                 return null;
 
             double d1343 = p13.Dot(p43);
             double d4321 = p43.Dot(p21);
-            double d1321 = p13.X * (double) p21.X + (double) p13.Y * p21.Y + (double) p13.Z * p21.Z;
-            double d4343 = p43.X * (double) p43.X + (double) p43.Y * p43.Y + (double) p43.Z * p43.Z;
-            double d2121 = p21.X * (double) p21.X + (double) p21.Y * p21.Y + (double) p21.Z * p21.Z;
+            double d1321 = p13.x * (double) p21.x + (double) p13.y * p21.y + (double) p13.z * p21.z;
+            double d4343 = p43.x * (double) p43.x + (double) p43.y * p43.y + (double) p43.z * p43.z;
+            double d2121 = p21.x * (double) p21.x + (double) p21.y * p21.y + (double) p21.z * p21.z;
 
             double denom = d2121 * d4343 - d4321 * d4321;
             if (Math.Abs(denom) < float.Epsilon) return null;
@@ -64,21 +64,21 @@ namespace Sceelix.Mathematics.Geometry
         /// <returns></returns>
         public float? ClosestRelativeHit(Line3D line)
         {
-            Vector3D p1 = Point0;
-            Vector3D p3 = line.Point0;
+            UnityEngine.Vector3 p1 = Point0;
+            UnityEngine.Vector3 p3 = line.Point0;
 
-            Vector3D p21 = Direction;
-            Vector3D p43 = line.Direction;
-            Vector3D p13 = p1 - p3;
+            UnityEngine.Vector3 p21 = Direction;
+            UnityEngine.Vector3 p43 = line.Direction;
+            UnityEngine.Vector3 p13 = p1 - p3;
 
             if (Direction.Length < float.Epsilon || line.Direction.Length < float.Epsilon)
                 return null;
 
             double d1343 = p13.Dot(p43);
             double d4321 = p43.Dot(p21);
-            double d1321 = p13.X * (double) p21.X + (double) p13.Y * p21.Y + (double) p13.Z * p21.Z;
-            double d4343 = p43.X * (double) p43.X + (double) p43.Y * p43.Y + (double) p43.Z * p43.Z;
-            double d2121 = p21.X * (double) p21.X + (double) p21.Y * p21.Y + (double) p21.Z * p21.Z;
+            double d1321 = p13.x * (double) p21.x + (double) p13.y * p21.y + (double) p13.z * p21.z;
+            double d4343 = p43.x * (double) p43.x + (double) p43.y * p43.y + (double) p43.z * p43.z;
+            double d2121 = p21.x * (double) p21.x + (double) p21.y * p21.y + (double) p21.z * p21.z;
 
             double denom = d2121 * d4343 - d4321 * d4321;
             if (Math.Abs(denom) < float.Epsilon) return null;
@@ -97,7 +97,7 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public Vector3D this[float m] => Direction * m + Point0;
+        public UnityEngine.Vector3 this[float m] => Direction * m + Point0;
 
 
 
@@ -116,21 +116,21 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        private static bool LinesIntersect(Vector3D A, Vector3D B, Vector3D C, Vector3D D)
+        private static bool LinesIntersect(UnityEngine.Vector3 A, UnityEngine.Vector3 B, UnityEngine.Vector3 C, UnityEngine.Vector3 D)
         {
-            Vector3D CmP = new Vector3D(C.X - A.X, C.Y - A.Y);
-            Vector3D r = new Vector3D(B.X - A.X, B.Y - A.Y);
-            Vector3D s = new Vector3D(D.X - C.X, D.Y - C.Y);
+            UnityEngine.Vector3 CmP = new UnityEngine.Vector3(C.x - A.x, C.y - A.y);
+            UnityEngine.Vector3 r = new UnityEngine.Vector3(B.x - A.x, B.y - A.y);
+            UnityEngine.Vector3 s = new UnityEngine.Vector3(D.x - C.x, D.y - C.y);
 
-            float CmPxr = CmP.X * r.Y - CmP.Y * r.X;
-            float CmPxs = CmP.X * s.Y - CmP.Y * s.X;
-            float rxs = r.X * s.Y - r.Y * s.X;
+            float CmPxr = CmP.x * r.y - CmP.y * r.x;
+            float CmPxs = CmP.x * s.y - CmP.y * s.x;
+            float rxs = r.x * s.y - r.y * s.x;
 
             if (CmPxr == 0f)
                 // Lines are collinear, and so intersect if they have any overlap
 
-                return C.X - A.X < 0f != C.X - B.X < 0f
-                       || C.Y - A.Y < 0f != C.Y - B.Y < 0f;
+                return C.x - A.x < 0f != C.x - B.x < 0f
+                       || C.y - A.y < 0f != C.y - B.y < 0f;
 
             if (rxs == 0f)
                 return false; // Lines are parallel.
@@ -152,8 +152,8 @@ namespace Sceelix.Mathematics.Geometry
         /// <returns>A value corresponding to m, in P = P0 + m * D. So to get the point, just use the [] operator. If the line is parallel or contained in the plane, then the result is null.</returns>
         public float? IntersectsPlane(Plane3D plane)
         {
-            Vector3D p1 = Point0;
-            Vector3D p2 = Point0 + Direction;
+            UnityEngine.Vector3 p1 = Point0;
+            UnityEngine.Vector3 p2 = Point0 + Direction;
 
             float nominator = plane.Normal.Dot(plane.Point0 - p1);
             float denominator = plane.Normal.Dot(p2 - p1);
@@ -173,7 +173,7 @@ namespace Sceelix.Mathematics.Geometry
         /// <param name="radius">The sphere radius.</param>
         /// <returns>The array of intersected locations. Could be empty (if there were no intersections), or have up to 2 elements/intersections.</returns>
         /// <remarks>See http://csharphelper.com/blog/2014/09/determine-where-a-line-intersects-a-circle-in-c/ for original code.</remarks>
-        public Vector3D[] FindSphereIntersectionPoints(Vector3D sphereCenter, float radius)
+        public UnityEngine.Vector3[] FindSphereIntersectionPoints(UnityEngine.Vector3 sphereCenter, float radius)
         {
             var direction = Direction;
             var point0 = Point0;
@@ -190,15 +190,15 @@ namespace Sceelix.Mathematics.Geometry
         /// <param name="radius">The sphere radius.</param>
         /// <returns>The array of intersected t values (between 0 and 1). Could be empty (if there were no intersections), or have up to 2 elements/intersections.</returns>
         /// <remarks>See http://csharphelper.com/blog/2014/09/determine-where-a-line-intersects-a-circle-in-c/ for original code.</remarks>
-        public float[] FindSphereIntersectionValues(Vector3D sphereCenter, float radius)
+        public float[] FindSphereIntersectionValues(UnityEngine.Vector3 sphereCenter, float radius)
         {
-            float dx = Point1.X - Point0.X;
-            float dy = Point1.Y - Point0.Y;
-            float dz = Point1.Z - Point0.Z;
+            float dx = Point1.x - Point0.x;
+            float dy = Point1.y - Point0.y;
+            float dz = Point1.z - Point0.z;
 
             float a = dx * dx + dy * dy + dz * dz;
-            float b = 2 * (dx * (Point0.X - sphereCenter.X) + dy * (Point0.Y - sphereCenter.Y) + dz * (Point0.Z - sphereCenter.Z));
-            float c = (Point0.X - sphereCenter.X) * (Point0.X - sphereCenter.X) + (Point0.Y - sphereCenter.Y) * (Point0.Y - sphereCenter.Y) + (Point0.Z - sphereCenter.Z) * (Point0.Z - sphereCenter.Z) - radius * radius;
+            float b = 2 * (dx * (Point0.x - sphereCenter.x) + dy * (Point0.y - sphereCenter.y) + dz * (Point0.z - sphereCenter.z));
+            float c = (Point0.x - sphereCenter.x) * (Point0.x - sphereCenter.x) + (Point0.y - sphereCenter.y) * (Point0.y - sphereCenter.y) + (Point0.z - sphereCenter.z) * (Point0.z - sphereCenter.z) - radius * radius;
 
             float det = b * b - 4 * a * c;
             if (a <= 0.0000001 || det < 0)
@@ -222,30 +222,30 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public Vector3D Direction
+        public UnityEngine.Vector3 Direction
         {
             get;
         }
 
 
-        public Vector3D Point0
+        public UnityEngine.Vector3 Point0
         {
             get;
         }
 
 
-        public Vector3D Point1 => Point0 + Direction;
+        public UnityEngine.Vector3 Point1 => Point0 + Direction;
 
 
 
-        public static Line3D FromEndPoints(Vector3D pointBegin, Vector3D pointEnd)
+        public static Line3D FromEndPoints(UnityEngine.Vector3 pointBegin, UnityEngine.Vector3 pointEnd)
         {
             return new Line3D(pointEnd - pointBegin, pointBegin);
         }
 
 
 
-        public static Line3D FromPointAndDirection(Vector3D direction, Vector3D point0)
+        public static Line3D FromPointAndDirection(UnityEngine.Vector3 direction, UnityEngine.Vector3 point0)
         {
             return new Line3D(direction, point0);
         }

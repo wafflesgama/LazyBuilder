@@ -5,21 +5,21 @@ using Sceelix.Mathematics.Parameters.Infos;
 
 namespace Sceelix.Mathematics.Parameters
 {
-    public class Vector2DParameter : PrimitiveParameter<Vector2D>
+    public class Vector2Parameter : PrimitiveParameter<UnityEngine.Vector2>
     {
         /*public FloatParameter X = new FloatParameter("X", 0);
         public FloatParameter Y = new FloatParameter("Y", 0);*/
 
 
 
-        public Vector2DParameter(string label)
-            : base(label, Vector2D.Zero)
+        public Vector2Parameter(string label)
+            : base(label, UnityEngine.Vector2.zero)
         {
         }
 
 
 
-        public Vector2DParameter(string label, Vector2D vector2D)
+        public Vector2Parameter(string label, UnityEngine.Vector2 vector2D)
             : base(label, vector2D)
         {
             Value = vector2D;
@@ -27,34 +27,34 @@ namespace Sceelix.Mathematics.Parameters
 
 
 
-        /*public Vector3D GetVector3F()
+        /*public UnityEngine.Vector3 GetVector3F()
         {
-            return new Vector3D(X.Value, Y.Value, Z.Value);
+            return new UnityEngine.Vector3(X.Value, Y.Value, Z.Value);
         }
 
-        public void SetVector3F(Vector3D vector3F)
+        public void SetVector3F(UnityEngine.Vector3 vector3F)
         {
-            X.Value = vector3F.X;
-            Y.Value = vector3F.Y;
-            Z.Value = vector3F.Z;
+            X.Value = vector3F.x;
+            Y.Value = vector3F.y;
+            Z.Value = vector3F.z;
         }*/
 
 
 
         protected internal override ParameterInfo ToParameterInfo()
         {
-            return new Vector2DParameterInfo(this);
+            return new Vector2ParameterInfo(this);
         }
 
 
 
-        /*public new Vector2D Value
+        /*public new UnityEngine.Vector2 Value
         {
-            get { return new Vector2D(X.Value, Y.Value); }
+            get { return new UnityEngine.Vector2(X.Value, Y.Value); }
             set
             {
-                X.Value = value.X;
-                Y.Value = value.Y;
+                X.Value = value.x;
+                Y.Value = value.y;
             }
         }*/
     }

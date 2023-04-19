@@ -91,10 +91,10 @@ namespace Sceelix.Meshes.Data
         /// Joey: Converts the  vectorlist to vertex list and than adds it using regular function
         /// </summary>
         /// <param name="vectorList"></param>
-        public void AddHole(IEnumerable<Vector3D> vectorList)
+        public void AddHole(IEnumerable<UnityEngine.Vector3> vectorList)
         {
             CircularList<Vertex> list = new CircularList<Vertex>();
-            foreach (Vector3D vector in vectorList) list.Add(new Vertex(vector));
+            foreach (UnityEngine.Vector3 vector in vectorList) list.Add(new Vertex(vector));
             AddHole(list);
         }
 
@@ -124,12 +124,12 @@ namespace Sceelix.Meshes.Data
                 var tc_dx = previousHalfVertex.UV0 - currentHalfVertex.UV0;
                 var tc_dy = nextHalfVertex.UV0 - currentHalfVertex.UV0;
 
-                var t = (p_dx * tc_dy.Y - p_dy * tc_dx.Y).Normalize();
-                var b = (p_dx * tc_dy.X - p_dy * tc_dx.X).Normalize();
+                var t = (p_dx * tc_dy.y - p_dy * tc_dx.y).normalized;
+                var b = (p_dx * tc_dy.x - p_dy * tc_dx.x).normalized;
 
                 var n = currentHalfVertex.Normal;
                 var x = n.Cross(t);
-                t = x.Cross(n).Normalize();
+                t = x.Cross(n).normalized;
 
                 // get updated bi-tangent
                 x = b.Cross(n);
@@ -162,11 +162,11 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public static bool CanCreateValidFace(IEnumerable<Vector3D> vertexPositions)
+        public static bool CanCreateValidFace(IEnumerable<UnityEngine.Vector3> vertexPositions)
         {
             //int vertexPositionsLength = vertexPositions.First() == vertexPositions.Last() ? count - 1 : vertexPositions.Count();
             //if the first equals the last position, do not repeat it
-            IEnumerable<Vector3D> list = vertexPositions as IList<Vector3D> ?? vertexPositions.ToList();
+            IEnumerable<UnityEngine.Vector3> list = vertexPositions as IList<UnityEngine.Vector3> ?? vertexPositions.ToList();
 
             if (!list.Any())
                 return false;
@@ -204,15 +204,15 @@ namespace Sceelix.Meshes.Data
 
         private bool CheckIfConvex()
         {
-            Vector3D? calculatedNormal = null;
+            UnityEngine.Vector3? calculatedNormal = null;
 
             for (int i = 0; i < _vertices.Count; i++)
             {
-                Vector3D v1 = _vertices[i].Position;
-                Vector3D v2 = _vertices[i + 1].Position;
-                Vector3D v3 = _vertices[i + 2].Position;
+                UnityEngine.Vector3 v1 = _vertices[i].Position;
+                UnityEngine.Vector3 v2 = _vertices[i + 1].Position;
+                UnityEngine.Vector3 v3 = _vertices[i + 2].Position;
 
-                Vector3D v = Vector3D.Cross(v1 - v2, v3 - v2).Normalize();
+                UnityEngine.Vector3 v = UnityEngine.Vector3.Cross(v1 - v2, v3 - v2).normalized;
 
                 if (v.IsInfinityOrNaN)
                     continue;
@@ -238,7 +238,7 @@ namespace Sceelix.Meshes.Data
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public bool ContainsPoint(Vector3D point)
+        public bool ContainsPoint(UnityEngine.Vector3 point)
         {
             if (!IsConvex)
                 return false;
@@ -258,13 +258,13 @@ namespace Sceelix.Meshes.Data
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public bool ContainsPoint(Vector2D point)
+        public bool ContainsPoint(UnityEngine.Vector2 point)
         {
             bool conclusion = false;
 
             for (int i = 0, j = _vertices.Count - 1; i < _vertices.Count; j = i++)
-                if (_vertices[i].Position.Y > point.Y != _vertices[j].Position.Y > point.Y &&
-                    point.X < (_vertices[j].Position.X - _vertices[i].Position.X) * (point.Y - _vertices[i].Position.Y) / (_vertices[j].Position.Y - _vertices[i].Position.Y) + _vertices[i].Position.X)
+                if (_vertices[i].Position.y > point.y != _vertices[j].Position.y > point.y &&
+                    point.x < (_vertices[j].Position.x - _vertices[i].Position.x) * (point.y - _vertices[i].Position.y) / (_vertices[j].Position.y - _vertices[i].Position.y) + _vertices[i].Position.x)
                     conclusion = !conclusion;
             return conclusion;
         }
@@ -347,9 +347,9 @@ namespace Sceelix.Meshes.Data
 
 
         //JOEY: Translate to centroid test
-        /*public void TranslateToCentroid(Vector3D targetCentroid)
+        /*public void TranslateToCentroid(UnityEngine.Vector3 targetCentroid)
         {
-            Vector3D curCentroid = Centroid;
+            UnityEngine.Vector3 curCentroid = Centroid;
             foreach (Vertex vertex in _vertices)
             {
                 vertex.Position += (targetCentroid - curCentroid);
@@ -415,30 +415,30 @@ namespace Sceelix.Meshes.Data
             //first of all, calculate the direction of the xAxis, yAxis and zAxis, normalized
             //since the direction is clockwise, we are inverting the direction
             var xAxis = -edge.Direction;
-            var yAxis = Normal.Cross(xAxis).Normalize();
+            var yAxis = Normal.Cross(xAxis).normalized;
             var zAxis = Normal;
 
             //for now, the anchor point reference is the first position
             var translation = edge.V1.Position;
 
-            var baseScope = new BoxScope(xAxis, yAxis, zAxis, translation, new Vector3D());
+            var baseScope = new BoxScope(xAxis, yAxis, zAxis, translation, new UnityEngine.Vector3());
 
             /*Plane3D planeX = new Plane3D(xAxis, translation);
             Plane3D planeY = new Plane3D(yAxis, translation);
             Plane3D planeZ = new Plane3D(zAxis, translation);
 
-            var sizes = new Vector3D();
+            var sizes = new UnityEngine.Vector3();
 
             //the first two points have already been considered, so just take a look at the rest
             for (int i = 2; i < Vertices.Count(); i++)
             {
-                Vector3D point = this[i].Position;
+                UnityEngine.Vector3 point = this[i].Position;
 
-                float x = Plane3D.MovePlane(ref planeX, point, sizes.X);
-                float y = Plane3D.MovePlane(ref planeY, point, sizes.Y);
-                float z = Plane3D.MovePlane(ref planeZ, point, sizes.Z);
+                float x = Plane3D.MovePlane(ref planeX, point, sizes.x);
+                float y = Plane3D.MovePlane(ref planeY, point, sizes.y);
+                float z = Plane3D.MovePlane(ref planeZ, point, sizes.z);
 
-                sizes = new Vector3D(x, y, z);
+                sizes = new UnityEngine.Vector3(x, y, z);
             }
 
             xAxis = planeX.Normal;
@@ -473,7 +473,7 @@ namespace Sceelix.Meshes.Data
 
         public BoxScope GetDerivedScope(BoxScope parentScope)
         {
-            Vector3D xAxis, yAxis, zAxis;
+            UnityEngine.Vector3 xAxis, yAxis, zAxis;
 
             //first of all, the z is always the normal of the face
             //_zAxis = face.Normal;
@@ -496,7 +496,7 @@ namespace Sceelix.Meshes.Data
                 yAxis = zAxis.Cross(xAxis);
             }
 
-            var sizes = new Vector3D();
+            var sizes = new UnityEngine.Vector3();
             var translation = this[0].Position;
 
             var boxScope = new BoxScope(xAxis, yAxis, zAxis, translation, sizes);
@@ -593,7 +593,7 @@ namespace Sceelix.Meshes.Data
                         return true;
 
 
-            //var positions2D = _vertices.Select(x => alignedScope.ToScopePosition(x.Position).ToVector2D());
+            //var positions2D = _vertices.Select(x => alignedScope.ToScopePosition(x.Position).ToVector2());
             /*var edgeList = AllEdges.ToList();
             for (int i = 0; i < edgeList.Count; i++)
             {
@@ -614,7 +614,7 @@ namespace Sceelix.Meshes.Data
 
         private bool IsSelfIntersecting(BoxScope alignedScope, IEnumerable<Edge> edges)
         {
-            var lineSegments = edges.Select(x => new LineSegment2D(alignedScope.ToScopePosition(x.V0.Position).ToVector2D(), alignedScope.ToScopePosition(x.V1.Position).ToVector2D())).ToList();
+            var lineSegments = edges.Select(x => new LineSegment2D(alignedScope.ToScopePosition(x.V0.Position).ToVector2(), alignedScope.ToScopePosition(x.V1.Position).ToVector2())).ToList();
 
             for (int i = 0; i < lineSegments.Count; i++)
             for (int j = i + 1; j < lineSegments.Count; j++)
@@ -678,8 +678,8 @@ namespace Sceelix.Meshes.Data
         /// Creates a face from a set of 3D Vectors, in clockwise order
         /// </summary>
         /// <param name="vertexPositions">Set of 3D vectors</param>
-        public Face(params Vector3D[] vertexPositions)
-            : this((IEnumerable<Vector3D>) vertexPositions)
+        public Face(params UnityEngine.Vector3[] vertexPositions)
+            : this((IEnumerable<UnityEngine.Vector3>) vertexPositions)
         {
         }
 
@@ -689,9 +689,9 @@ namespace Sceelix.Meshes.Data
         /// Creates a face from a set of 3D Vectors, in clockwise order
         /// </summary>
         /// <param name="vertexPositions">Set of 3D vectors</param>
-        public Face(IEnumerable<Vector3D> vertexPositions)
+        public Face(IEnumerable<UnityEngine.Vector3> vertexPositions)
         {
-            List<Vector3D> vertexPositionsList = vertexPositions.ToList();
+            List<UnityEngine.Vector3> vertexPositionsList = vertexPositions.ToList();
             //int vertexPositionsLength = vertexPositions.First() == vertexPositions.Last() ? count - 1 : vertexPositions.Count();de
             //if the first equals the last position, do not repeat it
             int vertexPositionsLength = vertexPositionsList.First().Equals(vertexPositionsList.Last())
@@ -794,11 +794,11 @@ namespace Sceelix.Meshes.Data
         {
             for (int i = 0; i < _vertices.Count; i++)
             {
-                Vector3D currentPosition = _vertices[i].Position;
-                Vector3D pn = _vertices[i - 1].Position - currentPosition;
-                Vector3D pn1 = _vertices[i + 1].Position - currentPosition;
+                UnityEngine.Vector3 currentPosition = _vertices[i].Position;
+                UnityEngine.Vector3 pn = _vertices[i - 1].Position - currentPosition;
+                UnityEngine.Vector3 pn1 = _vertices[i + 1].Position - currentPosition;
 
-                Vector3D v = pn.Cross(pn1).Normalize();
+                UnityEngine.Vector3 v = pn.Cross(pn1).normalized;
                 if (!v.IsCollinear(Normal))
                     return false;
             }
@@ -833,14 +833,14 @@ namespace Sceelix.Meshes.Data
         /// <summary>
         /// Newell's Method for calculating Planar polygon normals
         /// </summary>
-        private Vector3D CalculateNormal()
+        private UnityEngine.Vector3 CalculateNormal()
         {
-            return Vector3D.CalculateNormal(_vertices.Select(x => x.Position));
+            return UnityEngine.Vector3.CalculateNormal(_vertices.Select(x => x.Position));
         }
 
 
 
-        public Vector3D RecalculateNormal()
+        public UnityEngine.Vector3 RecalculateNormal()
         {
             return Normal = CalculateNormal();
         }
@@ -869,7 +869,7 @@ namespace Sceelix.Meshes.Data
 
 
 
-        /*public Vector3D Normal
+        /*public UnityEngine.Vector3 Normal
         {
             get { return ((GeometryNormal)_geometryProperties.First(val => val is GeometryNormal)).Normal; }
             set
@@ -880,22 +880,22 @@ namespace Sceelix.Meshes.Data
     }*/
 
 
-        public Vector3D Normal
+        public UnityEngine.Vector3 Normal
         {
             get;
             set;
         }
 
 
-        /*public Color Color
+        /*public UnityEngine.Color UnityEngine.Color
         {
             get
             {
                 IGeometryProperty colorProperty = _geometryProperties.FirstOrDefault(val => val is GeometryColor);
                 if (colorProperty != null)
-                    return ((GeometryColor)colorProperty).Color;
+                    return ((GeometryColor)colorProperty).UnityEngine.Color;
 
-                return Color.White;
+                return UnityEngine.Color.white;
             }
             set
             {
@@ -952,11 +952,11 @@ namespace Sceelix.Meshes.Data
                 int count = 0;
                 for (int i = 0; i < _vertices.Count; i++)
                 {
-                    Vector3D v1 = _vertices[i].Position;
-                    Vector3D v2 = _vertices[i + 1].Position;
-                    Vector3D v3 = _vertices[i + 2].Position;
+                    UnityEngine.Vector3 v1 = _vertices[i].Position;
+                    UnityEngine.Vector3 v2 = _vertices[i + 1].Position;
+                    UnityEngine.Vector3 v3 = _vertices[i + 2].Position;
 
-                    Vector3D v = Vector3D.Cross(v1 - v2, v3 - v2).Normalize();
+                    UnityEngine.Vector3 v = UnityEngine.Vector3.Cross(v1 - v2, v3 - v2).normalized;
 
                     if (!v.Equals(Normal)) count++;
                 }
@@ -967,18 +967,18 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector3D Centroid
+        public UnityEngine.Vector3 Centroid
         {
             get
             {
-                /*Vector3D centroid = new Vector3D();
+                /*UnityEngine.Vector3 centroid = new UnityEngine.Vector3();
 
                 foreach (Vertex vertex in _vertices)
                     centroid += vertex.Position;
 
                 centroid /= _vertices.Count();*/
 
-                return Vector3D.Average(_vertices.Select(x => x.Position));
+                return UnityEngine.Vector3.Average(_vertices.Select(x => x.Position));
 
                 //return _scope.Translation + (_scope.XAxis/2 + _scope.YAxis/2);
             }
@@ -999,7 +999,7 @@ namespace Sceelix.Meshes.Data
                 if (material != null)
                     return material;
 
-                return new ColorMaterial(Color.White);
+                return new ColorMaterial(UnityEngine.Color.white);
             }
             set { Attributes.TrySet(MaterialKey, value, true); }
         }
@@ -1091,7 +1091,7 @@ namespace Sceelix.Meshes.Data
         {
             get
             {
-                return new BoundingRectangle(Vertices.Select(x => x.Position.ToVector2D()));
+                return new BoundingRectangle(Vertices.Select(x => x.Position.ToVector2()));
                 ;
             }
         }

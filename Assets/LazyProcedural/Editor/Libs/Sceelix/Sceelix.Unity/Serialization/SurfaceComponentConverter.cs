@@ -70,11 +70,11 @@ namespace Sceelix.Unity.Serialization
             writer.WriteValue(surface.NumRows);
 
             writer.WritePropertyName("Size");
-            serializer.Serialize(writer, new Vector3D(surface.Width, Math.Max(1, surface.MaximumZ), surface.Length));
+            serializer.Serialize(writer, new UnityEngine.Vector3(surface.Width, Math.Max(1, surface.MaximumZ), surface.Length));
 
             var surfaceHeights = GetSurfaceHeights(surface);
             writer.WritePropertyName("HeightsResolution");
-            serializer.Serialize(writer, new Vector2D(surfaceHeights.GetLength(0), surfaceHeights.GetLength(1)));
+            serializer.Serialize(writer, new UnityEngine.Vector2(surfaceHeights.GetLength(0), surfaceHeights.GetLength(1)));
 
             writer.WritePropertyName("Heights");
             serializer.Serialize(writer, surfaceHeights.ToByteArray());
@@ -111,10 +111,10 @@ namespace Sceelix.Unity.Serialization
                 {
                     writer.WriteStartObject();
                     writer.WritePropertyName("Position");
-                    serializer.Serialize(writer, treeInstance.Scope.Translation.FlipYZ() / new Vector3D(surface.Width, surface.MaximumZ, surface.Length));
+                    serializer.Serialize(writer, treeInstance.Scope.Translation.FlipYZ() / new UnityEngine.Vector3(surface.Width, surface.MaximumZ, surface.Length));
 
                     writer.WritePropertyName("Rotation");
-                    serializer.Serialize(writer, treeInstance.Rotation); //needs pitch, yaw, roll  //MathHelper.ToDegrees(treeInstance.Scope.XAxis.AngleTo(Vector3D.XVector)
+                    serializer.Serialize(writer, treeInstance.Rotation); //needs pitch, yaw, roll  //MathHelper.ToDegrees(treeInstance.Scope.XAxis.AngleTo(UnityEngine.Vector3.right)
 
                     writer.WritePropertyName("Scale");
                     serializer.Serialize(writer, treeInstance.Scale);

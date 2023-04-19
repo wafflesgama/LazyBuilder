@@ -8,7 +8,7 @@ namespace Sceelix.Surfaces.Extensions
 {
     public static class SurfaceBlendExtensions
     {
-        public static IEnumerable<BlendLayer> ToBlendSurfaces(Color[,] colors, int baseTextureIndex = 0)
+        public static IEnumerable<BlendLayer> ToBlendSurfaces(UnityEngine.Color[,] colors, int baseTextureIndex = 0)
         {
             var columns = colors.GetLength(0);
             var rows = colors.GetLength(1);
@@ -44,10 +44,10 @@ namespace Sceelix.Surfaces.Extensions
         /// <param name="numColumns">The number of columns of the returned array.</param>
         /// <param name="numRows">The number of rows of the returned array.</param>
         /// <returns></returns>
-        /*public static Color[,] ToColorArray(this IEnumerable<BlendLayer> blendLayers, int numColumns, int numRows)
+        /*public static UnityEngine.Color[,] ToColorArray(this IEnumerable<BlendLayer> blendLayers, int numColumns, int numRows)
         {
             //var values = new float[numColumns, numRows][];
-            var colors = new Color[numColumns, numRows];
+            var colors = new UnityEngine.Color[numColumns, numRows];
 
             var blendLayerList = blendLayers.OrderBy(x => x.TextureIndex).Take(4).ToList();
 
@@ -62,16 +62,16 @@ namespace Sceelix.Surfaces.Extensions
                         var array = colors[x, y].ToFloatArray();
                         array[i] = currentLayer.GetValue(x, y);
 
-                        colors[x,y] = new Color(array);
+                        colors[x,y] = new UnityEngine.Color(array);
                     }
                 });
             }
 
             return colors;
         }*/
-        public static Color[,] ToColorArray(this IEnumerable<BlendLayer> blendLayers, int numColumns, int numRows, int offset = 0)
+        public static UnityEngine.Color[,] ToColorArray(this IEnumerable<BlendLayer> blendLayers, int numColumns, int numRows, int offset = 0)
         {
-            var colors = new Color[numColumns, numRows];
+            var colors = new UnityEngine.Color[numColumns, numRows];
 
             var blendLayerList = blendLayers.ToList();
 
@@ -91,7 +91,7 @@ namespace Sceelix.Surfaces.Extensions
                         var array = colors[x, y].ToFloatArray();
                         array[currentTextureIndex - offset] = currentLayer.GetGenericValue(new Coordinate(x, y));
 
-                        colors[x, y] = new Color(array);
+                        colors[x, y] = new UnityEngine.Color(array);
                     }
                 });
             }

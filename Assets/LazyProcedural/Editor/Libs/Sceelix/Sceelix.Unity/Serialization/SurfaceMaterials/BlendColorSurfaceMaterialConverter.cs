@@ -6,7 +6,7 @@ using Sceelix.Serialization;
 using Sceelix.Surfaces.Data;
 using Sceelix.Surfaces.Materials;
 using Sceelix.Unity.Annotations;
-using Color = System.Drawing.Color;
+
 
 namespace Sceelix.Unity.Serialization.SurfaceMaterials
 {
@@ -15,10 +15,10 @@ namespace Sceelix.Unity.Serialization.SurfaceMaterials
     {
         private static readonly ResourceContent[] ResourceContents =
         {
-            new ResourceContent("RedColor", BitmapExtension.CreateColorBitmap(Color.Red).ImageToByte()),
-            new ResourceContent("GreenColor", BitmapExtension.CreateColorBitmap(Color.FromArgb(255, 0, 255, 0)).ImageToByte()),
-            new ResourceContent("BlueColor", BitmapExtension.CreateColorBitmap(Color.Blue).ImageToByte()),
-            new ResourceContent("AlphaColor", BitmapExtension.CreateColorBitmap(Color.FromArgb(255, 0, 0, 0)).ImageToByte())
+            new ResourceContent("RedColor", BitmapExtension.CreateColorBitmap(UnityEngine.Color.red).ImageToByte()),
+            new ResourceContent("GreenColor", BitmapExtension.CreateColorBitmap(new UnityEngine.Color(255, 0, 255, 0)).ImageToByte()),
+            new ResourceContent("BlueColor", BitmapExtension.CreateColorBitmap(UnityEngine.Color.blue).ImageToByte()),
+            new ResourceContent("AlphaColor", BitmapExtension.CreateColorBitmap(new UnityEngine.Color(255, 0, 0, 0)).ImageToByte())
         };
 
 
@@ -87,7 +87,7 @@ namespace Sceelix.Unity.Serialization.SurfaceMaterials
                         writer.WriteStartObject();
 
                         writer.WritePropertyName("TileSize");
-                        serializer.Serialize(writer, new Vector2D(1, 1));
+                        serializer.Serialize(writer, new UnityEngine.Vector2(1, 1));
 
                         writer.WritePropertyName("Texture");
                         serializer.Serialize(writer, ResourceContents[i]);

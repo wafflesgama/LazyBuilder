@@ -49,10 +49,10 @@ namespace Sceelix.Meshes.Data
         }
 
 
-        public Vector3D Center => (V0.Position + V1.Position) / 2f;
+        public UnityEngine.Vector3 Center => (V0.Position + V1.Position) / 2f;
 
 
-        public Vector3D Direction => (V1.Position - V0.Position).Normalize();
+        public UnityEngine.Vector3 Direction => (V1.Position - V0.Position).normalized;
 
 
 
@@ -75,7 +75,7 @@ namespace Sceelix.Meshes.Data
         public Line3D Line => new Line3D(V1.Position - V0.Position, V0.Position);
 
 
-        public LineSegment2D LineSegment2D => new LineSegment2D(V0.Position.ToVector2D(), V1.Position.ToVector2D());
+        public LineSegment2D LineSegment2D => new LineSegment2D(V0.Position.ToVector2(), V1.Position.ToVector2());
 
 
         public LineSegment3D LineSegment3D => new LineSegment3D(V0.Position, V1.Position);
@@ -85,7 +85,7 @@ namespace Sceelix.Meshes.Data
         /// <summary>
         /// Normal to the edge, obtained by averaging the normals of the adjacent faces.
         /// </summary>
-        public Vector3D Normal
+        public UnityEngine.Vector3 Normal
         {
             get { return AdjacentFaces.Select(x => x.Normal).Aggregate((y, yresult) => y + yresult) / AdjacentFaces.Count; }
         }
@@ -133,42 +133,42 @@ namespace Sceelix.Meshes.Data
         /*public class EdgeLine3DIntersection
         {
 
-            private Vector3D position;
+            private UnityEngine.Vector3 position;
         }*/
 
 
-        /*public EdgeIntersectionResult LineIntersection(Line3D line, out Vector3D intersectionPoint)
+        /*public EdgeIntersectionResult LineIntersection(Line3D line, out UnityEngine.Vector3 intersectionPoint)
         {
-            Vector3D p1 = V0.Position;
-            Vector3D p2 = line.Point0;
-            Vector3D dir1 = V1.Position - p1;
-            Vector3D dir2 = line.Direction;
+            UnityEngine.Vector3 p1 = V0.Position;
+            UnityEngine.Vector3 p2 = line.Point0;
+            UnityEngine.Vector3 dir1 = V1.Position - p1;
+            UnityEngine.Vector3 dir2 = line.Direction;
 
-            Vector3D v1v2 = dir1.Cross(dir2);
+            UnityEngine.Vector3 v1v2 = dir1.Cross(dir2);
 
-            if (v1v2.ExactlyEquals(Vector3D.Zero))
+            if (v1v2.ExactlyEquals(UnityEngine.Vector3.zero))
             {
-                intersectionPoint = Vector3D.Infinity;
+                intersectionPoint = UnityEngine.Vector3.Infinity;
                 return EdgeIntersectionResult.Coincident;
             }
 
 
-            Vector3D p1p2 = p2 - p1;
-            Vector3D p1p2dir2 = p1p2.Cross(dir2);
+            UnityEngine.Vector3 p1p2 = p2 - p1;
+            UnityEngine.Vector3 p1p2dir2 = p1p2.Cross(dir2);
 
             if (!v1v2.IsCollinear(p1p2dir2))
             {
-                intersectionPoint = Vector3D.Infinity;
+                intersectionPoint = UnityEngine.Vector3.Infinity;
                 return EdgeIntersectionResult.NonIntersecting;
             }
 
 
             //REFACTORING NEEDED!!!
-            float a = Vector3D.GetCommonMultiplier(p1p2dir2, v1v2);
+            float a = UnityEngine.Vector3.GetCommonMultiplier(p1p2dir2, v1v2);
 
-            Vector3D aV1p1p2 = dir1*a - p1p2;
+            UnityEngine.Vector3 aV1p1p2 = dir1*a - p1p2;
 
-            double b = Vector3D.GetCommonMultiplier(aV1p1p2, dir2);
+            double b = UnityEngine.Vector3.GetCommonMultiplier(aV1p1p2, dir2);
 
             if (Math.Abs(a) < Double.Epsilon)
             {
@@ -187,12 +187,12 @@ namespace Sceelix.Meshes.Data
                 return EdgeIntersectionResult.IntersectingMiddle;
             }
 
-            intersectionPoint = Vector3D.Infinity;
+            intersectionPoint = UnityEngine.Vector3.Infinity;
 
             return EdgeIntersectionResult.NonIntersecting;
             
 
-            //intersectionPoint = Vector3D.Infinity;
+            //intersectionPoint = UnityEngine.Vector3.Infinity;
 
             //return EdgeLine3DIntersection.NonIntersecting;
         }*/
@@ -206,30 +206,30 @@ namespace Sceelix.Meshes.Data
         /// <param name="otherEdge"></param>
         /// <param name="includingEnds"></param>
         /// <returns></returns>
-        /*public Vector3D? EdgeIntersection(Edge otherEdge, bool includingEnds)
+        /*public UnityEngine.Vector3? EdgeIntersection(Edge otherEdge, bool includingEnds)
         {
-            Vector3D p1 = V0.Position;
-            Vector3D p2 = otherEdge.V0.Position;
-            Vector3D v1 = V1.Position - p1;
-            Vector3D v2 = otherEdge.V1.Position - p2;
+            UnityEngine.Vector3 p1 = V0.Position;
+            UnityEngine.Vector3 p2 = otherEdge.V0.Position;
+            UnityEngine.Vector3 v1 = V1.Position - p1;
+            UnityEngine.Vector3 v2 = otherEdge.V1.Position - p2;
 
-            Vector3D v1v2 = v1.Cross(v2);
+            UnityEngine.Vector3 v1v2 = v1.Cross(v2);
 
-            //if (v1v2.ExactlyEquals(Vector3D.Zero))
-            //    return Vector3D.Infinity;
+            //if (v1v2.ExactlyEquals(UnityEngine.Vector3.zero))
+            //    return UnityEngine.Vector3.Infinity;
 
-            Vector3D p1p2 = p2 - p1;
-            Vector3D p1p2v2 = p1p2.Cross(v2);
+            UnityEngine.Vector3 p1p2 = p2 - p1;
+            UnityEngine.Vector3 p1p2v2 = p1p2.Cross(v2);
 
             if (!v1v2.IsCollinear(p1p2v2))
                 return null;
 
             //REFACTORING NEEDED!!!
-            float a = Vector3D.GetCommonMultiplier(p1p2v2, v1v2);
+            float a = UnityEngine.Vector3.GetCommonMultiplier(p1p2v2, v1v2);
 
-            Vector3D aV1p1p2 = v1*a - p1p2;
+            UnityEngine.Vector3 aV1p1p2 = v1*a - p1p2;
 
-            double b = Vector3D.GetCommonMultiplier(aV1p1p2, v2);
+            double b = UnityEngine.Vector3.GetCommonMultiplier(aV1p1p2, v2);
 
             if (includingEnds)
             {
@@ -262,10 +262,10 @@ namespace Sceelix.Meshes.Data
 
         /*public bool Intersects(Edge otherEdge, bool includingEnds)
         {
-            Vector3D p1 = V0.Position;
-            Vector3D p2 = V1.Position;
-            Vector3D p3 = otherEdge.V0.Position;
-            Vector3D p4 = otherEdge.V1.Position;
+            UnityEngine.Vector3 p1 = V0.Position;
+            UnityEngine.Vector3 p2 = V1.Position;
+            UnityEngine.Vector3 p3 = otherEdge.V0.Position;
+            UnityEngine.Vector3 p4 = otherEdge.V1.Position;
 
             if ((p1 == p3 && p2 == p4) || (p1 == p4 && p2 == p3))
                 return true;
@@ -279,21 +279,21 @@ namespace Sceelix.Meshes.Data
 
         /*public bool IntersectsEdge2(Edge otherEdge, bool includingEnds)
         {
-            Vector3D p1 = this.V0.Position;
-            Vector3D p3 = otherEdge.V0.Position;
+            UnityEngine.Vector3 p1 = this.V0.Position;
+            UnityEngine.Vector3 p3 = otherEdge.V0.Position;
 
-            Vector3D v21 = Direction;
-            Vector3D v43 = otherEdge.Direction;
-            Vector3D v13 = p1 - p3;
+            UnityEngine.Vector3 v21 = Direction;
+            UnityEngine.Vector3 v43 = otherEdge.Direction;
+            UnityEngine.Vector3 v13 = p1 - p3;
 
             if (Direction.Length < float.Epsilon || otherEdge.Direction.Length < float.Epsilon)
                 return null;
 
             double d1343 = v13.Dot(v43);
             double d4321 = v43.Dot(v21);
-            double d1321 = v13.X * (double)v21.X + (double)v13.Y * v21.Y + (double)v13.Z * v21.Z;
-            double d4343 = v43.X * (double)v43.X + (double)v43.Y * v43.Y + (double)v43.Z * v43.Z;
-            double d2121 = v21.X * (double)v21.X + (double)v21.Y * v21.Y + (double)v21.Z * v21.Z;
+            double d1321 = v13.x * (double)v21.x + (double)v13.y * v21.y + (double)v13.z * v21.z;
+            double d4343 = v43.x * (double)v43.x + (double)v43.y * v43.y + (double)v43.z * v43.z;
+            double d2121 = v21.x * (double)v21.x + (double)v21.y * v21.y + (double)v21.z * v21.z;
 
             double denom = d2121 * d4343 - d4321 * d4321;
             if (Math.Abs(denom) < float.Epsilon)
@@ -326,28 +326,28 @@ namespace Sceelix.Meshes.Data
             //    return true;
 
 
-            /*Vector3D p1 = V0.Position;
-            Vector3D p2 = otherEdge.V0.Position;
-            Vector3D v1 = V1.Position - p1;
-            Vector3D v2 = otherEdge.V1.Position - p2;
+            /*UnityEngine.Vector3 p1 = V0.Position;
+            UnityEngine.Vector3 p2 = otherEdge.V0.Position;
+            UnityEngine.Vector3 v1 = V1.Position - p1;
+            UnityEngine.Vector3 v2 = otherEdge.V1.Position - p2;
 
-            Vector3D v1v2 = v1.Cross(v2);
+            UnityEngine.Vector3 v1v2 = v1.Cross(v2);
 
-            if (v1v2.ExactlyEquals(Vector3D.Zero))
+            if (v1v2.ExactlyEquals(UnityEngine.Vector3.zero))
                 return true;
 
-            Vector3D p1p2 = p2 - p1;
-            Vector3D p1p2v2 = p1p2.Cross(v2);
+            UnityEngine.Vector3 p1p2 = p2 - p1;
+            UnityEngine.Vector3 p1p2v2 = p1p2.Cross(v2);
 
             if (!v1v2.IsCollinear(p1p2v2))
                 return false;
 
             //REFACTORING NEEDED!!!
-            float a = Vector3D.GetCommonMultiplier(p1p2v2, v1v2);
+            float a = UnityEngine.Vector3.GetCommonMultiplier(p1p2v2, v1v2);
 
-            Vector3D aV1p1p2 = v1*a - p1p2;
+            UnityEngine.Vector3 aV1p1p2 = v1*a - p1p2;
 
-            double b = Vector3D.GetCommonMultiplier(aV1p1p2, v2);
+            double b = UnityEngine.Vector3.GetCommonMultiplier(aV1p1p2, v2);
 
             if (includingEnds)
             {
@@ -393,7 +393,7 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public EdgeIntersectionResult PlaneIntersection(Plane3D plane, out Vector3D intersectionPoint)
+        public EdgeIntersectionResult PlaneIntersection(Plane3D plane, out UnityEngine.Vector3 intersectionPoint)
         {
             Line3D line = Line;
 
@@ -404,27 +404,27 @@ namespace Sceelix.Meshes.Data
                 //Console.WriteLine(value);
                 intersectionPoint = line[value];
 
-                if (Math.Abs(value) < Vector3D.Precision) return EdgeIntersectionResult.IntersectingV0;
+                if (Math.Abs(value) < UnityEngine.Vector3.Precision) return EdgeIntersectionResult.IntersectingV0;
 
-                if (Math.Abs(value - 1) < Vector3D.Precision) return EdgeIntersectionResult.IntersectingV1;
+                if (Math.Abs(value - 1) < UnityEngine.Vector3.Precision) return EdgeIntersectionResult.IntersectingV1;
 
                 if (value > 0 && value < 1)
                 {
                     return EdgeIntersectionResult.IntersectingMiddle;
                 }
 
-                intersectionPoint = Vector3D.NaN;
+                intersectionPoint = UnityEngine.Vector3.NaN;
                 return EdgeIntersectionResult.NonIntersecting;
             }
 
             //may be parallel or coincident
             if (plane.PointInPlane(line.Point0))
             {
-                intersectionPoint = Vector3D.Infinity;
+                intersectionPoint = UnityEngine.Vector3.Infinity;
                 return EdgeIntersectionResult.Coincident;
             }
 
-            intersectionPoint = Vector3D.NaN;
+            intersectionPoint = UnityEngine.Vector3.NaN;
             return EdgeIntersectionResult.NonIntersecting;
         }
 

@@ -5,7 +5,7 @@ namespace Sceelix.Meshes.Handles
 {
     public class NumericSizerHandle : VisualHandle
     {
-        public NumericSizerHandle(Vector3D basePosition, Vector3D direction)
+        public NumericSizerHandle(UnityEngine.Vector3 basePosition, UnityEngine.Vector3 direction)
         {
             BasePosition = basePosition;
             Direction = direction;
@@ -13,21 +13,21 @@ namespace Sceelix.Meshes.Handles
 
 
 
-        public Vector3D BasePosition
+        public UnityEngine.Vector3 BasePosition
         {
             get;
             set;
         }
 
 
-        public Color Color
+        public UnityEngine.Color Color
         {
             get;
             set;
-        } = Color.Black;
+        } = UnityEngine.Color.black;
 
 
-        public Vector3D Direction
+        public UnityEngine.Vector3 Direction
         {
             get;
             set;

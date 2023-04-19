@@ -31,7 +31,7 @@ namespace Sceelix.Surfaces.Data
         /// </summary>
         private Material _material = new DefaultSurfaceMaterial();
 
-        private Vector2D _origin;
+        private UnityEngine.Vector2 _origin;
 
 
 
@@ -52,9 +52,9 @@ namespace Sceelix.Surfaces.Data
         {
             get
             {
-                var minimum = new Vector3D(_origin.X, _origin.Y, MinimumZ);
+                var minimum = new UnityEngine.Vector3(_origin.x, _origin.y, MinimumZ);
 
-                return new BoundingBox(minimum, minimum + new Vector3D(Width, Length, Height));
+                return new BoundingBox(minimum, minimum + new UnityEngine.Vector3(Width, Length, Height));
             }
         }
 
@@ -63,14 +63,14 @@ namespace Sceelix.Surfaces.Data
         /// <summary>
         /// 2D Rectangle that encompasses the surface.
         /// </summary>
-        public BoundingRectangle BoundingRectangle => new BoundingRectangle(_origin.X, _origin.Y, Width, Length);
+        public BoundingRectangle BoundingRectangle => new BoundingRectangle(_origin.x, _origin.y, Width, Length);
 
 
 
         [EntityProperty("Scope", HandleType = typeof(SceeList))]
         public BoxScope BoxScope
         {
-            get { return new BoxScope(sizes: BoundingBox.Size, translation: _origin.ToVector3D(MinimumZ)); }
+            get { return new BoxScope(sizes: BoundingBox.Size, translation: _origin.ToVector3(MinimumZ)); }
             set
             {
                 // Does nothing here
@@ -157,7 +157,7 @@ namespace Sceelix.Surfaces.Data
         /// Bottom-left position of the surface, on the XY-Plane.
         /// </summary>
         [EntityProperty(HandleType = typeof(SceeList))]
-        public Vector2D Origin
+        public UnityEngine.Vector2 Origin
         {
             get { return _origin; }
             set { _origin = value; }
@@ -209,7 +209,7 @@ namespace Sceelix.Surfaces.Data
         /// </returns>
         public bool Contains(Coordinate coordinate)
         {
-            return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X < NumColumns && coordinate.Y < NumRows;
+            return coordinate.x >= 0 && coordinate.y >= 0 && coordinate.x < NumColumns && coordinate.y < NumRows;
         }
 
 
@@ -221,12 +221,12 @@ namespace Sceelix.Surfaces.Data
         /// <returns>
         ///   <c>true</c> if this surface contains the specified world position; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(Vector2D worldPosition)
+        public bool Contains(UnityEngine.Vector2 worldPosition)
         {
             var relativePosition = worldPosition - _origin;
 
-            return relativePosition.X >= 0 && relativePosition.X <= Width
-                                           && relativePosition.Y >= 0 && relativePosition.Y <= Length;
+            return relativePosition.x >= 0 && relativePosition.x <= Width
+                                           && relativePosition.y >= 0 && relativePosition.y <= Length;
         }
 
 
@@ -284,11 +284,11 @@ namespace Sceelix.Surfaces.Data
         public void InsertInto(BoxScope target)
         {
             //the translation is the first to be changed
-            _origin = target.Translation.ToVector2D(); // - new Vector3D(0,0, MinimumZ);
+            _origin = target.Translation.ToVector2(); // - new UnityEngine.Vector3(0,0, MinimumZ);
 
             //scale the cell size so that it fits the new scope
-            var newCellSizeX = target.Sizes.X / (NumColumns - 1);
-            var newCellSizeY = target.Sizes.Y / (NumRows - 1);
+            var newCellSizeX = target.Sizes.x / (NumColumns - 1);
+            var newCellSizeY = target.Sizes.y / (NumRows - 1);
 
             var newCellSize = Math.Min(newCellSizeX, newCellSizeY);
             _cellSize = newCellSize;
@@ -297,13 +297,13 @@ namespace Sceelix.Surfaces.Data
             //    surfaceLayer.UpdateCellSize();
 
             foreach (I3DLayer surfaceLayer in _layers.OfType<I3DLayer>())
-                surfaceLayer.TranslateVertically(target.Translation.Z - BoxScope.Translation.Z);
+                surfaceLayer.TranslateVertically(target.Translation.z - BoxScope.Translation.z);
 
             //scale the heights
             var zSize = Height;
             if (zSize > 0)
             {
-                var zScale = target.Sizes.Z / zSize;
+                var zScale = target.Sizes.z / zSize;
                 if (Math.Abs(zScale - 1) > float.Epsilon)
                     foreach (I3DLayer surfaceLayer in _layers.OfType<I3DLayer>())
                         surfaceLayer.ScaleVertically(zScale);
@@ -363,7 +363,7 @@ namespace Sceelix.Surfaces.Data
         /// <param name="worldPosition">The world position.</param>
         /// <param name="clamp">indicates if the coordinates should be clamped to the surface bounds.</param>
         /// <returns></returns>
-        public Coordinate ToCoordinates(Vector2D worldPosition, bool clamp = true, RoundingMethod roundingMethod = RoundingMethod.Floor)
+        public Coordinate ToCoordinates(UnityEngine.Vector2 worldPosition, bool clamp = true, RoundingMethod roundingMethod = RoundingMethod.Floor)
         {
             var relativePosition = worldPosition - _origin;
             int coordinateX, coordinateY;
@@ -371,17 +371,17 @@ namespace Sceelix.Surfaces.Data
             switch (roundingMethod)
             {
                 case RoundingMethod.Nearest:
-                    coordinateX = (int) Math.Round(relativePosition.X / (double) _cellSize, MidpointRounding.AwayFromZero);
-                    coordinateY = NumRows - 1 - (int) Math.Round(relativePosition.Y / (double) _cellSize, MidpointRounding.AwayFromZero);
+                    coordinateX = (int) Math.Round(relativePosition.x / (double) _cellSize, MidpointRounding.AwayFromZero);
+                    coordinateY = NumRows - 1 - (int) Math.Round(relativePosition.y / (double) _cellSize, MidpointRounding.AwayFromZero);
                     break;
 
                 case RoundingMethod.Ceiling:
-                    coordinateX = (int) Math.Ceiling(relativePosition.X / (double) _cellSize);
-                    coordinateY = NumRows - 1 - (int) Math.Ceiling(relativePosition.Y / (double) _cellSize);
+                    coordinateX = (int) Math.Ceiling(relativePosition.x / (double) _cellSize);
+                    coordinateY = NumRows - 1 - (int) Math.Ceiling(relativePosition.y / (double) _cellSize);
                     break;
                 default:
-                    coordinateX = (int) Math.Floor(relativePosition.X / (double) _cellSize);
-                    coordinateY = NumRows - 1 - (int) Math.Floor(relativePosition.Y / (double) _cellSize);
+                    coordinateX = (int) Math.Floor(relativePosition.x / (double) _cellSize);
+                    coordinateY = NumRows - 1 - (int) Math.Floor(relativePosition.y / (double) _cellSize);
                     break;
             }
 
@@ -399,9 +399,9 @@ namespace Sceelix.Surfaces.Data
         /// <param name="column">The column.</param>
         /// <param name="row">The row.</param>
         /// <returns></returns>
-        public Vector2D ToWorldPosition(Coordinate coordinate)
+        public UnityEngine.Vector2 ToWorldPosition(Coordinate coordinate)
         {
-            return new Vector2D(_origin.X + coordinate.X * _cellSize, _origin.Y + Length - coordinate.Y * _cellSize);
+            return new UnityEngine.Vector2(_origin.x + coordinate.x * _cellSize, _origin.y + Length - coordinate.y * _cellSize);
         }
     }
 }

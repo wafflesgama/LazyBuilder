@@ -263,16 +263,16 @@ namespace Sceelix.Meshes.Data
 
                 foreach (HalfVertex halfVertex in faceVertex.HalfVertices)
                 {
-                    Vector3D normal = halfVertex.Normal;
-                    Vector3D scopeDirection = _boxScope.ToScopeDirection(normal);
+                    UnityEngine.Vector3 normal = halfVertex.Normal;
+                    UnityEngine.Vector3 scopeDirection = _boxScope.ToScopeDirection(normal);
                     halfVertex.Normal = target.ToWorldDirection(scopeDirection);
                 }
             }
 
             foreach (var face in Faces)
             {
-                Vector3D normal = face.Normal;
-                Vector3D scopeDirection = _boxScope.ToScopeDirection(normal);
+                UnityEngine.Vector3 normal = face.Normal;
+                UnityEngine.Vector3 scopeDirection = _boxScope.ToScopeDirection(normal);
 
                 face.Normal = target.ToWorldDirection(scopeDirection);
             }
@@ -309,12 +309,12 @@ namespace Sceelix.Meshes.Data
         /// <summary>
         /// Average position of all mesh vertices, i.e. the mesh centroid.
         /// </summary>
-        public Vector3D Centroid
+        public UnityEngine.Vector3 Centroid
         {
             get
             {
                 if (_faces.Count == 0)
-                    return Vector3D.Zero;
+                    return UnityEngine.Vector3.zero;
 
                 return _faces.Select(x => x.Centroid).Aggregate((sum, val) => sum + val) / _faces.Count;
             }
@@ -469,7 +469,7 @@ namespace Sceelix.Meshes.Data
 
                 foreach (Vertex vertex in vertices)
                     if (!vertex.Position.IsNaN && !vertex.Position.IsInfinity)
-                        boundingRectangle.AddPoint(vertex.Position.ToVector2D());
+                        boundingRectangle.AddPoint(vertex.Position.ToVector2());
 
                 return boundingRectangle;
             }

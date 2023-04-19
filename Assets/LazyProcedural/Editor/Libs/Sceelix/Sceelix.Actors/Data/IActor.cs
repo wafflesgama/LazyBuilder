@@ -13,9 +13,9 @@ namespace Sceelix.Actors.Data
             set;
         } //and set, but do not allow it to be changed in some entities (such as Surface)
 
-        /*void Translate(Vector3D direction, bool scopeRelative);
+        /*void Translate(UnityEngine.Vector3 direction, bool scopeRelative);
 
-        void Scale(Vector3D scaling, Vector3D pivot, bool scopeRelative);*/
+        void Scale(UnityEngine.Vector3 scaling, UnityEngine.Vector3 pivot, bool scopeRelative);*/
 
         void InsertInto(BoxScope target);
     }

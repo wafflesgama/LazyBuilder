@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sceelix.Mathematics.Data;
+using System;
 using System.Linq;
 
 namespace Sceelix.Mathematics.Spatial
@@ -18,7 +19,7 @@ namespace Sceelix.Mathematics.Spatial
 
 
         public ObjectOctTree(BoundingBox boundingBox, int sectionItemMaxCount, Func<T, BoundingBox> boundaryFunction)
-            : base((int) Math.Ceiling(boundingBox.Size.ToArray().Max()), sectionItemMaxCount)
+            : base((int)Math.Ceiling(boundingBox.Size.ToArray().Max()), sectionItemMaxCount)
         {
             _boundaryFunction = boundaryFunction;
         }

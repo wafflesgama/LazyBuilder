@@ -16,8 +16,8 @@ using Sceelix.Meshes.Extensions;
 using Sceelix.Meshes.IO;
 using Sceelix.Meshes.Materials;
 using Face = Sceelix.Meshes.Data.Face;
-using Vector2D = Sceelix.Mathematics.Data.Vector2D;
-using Vector3D = Sceelix.Mathematics.Data.Vector3D;
+
+
 
 #if LINUX
 using System.Reflection;
@@ -223,11 +223,11 @@ namespace Sceelix.Meshes.Procedures
 
         private MeshEntity ProcessMesh(Scene scene, Mesh mesh, string directory, bool flipCoordinates, bool resetAbsolutePaths)
         {
-            var vertices = mesh.Vertices.Select(vertex => new Vertex(new Vector3D(vertex.X, vertex.Y, vertex.Z))).ToList(); //.Rotate(Vector3D.XVector, MathHelper.PiOver2)   .FlipYZ()
-            var normals = mesh.Normals.Select(vector => new Vector3D(vector.X, vector.Y, vector.Z)).ToList();
-            var bitangents = mesh.BiTangents.Select(vector => new Vector3D(vector.X, vector.Y, vector.Z)).ToList();
-            var tangents = mesh.Tangents.Select(vector => new Vector3D(vector.X, vector.Y, vector.Z)).ToList();
-            var texCoordChannels = mesh.TextureCoordinateChannels.Select(channel => channel.Select(texCoord => new Vector2D(texCoord.X, flipCoordinates ? 1 - texCoord.Y : texCoord.Y)).ToList()).ToList();
+            var vertices = mesh.Vertices.Select(vertex => new Vertex(new UnityEngine.Vector3(vertex.x, vertex.y, vertex.z))).ToList(); //.Rotate(UnityEngine.Vector3.right, MathHelper.PiOver2)   .FlipYZ()
+            var normals = mesh.Normals.Select(vector => new UnityEngine.Vector3(vector.x, vector.y, vector.z)).ToList();
+            var bitangents = mesh.BiTangents.Select(vector => new UnityEngine.Vector3(vector.x, vector.y, vector.z)).ToList();
+            var tangents = mesh.Tangents.Select(vector => new UnityEngine.Vector3(vector.x, vector.y, vector.z)).ToList();
+            var texCoordChannels = mesh.TextureCoordinateChannels.Select(channel => channel.Select(texCoord => new UnityEngine.Vector2(texCoord.x, flipCoordinates ? 1 - texCoord.y : texCoord.y)).ToList()).ToList();
 
             var material = new ImportedMaterial(scene.Materials[mesh.MaterialIndex], directory, resetAbsolutePaths);
 

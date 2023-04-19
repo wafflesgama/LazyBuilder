@@ -46,7 +46,7 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-        private IEnumerable<Face> BuildCaps(MeshEntity meshEntity, Vector3D normal, List<Edge> cuttedEdges)
+        private IEnumerable<Face> BuildCaps(MeshEntity meshEntity, UnityEngine.Vector3 normal, List<Edge> cuttedEdges)
         {
             Queue<Edge> lineSegments = new Queue<Edge>(cuttedEdges);
 
@@ -65,7 +65,7 @@ namespace Sceelix.Meshes.Procedures
                     {
                         if (sequence.IsClosed)
                         {
-                            List<Vector3D> positions = sequence.Positions.Select(vertex => vertex.Position).ToList();
+                            List<UnityEngine.Vector3> positions = sequence.Positions.Select(vertex => vertex.Position).ToList();
                             if (Face.CanCreateValidFace(positions))
                             {
                                 Face face = new Face(positions); //.GetRange(0, positions.Count)
@@ -156,9 +156,9 @@ namespace Sceelix.Meshes.Procedures
         /// <param name="cutDirection"></param>
         /// <param name="availableSize"></param>
         /// <returns></returns>
-        private Plane3D GetPlaneAndSize(MeshEntity meshEntity, Vector3D cutDirection, out float availableSize)
+        private Plane3D GetPlaneAndSize(MeshEntity meshEntity, UnityEngine.Vector3 cutDirection, out float availableSize)
         {
-            Vector3D[] point = meshEntity.FaceVertices.Select(val => val.Position).ToArray();
+            UnityEngine.Vector3[] point = meshEntity.FaceVertices.Select(val => val.Position).ToArray();
             Plane3D plane = new Plane3D(cutDirection, point[0]);
             availableSize = 0;
 
@@ -188,8 +188,8 @@ namespace Sceelix.Meshes.Procedures
             BoxScope parentScope = meshEntity.BoxScope;
 
             //find out what is the actual direction we should cut
-            Vector3D cutDirection = _parameterSplitAxis.Items.First().GetCutDirection(parentScope);
-            /*Vector3D cutDirection = SplitAxis.Value.Normalize();
+            UnityEngine.Vector3 cutDirection = _parameterSplitAxis.Items.First().GetCutDirection(parentScope);
+            /*UnityEngine.Vector3 cutDirection = SplitAxis.Value.normalized;
 
             if (ScopeRelative.Value)
                 cutDirection = parentScope.ToWorldDirection(cutDirection);*/
@@ -398,7 +398,7 @@ namespace Sceelix.Meshes.Procedures
 
                 extendedBaseVertexList.Add(extendedVertex = new ExtendedVertex(edge.V0, extendedBaseVertexList.Count));
 
-                Vector3D intersectionPoint;
+                UnityEngine.Vector3 intersectionPoint;
                 Edge.EdgeIntersectionResult edgeLine3DIntersection = edge.PlaneIntersection(cuttingPlane, out intersectionPoint);
                 if (edgeLine3DIntersection == Edge.EdgeIntersectionResult.IntersectingV0 || edgeLine3DIntersection == Edge.EdgeIntersectionResult.Coincident)
                     extendedVertex.IsCrossPoint = true;
@@ -591,8 +591,8 @@ namespace Sceelix.Meshes.Procedures
 
             public bool TryAdd(Edge secondLine)
             {
-                Vector3D lastPosition = Positions.Last().Position;
-                Vector3D firstPosition = Positions.First().Position;
+                UnityEngine.Vector3 lastPosition = Positions.Last().Position;
+                UnityEngine.Vector3 firstPosition = Positions.First().Position;
                 if (lastPosition.AproxEquals(secondLine.V0.Position, _precision))
                 {
                     Positions.Add(secondLine.V1);
@@ -822,7 +822,7 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            public abstract Vector3D GetCutDirection(BoxScope parentScope);
+            public abstract UnityEngine.Vector3 GetCutDirection(BoxScope parentScope);
         }
 
         /// <summary>
@@ -834,7 +834,7 @@ namespace Sceelix.Meshes.Procedures
             /// <summary>
             /// The normal direction of the plane.
             /// </summary>
-            private readonly Vector3DParameter _parameterSplitAxis = new Vector3DParameter("Direction", Vector3D.XVector);
+            private readonly Vector3Parameter _parameterSplitAxis = new Vector3Parameter("Direction", UnityEngine.Vector3.right);
 
             /// <summary>
             /// Indicates if the specified plane normal is relative to the scope orientation or not.
@@ -850,9 +850,9 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            public override Vector3D GetCutDirection(BoxScope parentScope)
+            public override UnityEngine.Vector3 GetCutDirection(BoxScope parentScope)
             {
-                Vector3D cutDirection = _parameterSplitAxis.Value.Normalize();
+                UnityEngine.Vector3 cutDirection = _parameterSplitAxis.Value.normalized;
 
                 if (_parameterScopeRelative.Value)
                     cutDirection = parentScope.ToWorldDirection(cutDirection);
@@ -881,19 +881,19 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            public override Vector3D GetCutDirection(BoxScope parentScope)
+            public override UnityEngine.Vector3 GetCutDirection(BoxScope parentScope)
             {
                 switch (_parameterSplitAxis.Value)
                 {
                     case "X":
-                        return parentScope.ToWorldDirection(Vector3D.XVector);
+                        return parentScope.ToWorldDirection(UnityEngine.Vector3.right);
                     case "Y":
-                        return parentScope.ToWorldDirection(Vector3D.YVector);
+                        return parentScope.ToWorldDirection(UnityEngine.Vector3.up);
                     case "Z":
-                        return parentScope.ToWorldDirection(Vector3D.ZVector);
+                        return parentScope.ToWorldDirection(UnityEngine.Vector3.forward);
                 }
 
-                return Vector3D.Zero;
+                return UnityEngine.Vector3.zero;
             }
         }
 
@@ -920,9 +920,9 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            public override Vector3D GetCutDirection(BoxScope parentScope)
+            public override UnityEngine.Vector3 GetCutDirection(BoxScope parentScope)
             {
-                var axisInfos = new[] {new {Size = parentScope.Sizes.X, Vector = Vector3D.XVector}, new {Size = parentScope.Sizes.Y, Vector = Vector3D.YVector}, new {Size = parentScope.Sizes.Z, Vector = Vector3D.ZVector}};
+                var axisInfos = new[] {new {Size = parentScope.Sizes.x, Vector = UnityEngine.Vector3.right}, new {Size = parentScope.Sizes.y, Vector = UnityEngine.Vector3.up}, new {Size = parentScope.Sizes.z, Vector = UnityEngine.Vector3.forward}};
 
                 var list = axisInfos.OrderBy(val => val.Size).ToList();
 

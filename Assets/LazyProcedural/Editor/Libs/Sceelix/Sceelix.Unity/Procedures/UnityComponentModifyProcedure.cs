@@ -52,7 +52,7 @@ namespace Sceelix.Unity.Procedures
         /// <summary>
         /// Scale of the tree prefab.
         /// </summary>
-        private readonly Vector2DParameter _parameterScale = new Vector2DParameter("Scale", Vector2D.One) {EntityEvaluation = true};
+        private readonly Vector2Parameter _parameterScale = new Vector2Parameter("Scale", UnityEngine.Vector2.One) {EntityEvaluation = true};
 
 
 

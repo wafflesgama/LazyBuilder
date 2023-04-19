@@ -53,7 +53,7 @@ namespace Sceelix.Meshes.Operations
 
 
 
-        private static bool ContainedInPolygon(CircularList<TriangulationVertex> tempVertices, LineSegment3D edgeCut, KeyValuePair<TriangulationVertex, TriangulationVertex> edgeCutVertices, Vector3D faceNormal)
+        private static bool ContainedInPolygon(CircularList<TriangulationVertex> tempVertices, LineSegment3D edgeCut, KeyValuePair<TriangulationVertex, TriangulationVertex> edgeCutVertices, UnityEngine.Vector3 faceNormal)
         {
             //checks if the cut would intersect with any existing edges
             for (int j = 0; j < tempVertices.Count; j++)
@@ -73,7 +73,7 @@ namespace Sceelix.Meshes.Operations
 
 
 
-        public static bool ContainedInPolygon(CircularList<Vertex> tempVertices, Edge edgeCut, Vector3D faceNormal)
+        public static bool ContainedInPolygon(CircularList<Vertex> tempVertices, Edge edgeCut, UnityEngine.Vector3 faceNormal)
         {
             Plane3D baseCutPlane = new Plane3D(edgeCut.Direction, edgeCut.V0.Position);
 
@@ -91,14 +91,14 @@ namespace Sceelix.Meshes.Operations
 
 
                 /*Plane3D plane3D = new Plane3D((v1.Position - v0.Position).Cross(faceNormal), v0.Position);
-                Vector3D intersectionPoint;
+                UnityEngine.Vector3 intersectionPoint;
                 Edge.EdgeIntersectionResult edgeIntersectionResult = edgeCut.PlaneIntersection(plane3D, out intersectionPoint);
                 if (edgeIntersectionResult == Edge.EdgeIntersectionResult.IntersectingMiddle
                     || (edgeIntersectionResult == Edge.EdgeIntersectionResult.IntersectingV0 && !intersectionPoint.Equals(edgeCut.V0.Position) && !intersectionPoint.Equals(edgeCut.V1.Position))
                     || (edgeIntersectionResult == Edge.EdgeIntersectionResult.IntersectingV1 && !intersectionPoint.Equals(edgeCut.V1.Position) && !intersectionPoint.Equals(edgeCut.V0.Position)))
                 {
-                    Vector3D ax = intersectionPoint - v0.Position;
-                    Vector3D bx = intersectionPoint - v1.Position;
+                    UnityEngine.Vector3 ax = intersectionPoint - v0.Position;
+                    UnityEngine.Vector3 bx = intersectionPoint - v1.Position;
 
                     if (ax.Dot(bx) > 0)
                     {
@@ -110,10 +110,10 @@ namespace Sceelix.Meshes.Operations
                 if (edgeIntersectionResult == Edge.EdgeIntersectionResult.Coincident)
                 {
                     //
-                    Vector3D ax = edgeCut.V0.Position - v0.Position;
-                    Vector3D bx = edgeCut.V1.Position - v0.Position;
-                    Vector3D ay = edgeCut.V0.Position - v1.Position;
-                    Vector3D by = edgeCut.V1.Position - v1.Position;
+                    UnityEngine.Vector3 ax = edgeCut.V0.Position - v0.Position;
+                    UnityEngine.Vector3 bx = edgeCut.V1.Position - v0.Position;
+                    UnityEngine.Vector3 ay = edgeCut.V0.Position - v1.Position;
+                    UnityEngine.Vector3 by = edgeCut.V1.Position - v1.Position;
 
                     float dot1 = ax.Dot(bx);
                     float dot2 = ax.Dot(ay);
@@ -132,7 +132,7 @@ namespace Sceelix.Meshes.Operations
                 Edge edgeTemp = new Edge(v0, v1);
                 if (edgeCut.Intersects(edgeTemp, false)) return false;
 
-                /*Vector3D? intersectionPoint = edgeCut.EdgeIntersection(edgeTemp, true);
+                /*UnityEngine.Vector3? intersectionPoint = edgeCut.EdgeIntersection(edgeTemp, true);
 
                 //if (intersectionPoint.HasValue && v0 != edgeCut.V0 && v1 != edgeCut.V0 && v0 != edgeCut.V1 && v1 != edgeCut.V1)
                 /*if (intersectionPoint.HasValue)
@@ -167,13 +167,13 @@ namespace Sceelix.Meshes.Operations
                 }
 
             //First: if necessary, rotate the face so that it stays in the xy plane
-            if (!face.Normal.Equals(Vector3D.ZVector))
+            if (!face.Normal.Equals(UnityEngine.Vector3.forward))
             {
-                Vector3D rotationAxis = face.Normal.Cross(Vector3D.ZVector);
-                if (rotationAxis.Equals(Vector3D.Zero))
-                    rotationAxis = Vector3D.XVector;
+                UnityEngine.Vector3 rotationAxis = face.Normal.Cross(UnityEngine.Vector3.forward);
+                if (rotationAxis.Equals(UnityEngine.Vector3.zero))
+                    rotationAxis = UnityEngine.Vector3.right;
 
-                float angle = face.Normal.AngleTo(Vector3D.ZVector);
+                float angle = face.Normal.AngleTo(UnityEngine.Vector3.forward);
 
                 Matrix matrix = Matrix.CreateAxisAngle(rotationAxis, angle);
                 foreach (TriangulationVertex triangulationVertex in triangulationVertices)
@@ -187,11 +187,11 @@ namespace Sceelix.Meshes.Operations
             //to avoid precision issues, let's really reset the Z to 0
             //this also handles polygons that are not exactly planar
             foreach (TriangulationVertex triangulationVertex in triangulationVertices)
-                triangulationVertex.Position = new Vector3D(triangulationVertex.Position.X, triangulationVertex.Position.Y, 0);
+                triangulationVertex.Position = new UnityEngine.Vector3(triangulationVertex.Position.x, triangulationVertex.Position.y, 0);
 
             foreach (CircularList<TriangulationVertex> circularList in holes)
             foreach (TriangulationVertex triangulationVertex in circularList)
-                triangulationVertex.Position = new Vector3D(triangulationVertex.Position.X, triangulationVertex.Position.Y, 0);
+                triangulationVertex.Position = new UnityEngine.Vector3(triangulationVertex.Position.x, triangulationVertex.Position.y, 0);
 
 
             return face.HasHoles ? ConnectHoles(triangulationVertices, holes) : triangulationVertices;
@@ -263,12 +263,12 @@ namespace Sceelix.Meshes.Operations
 
                             LineSegment3D edgeCut = new LineSegment3D(vertexBegin.Position, vertexMiddle.Position);
 
-                            Vector3D vectorAfter = vertexBeginPlusOne.Position - vertexBegin.Position;
-                            Vector3D vectorMiddle = vertexMiddle.Position - vertexBegin.Position;
-                            Vector3D vectorBefore = vertexBeginMinusOne.Position - vertexBegin.Position;
+                            UnityEngine.Vector3 vectorAfter = vertexBeginPlusOne.Position - vertexBegin.Position;
+                            UnityEngine.Vector3 vectorMiddle = vertexMiddle.Position - vertexBegin.Position;
+                            UnityEngine.Vector3 vectorBefore = vertexBeginMinusOne.Position - vertexBegin.Position;
 
                             //make sure the edge is inside the polygon
-                            if (edgeCut.IsValid && vertexMiddle != vertexBeginMinusOne && vertexMiddle != vertexBeginPlusOne && Vector3D.Cross(vectorMiddle, vectorAfter).Normalize().Equals(Vector3D.ZVector) && Vector3D.Cross(vectorBefore, vectorMiddle).Normalize().Equals(Vector3D.ZVector)) //vectorBefore.Cross(vectorAfter).Normalize()
+                            if (edgeCut.IsValid && vertexMiddle != vertexBeginMinusOne && vertexMiddle != vertexBeginPlusOne && UnityEngine.Vector3.Cross(vectorMiddle, vectorAfter).normalized.Equals(UnityEngine.Vector3.forward) && UnityEngine.Vector3.Cross(vectorBefore, vectorMiddle).normalized.Equals(UnityEngine.Vector3.forward)) //vectorBefore.Cross(vectorAfter).normalized
                                 //checks if the cut would intersect with any existing edges
                                 if (ContainedInPolygon(tempVertices, edgeCut, new KeyValuePair<TriangulationVertex, TriangulationVertex>(vertexBegin, vertexMiddle), face.Normal))
                                 {
@@ -293,7 +293,7 @@ namespace Sceelix.Meshes.Operations
 
         private class TriangulationVertex
         {
-            public TriangulationVertex(Vertex originalVertex, Vector3D position, int faceIndex)
+            public TriangulationVertex(Vertex originalVertex, UnityEngine.Vector3 position, int faceIndex)
             {
                 OriginalVertex = originalVertex;
                 Position = position;
@@ -314,7 +314,7 @@ namespace Sceelix.Meshes.Operations
             }
 
 
-            public Vector3D Position
+            public UnityEngine.Vector3 Position
             {
                 get;
                 set;

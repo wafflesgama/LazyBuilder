@@ -68,7 +68,7 @@ namespace Sceelix.Meshes.Helpers
         /// <param name="pivotRelativeToScope">If true, the pivot offset is relative to the scope origin.</param>
         /// <param name="pivotOffsetRelative">If true, the pivot offset has a scope-size relative value (between 0 and 1).</param>
         /// <returns></returns>
-        public static T Rotate<T>(this T actor, float angleDegrees, Vector3D axis, Vector3D pivot, bool axisRelativeToScope = false, bool pivotRelativeToScope = false, bool pivotOffsetRelative = false) where T : IActor
+        public static T Rotate<T>(this T actor, float angleDegrees, UnityEngine.Vector3 axis, UnityEngine.Vector3 pivot, bool axisRelativeToScope = false, bool pivotRelativeToScope = false, bool pivotOffsetRelative = false) where T : IActor
         {
             lock (ActorRotateProcedure)
             {
@@ -95,7 +95,7 @@ namespace Sceelix.Meshes.Helpers
         /// <param name="amount">Sized vector with the direction and amount to translate.</param>
         /// <param name="relativeToScope">If true, the translation is relative to the scope orientation.</param>
         /// <returns></returns>
-        public static T Translate<T>(this T actor, Vector3D amount, bool relativeToScope = false) where T : IActor
+        public static T Translate<T>(this T actor, UnityEngine.Vector3 amount, bool relativeToScope = false) where T : IActor
         {
             lock (ActorTranslateProcedure)
             {

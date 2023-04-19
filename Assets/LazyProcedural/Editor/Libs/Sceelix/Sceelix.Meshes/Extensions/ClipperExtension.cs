@@ -18,7 +18,7 @@ namespace Sceelix.Meshes.Extensions
 
             if (polyNode.IsHole && parentFace != null)
             {
-                var positions = polyNode.Contour.Select(point => point.ToVector3D(alignedScope));
+                var positions = polyNode.Contour.Select(point => point.ToVector3(alignedScope));
 
                 if (reverse)
                     positions = positions.Reverse();
@@ -27,7 +27,7 @@ namespace Sceelix.Meshes.Extensions
             }
             else if (polyNode.Contour.Any())
             {
-                var positions = polyNode.Contour.Select(point => point.ToVector3D(alignedScope));
+                var positions = polyNode.Contour.Select(point => point.ToVector3(alignedScope));
 
                 if (reverse)
                     positions = positions.Reverse();
@@ -43,18 +43,18 @@ namespace Sceelix.Meshes.Extensions
 
 
 
-        public static IntPoint ToIntPoint(this Vector3D vector3D, BoxScope planarScope)
+        public static IntPoint ToIntPoint(this UnityEngine.Vector3 vector3D, BoxScope planarScope)
         {
             var rotatedVector = planarScope.ToScopePosition(vector3D).Round(3);
 
-            return new IntPoint(rotatedVector.X * Precision, rotatedVector.Y * Precision);
+            return new IntPoint(rotatedVector.x * Precision, rotatedVector.y * Precision);
         }
 
 
 
-        public static Vector3D ToVector3D(this IntPoint intpoint, BoxScope planarScope)
+        public static UnityEngine.Vector3 ToVector3(this IntPoint intpoint, BoxScope planarScope)
         {
-            var vector3D = new Vector3D(intpoint.X / Precision, intpoint.Y / Precision);
+            var vector3D = new UnityEngine.Vector3(intpoint.x / Precision, intpoint.y / Precision);
 
             return planarScope.ToWorldPosition(vector3D);
         }

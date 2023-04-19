@@ -34,7 +34,7 @@ namespace Sceelix.Unity.Data
         }
 
 
-        public Vector2D Scale
+        public UnityEngine.Vector2 Scale
         {
             get;
             set;

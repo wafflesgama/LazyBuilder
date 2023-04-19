@@ -63,16 +63,16 @@ namespace Sceelix.Surfaces.Procedures
         /// <param name="polygon"></param>
         /// <param name="point"></param>
         /// <returns></returns>
-        private bool PointInPolygon(List<Vector2D> polygon, Vector2D point)
+        private bool PointInPolygon(List<UnityEngine.Vector2> polygon, UnityEngine.Vector2 point)
         {
             int i, j = polygon.Count - 1;
             bool oddNodes = false;
 
             for (i = 0; i < polygon.Count; i++)
             {
-                if (polygon[i].Y < point.Y && polygon[j].Y >= point.Y
-                    || polygon[j].Y < point.Y && polygon[i].Y >= point.Y)
-                    if (polygon[i].X + (point.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < point.X)
+                if (polygon[i].y < point.y && polygon[j].y >= point.y
+                    || polygon[j].y < point.y && polygon[i].y >= point.y)
+                    if (polygon[i].x + (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) * (polygon[j].x - polygon[i].x) < point.x)
                         oddNodes = !oddNodes;
                 j = i;
             }
@@ -116,24 +116,24 @@ namespace Sceelix.Surfaces.Procedures
                     var maxCoords = surface.ToCoordinates(boundingRectangle.Max);
 
                     //very simple: project the face into the XY plane
-                    var boundary = face.Vertices.Select(x => x.Position.ToVector2D()).ToList();
+                    var boundary = face.Vertices.Select(x => x.Position.ToVector2()).ToList();
                     var plane = face.Plane;
 
-                    bool[,] sectionEdited = new bool[maxCoords.X - minCoords.X + 1, minCoords.Y - maxCoords.Y + 1];
+                    bool[,] sectionEdited = new bool[maxCoords.x - minCoords.x + 1, minCoords.y - maxCoords.y + 1];
                     //HashSet<Coordinate,>
 
 
-                    for (int i = minCoords.X; i <= maxCoords.X; i++)
-                    for (int j = maxCoords.Y; j <= minCoords.Y; j++)
+                    for (int i = minCoords.x; i <= maxCoords.x; i++)
+                    for (int j = maxCoords.y; j <= minCoords.y; j++)
                     {
-                        int sectionI = i - minCoords.X;
-                        int sectionJ = j - maxCoords.Y;
+                        int sectionI = i - minCoords.x;
+                        int sectionJ = j - maxCoords.y;
 
                         //if we have already edited this element, skip it
                         if (sectionEdited[sectionI, sectionJ])
                             continue;
 
-                        Vector2D gridCornerPosition = surface.ToWorldPosition(new Coordinate(i, j));
+                        UnityEngine.Vector2 gridCornerPosition = surface.ToWorldPosition(new Coordinate(i, j));
 
                         //if the point is contained in the polygon (i.e. it is below the polygon)
                         if (PointInPolygon(boundary, gridCornerPosition))
@@ -158,22 +158,22 @@ namespace Sceelix.Surfaces.Procedures
 
                             foreach (Coordinate coordinate in coordinates)
                             {
-                                if (sectionEdited[coordinate.X - minCoords.X, coordinate.Y - maxCoords.Y])
+                                if (sectionEdited[coordinate.x - minCoords.x, coordinate.y - maxCoords.y])
                                     continue;
 
-                                var coordinatePosition = surface.ToWorldPosition(new Coordinate(coordinate.X, coordinate.Y));
+                                var coordinatePosition = surface.ToWorldPosition(new Coordinate(coordinate.x, coordinate.y));
 
                                 //get the expected height at that point
                                 var newHeight = plane.GetHeightAt(coordinatePosition);
 
                                 //we will only assign the new height if it has not be set by another face
                                 //or (having already been) does only introduce a smaller height
-                                if (!edited[coordinate.X, coordinate.Y] || heightLayer.GetGenericValue(coordinate) > newHeight)
+                                if (!edited[coordinate.x, coordinate.y] || heightLayer.GetGenericValue(coordinate) > newHeight)
                                 {
                                     heightLayer.SetValue(coordinate, newHeight - zOffset);
-                                    //surface.Colors[i, j] = new Color(0, 255, 0, 0);
+                                    //surface.Colors[i, j] = new UnityEngine.Color(0, 255, 0, 0);
 
-                                    edited[coordinate.X, coordinate.Y] = true;
+                                    edited[coordinate.x, coordinate.y] = true;
                                 }
 
                                 sectionEdited[sectionI, sectionJ] = true;
@@ -191,12 +191,12 @@ namespace Sceelix.Surfaces.Procedures
                     {
                         foreach (Vertex vertex in meshEntity.FaceVerticesWithHoles.Distinct())
                         {
-                            var heightAt = heightLayer.GetGenericValue(vertex.Position.ToVector2D());
+                            var heightAt = heightLayer.GetGenericValue(vertex.Position.ToVector2());
                             if (float.IsNegativeInfinity(heightAt))
                                 heightAt = 0;
 
-                            var distanceToSurface = vertex.Position.Z - heightAt;
-                            if (distanceToSurface > MinimumDistanceForBase) vertex.SetLocalAttribute("BottomVertex", Procedure, new Vertex(vertex.Position - new Vector3D(0, 0, distanceToSurface)));
+                            var distanceToSurface = vertex.Position.z - heightAt;
+                            if (distanceToSurface > MinimumDistanceForBase) vertex.SetLocalAttribute("BottomVertex", Procedure, new Vertex(vertex.Position - new UnityEngine.Vector3(0, 0, distanceToSurface)));
                         }
 
 

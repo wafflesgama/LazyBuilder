@@ -4,14 +4,14 @@ using Sceelix.Mathematics.Data;
 namespace Sceelix.Surfaces.Data
 {
     [Entity("Normal Layer", TypeBrowsable = false)]
-    public class NormalLayer : GenericSurfaceLayer<Vector3D>
+    public class NormalLayer : GenericSurfaceLayer<UnityEngine.Vector3>
     {
         //private HeightLayer _heightLayer;
-        //private Func<int, int, Vector3D> _getDelegate;
+        //private Func<int, int, UnityEngine.Vector3> _getDelegate;
 
 
 
-        public NormalLayer(Vector3D[,] normals)
+        public NormalLayer(UnityEngine.Vector3[,] normals)
             : base(normals)
         {
             //_getDelegate = base.GetValue;
@@ -19,7 +19,7 @@ namespace Sceelix.Surfaces.Data
 
 
 
-        public NormalLayer(Vector3D[,] normals, Vector3D defaultValue)
+        public NormalLayer(UnityEngine.Vector3[,] normals, UnityEngine.Vector3 defaultValue)
             : base(normals)
         {
             this.Fill(defaultValue);
@@ -27,10 +27,10 @@ namespace Sceelix.Surfaces.Data
 
 
 
-        /*private Vector3D CalculateGeometryNormal(int layerColumn, int layerRow)
+        /*private UnityEngine.Vector3 CalculateGeometryNormal(int layerColumn, int layerRow)
         {
-            Vector3D?[] directions = new Vector3D?[4];
-            Vector3D centralPosition = _heightLayer.GetLayerPosition(layerColumn, layerRow);
+            UnityEngine.Vector3?[] directions = new UnityEngine.Vector3?[4];
+            UnityEngine.Vector3 centralPosition = _heightLayer.GetLayerPosition(layerColumn, layerRow);
 
             if (layerRow > 0)
                 directions[0] = _heightLayer.GetPosition(layerColumn, layerRow - 1) - centralPosition;
@@ -45,17 +45,17 @@ namespace Sceelix.Surfaces.Data
                 directions[3] = _heightLayer.GetPosition(layerColumn + 1, layerRow) - centralPosition;
 
 
-            Vector3D normal = Vector3D.Zero;
+            UnityEngine.Vector3 normal = UnityEngine.Vector3.zero;
             for (int i = 0; i < 4; i++)
             {
-                Vector3D? direction1 = directions[i];
-                Vector3D? direction2 = i + 1 > 3 ? directions[0] : directions[i + 1];
+                UnityEngine.Vector3? direction1 = directions[i];
+                UnityEngine.Vector3? direction2 = i + 1 > 3 ? directions[0] : directions[i + 1];
 
                 if (direction1.HasValue && direction2.HasValue)
-                    normal += Vector3D.Cross(direction1.Value, direction2.Value);
+                    normal += UnityEngine.Vector3.Cross(direction1.Value, direction2.Value);
             }
 
-            return normal.Normalize();
+            return normal.normalized;
         }*/
 
 
@@ -75,14 +75,14 @@ namespace Sceelix.Surfaces.Data
 
 
 
-        protected override Vector3D Add(Vector3D valueA, Vector3D valueB)
+        protected override UnityEngine.Vector3 Add(UnityEngine.Vector3 valueA, UnityEngine.Vector3 valueB)
         {
             return valueA + valueB;
         }
 
 
 
-        /*public override Vector3D GetLayerValue(int layerColumn, int layerRow)
+        /*public override UnityEngine.Vector3 GetLayerValue(int layerColumn, int layerRow)
         {
             if (_values == null)
                 return CalculateGeometryNormal(layerColumn, layerRow);
@@ -100,7 +100,7 @@ namespace Sceelix.Surfaces.Data
         }*/
 
 
-        /*public Vector3D GetNormal(int surfaceColumn, int surfaceRow)
+        /*public UnityEngine.Vector3 GetNormal(int surfaceColumn, int surfaceRow)
         {
             return CalculateGeometryNormal(surfaceColumn, surfaceRow);
         }*/
@@ -109,26 +109,26 @@ namespace Sceelix.Surfaces.Data
 
         public override SurfaceLayer CreateEmpty(int numColumns, int numRows)
         {
-            return new NormalLayer(new Vector3D[numColumns, numRows]);
+            return new NormalLayer(new UnityEngine.Vector3[numColumns, numRows]);
         }
 
 
 
-        protected override Vector3D InvertValue(Vector3D value)
+        protected override UnityEngine.Vector3 InvertValue(UnityEngine.Vector3 value)
         {
             return -value;
         }
 
 
 
-        protected override Vector3D Minus(Vector3D valueA, Vector3D valueB)
+        protected override UnityEngine.Vector3 Minus(UnityEngine.Vector3 valueA, UnityEngine.Vector3 valueB)
         {
             return valueA - valueB;
         }
 
 
 
-        protected override Vector3D Multiply(Vector3D value1, Vector3D value2)
+        protected override UnityEngine.Vector3 Multiply(UnityEngine.Vector3 value1, UnityEngine.Vector3 value2)
         {
             //TODO: review
             return value1;
@@ -136,7 +136,7 @@ namespace Sceelix.Surfaces.Data
 
 
 
-        protected override Vector3D MultiplyScalar(Vector3D value, float scalar)
+        protected override UnityEngine.Vector3 MultiplyScalar(UnityEngine.Vector3 value, float scalar)
         {
             return value * scalar;
         }

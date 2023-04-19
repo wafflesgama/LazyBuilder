@@ -97,7 +97,7 @@ namespace ImageProcessor.Imaging.Filters.Artistic
                 padded.SetResolution(source.HorizontalResolution, source.VerticalResolution);
                 using (var graphicsPadded = Graphics.FromImage(padded))
                 {
-                    graphicsPadded.Clear(Color.White);
+                    graphicsPadded.Clear(Color.white);
                     var destinationRectangle = new Rectangle(0, 0, sourceWidth + this.Distance, source.Height + this.Distance);
                     using (var tb = new TextureBrush(source))
                     {
@@ -171,10 +171,10 @@ namespace ImageProcessor.Imaging.Filters.Artistic
                     graphicsKeyline.CompositingQuality = CompositingQuality.HighQuality;
 
                     // Set up the canvas.
-                    graphicsCyan.Clear(Color.White);
-                    graphicsMagenta.Clear(Color.White);
-                    graphicsYellow.Clear(Color.White);
-                    graphicsKeyline.Clear(Color.White);
+                    graphicsCyan.Clear(Color.white);
+                    graphicsMagenta.Clear(Color.white);
+                    graphicsYellow.Clear(Color.white);
+                    graphicsKeyline.Clear(Color.white);
 
                     // This is too slow. The graphics object can't be called within a parallel 
                     // loop so we have to do it old school. :(
@@ -245,7 +245,7 @@ namespace ImageProcessor.Imaging.Filters.Artistic
                     // Set our white background.
                     using (var graphics = Graphics.FromImage(newImage))
                     {
-                        graphics.Clear(Color.White);
+                        graphics.Clear(Color.white);
                     }
 
                     // Blend the colors now to mimic adaptive blending.

@@ -14,7 +14,7 @@ namespace Sceelix.Mathematics.Helpers
         /// <param name="point"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static float MovePlane(ref Plane3D plane, IEnumerable<Vector3D> points)
+        public static float MovePlane(ref Plane3D plane, IEnumerable<UnityEngine.Vector3> points)
         {
             float size = 0;
 
@@ -46,7 +46,7 @@ namespace Sceelix.Mathematics.Helpers
         /// <param name="point"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static float MovePlane(ref Plane3D plane, Vector3D point, float size)
+        public static float MovePlane(ref Plane3D plane, UnityEngine.Vector3 point, float size)
         {
             //TODO: Review this code. Seems overly complex.
             float distance = plane.DistanceToPoint(point);

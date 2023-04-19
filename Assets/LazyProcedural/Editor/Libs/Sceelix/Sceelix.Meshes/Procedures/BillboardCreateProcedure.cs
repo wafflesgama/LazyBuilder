@@ -21,9 +21,9 @@ namespace Sceelix.Meshes.Procedures
         private readonly Output<BillboardEntity> _output = new Output<BillboardEntity>("Output");
 
         /// <summary>
-        /// Color tint of the billboard.
+        /// UnityEngine.Color tint of the billboard.
         /// </summary>
-        private readonly ColorParameter _parameterColor = new ColorParameter("Color", Color.Black);
+        private readonly ColorParameter _parameterColor = new ColorParameter("UnityEngine.Color", UnityEngine.Color.Black);
 
         /// <summary>
         /// Image to be set as billboard.
@@ -33,7 +33,7 @@ namespace Sceelix.Meshes.Procedures
         /// <summary>
         /// Size of the billboard in width (X) and height (Y).
         /// </summary>
-        private readonly Vector2DParameter _parameterSize = new Vector2DParameter("Size", new Vector2D(1, 1));
+        private readonly Vector2Parameter _parameterSize = new Vector2Parameter("Size", new UnityEngine.Vector2(1, 1));
 
 
 

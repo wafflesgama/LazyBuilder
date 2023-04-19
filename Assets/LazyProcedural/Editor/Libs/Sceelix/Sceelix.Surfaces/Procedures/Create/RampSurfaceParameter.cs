@@ -59,12 +59,12 @@ namespace Sceelix.Surfaces.Procedures
         /// <summary>
         /// The offset of the ramp, relative to the surface size. 0.5 would mean an offset equal to the half the size of the surface.
         /// </summary>
-        private readonly Vector2DParameter _parameterOffset = new Vector2DParameter("Offset", Vector2D.Zero);
+        private readonly Vector2Parameter _parameterOffset = new Vector2Parameter("Offset", UnityEngine.Vector2.zero);
 
         /// <summary>
         /// The size of the ramp, relative to the surface size. 0.5 would mean half the size of the surface, 2 would mean twice the size.
         /// </summary>
-        private readonly Vector2DParameter _parameterSize = new Vector2DParameter("Size", Vector2D.One);
+        private readonly Vector2Parameter _parameterSize = new Vector2Parameter("Size", UnityEngine.Vector2.One);
 
         /// <summary>
         /// How the pattern should behave after the ramp boundaries (repeating, mirroring, etc.) 
@@ -100,11 +100,11 @@ namespace Sceelix.Surfaces.Procedures
             var continuityFunction = GetContinuityFunction();
 
             var cellSize = _parameterCellSize.Value;
-            var size = new Vector2D(_parameterWidth.Value, _parameterLength.Value);
+            var size = new UnityEngine.Vector2(_parameterWidth.Value, _parameterLength.Value);
             size *= _parameterSize.Value;
 
             var offsetValue = _parameterOffset.Value;
-            offsetValue *= new Vector2D(_parameterWidth.Value, _parameterLength.Value);
+            offsetValue *= new UnityEngine.Vector2(_parameterWidth.Value, _parameterLength.Value);
 
 
             float[,] heights = new float[columns, rows];
@@ -112,8 +112,8 @@ namespace Sceelix.Surfaces.Procedures
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    var fractionX = continuityFunction((x * cellSize + offsetValue.X) / size.X, 0, 1);
-                    var fractionY = continuityFunction((_parameterLength.Value - y * cellSize + offsetValue.Y) / size.Y, 0, 1);
+                    var fractionX = continuityFunction((x * cellSize + offsetValue.x) / size.x, 0, 1);
+                    var fractionY = continuityFunction((_parameterLength.Value - y * cellSize + offsetValue.y) / size.y, 0, 1);
 
                     var mergedFraction = shapeFunction(fractionX, fractionY);
                     var alteredFraction = (float) methodFunction(mergedFraction);

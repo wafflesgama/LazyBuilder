@@ -12,29 +12,29 @@ namespace Sceelix.Surfaces.Extensions
         /// <param name="surfaceColumn">The surface column.</param>
         /// <param name="surfaceRow">The surface row.</param>
         /// <returns></returns>
-        public static Vector3D CalculateNormal(this HeightLayer heightLayer, Coordinate surfaceCoordinate)
+        public static UnityEngine.Vector3 CalculateNormal(this HeightLayer heightLayer, Coordinate surfaceCoordinate)
         {
             if (heightLayer == null)
-                return Vector3D.ZVector;
+                return UnityEngine.Vector3.forward;
 
-            Vector3D[] directions = new Vector3D[4];
-            Vector3D centralPosition = heightLayer.GetPosition(surfaceCoordinate);
+            UnityEngine.Vector3[] directions = new UnityEngine.Vector3[4];
+            UnityEngine.Vector3 centralPosition = heightLayer.GetPosition(surfaceCoordinate);
 
-            directions[0] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.X, surfaceCoordinate.Y - 1), SampleMethod.Clamp) - centralPosition;
-            directions[1] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.X - 1, surfaceCoordinate.Y), SampleMethod.Clamp) - centralPosition;
-            directions[2] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.X, surfaceCoordinate.Y + 1), SampleMethod.Clamp) - centralPosition;
-            directions[3] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.X + 1, surfaceCoordinate.Y), SampleMethod.Clamp) - centralPosition;
+            directions[0] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.x, surfaceCoordinate.y - 1), SampleMethod.Clamp) - centralPosition;
+            directions[1] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.x - 1, surfaceCoordinate.y), SampleMethod.Clamp) - centralPosition;
+            directions[2] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.x, surfaceCoordinate.y + 1), SampleMethod.Clamp) - centralPosition;
+            directions[3] = heightLayer.GetPosition(new Coordinate(surfaceCoordinate.x + 1, surfaceCoordinate.y), SampleMethod.Clamp) - centralPosition;
 
-            Vector3D normal = Vector3D.Zero;
+            UnityEngine.Vector3 normal = UnityEngine.Vector3.zero;
             for (int i = 0; i < 4; i++)
             {
-                Vector3D direction1 = directions[i];
-                Vector3D direction2 = i + 1 > 3 ? directions[0] : directions[i + 1];
+                UnityEngine.Vector3 direction1 = directions[i];
+                UnityEngine.Vector3 direction2 = i + 1 > 3 ? directions[0] : directions[i + 1];
 
-                normal += Vector3D.Cross(direction1, direction2);
+                normal += UnityEngine.Vector3.Cross(direction1, direction2);
             }
 
-            return normal.Normalize();
+            return normal.normalized;
         }
     }
 }

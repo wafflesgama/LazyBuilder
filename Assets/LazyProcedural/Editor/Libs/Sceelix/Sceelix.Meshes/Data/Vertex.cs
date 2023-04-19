@@ -22,7 +22,7 @@ namespace Sceelix.Meshes.Data
     public class Vertex : Entity
     {
         private static readonly FieldKey NormalKey = new FieldKey("Normal");
-        private static readonly FieldKey ColorKey = new FieldKey("Color");
+        private static readonly FieldKey ColorKey = new FieldKey("UnityEngine.Color");
         private static readonly FieldKey UV0Key = new FieldKey("UV0");
 
         //private List<Edge> _edges;
@@ -30,19 +30,19 @@ namespace Sceelix.Meshes.Data
         /// <summary>
         /// 3D Location of the vertex
         /// </summary>
-        private Vector3D _position;
+        private UnityEngine.Vector3 _position;
 
 
 
         public Vertex()
         {
-            _position = new Vector3D();
+            _position = new UnityEngine.Vector3();
             HalfVertices = new List<HalfVertex>();
         }
 
 
 
-        public Vertex(Vector3D position)
+        public Vertex(UnityEngine.Vector3 position)
         {
             _position = position;
             //_position = position.Round();
@@ -94,11 +94,11 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Color? Color
+        public UnityEngine.Color? Color
         {
             get
             {
-                var color = (Color?) Attributes.TryGet(ColorKey);
+                var color = (UnityEngine.Color?) Attributes.TryGet(ColorKey);
                 return color;
             }
             set { Attributes.TrySet(ColorKey, value, true); }
@@ -125,11 +125,11 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector3D? Normal
+        public UnityEngine.Vector3? Normal
         {
             get
             {
-                var normal = (Vector3D?) Attributes.TryGet(NormalKey);
+                var normal = (UnityEngine.Vector3?) Attributes.TryGet(NormalKey);
                 return normal;
             }
             set { Attributes.TrySet(NormalKey, value, true); }
@@ -141,7 +141,7 @@ namespace Sceelix.Meshes.Data
         /// 3D Location of the vertex
         /// </summary>
         /// [NaturalAttribute]
-        public Vector3D Position
+        public UnityEngine.Vector3 Position
         {
             get { return _position; }
             set { _position = value; }
@@ -149,9 +149,9 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector2D? UV0
+        public UnityEngine.Vector2? UV0
         {
-            get { return Attributes.TryGet(UV0Key) as Vector2D?; }
+            get { return Attributes.TryGet(UV0Key) as UnityEngine.Vector2?; }
             set { Attributes.TrySet(UV0Key, value, true); }
         }
 
@@ -185,7 +185,7 @@ namespace Sceelix.Meshes.Data
         /// <param name="position"></param>
         /// <param name="v1"></param>
         /// <returns></returns>
-        public Vertex CreateInterpolatedVertex(Face face, Vector3D position, Vertex v1)
+        public Vertex CreateInterpolatedVertex(Face face, UnityEngine.Vector3 position, Vertex v1)
         {
             float distance = (v1.Position - Position).Length;
 
@@ -264,7 +264,7 @@ namespace Sceelix.Meshes.Data
 
                     }
                     if (attributeName == "Position")
-                        return new SceeList(new KeyValuePair<string, object>("X", _position.X), new KeyValuePair<string, object>("Y", _position.Y), new KeyValuePair<string, object>("Z", _position.Z));
+                        return new SceeList(new KeyValuePair<string, object>("X", _position.x), new KeyValuePair<string, object>("Y", _position.y), new KeyValuePair<string, object>("Z", _position.z));
 
                     return base[attributeName];
                 }
@@ -273,7 +273,7 @@ namespace Sceelix.Meshes.Data
                     if (attributeName == "Position")
                     {
                         var sceeList = value.CastTo<SceeList>();
-                        _position = new Vector3D(sceeList[0].CastTo<float>(), sceeList[1].CastTo<float>(), sceeList[2].CastTo<float>());
+                        _position = new UnityEngine.Vector3(sceeList[0].CastTo<float>(), sceeList[1].CastTo<float>(), sceeList[2].CastTo<float>());
                     }
                     else
                     {
@@ -296,15 +296,15 @@ namespace Sceelix.Meshes.Data
 
 
 
-            public Vector2D? this[int index]
+            public UnityEngine.Vector2? this[int index]
             {
                 get
                 {
-                    var geometryTextureCoordinate = Vertex.Attributes.TryGet(new FieldKey("UV" + index)) as Vector2D?;
+                    var geometryTextureCoordinate = Vertex.Attributes.TryGet(new FieldKey("UV" + index)) as UnityEngine.Vector2?;
                     if (geometryTextureCoordinate.HasValue)
                         return geometryTextureCoordinate.Value;
 
-                    return Vector2D.Zero;
+                    return UnityEngine.Vector2.zero;
                 }
                 set { Vertex.Attributes.TrySet(new FieldKey("UV" + index), value, true); }
             }

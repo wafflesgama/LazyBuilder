@@ -45,7 +45,7 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// Position of the Pivot.
             /// </summary>
-            private readonly Vector3DParameter _positionParameter = new Vector3DParameter("Position", new Vector3D(0.5f, 0.5f, 0.5f));
+            private readonly Vector3Parameter _positionParameter = new Vector3Parameter("Position", new UnityEngine.Vector3(0.5f, 0.5f, 0.5f));
 
             /// <summary>
             /// Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1).
@@ -88,7 +88,7 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// Amount to be translated.
             /// </summary>
-            private readonly Vector3DParameter _parameterAmount = new Vector3DParameter("Amount", new Vector3D());
+            private readonly Vector3Parameter _parameterAmount = new Vector3Parameter("Amount", new UnityEngine.Vector3());
 
             /// <summary>
             /// Indicates if the operation should be relative to the scope's direction or to the world.
@@ -185,11 +185,11 @@ namespace Sceelix.Actors.Procedures
             {
                 var boxScope = actor.BoxScope;
 
-                var x = CalculateAxisTranslation(boxScope.Sizes.X, boxScope.Translation.X, _parameterX.Value);
-                var y = CalculateAxisTranslation(boxScope.Sizes.Y, boxScope.Translation.Y, _parameterY.Value);
-                var z = CalculateAxisTranslation(boxScope.Sizes.Z, boxScope.Translation.Z, _parameterZ.Value);
+                var x = CalculateAxisTranslation(boxScope.Sizes.x, boxScope.Translation.x, _parameterX.Value);
+                var y = CalculateAxisTranslation(boxScope.Sizes.y, boxScope.Translation.y, _parameterY.Value);
+                var z = CalculateAxisTranslation(boxScope.Sizes.z, boxScope.Translation.z, _parameterZ.Value);
 
-                actor.InsertInto(boxScope.Translate(new Vector3D(x, y, z)));
+                actor.InsertInto(boxScope.Translate(new UnityEngine.Vector3(x, y, z)));
 
                 return actor;
             }

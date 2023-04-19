@@ -192,9 +192,9 @@ namespace Sceelix.Paths.Data
         /// Creates a path from a given set of positions, which are turned into vertices. Builds edges connecting them in the sequence that was given.
         /// </summary>
         /// <param name="vertices">Vertices from which the path should be created.</param>
-        public static PathEntity CreateSequence(params Vector3D[] positions)
+        public static PathEntity CreateSequence(params UnityEngine.Vector3[] positions)
         {
-            return CreateSequence((IEnumerable<Vector3D>) positions);
+            return CreateSequence((IEnumerable<UnityEngine.Vector3>) positions);
         }
 
 
@@ -203,7 +203,7 @@ namespace Sceelix.Paths.Data
         /// Creates a path from a given set of positions, which are turned into vertices. Builds edges connecting them in the sequence that was given.
         /// </summary>
         /// <param name="vertices">Vertices from which the path should be created.</param>
-        public static PathEntity CreateSequence(IEnumerable<Vector3D> positions)
+        public static PathEntity CreateSequence(IEnumerable<UnityEngine.Vector3> positions)
         {
             return CreateSequence(positions.Select(x => new PathVertex(x)));
         }

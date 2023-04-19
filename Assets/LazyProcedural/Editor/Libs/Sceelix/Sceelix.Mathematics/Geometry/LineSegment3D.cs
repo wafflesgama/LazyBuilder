@@ -11,7 +11,7 @@ namespace Sceelix.Mathematics.Geometry
     /// </summary>
     public struct LineSegment3D
     {
-        public LineSegment3D(Vector3D point0, Vector3D point1)
+        public LineSegment3D(UnityEngine.Vector3 point0, UnityEngine.Vector3 point1)
         {
             Point0 = point0;
             Point1 = point1;
@@ -19,13 +19,13 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public Vector3D Point0
+        public UnityEngine.Vector3 Point0
         {
             get;
         }
 
 
-        public Vector3D Point1
+        public UnityEngine.Vector3 Point1
         {
             get;
         }
@@ -39,17 +39,17 @@ namespace Sceelix.Mathematics.Geometry
         /// <summary>
         /// Non-normalized direction of the segment.
         /// </summary>
-        public Vector3D Direction => Point1 - Point0;
+        public UnityEngine.Vector3 Direction => Point1 - Point0;
 
 
         /// <summary>
         /// Calculated middle point between the start and the end points
         /// </summary>
-        public Vector3D Middle => Point0 + Direction / 2f;
+        public UnityEngine.Vector3 Middle => Point0 + Direction / 2f;
 
 
 
-        public Vector3D? IntersectWith(Plane3D plane3D)
+        public UnityEngine.Vector3? IntersectWith(Plane3D plane3D)
         {
             Line3D line = new Line3D(Point1 - Point0, Point0);
             float? intersection = line.IntersectsPlane(plane3D);
@@ -71,26 +71,26 @@ namespace Sceelix.Mathematics.Geometry
 
 
 
-        public Vector3D Intersection(LineSegment3D line, bool includeEnds)
+        public UnityEngine.Vector3 Intersection(LineSegment3D line, bool includeEnds)
         {
-            Vector3D p1 = Point0;
-            Vector3D p3 = line.Point0;
+            UnityEngine.Vector3 p1 = Point0;
+            UnityEngine.Vector3 p3 = line.Point0;
 
-            Vector3D p21 = Direction;
-            Vector3D p43 = line.Direction;
-            Vector3D p13 = p1 - p3;
+            UnityEngine.Vector3 p21 = Direction;
+            UnityEngine.Vector3 p43 = line.Direction;
+            UnityEngine.Vector3 p13 = p1 - p3;
 
             if (Direction.Length < float.Epsilon || line.Direction.Length < float.Epsilon)
-                return Vector3D.NaN;
+                return UnityEngine.Vector3.NaN;
 
             double d1343 = p13.Dot(p43);
             double d4321 = p43.Dot(p21);
-            double d1321 = p13.X * (double) p21.X + (double) p13.Y * p21.Y + (double) p13.Z * p21.Z;
-            double d4343 = p43.X * (double) p43.X + (double) p43.Y * p43.Y + (double) p43.Z * p43.Z;
-            double d2121 = p21.X * (double) p21.X + (double) p21.Y * p21.Y + (double) p21.Z * p21.Z;
+            double d1321 = p13.x * (double) p21.x + (double) p13.y * p21.y + (double) p13.z * p21.z;
+            double d4343 = p43.x * (double) p43.x + (double) p43.y * p43.y + (double) p43.z * p43.z;
+            double d2121 = p21.x * (double) p21.x + (double) p21.y * p21.y + (double) p21.z * p21.z;
 
             double denom = d2121 * d4343 - d4321 * d4321;
-            if (Math.Abs(denom) < float.Epsilon) return Vector3D.Infinity;
+            if (Math.Abs(denom) < float.Epsilon) return UnityEngine.Vector3.Infinity;
             double numer = d1343 * d4321 - d1321 * d4343;
 
             double a = numer / denom;
@@ -99,12 +99,12 @@ namespace Sceelix.Mathematics.Geometry
             if (includeEnds)
             {
                 if (a < 0 || a > 1 || b < 0 || b > 1)
-                    return Vector3D.NaN;
+                    return UnityEngine.Vector3.NaN;
             }
             else
             {
                 if (a <= 0 || a >= 1 || b <= 0 || b >= 1)
-                    return Vector3D.NaN;
+                    return UnityEngine.Vector3.NaN;
             }
 
             return this[(float) a];
@@ -117,15 +117,15 @@ namespace Sceelix.Mathematics.Geometry
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public Vector3D this[float m] => Direction * m + Point0;
+        public UnityEngine.Vector3 this[float m] => Direction * m + Point0;
 
 
 
-        public Vector3D ClosestPointOnLine(Vector3D point)
+        public UnityEngine.Vector3 ClosestPointOnLine(UnityEngine.Vector3 point)
         {
             var lineLength = Length;
             var lineDir = Direction / lineLength;
-            var distance = Vector3D.Dot(point - Point0, lineDir);
+            var distance = UnityEngine.Vector3.Dot(point - Point0, lineDir);
 
             distance = Math.Min(Math.Max(0, distance), lineLength);
             /*if (distance <= 0)
@@ -142,7 +142,7 @@ namespace Sceelix.Mathematics.Geometry
         /// <summary>
         /// Find the minimum distance from this line segment to the given point.
         /// </summary>
-        public float MinDistanceTo(Vector3D point)
+        public float MinDistanceTo(UnityEngine.Vector3 point)
         {
             return (ClosestPointOnLine(point) - point).Length;
         }
@@ -156,7 +156,7 @@ namespace Sceelix.Mathematics.Geometry
         /// <param name="radius">The sphere radius.</param>
         /// <returns>The array of intersected locations. Could be empty (if there were no intersections), or have up to 2 elements/intersections.</returns>
         /// <remarks>See http://csharphelper.com/blog/2014/09/determine-where-a-line-intersects-a-circle-in-c/ for original code.</remarks>
-        public Vector3D[] FindSphereIntersectionPoints(Vector3D sphereCenter, float radius)
+        public UnityEngine.Vector3[] FindSphereIntersectionPoints(UnityEngine.Vector3 sphereCenter, float radius)
         {
             var direction = Direction;
             var point0 = Point0;
@@ -174,7 +174,7 @@ namespace Sceelix.Mathematics.Geometry
         /// <param name="sphereCenter">The sphere center.</param>
         /// <param name="radius">The radius.</param>
         /// <returns><c>true</c> if the line segment intersects the sphere, <c>false</c> otherwise.</returns>
-        public bool IntersectsSphere(Vector3D sphereCenter, float radius)
+        public bool IntersectsSphere(UnityEngine.Vector3 sphereCenter, float radius)
         {
             var line3D = new Line3D(Direction, Point0);
 

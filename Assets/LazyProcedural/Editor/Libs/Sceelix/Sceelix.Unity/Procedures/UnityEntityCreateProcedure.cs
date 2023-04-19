@@ -125,17 +125,17 @@ namespace Sceelix.Unity.Procedures
             /// <summary>
             /// Translation (in Unity Coordinates) or the Unity Entity.
             /// </summary>
-            private readonly Vector3DParameter _parameterTranslation = new Vector3DParameter("Translation");
+            private readonly Vector3Parameter _parameterTranslation = new Vector3Parameter("Translation");
 
             /// <summary>
             /// Rotation (in Unity Coordinates) or the Unity Entity.
             /// </summary>
-            private readonly Vector3DParameter _parameterRotation = new Vector3DParameter("Rotation");
+            private readonly Vector3Parameter _parameterRotation = new Vector3Parameter("Rotation");
 
             /// <summary>
             /// Scale (in Unity Coordinates) or the Unity Entity.
             /// </summary>
-            private readonly Vector3DParameter _parameterScale = new Vector3DParameter("Scale", Vector3D.One);
+            private readonly Vector3Parameter _parameterScale = new Vector3Parameter("Scale", UnityEngine.Vector3.one);
 
 
 
@@ -154,9 +154,9 @@ namespace Sceelix.Unity.Procedures
                 //Unity applies rotations in the Z,X,Y order
                 //meaning we need to do the same, plus consider
                 //the fact that Y and Z are flipped in this Sceelix->Unity conversion
-                var matrix = Matrix.CreateRotateZ(MathHelper.ToRadians(-rotation.Y))
-                             * Matrix.CreateRotateX(MathHelper.ToRadians(-rotation.X))
-                             * Matrix.CreateRotateY(MathHelper.ToRadians(-rotation.Z));
+                var matrix = Matrix.CreateRotateZ(MathHelper.ToRadians(-rotation.y))
+                             * Matrix.CreateRotateX(MathHelper.ToRadians(-rotation.x))
+                             * Matrix.CreateRotateY(MathHelper.ToRadians(-rotation.z));
 
 
                 var rotatedScope = BoxScope.Identity.Transform(matrix);
@@ -194,7 +194,7 @@ namespace Sceelix.Unity.Procedures
 
                 var originalScope = meshEntity.BoxScope;
                 unityEntity.BoxScope = originalScope;
-                unityEntity.RelativeScale = new Vector3D(1 / originalScope.Sizes.X, 1 / originalScope.Sizes.Y, 1 / originalScope.Sizes.Z).MakeValid();
+                unityEntity.RelativeScale = new UnityEngine.Vector3(1 / originalScope.Sizes.x, 1 / originalScope.Sizes.y, 1 / originalScope.Sizes.z).MakeValid();
 
                 //reset the mesh
                 meshEntity.InsertInto(new BoxScope(sizes: originalScope.Sizes));
@@ -312,7 +312,7 @@ namespace Sceelix.Unity.Procedures
 
                 //reset the mesh
                 //surfaceEntity.InsertInto(BoxScope.Identity);
-                unityEntity.RelativeScale = new Vector3D(1 / originalScope.Sizes.X, 1 / originalScope.Sizes.Y, 1 / originalScope.Sizes.Z).MakeValid(); //1 / (Math.Max(1,originalScope.Sizes.Z))
+                unityEntity.RelativeScale = new UnityEngine.Vector3(1 / originalScope.Sizes.x, 1 / originalScope.Sizes.y, 1 / originalScope.Sizes.z).MakeValid(); //1 / (Math.Max(1,originalScope.Sizes.z))
                 unityEntity.BoxScope = originalScope;
                 surfaceEntity.InsertInto(new BoxScope(sizes: originalScope.Sizes));
 

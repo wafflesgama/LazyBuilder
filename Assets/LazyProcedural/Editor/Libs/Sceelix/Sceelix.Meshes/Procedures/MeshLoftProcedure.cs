@@ -97,7 +97,7 @@ namespace Sceelix.Meshes.Procedures
             Face firstFace = faces.First();
 
             CircularList<CircularList<Vertex>> faceVerticesLists = new CircularList<CircularList<Vertex>>(faces.Select(x => new CircularList<Vertex>(x.Vertices)));
-            List<Vector3D> faceNormals = faces.Select(x => x.Normal).ToList();
+            List<UnityEngine.Vector3> faceNormals = faces.Select(x => x.Normal).ToList();
             List<float> lowerStrengths = meshes.Select(x => _parameterLowerStrength.Get(x)).ToList();
             List<float> upperStrengths = meshes.Select(x => _parameterUpperStrength.Get(x)).ToList();
             CircularList<CircularList<Vertex>> completeFaceVerticesLists = new CircularList<CircularList<Vertex>>();
@@ -123,14 +123,14 @@ namespace Sceelix.Meshes.Procedures
                 var tan1 = faceNormals[i] * upperStrengths[i];
                 var tan2 = faceNormals[i + 1] * lowerStrengths[i + 1];
 
-                //Vector3D previousCentroid = currentVertexList.Select(x => x.Position).Aggregate((x, total) => total + x) / currentVertexList.Count;
+                //UnityEngine.Vector3 previousCentroid = currentVertexList.Select(x => x.Position).Aggregate((x, total) => total + x) / currentVertexList.Count;
 
                 //var previousBezierPosition = currentVertexList[0].Position;
 
                 for (int j = 0; j < segmentsNumber; j++)
                 {
-                    Vector3D bezierDerivative = new Vector3D();
-                    //Vector3D nextBezierPosition = new Vector3D();
+                    UnityEngine.Vector3 bezierDerivative = new UnityEngine.Vector3();
+                    //UnityEngine.Vector3 nextBezierPosition = new UnityEngine.Vector3();
 
                     CircularList<Vertex> intermediateVertexList = new CircularList<Vertex>();
                     for (int k = 0; k < currentVertexList.Count; k++)
@@ -157,9 +157,9 @@ namespace Sceelix.Meshes.Procedures
                         intermediateVertexList.Add(new Vertex(bezierPosition));
                     }
 
-                    Vector3D centroid = intermediateVertexList.Select(x => x.Position).Aggregate((x, total) => total + x) / intermediateVertexList.Count;
+                    UnityEngine.Vector3 centroid = intermediateVertexList.Select(x => x.Position).Aggregate((x, total) => total + x) / intermediateVertexList.Count;
 
-                    var bezierDirection = bezierDerivative.Normalize(); //(currentBezierPosition - previousBezierPosition).Normalize();//(centroid - previousCentroid).Normalize();
+                    var bezierDirection = bezierDerivative.normalized; //(currentBezierPosition - previousBezierPosition).normalized;//(centroid - previousCentroid).normalized;
 
                     var angle = bezierDirection.AngleTo(currentNormal);
                     var axis = bezierDirection.Cross(currentNormal);

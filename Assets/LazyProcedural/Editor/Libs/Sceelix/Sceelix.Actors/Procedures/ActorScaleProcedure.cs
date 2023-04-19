@@ -19,7 +19,7 @@ namespace Sceelix.Actors.Procedures
         /// <summary>
         /// The amount on each axis to scale.
         /// </summary>
-        private readonly Vector3DParameter _parameterAmount = new Vector3DParameter("Amount", new Vector3D(1, 1, 1));
+        private readonly Vector3Parameter _parameterAmount = new Vector3Parameter("Amount", new UnityEngine.Vector3(1, 1, 1));
 
         /// <summary>
         /// Indicates how the scaling should be performed.<br/>
@@ -39,7 +39,7 @@ namespace Sceelix.Actors.Procedures
         /// The pivot that defines around which point the actor will stretch.
         /// </summary>
         private readonly CompoundParameter _parameterPivot = new CompoundParameter("Pivot",
-            new Vector3DParameter("Position", new Vector3D(0.5f, 0.5f, 0.5f)) {Description = "Position of the pivot."},
+            new Vector3Parameter("Position", new UnityEngine.Vector3(0.5f, 0.5f, 0.5f)) {Description = "Position of the pivot."},
             new ChoiceParameter("Offset", "Relative", "Absolute", "Relative") {Description = "Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1)"},
             new ChoiceParameter("Relative To", "Scope", "Scope", "World") {Description = "Indicates if the operation should be relative to the scope's direction or to the world."}  );
 
@@ -48,14 +48,14 @@ namespace Sceelix.Actors.Procedures
         protected override IActor Process(IActor actor)
         {
             //first of all, let's determine the actual scaling
-            var scaling = Vector3D.Zero;
+            var scaling = UnityEngine.Vector3.zero;
             var amount = _parameterAmount.Value;
 
             switch (_parameterScalingMode.Value)
             {
                 case "Absolute":
 
-                    if (amount.X < 0 && amount.Y < 0 && amount.Z < 0)
+                    if (amount.x < 0 && amount.y < 0 && amount.z < 0)
                         throw new ArgumentException("Only two XYZ components can be negative for absolute scaling.");
 
                     scaling = (amount / actor.BoxScope.Sizes).MakeValid();
@@ -71,11 +71,11 @@ namespace Sceelix.Actors.Procedures
                             scalingValues[i] = 1;
                     }
 
-                    scaling = new Vector3D(scalingValues[0], scalingValues[1], scalingValues[2]);
+                    scaling = new UnityEngine.Vector3(scalingValues[0], scalingValues[1], scalingValues[2]);
 
                     break;
                 case "Additive":
-                    scaling = new Vector3D(1, 1, 1) + (amount / actor.BoxScope.Sizes).MakeValid();
+                    scaling = new UnityEngine.Vector3(1, 1, 1) + (amount / actor.BoxScope.Sizes).MakeValid();
                     break;
                 case "Relative":
                     scaling = amount;
@@ -83,7 +83,7 @@ namespace Sceelix.Actors.Procedures
             }
 
             //now, let's focus on calculating the pivot
-            var pivot = _parameterPivot["Position"].CastTo<Vector3DParameter>().Value;
+            var pivot = _parameterPivot["Position"].CastTo<Vector3Parameter>().Value;
 
             if (_parameterPivot["Offset"].CastTo<ChoiceParameter>().Value == "Relative")
                 pivot *= actor.BoxScope.Sizes;

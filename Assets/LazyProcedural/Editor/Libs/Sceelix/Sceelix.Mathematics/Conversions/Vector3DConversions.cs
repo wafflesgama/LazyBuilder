@@ -6,18 +6,18 @@ using Sceelix.Mathematics.Data;
 namespace Sceelix.Mathematics.Conversions
 {
     [ConversionFunctions]
-    public class Vector3DConversions
+    public class Vector3Conversions
     {
-        public static SceeList ToSceeList(Vector3D vector3D)
+        public static SceeList ToSceeList(UnityEngine.Vector3 vector3D)
         {
-            return new SceeList(new KeyValuePair<string, object>("X", vector3D.X), new KeyValuePair<string, object>("Y", vector3D.Y), new KeyValuePair<string, object>("Z", vector3D.Z));
+            return new SceeList(new KeyValuePair<string, object>("X", vector3D.x), new KeyValuePair<string, object>("Y", vector3D.y), new KeyValuePair<string, object>("Z", vector3D.z));
         }
 
 
 
-        public static string ToString(Vector3D vector3D)
+        public static string ToString(UnityEngine.Vector3 vector3D)
         {
-            return string.Format("{0},{1},{2}", ConvertHelper.Convert<string>(vector3D.X), ConvertHelper.Convert<string>(vector3D.Y), ConvertHelper.Convert<string>(vector3D.Z));
+            return string.Format("{0},{1},{2}", ConvertHelper.Convert<string>(vector3D.x), ConvertHelper.Convert<string>(vector3D.y), ConvertHelper.Convert<string>(vector3D.z));
         }
     }
 }

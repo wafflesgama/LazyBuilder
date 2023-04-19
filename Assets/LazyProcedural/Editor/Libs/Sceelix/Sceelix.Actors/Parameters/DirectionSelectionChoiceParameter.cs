@@ -1,6 +1,7 @@
 ﻿using Sceelix.Core.Parameters;
 using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Parameters;
+using UnityEngine;
 
 namespace Sceelix.Actors.Parameters
 {
@@ -13,7 +14,7 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public abstract bool Evaluate(Vector3D vector, double degreesLimit);
+        public abstract bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit);
     }
 
     /// <summary>
@@ -28,9 +29,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            return vector.Dot(Vector3D.ZVector) > degreesLimit;
+            return vector.Dot(UnityEngine.Vector3.forward) > degreesLimit;
         }
     }
 
@@ -46,9 +47,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            return vector.Dot(-Vector3D.ZVector) > degreesLimit;
+            return vector.Dot(-UnityEngine.Vector3.forward) > degreesLimit;
         }
     }
 
@@ -64,9 +65,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            return vector.Dot(-Vector3D.XVector) > degreesLimit;
+            return vector.Dot(-UnityEngine.Vector3.right) > degreesLimit;
         }
     }
 
@@ -82,9 +83,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            return vector.Dot(Vector3D.XVector) > degreesLimit;
+            return vector.Dot(UnityEngine.Vector3.right) > degreesLimit;
         }
     }
 
@@ -100,9 +101,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            return vector.Dot(Vector3D.YVector) > degreesLimit;
+            return vector.Dot(UnityEngine.Vector3.up) > degreesLimit;
         }
     }
 
@@ -118,9 +119,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            return vector.Dot(-Vector3D.YVector) > degreesLimit;
+            return vector.Dot(-UnityEngine.Vector3.up) > degreesLimit;
         }
     }
 
@@ -136,9 +137,9 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
-            float dot = vector.Dot(Vector3D.ZVector);
+            float dot = vector.Dot(UnityEngine.Vector3.forward);
 
             //if it's between +- 45 degrees
             return dot < degreesLimit && dot > -degreesLimit;
@@ -157,10 +158,10 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
             //if it's between +- 45 degrees
-            return vector.Dot(-Vector3D.YVector) > degreesLimit || vector.Dot(Vector3D.YVector) > degreesLimit;
+            return vector.Dot(-UnityEngine.Vector3.up) > degreesLimit || vector.Dot(UnityEngine.Vector3.up) > degreesLimit;
         }
     }
 
@@ -176,10 +177,10 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
             //if it's between +- 45 degrees
-            return vector.Dot(-Vector3D.ZVector) > degreesLimit || vector.Dot(Vector3D.ZVector) > degreesLimit;
+            return vector.Dot(-UnityEngine.Vector3.forward) > degreesLimit || vector.Dot(UnityEngine.Vector3.forward) > degreesLimit;
         }
     }
 
@@ -195,10 +196,10 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
             //if it's between +- 45 degrees
-            return vector.Dot(-Vector3D.XVector) > degreesLimit || vector.Dot(Vector3D.XVector) > degreesLimit;
+            return vector.Dot(-UnityEngine.Vector3.right) > degreesLimit || vector.Dot(UnityEngine.Vector3.right) > degreesLimit;
         }
     }
 
@@ -210,7 +211,7 @@ namespace Sceelix.Actors.Parameters
         /// <summary>
         /// The direction to compare to.
         /// </summary>
-        private readonly Vector3DParameter _directionParameter = new Vector3DParameter("Vector", Vector3D.ZVector);
+        private readonly Vector3Parameter _directionParameter = new Vector3Parameter("Vector", UnityEngine.Vector3.forward);
 
 
 
@@ -221,7 +222,7 @@ namespace Sceelix.Actors.Parameters
 
 
 
-        public override bool Evaluate(Vector3D vector, double degreesLimit)
+        public override bool Evaluate(UnityEngine.Vector3 vector, double degreesLimit)
         {
             return vector.Dot(_directionParameter.Value) > degreesLimit;
         }

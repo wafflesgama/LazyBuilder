@@ -5,7 +5,7 @@ namespace Sceelix.Surfaces.Handles
 {
     public class SurfaceManipulateHandle : VisualHandle
     {
-        public SurfaceManipulateHandle(Vector3D position, float cellSize, float[,] heights, float[] diffValues, string fileName)
+        public SurfaceManipulateHandle(UnityEngine.Vector3 position, float cellSize, float[,] heights, float[] diffValues, string fileName)
         {
             Position = position;
             CellSize = cellSize;
@@ -40,7 +40,7 @@ namespace Sceelix.Surfaces.Handles
         }
 
 
-        public Vector3D Position
+        public UnityEngine.Vector3 Position
         {
             get;
         }

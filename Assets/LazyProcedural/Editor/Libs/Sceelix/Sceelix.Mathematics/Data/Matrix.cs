@@ -131,43 +131,43 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public Vector3D Transform(Vector3D vector)
+        public UnityEngine.Vector3 Transform(UnityEngine.Vector3 vector)
         {
-            return new Vector3D(
-                M11 * vector.X + M12 * vector.Y + M13 * vector.Z + M14,
-                M21 * vector.X + M22 * vector.Y + M23 * vector.Z + M24,
-                M31 * vector.X + M32 * vector.Y + M33 * vector.Z + M34);
+            return new UnityEngine.Vector3(
+                M11 * vector.x + M12 * vector.y + M13 * vector.z + M14,
+                M21 * vector.x + M22 * vector.y + M23 * vector.z + M24,
+                M31 * vector.x + M32 * vector.y + M33 * vector.z + M34);
         }
 
 
 
-/*public static Vector3D Transform(Matrix matrix, Vector3D vector)
+/*public static UnityEngine.Vector3 Transform(Matrix matrix, UnityEngine.Vector3 vector)
                 {
-                    return new Vector3D(
-                        (matrix.M11 * vector.X) + (matrix.M12 * vector.Y) + (matrix.M13 * vector.Z) + matrix.M14,
-                        (matrix.M21 * vector.X) + (matrix.M22 * vector.Y) + (matrix.M23 * vector.Z) + matrix.M24,
-                        (matrix.M31 * vector.X) + (matrix.M32 * vector.Y) + (matrix.M33 * vector.Z) + matrix.M34);
+                    return new UnityEngine.Vector3(
+                        (matrix.M11 * vector.x) + (matrix.M12 * vector.y) + (matrix.M13 * vector.z) + matrix.M14,
+                        (matrix.M21 * vector.x) + (matrix.M22 * vector.y) + (matrix.M23 * vector.z) + matrix.M24,
+                        (matrix.M31 * vector.x) + (matrix.M32 * vector.y) + (matrix.M33 * vector.z) + matrix.M34);
                 }*/
 
 
 
-        public static Matrix CreateAxisAngle(Vector3D rotationAxis, float angle)
+        public static Matrix CreateAxisAngle(UnityEngine.Vector3 rotationAxis, float angle)
         {
             float sin = (float) Math.Sin(angle);
             float cos = (float) Math.Cos(angle);
             float cosInv = 1.0f - cos;
 
-            float squareAxisX = rotationAxis.X * rotationAxis.X;
-            float squareAxisY = rotationAxis.Y * rotationAxis.Y;
-            float squareAxisZ = rotationAxis.Z * rotationAxis.Z;
+            float squareAxisX = rotationAxis.x * rotationAxis.x;
+            float squareAxisY = rotationAxis.y * rotationAxis.y;
+            float squareAxisZ = rotationAxis.z * rotationAxis.z;
 
-            float xy = rotationAxis.X * rotationAxis.Y;
-            float xz = rotationAxis.X * rotationAxis.Z;
-            float yz = rotationAxis.Y * rotationAxis.Z;
+            float xy = rotationAxis.x * rotationAxis.y;
+            float xz = rotationAxis.x * rotationAxis.z;
+            float yz = rotationAxis.y * rotationAxis.z;
 
-            return new Matrix(cos + squareAxisX * cosInv, xy * cosInv - rotationAxis.Z * sin, xz * cosInv + rotationAxis.Y * sin, 0.0f,
-                xy * cosInv + rotationAxis.Z * sin, cos + squareAxisY * cosInv, yz * cosInv - rotationAxis.X * sin, 0.0f,
-                xz * cosInv - rotationAxis.Y * sin, yz * cosInv + rotationAxis.X * sin, cos + squareAxisZ * cosInv, 0.0f,
+            return new Matrix(cos + squareAxisX * cosInv, xy * cosInv - rotationAxis.z * sin, xz * cosInv + rotationAxis.y * sin, 0.0f,
+                xy * cosInv + rotationAxis.z * sin, cos + squareAxisY * cosInv, yz * cosInv - rotationAxis.x * sin, 0.0f,
+                xz * cosInv - rotationAxis.y * sin, yz * cosInv + rotationAxis.x * sin, cos + squareAxisZ * cosInv, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f);
         }
 
@@ -336,11 +336,11 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public static Matrix CreateScale(Vector3D vector)
+        public static Matrix CreateScale(UnityEngine.Vector3 vector)
         {
-            return new Matrix(vector.X, 0.0f, 0.0f, 0.0f,
-                0.0f, vector.Y, 0.0f, 0.0f,
-                0.0f, 0.0f, vector.Z, 0.0f,
+            return new Matrix(vector.x, 0.0f, 0.0f, 0.0f,
+                0.0f, vector.y, 0.0f, 0.0f,
+                0.0f, 0.0f, vector.z, 0.0f,
                 0.0f, 0.0f, 0.0f, 1.0f);
         }
 
@@ -366,11 +366,11 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public static Matrix CreateTranslation(Vector3D vector)
+        public static Matrix CreateTranslation(UnityEngine.Vector3 vector)
         {
-            return new Matrix(1.0f, 0.0f, 0.0f, vector.X,
-                0.0f, 1.0f, 0.0f, vector.Y,
-                0.0f, 0.0f, 1.0f, vector.Z,
+            return new Matrix(1.0f, 0.0f, 0.0f, vector.x,
+                0.0f, 1.0f, 0.0f, vector.y,
+                0.0f, 0.0f, 1.0f, vector.z,
                 0.0f, 0.0f, 0.0f, 1.0f);
         }
 

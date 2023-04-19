@@ -43,7 +43,7 @@ namespace Sceelix.Surfaces.Procedures
         /// Frequency of the noise function. Smaller values result in tighter "mountains" while greater
         /// values result in wider ones.
         /// </summary>
-        private readonly Vector2DParameter _parameterFrequency = new Vector2DParameter("Frequency", new Vector2D(3, 3));
+        private readonly Vector2Parameter _parameterFrequency = new Vector2Parameter("Frequency", new UnityEngine.Vector2(3, 3));
 
         /// <summary>
         /// Seed of the random generator, which controls the "randomness" look of the surface.
@@ -67,8 +67,8 @@ namespace Sceelix.Surfaces.Procedures
             float[,] heights = new float[columns, rows];
 
             //to improve performance, make the access to these variables as fast as possible
-            var frequencyX = _parameterFrequency.Value.X;
-            var frequencyY = _parameterFrequency.Value.Y;
+            var frequencyX = _parameterFrequency.Value.x;
+            var frequencyY = _parameterFrequency.Value.y;
             var seed = _parameterSeed.Value;
             float height = _parameterHeightScale.Value;
 

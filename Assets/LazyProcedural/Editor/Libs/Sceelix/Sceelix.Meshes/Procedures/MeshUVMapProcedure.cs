@@ -110,14 +110,14 @@ namespace Sceelix.Meshes.Procedures
                 foreach (Face face in meshEntity)
                 foreach (HalfVertex halfVertex in face.HalfVertices)
                 {
-                    Vector2D textureCoordinate = halfVertex.UV0;
-                    float u = textureCoordinate.X, v = textureCoordinate.Y;
+                    UnityEngine.Vector2 textureCoordinate = halfVertex.UV0;
+                    float u = textureCoordinate.x, v = textureCoordinate.y;
                     if (flipU)
                         u = -u;
                     if (flipV)
                         v = -v;
 
-                    halfVertex.UV0 = new Vector2D(u, v);
+                    halfVertex.UV0 = new UnityEngine.Vector2(u, v);
                 }
 
                 return meshEntity;
@@ -144,7 +144,7 @@ namespace Sceelix.Meshes.Procedures
             /// <summary>
             /// The value to multiply with the UV coordinates.
             /// </summary>
-            private readonly Vector2DParameter _parameterAmount = new Vector2DParameter("Amount", new Vector2D(1, 1));
+            private readonly Vector2Parameter _parameterAmount = new Vector2Parameter("Amount", new UnityEngine.Vector2(1, 1));
 
 
 
@@ -155,13 +155,13 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            public static MeshEntity Apply(MeshEntity meshEntity, Vector2D amount)
+            public static MeshEntity Apply(MeshEntity meshEntity, UnityEngine.Vector2 amount)
             {
                 foreach (Face face in meshEntity)
                 foreach (HalfVertex halfVertex in face.HalfVertices)
                 {
-                    Vector2D textureCoordinate = halfVertex.UV0;
-                    halfVertex.UV0 = new Vector2D(textureCoordinate.X * amount.X, textureCoordinate.Y * amount.Y);
+                    UnityEngine.Vector2 textureCoordinate = halfVertex.UV0;
+                    halfVertex.UV0 = new UnityEngine.Vector2(textureCoordinate.x * amount.x, textureCoordinate.y * amount.y);
                 }
 
                 return meshEntity;
@@ -206,47 +206,47 @@ namespace Sceelix.Meshes.Procedures
 
             public static MeshEntity Apply(MeshEntity meshEntity, float uSize, bool absoluteU, float vSize, bool absoluteV)
             {
-                Vector3D centroid = meshEntity.Centroid;
-                Vector2D centroid2D = meshEntity.BoxScope.ToScopePosition(centroid).ToVector2D();
+                UnityEngine.Vector3 centroid = meshEntity.Centroid;
+                UnityEngine.Vector2 centroid2D = meshEntity.BoxScope.ToScopePosition(centroid).ToVector2();
 
-                float perimeter = (float) (Math.Max(meshEntity.BoxScope.Sizes.X, meshEntity.BoxScope.Sizes.Y) * Math.PI);
+                float perimeter = (float) (Math.Max(meshEntity.BoxScope.Sizes.x, meshEntity.BoxScope.Sizes.y) * Math.PI);
 
                 /*foreach (var vertex in meshEntity.FaceVertices)
                 {
-                    Vector3D direction = vertex.Position - centroid;
-                    //Vector3D scopeDirection2 = MeshEntity.BoxScope.ToScopeDirection(direction);
-                    Vector3D scopeDirection = meshEntity.BoxScope.ToScopeDirection(direction);
+                    UnityEngine.Vector3 direction = vertex.Position - centroid;
+                    //UnityEngine.Vector3 scopeDirection2 = MeshEntity.BoxScope.ToScopeDirection(direction);
+                    UnityEngine.Vector3 scopeDirection = meshEntity.BoxScope.ToScopeDirection(direction);
 
-                    Vector3D normalizedScopeDirection = scopeDirection.Normalize();
+                    UnityEngine.Vector3 normalizedScopeDirection = scopeDirection.normalized;
 
-                    float u = 0.5f + (float) (Math.Atan2(normalizedScopeDirection.X, normalizedScopeDirection.Y)/(2.0*Math.PI));
-                    float v = -meshEntity.BoxScope.ToScopePosition(vertex.Position).Z/meshEntity.BoxScope.Sizes.Z;
+                    float u = 0.5f + (float) (Math.Atan2(normalizedScopeDirection.x, normalizedScopeDirection.y)/(2.0*Math.PI));
+                    float v = -meshEntity.BoxScope.ToScopePosition(vertex.Position).z/meshEntity.BoxScope.Sizes.z;
 
                     u *= absoluteU ? uSize*perimeter : uSize;
-                    v *= absoluteV ? vSize*meshEntity.BoxScope.Sizes.Z : vSize;
+                    v *= absoluteV ? vSize*meshEntity.BoxScope.Sizes.z : vSize;
 
                     vertex.SetAttribute(new GlobalAttributeKey("Section",new HighlightMeta()), u);
 
                     foreach (HalfVertex halfVertex in vertex.HalfVertices)
-                        halfVertex.UV0 = new Vector2D(u, v);
+                        halfVertex.UV0 = new UnityEngine.Vector2(u, v);
                 }*/
 
                 foreach (var face in meshEntity)
                 foreach (var halfVertex in face.HalfVertices)
                 {
-                    Vector3D scopeDirection = meshEntity.BoxScope.ToScopePosition(halfVertex.Vertex.Position) - centroid2D.ToVector3D(halfVertex.Vertex.Position.Z);
+                    UnityEngine.Vector3 scopeDirection = meshEntity.BoxScope.ToScopePosition(halfVertex.Vertex.Position) - centroid2D.ToVector3(halfVertex.Vertex.Position.z);
                     if (Math.Abs(scopeDirection.Length) < float.Epsilon)
                         scopeDirection = halfVertex.Face.Normal;
 
-                    Vector3D normalizedScopeDirection = scopeDirection.Normalize();
+                    UnityEngine.Vector3 normalizedScopeDirection = scopeDirection.normalized;
 
-                    float u = 1 - (0.5f + (float) (Math.Atan2(normalizedScopeDirection.X, normalizedScopeDirection.Y) / (2.0 * Math.PI)));
-                    float v = -meshEntity.BoxScope.ToScopePosition(halfVertex.Vertex.Position).Z / meshEntity.BoxScope.Sizes.Z;
+                    float u = 1 - (0.5f + (float) (Math.Atan2(normalizedScopeDirection.x, normalizedScopeDirection.y) / (2.0 * Math.PI)));
+                    float v = -meshEntity.BoxScope.ToScopePosition(halfVertex.Vertex.Position).z / meshEntity.BoxScope.Sizes.z;
 
                     u *= absoluteU ? uSize * perimeter : uSize;
-                    v *= absoluteV ? vSize * meshEntity.BoxScope.Sizes.Z : vSize;
+                    v *= absoluteV ? vSize * meshEntity.BoxScope.Sizes.z : vSize;
 
-                    halfVertex.UV0 = new Vector2D(u, v);
+                    halfVertex.UV0 = new UnityEngine.Vector2(u, v);
                 }
 
 
@@ -255,15 +255,15 @@ namespace Sceelix.Meshes.Procedures
                 {
                     Edge emanatingEdge = halfVertex.GetEmanatingEdge();
 
-                    Vector3D vector3D = emanatingEdge.Direction.Cross(halfVertex.Face.Normal);
+                    UnityEngine.Vector3 vector3D = emanatingEdge.Direction.Cross(halfVertex.Face.Normal);
 
-                    Vector3D d = meshEntity.BoxScope.ToScopeDirection(vector3D);
+                    UnityEngine.Vector3 d = meshEntity.BoxScope.ToScopeDirection(vector3D);
 
-                    if (d.Z >= 0 && halfVertex.UV0.X < emanatingEdge.V1[face].UV0.X)
-                        halfVertex.UV0 = new Vector2D(halfVertex.UV0.X + (absoluteU ? perimeter : 1.0f), halfVertex.UV0.Y);
+                    if (d.z >= 0 && halfVertex.UV0.x < emanatingEdge.V1[face].UV0.x)
+                        halfVertex.UV0 = new UnityEngine.Vector2(halfVertex.UV0.x + (absoluteU ? perimeter : 1.0f), halfVertex.UV0.y);
 
-                    else if (d.Z < 0 && halfVertex.UV0.X > emanatingEdge.V1[face].UV0.X)
-                        emanatingEdge.V1[face].UV0 = new Vector2D(emanatingEdge.V1[face].UV0.X + (absoluteU ? perimeter : 1.0f), emanatingEdge.V1[face].UV0.Y);
+                    else if (d.z < 0 && halfVertex.UV0.x > emanatingEdge.V1[face].UV0.x)
+                        emanatingEdge.V1[face].UV0 = new UnityEngine.Vector2(emanatingEdge.V1[face].UV0.x + (absoluteU ? perimeter : 1.0f), emanatingEdge.V1[face].UV0.y);
                 }
 
                 return meshEntity;
@@ -344,18 +344,18 @@ namespace Sceelix.Meshes.Procedures
 
             private static void UVMap(Vertex vertex, BoxScope planeScope, Face face, bool absoluteSizingU, bool absoluteSizingV, float u, float v)
             {
-                Vector3D relativePosition = vertex.Position - planeScope.Translation;
+                UnityEngine.Vector3 relativePosition = vertex.Position - planeScope.Translation;
 
-                if (relativePosition == Vector3D.Zero)
+                if (relativePosition == UnityEngine.Vector3.zero)
                 {
-                    vertex[face].UV0 = new Vector2D(0, 0);
+                    vertex[face].UV0 = new UnityEngine.Vector2(0, 0);
                     vertex[face].Tangent = planeScope.XAxis;
                     vertex[face].Binormal = -planeScope.YAxis;
                 }
                 else
                 {
-                    float xScopeLength = planeScope.Sizes.X;
-                    float yScopeLength = planeScope.Sizes.Y;
+                    float xScopeLength = planeScope.Sizes.x;
+                    float yScopeLength = planeScope.Sizes.y;
 
                     double dX = relativePosition.Dot(planeScope.XAxis);
                     double dY = relativePosition.Dot(planeScope.YAxis);
@@ -364,7 +364,7 @@ namespace Sceelix.Meshes.Procedures
                     dY = absoluteSizingV ? dY / v : dY / yScopeLength * v;
 
 
-                    vertex[face].UV0 = new Vector2D((float) dX, -(float) dY);
+                    vertex[face].UV0 = new UnityEngine.Vector2((float) dX, -(float) dY);
                     vertex[face].Tangent = planeScope.XAxis;
                     vertex[face].Binormal = -planeScope.YAxis;
                 }
@@ -425,16 +425,16 @@ namespace Sceelix.Meshes.Procedures
                 yield return new BoxScope(-boxScope.XAxis, boxScope.YAxis, -boxScope.ZAxis, boxScope.Translation + boxScope.SizedXAxis + boxScope.SizedZAxis, boxScope.Sizes);
 
                 //front
-                yield return new BoxScope(-boxScope.XAxis, boxScope.ZAxis, boxScope.YAxis, boxScope.Translation + boxScope.SizedXAxis, new Vector3D(boxScope.Sizes.X, boxScope.Sizes.Z, boxScope.Sizes.Y));
+                yield return new BoxScope(-boxScope.XAxis, boxScope.ZAxis, boxScope.YAxis, boxScope.Translation + boxScope.SizedXAxis, new UnityEngine.Vector3(boxScope.Sizes.x, boxScope.Sizes.z, boxScope.Sizes.y));
 
                 //back
-                yield return new BoxScope(boxScope.XAxis, boxScope.ZAxis, -boxScope.YAxis, boxScope.Translation + boxScope.SizedYAxis, new Vector3D(boxScope.Sizes.X, boxScope.Sizes.Z, boxScope.Sizes.Y));
+                yield return new BoxScope(boxScope.XAxis, boxScope.ZAxis, -boxScope.YAxis, boxScope.Translation + boxScope.SizedYAxis, new UnityEngine.Vector3(boxScope.Sizes.x, boxScope.Sizes.z, boxScope.Sizes.y));
 
                 //left
-                yield return new BoxScope(-boxScope.YAxis, boxScope.ZAxis, -boxScope.XAxis, boxScope.Translation + boxScope.SizedYAxis, new Vector3D(boxScope.Sizes.Y, boxScope.Sizes.Z, boxScope.Sizes.X));
+                yield return new BoxScope(-boxScope.YAxis, boxScope.ZAxis, -boxScope.XAxis, boxScope.Translation + boxScope.SizedYAxis, new UnityEngine.Vector3(boxScope.Sizes.y, boxScope.Sizes.z, boxScope.Sizes.x));
 
                 //right
-                yield return new BoxScope(boxScope.YAxis, boxScope.ZAxis, boxScope.XAxis, boxScope.Translation + boxScope.SizedXAxis, new Vector3D(boxScope.Sizes.Y, boxScope.Sizes.Z, boxScope.Sizes.X));
+                yield return new BoxScope(boxScope.YAxis, boxScope.ZAxis, boxScope.XAxis, boxScope.Translation + boxScope.SizedXAxis, new UnityEngine.Vector3(boxScope.Sizes.y, boxScope.Sizes.z, boxScope.Sizes.x));
             }
 
 
@@ -461,18 +461,18 @@ namespace Sceelix.Meshes.Procedures
 
             private static void UVMap(Vertex vertex, BoxScope planeScope, Face face, bool absoluteSizingU, bool absoluteSizingV, float u, float v)
             {
-                Vector3D relativePosition = vertex.Position - planeScope.Translation;
+                UnityEngine.Vector3 relativePosition = vertex.Position - planeScope.Translation;
 
-                if (relativePosition == Vector3D.Zero)
+                if (relativePosition == UnityEngine.Vector3.zero)
                 {
-                    vertex[face].UV0 = new Vector2D(0, 0);
+                    vertex[face].UV0 = new UnityEngine.Vector2(0, 0);
                     vertex[face].Tangent = planeScope.XAxis;
                     vertex[face].Binormal = -planeScope.YAxis;
                 }
                 else
                 {
-                    float xScopeLength = planeScope.Sizes.X;
-                    float yScopeLength = planeScope.Sizes.Y;
+                    float xScopeLength = planeScope.Sizes.x;
+                    float yScopeLength = planeScope.Sizes.y;
 
                     double dX = relativePosition.Dot(planeScope.XAxis);
                     double dY = relativePosition.Dot(planeScope.YAxis);
@@ -481,7 +481,7 @@ namespace Sceelix.Meshes.Procedures
                     dY = absoluteSizingV ? dY / v : dY / yScopeLength * v;
 
 
-                    vertex[face].UV0 = new Vector2D((float) dX, -(float) dY);
+                    vertex[face].UV0 = new UnityEngine.Vector2((float) dX, -(float) dY);
                     vertex[face].Tangent = planeScope.XAxis;
                     vertex[face].Binormal = -planeScope.YAxis;
                 }
@@ -548,18 +548,18 @@ namespace Sceelix.Meshes.Procedures
 
             private static void UVMap(Vertex vertex, BoxScope boxScope, Face face, bool absoluteSizingU, bool absoluteSizingV, float u, float v)
             {
-                Vector3D relativePosition = vertex.Position - boxScope.Translation;
+                UnityEngine.Vector3 relativePosition = vertex.Position - boxScope.Translation;
 
-                if (relativePosition == Vector3D.Zero)
+                if (relativePosition == UnityEngine.Vector3.zero)
                 {
-                    vertex[face].UV0 = new Vector2D(0, 0);
+                    vertex[face].UV0 = new UnityEngine.Vector2(0, 0);
                     vertex[face].Tangent = boxScope.XAxis;
                     vertex[face].Binormal = -boxScope.YAxis;
                 }
                 else
                 {
-                    float xScopeLength = boxScope.Sizes.X;
-                    float yScopeLength = boxScope.Sizes.Y;
+                    float xScopeLength = boxScope.Sizes.x;
+                    float yScopeLength = boxScope.Sizes.y;
 
                     double dX = relativePosition.Dot(boxScope.XAxis);
                     double dY = relativePosition.Dot(boxScope.YAxis);
@@ -568,7 +568,7 @@ namespace Sceelix.Meshes.Procedures
                     dY = absoluteSizingV ? dY / v : dY / yScopeLength * v;
 
 
-                    vertex[face].UV0 = new Vector2D((float) dX, -(float) dY);
+                    vertex[face].UV0 = new UnityEngine.Vector2((float) dX, -(float) dY);
                     vertex[face].Tangent = boxScope.XAxis;
                     vertex[face].Binormal = -boxScope.YAxis;
                 }
@@ -606,25 +606,25 @@ namespace Sceelix.Meshes.Procedures
 
             private MeshEntity Apply(MeshEntity meshEntity, float uSize, bool absoluteU, float vSize, bool absoluteV)
             {
-                Vector3D centroid = meshEntity.Centroid;
-                float perimeter = (float) (Math.Max(meshEntity.BoxScope.Sizes.X, meshEntity.BoxScope.Sizes.Y) * Math.PI);
+                UnityEngine.Vector3 centroid = meshEntity.Centroid;
+                float perimeter = (float) (Math.Max(meshEntity.BoxScope.Sizes.x, meshEntity.BoxScope.Sizes.y) * Math.PI);
 
                 foreach (var vertex in meshEntity.FaceVertices)
                 {
-                    Vector3D direction = vertex.Position - centroid;
-                    Vector3D scopeDirection = meshEntity.BoxScope.ToScopeDirection(direction).Normalize();
+                    UnityEngine.Vector3 direction = vertex.Position - centroid;
+                    UnityEngine.Vector3 scopeDirection = meshEntity.BoxScope.ToScopeDirection(direction).normalized;
 
-                    float u = 0.5f + (float) (Math.Atan2(scopeDirection.X, scopeDirection.Y) / (2.0 * Math.PI));
-                    float v = 0.5f - (float) (Math.Asin(scopeDirection.Z) / Math.PI);
+                    float u = 0.5f + (float) (Math.Atan2(scopeDirection.x, scopeDirection.y) / (2.0 * Math.PI));
+                    float v = 0.5f - (float) (Math.Asin(scopeDirection.z) / Math.PI);
 
                     u *= absoluteU ? uSize * perimeter : uSize;
-                    v *= absoluteV ? vSize * meshEntity.BoxScope.Sizes.Z : vSize;
+                    v *= absoluteV ? vSize * meshEntity.BoxScope.Sizes.z : vSize;
 
                     foreach (HalfVertex halfVertex in vertex.HalfVertices)
-                        halfVertex.UV0 = new Vector2D(u, v);
+                        halfVertex.UV0 = new UnityEngine.Vector2(u, v);
 
-                    //if (position.Z > 9f && position.Z < 11f)
-                    //    Console.WriteLine(new Vector2D(u,v));
+                    //if (position.z > 9f && position.z < 11f)
+                    //    Console.WriteLine(new UnityEngine.Vector2(u,v));
                 }
 
                 foreach (var face in meshEntity)
@@ -632,14 +632,14 @@ namespace Sceelix.Meshes.Procedures
                 {
                     Edge emanatingEdge = halfVertex.GetEmanatingEdge();
 
-                    Vector3D vector3D = emanatingEdge.Direction.Cross(halfVertex.Vertex.Position - centroid);
+                    UnityEngine.Vector3 vector3D = emanatingEdge.Direction.Cross(halfVertex.Vertex.Position - centroid);
 
-                    Vector3D d = meshEntity.BoxScope.ToScopeDirection(vector3D);
+                    UnityEngine.Vector3 d = meshEntity.BoxScope.ToScopeDirection(vector3D);
 
-                    if (d.Z < 0 && halfVertex.UV0.X < emanatingEdge.V1[face].UV0.X)
-                        halfVertex.UV0 = new Vector2D(halfVertex.UV0.X + 1.0f, halfVertex.UV0.Y);
-                    else if (d.Z > 0 && halfVertex.UV0.X > emanatingEdge.V1[face].UV0.X)
-                        emanatingEdge.V1[face].UV0 = new Vector2D(emanatingEdge.V1[face].UV0.X + 1.0f, emanatingEdge.V1[face].UV0.Y);
+                    if (d.z < 0 && halfVertex.UV0.x < emanatingEdge.V1[face].UV0.x)
+                        halfVertex.UV0 = new UnityEngine.Vector2(halfVertex.UV0.x + 1.0f, halfVertex.UV0.y);
+                    else if (d.z > 0 && halfVertex.UV0.x > emanatingEdge.V1[face].UV0.x)
+                        emanatingEdge.V1[face].UV0 = new UnityEngine.Vector2(emanatingEdge.V1[face].UV0.x + 1.0f, emanatingEdge.V1[face].UV0.y);
                 }
 
                 return meshEntity;

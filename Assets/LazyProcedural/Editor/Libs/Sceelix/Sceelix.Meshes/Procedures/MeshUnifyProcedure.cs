@@ -123,7 +123,7 @@ namespace Sceelix.Meshes.Procedures
             {
                 //List<Face> totalMeshFaces = new List<Face>();
 
-                var groupingByPlane = meshEntity.GroupBy(val => new {Normal = val.Normal.Round(), DistanceToPoint = Math.Round(val.Plane.DistanceToPoint(Vector3D.Zero), 3)}).ToList();
+                var groupingByPlane = meshEntity.GroupBy(val => new {Normal = val.Normal.Round(), DistanceToPoint = Math.Round(val.Plane.DistanceToPoint(UnityEngine.Vector3.zero), 3)}).ToList();
                 foreach (var group in groupingByPlane)
                 {
                     var faces = group.ToList();
@@ -172,7 +172,7 @@ namespace Sceelix.Meshes.Procedures
                 List<EdgeSequence> sequencesToAdd = new List<EdgeSequence>();
 
                 //group faces by their normal. If the normal is the same
-                foreach (IGrouping<Vector3D, Face> grouping in meshEntity.GroupBy(val => val.Normal.Round()))
+                foreach (IGrouping<UnityEngine.Vector3, Face> grouping in meshEntity.GroupBy(val => val.Normal.Round()))
                 {
                     //skip "groups" of faces that haven't been grouped at all
                     if (grouping.Count() < 2)
@@ -184,7 +184,7 @@ namespace Sceelix.Meshes.Procedures
                     IEnumerable<Edge> edges = grouping.SelectMany(val => val.Edges);
 
                     //IEnumerable<Edge> isolatedEdges = edges.Where(val => val.AdjacentFaces.Count(face => face.Normal.Round().Equals(grouping.Key)) < 2);
-                    IGrouping<Vector3D, Face> grouping1 = grouping;
+                    IGrouping<UnityEngine.Vector3, Face> grouping1 = grouping;
                     IEnumerable<Edge> isolatedEdges = edges.Where(val => val.AdjacentFaces.Intersect(grouping1).Count() < 2);
 
                     CreateFacesFromEdges(meshEntity, new Queue<Edge>(isolatedEdges), sequencesToAdd);
@@ -228,7 +228,7 @@ namespace Sceelix.Meshes.Procedures
                     {
                         Face face = new Face(_vertices);
 
-                        if (face.Normal.Dot(Vector3D.ZVector) < 0) return null;
+                        if (face.Normal.Dot(UnityEngine.Vector3.forward) < 0) return null;
 
                         return face;
                     }
@@ -297,7 +297,7 @@ namespace Sceelix.Meshes.Procedures
 
             public static void Unify(MeshEntity meshEntity)
             {
-                Dictionary<Vector3D, Vertex> vertices = new Dictionary<Vector3D, Vertex>();
+                Dictionary<UnityEngine.Vector3, Vertex> vertices = new Dictionary<UnityEngine.Vector3, Vertex>();
                 List<Vertex> vertexList = meshEntity.FaceVertices.ToList();
 
                 foreach (Vertex vertex in vertexList)

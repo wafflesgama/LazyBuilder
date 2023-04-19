@@ -225,7 +225,7 @@ namespace Sceelix.Surfaces.Procedures
             /// <summary>
             /// The normal direction to compare to. The intensity of the texture at a surface point will depend of the how its normal differs from this one.
             /// </summary>
-            private readonly Vector3DParameter _parameterDirection = new Vector3DParameter("Surface Normal", Vector3D.ZVector);
+            private readonly Vector3Parameter _parameterDirection = new Vector3Parameter("Surface Normal", UnityEngine.Vector3.forward);
 
             /// <summary>
             /// The maximum angle to perform the comparison between the indicated surface normal and the normal at each point.
@@ -253,7 +253,7 @@ namespace Sceelix.Surfaces.Procedures
                     //var index = Convert.ToInt32("" + _parameterTextureChoice.Value.Last()) - 1;
                     var textureIndex = ParameterTextureIndex.Value;
 
-                    var direction = _parameterDirection.Value.Normalize();
+                    var direction = _parameterDirection.Value.normalized;
                     var invert = _parameterAngle.Value < 0;
                     var absAngle = Math.Abs(_parameterAngle.Value);
                     var angleMultiplier = 90f / absAngle;

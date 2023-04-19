@@ -73,7 +73,7 @@ namespace Sceelix.Points.Procedures
             /// List of locations of the points.
             /// </summary>
             private readonly ListParameter _parameterPoints = new ListParameter("Points",
-                () => new Vector3DParameter("Point") {Description = "Location of the point."});
+                () => new Vector3Parameter("Point") {Description = "Location of the point."});
 
 
 
@@ -86,7 +86,7 @@ namespace Sceelix.Points.Procedures
 
             protected internal override IEnumerable<PointEntity> CreatePoints()
             {
-                return _parameterPoints.Items.OfType<Vector3DParameter>().Select(x => new PointEntity(x.Value));
+                return _parameterPoints.Items.OfType<Vector3Parameter>().Select(x => new PointEntity(x.Value));
             }
         }
 
@@ -118,7 +118,7 @@ namespace Sceelix.Points.Procedures
             /// <summary>
             /// The spacing in the X,Y,Z dimensions between each point.
             /// </summary>
-            private readonly Vector3DParameter _parameterSpacing = new Vector3DParameter("Spacing", new Vector3D(10, 10, 10));
+            private readonly Vector3Parameter _parameterSpacing = new Vector3Parameter("Spacing", new UnityEngine.Vector3(10, 10, 10));
 
 
 
@@ -142,7 +142,7 @@ namespace Sceelix.Points.Procedures
                 for (int i = 0; i < columns; i++)
                 for (int j = 0; j < rows; j++)
                 for (int k = 0; k < layers; k++)
-                    pointEntities.Add(new PointEntity(new Vector3D(i, j, k) * spacing));
+                    pointEntities.Add(new PointEntity(new UnityEngine.Vector3(i, j, k) * spacing));
 
                 return pointEntities;
             }
@@ -228,7 +228,7 @@ namespace Sceelix.Points.Procedures
             /// <summary>
             /// Attribute to store the surface-relative coordinates (column/row) of the vertices that originated the point.
             /// </summary>
-            private readonly AttributeParameter<Vector2D> _attributeIndex = new AttributeParameter<Vector2D>("Coordinates", AttributeAccess.Write);
+            private readonly AttributeParameter<UnityEngine.Vector2> _attributeIndex = new AttributeParameter<UnityEngine.Vector2>("Coordinates", AttributeAccess.Write);
 
 
 
@@ -250,7 +250,7 @@ namespace Sceelix.Points.Procedures
                     var position = heightLayer.GetPosition(new Coordinate(i, j));
                     var entity = new PointEntity(position);
 
-                    _attributeIndex[entity] = position.ToVector2D();
+                    _attributeIndex[entity] = position.ToVector2();
 
                     yield return entity;
                 }
@@ -282,7 +282,7 @@ namespace Sceelix.Points.Procedures
             /// <summary>
             /// The size of the area where to scatter the points.
             /// </summary>
-            private readonly Vector2DParameter _parameterSize = new Vector2DParameter("Size", new Vector2D(10, 10));
+            private readonly Vector2Parameter _parameterSize = new Vector2Parameter("Size", new UnityEngine.Vector2(10, 10));
 
             /// <summary>
             /// The (minimum) distance between the points. <br/>
@@ -302,41 +302,41 @@ namespace Sceelix.Points.Procedures
             public override IEnumerable<PointEntity> CreatePoints(int seed)
             {
                 var locations = GeneratePoisson(seed, _parameterSize.Value, _parameterMinDistance.Value);
-                foreach (Vector2D location in locations) yield return new PointEntity(new Vector3D(location));
+                foreach (UnityEngine.Vector2 location in locations) yield return new PointEntity(new UnityEngine.Vector3(location));
             }
 
 
 
-            public List<Vector2D> GeneratePoisson(int seed, Vector2D size, float minDistance, int pointsToTest = 30)
+            public List<UnityEngine.Vector2> GeneratePoisson(int seed, UnityEngine.Vector2 size, float minDistance, int pointsToTest = 30)
             {
                 Random random = new Random(seed);
 
-                var pointList = new List<Vector2D>();
+                var pointList = new List<UnityEngine.Vector2>();
 
                 var cellSize = (float) (minDistance / Math.Sqrt(2));
 
                 //spatial data structure where we will store the indication if there's room available
-                var grid = new Vector2D?[(int) Math.Ceiling(size.X / cellSize), (int) Math.Ceiling(size.Y / cellSize)];
+                var grid = new UnityEngine.Vector2?[(int) Math.Ceiling(size.x / cellSize), (int) Math.Ceiling(size.y / cellSize)];
 
-                var rectangle = new BoundingRectangle(0, 0, size.X, size.Y);
+                var rectangle = new BoundingRectangle(0, 0, size.x, size.y);
 
                 //points currently on the loop
-                var currentPoints = new Queue<Vector2D>();
+                var currentPoints = new Queue<UnityEngine.Vector2>();
 
                 //the first point is random within the bounds
-                var firstPoint = new Vector2D(random.Float(0, size.X), random.Float(0, size.Y));
+                var firstPoint = new UnityEngine.Vector2(random.Float(0, size.x), random.Float(0, size.y));
                 currentPoints.Enqueue(firstPoint);
 
                 //store it in the grid, too
                 var firstCoordinates = PositionToCoordinates(firstPoint, cellSize);
-                grid[firstCoordinates.X, firstCoordinates.Y] = firstPoint;
+                grid[firstCoordinates.x, firstCoordinates.y] = firstPoint;
 
                 while (!currentPoints.IsEmpty())
                 {
                     var currentPoint = currentPoints.Dequeue();
                     for (int i = 0; i < pointsToTest; i++)
                     {
-                        Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
+                        UnityEngine.Vector2 newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
 
                         //check that the point is in the image region
                         //and no points exists in the point's neighborhood
@@ -349,7 +349,7 @@ namespace Sceelix.Points.Procedures
                             pointList.Add(newPoint);
 
                             var coordinate = PositionToCoordinates(newPoint, cellSize);
-                            grid[coordinate.X, coordinate.Y] = newPoint;
+                            grid[coordinate.x, coordinate.y] = newPoint;
                         }
                     }
                 }
@@ -359,7 +359,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private Vector2D GenerateRandomPointAround(Random random, Vector2D point, float minDistance)
+            private UnityEngine.Vector2 GenerateRandomPointAround(Random random, UnityEngine.Vector2 point, float minDistance)
             {
                 //non-uniform, favours points closer to the inner ring, leads to denser packings
                 var r1 = random.NextDouble();
@@ -372,23 +372,23 @@ namespace Sceelix.Points.Procedures
                 var angle = 2 * Math.PI * r2;
 
                 //the new point is generated around the point (x, y)
-                var newX = point.X + radius * Math.Cos(angle);
-                var newY = point.Y + radius * Math.Sin(angle);
+                var newX = point.x + radius * Math.Cos(angle);
+                var newY = point.y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new UnityEngine.Vector2((float) newX, (float) newY);
             }
 
 
 
-            private bool HasPointInNeighbourhood(Vector2D?[,] grid, Vector2D point, float minDistance, float cellSize, Vector2D size)
+            private bool HasPointInNeighbourhood(UnityEngine.Vector2?[,] grid, UnityEngine.Vector2 point, float minDistance, float cellSize, UnityEngine.Vector2 size)
             {
                 var coordinate = PositionToCoordinates(point, cellSize);
                 var cellDistance = (int) Math.Ceiling(minDistance / cellSize);
 
-                int startX = Math.Max(coordinate.X - cellDistance, 0);
-                int startY = Math.Max(coordinate.Y - cellDistance, 0);
-                int endX = Math.Min(coordinate.X + cellDistance, grid.GetLength(0));
-                var endY = Math.Min(coordinate.Y + cellDistance, grid.GetLength(1));
+                int startX = Math.Max(coordinate.x - cellDistance, 0);
+                int startY = Math.Max(coordinate.y - cellDistance, 0);
+                int endX = Math.Min(coordinate.x + cellDistance, grid.GetLength(0));
+                var endY = Math.Min(coordinate.y + cellDistance, grid.GetLength(1));
 
 
                 //get the neighbourhood if the point in the grid
@@ -413,9 +413,9 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private Coordinate PositionToCoordinates(Vector2D point, float cellSize)
+            private Coordinate PositionToCoordinates(UnityEngine.Vector2 point, float cellSize)
             {
-                return new Coordinate((int) (point.X / cellSize), (int) (point.Y / cellSize));
+                return new Coordinate((int) (point.x / cellSize), (int) (point.y / cellSize));
             }
         }
 
@@ -452,20 +452,20 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private bool ContainsPoint(List<Vector2D> boundaryVertices, List<List<Vector2D>> holeBoundaries, Vector2D newPoint)
+            private bool ContainsPoint(List<UnityEngine.Vector2> boundaryVertices, List<List<UnityEngine.Vector2>> holeBoundaries, UnityEngine.Vector2 newPoint)
             {
                 return ContainsPoint(boundaryVertices, newPoint) && !(holeBoundaries != null && holeBoundaries.Any(hole => ContainsPoint(hole, newPoint)));
             }
 
 
 
-            public bool ContainsPoint(List<Vector2D> vertices, Vector2D point)
+            public bool ContainsPoint(List<UnityEngine.Vector2> vertices, UnityEngine.Vector2 point)
             {
                 bool conclusion = false;
 
                 for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
-                    if (vertices[i].Y > point.Y != vertices[j].Y > point.Y &&
-                        point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) / (vertices[j].Y - vertices[i].Y) + vertices[i].X)
+                    if (vertices[i].y > point.y != vertices[j].y > point.y &&
+                        point.x < (vertices[j].x - vertices[i].x) * (point.y - vertices[i].y) / (vertices[j].y - vertices[i].y) + vertices[i].x)
                         conclusion = !conclusion;
 
                 return conclusion;
@@ -488,24 +488,24 @@ namespace Sceelix.Points.Procedures
                 foreach (Face face in mesh.Faces)
                 {
                     var planarScope = face.GetAlignedScope();
-                    var boundaryVertices = face.Vertices.Select(x => planarScope.ToScopePosition(x.Position).ToVector2D()).ToList();
-                    var holeBoundaries = !face.HasHoles ? null : face.Holes.Select(hole => hole.Select(x => planarScope.ToScopePosition(x.Position).ToVector2D()).ToList()).ToList();
+                    var boundaryVertices = face.Vertices.Select(x => planarScope.ToScopePosition(x.Position).ToVector2()).ToList();
+                    var holeBoundaries = !face.HasHoles ? null : face.Holes.Select(hole => hole.Select(x => planarScope.ToScopePosition(x.Position).ToVector2()).ToList()).ToList();
 
-                    var currentPoints = new Queue<Vector2D>();
+                    var currentPoints = new Queue<UnityEngine.Vector2>();
                     currentPoints.Enqueue(boundaryVertices.First());
-                    //scopes.Add(new BoxScope(planarScope, translation: planarScope.ToWorldPosition(new Vector3D(boundaryVertices.First()))));
+                    //scopes.Add(new BoxScope(planarScope, translation: planarScope.ToWorldPosition(new UnityEngine.Vector3(boundaryVertices.First()))));
                     while (!currentPoints.IsEmpty())
                     {
                         var currentPoint = currentPoints.Dequeue();
                         for (int i = 0; i < pointsToTest; i++)
                         {
-                            Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
+                            UnityEngine.Vector2 newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
 
                             //check that the point is in the image region
                             //and no points exists in the point's neighborhood
                             if (ContainsPoint(boundaryVertices, holeBoundaries, newPoint))
                             {
-                                var newPoint3D = planarScope.ToWorldPosition(new Vector3D(newPoint));
+                                var newPoint3D = planarScope.ToWorldPosition(new UnityEngine.Vector3(newPoint));
 
                                 if (!HasPointInNeighbourhood(pointOctTree, newPoint3D, minDistance))
                                 {
@@ -531,7 +531,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private Vector2D GenerateRandomPointAround(Random random, Vector2D point, float minDistance)
+            private UnityEngine.Vector2 GenerateRandomPointAround(Random random, UnityEngine.Vector2 point, float minDistance)
             {
                 //non-uniform, favours points closer to the inner ring, leads to denser packings
                 var r1 = random.NextDouble();
@@ -544,15 +544,15 @@ namespace Sceelix.Points.Procedures
                 var angle = 2 * Math.PI * r2;
 
                 //the new point is generated around the point (x, y)
-                var newX = point.X + radius * Math.Cos(angle);
-                var newY = point.Y + radius * Math.Sin(angle);
+                var newX = point.x + radius * Math.Cos(angle);
+                var newY = point.y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new UnityEngine.Vector2((float) newX, (float) newY);
             }
 
 
 
-            private bool HasPointInNeighbourhood(PointOctTree pointOctTree, Vector3D newPoint, float minDistance)
+            private bool HasPointInNeighbourhood(PointOctTree pointOctTree, UnityEngine.Vector3 newPoint, float minDistance)
             {
                 return pointOctTree.GetItemsWithinRadius(newPoint, minDistance).Any(x => x.DistanceTo(newPoint) < minDistance);
             }
@@ -607,8 +607,8 @@ namespace Sceelix.Points.Procedures
 
                 PointQuadTree pointQuadTree = new PointQuadTree((int) Math.Ceiling(minDistance), 5);
 
-                var currentPoints = new Queue<Vector2D>();
-                var firstPoint = new Vector2D(random.Float(surfaceRectangle.Min.X, surfaceRectangle.Max.X), random.Float(surfaceRectangle.Min.Y, surfaceRectangle.Max.Y));
+                var currentPoints = new Queue<UnityEngine.Vector2>();
+                var firstPoint = new UnityEngine.Vector2(random.Float(surfaceRectangle.Min.x, surfaceRectangle.Max.x), random.Float(surfaceRectangle.Min.y, surfaceRectangle.Max.y));
                 currentPoints.Enqueue(firstPoint);
                 pointQuadTree.AddItem(firstPoint);
 
@@ -618,13 +618,13 @@ namespace Sceelix.Points.Procedures
 
                     //add the point to our list of results
                     var height = heightLayer.SafeGetHeight(currentPoint);
-                    var newEntity = new PointEntity(new Vector3D(currentPoint, height));
+                    var newEntity = new PointEntity(new UnityEngine.Vector3(currentPoint, height));
                     yield return newEntity;
 
 
                     for (int i = 0; i < pointsToTest; i++)
                     {
-                        Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
+                        UnityEngine.Vector2 newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
 
                         //check that the point is in the image region
                         //and no points exists in the point's neighborhood
@@ -641,7 +641,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private Vector2D GenerateRandomPointAround(Random random, Vector2D point, float minDistance)
+            private UnityEngine.Vector2 GenerateRandomPointAround(Random random, UnityEngine.Vector2 point, float minDistance)
             {
                 //non-uniform, favours points closer to the inner ring, leads to denser packings
                 var r1 = random.NextDouble();
@@ -654,15 +654,15 @@ namespace Sceelix.Points.Procedures
                 var angle = 2 * Math.PI * r2;
 
                 //the new point is generated around the point (x, y)
-                var newX = point.X + radius * Math.Cos(angle);
-                var newY = point.Y + radius * Math.Sin(angle);
+                var newX = point.x + radius * Math.Cos(angle);
+                var newY = point.y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new UnityEngine.Vector2((float) newX, (float) newY);
             }
 
 
 
-            private bool HasPointInNeighbourhood(PointQuadTree pointOctTree, Vector2D newPoint, float minDistance)
+            private bool HasPointInNeighbourhood(PointQuadTree pointOctTree, UnityEngine.Vector2 newPoint, float minDistance)
             {
                 return pointOctTree.GetItemsWithinRadius(newPoint, minDistance).Any(x => x.DistanceTo(newPoint) < minDistance);
             }
@@ -755,7 +755,7 @@ namespace Sceelix.Points.Procedures
                 var currentPoints = new Queue<PositionDistance>();
 
                 //the first point is random within the bounds
-                var firstPoint = new Vector2D(random.Float(rectangle.Min.X, rectangle.Max.X), random.Float(rectangle.Min.Y, rectangle.Max.Y));
+                var firstPoint = new UnityEngine.Vector2(random.Float(rectangle.Min.x, rectangle.Max.x), random.Float(rectangle.Min.y, rectangle.Max.y));
                 var firstPositionDistance = new PositionDistance {Position = firstPoint, Distance = interFunc(floatLayer.GetGenericValue(firstPoint))};
                 currentPoints.Enqueue(firstPositionDistance);
 
@@ -768,7 +768,7 @@ namespace Sceelix.Points.Procedures
                     var currentPoint = currentPoints.Dequeue();
                     for (int i = 0; i < PointsToTest; i++)
                     {
-                        Vector2D newPoint = GenerateRandomPointAround(random, currentPoint.Position, currentPoint.Distance);
+                        UnityEngine.Vector2 newPoint = GenerateRandomPointAround(random, currentPoint.Position, currentPoint.Distance);
 
                         //determine the new minimum distance
                         var layerValue = floatLayer.GetGenericValue(newPoint);
@@ -786,7 +786,7 @@ namespace Sceelix.Points.Procedures
                             if (maskCheckFunc(layerValue))
                             {
                                 var height = heightLayer.SafeGetHeight(newPositionDistance.Position);
-                                var newEntity = new PointEntity(new Vector3D(newPositionDistance.Position, height));
+                                var newEntity = new PointEntity(new UnityEngine.Vector3(newPositionDistance.Position, height));
                                 _distanceAttribute[newEntity] = newPositionDistance.Distance;
                                 yield return newEntity;
                             }
@@ -804,7 +804,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private Vector2D GenerateRandomPointAround(Random random, Vector2D point, float minDistance)
+            private UnityEngine.Vector2 GenerateRandomPointAround(Random random, UnityEngine.Vector2 point, float minDistance)
             {
                 //non-uniform, favours points closer to the inner ring, leads to denser packings
                 var r1 = random.NextDouble();
@@ -817,10 +817,10 @@ namespace Sceelix.Points.Procedures
                 var angle = 2 * Math.PI * r2;
 
                 //the new point is generated around the point (x, y)
-                var newX = point.X + radius * Math.Cos(angle);
-                var newY = point.Y + radius * Math.Sin(angle);
+                var newX = point.x + radius * Math.Cos(angle);
+                var newY = point.y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new UnityEngine.Vector2((float) newX, (float) newY);
             }
 
 
@@ -849,14 +849,14 @@ namespace Sceelix.Points.Procedures
                             var calculablePosition = existingPositionDistance.Position;
 
                             if (i < 0)
-                                calculablePosition -= new Vector2D(rectangle.Width, 0);
+                                calculablePosition -= new UnityEngine.Vector2(rectangle.Width, 0);
                             else if (i >= maxX)
-                                calculablePosition += new Vector2D(rectangle.Width, 0);
+                                calculablePosition += new UnityEngine.Vector2(rectangle.Width, 0);
 
                             if (j < 0)
-                                calculablePosition -= new Vector2D(0, rectangle.Height);
+                                calculablePosition -= new UnityEngine.Vector2(0, rectangle.Height);
                             else if (j >= maxY)
-                                calculablePosition += new Vector2D(0, rectangle.Height);
+                                calculablePosition += new UnityEngine.Vector2(0, rectangle.Height);
 
                             var distanceBetweenPoints = calculablePosition.DistanceTo(positionDistance.Position);
 
@@ -886,9 +886,9 @@ namespace Sceelix.Points.Procedures
 
 
 
-            private int[] PositionToCoordinates(Vector2D point, float cellSize, Vector2D min)
+            private int[] PositionToCoordinates(UnityEngine.Vector2 point, float cellSize, UnityEngine.Vector2 min)
             {
-                return new[] {(int) ((point.X - min.X) / cellSize), (int) ((point.Y - min.Y) / cellSize)};
+                return new[] {(int) ((point.x - min.x) / cellSize), (int) ((point.y - min.y) / cellSize)};
             }
 
 
@@ -901,7 +901,7 @@ namespace Sceelix.Points.Procedures
                     set;
                 }
 
-                public Vector2D Position
+                public UnityEngine.Vector2 Position
                 {
                     get;
                     set;

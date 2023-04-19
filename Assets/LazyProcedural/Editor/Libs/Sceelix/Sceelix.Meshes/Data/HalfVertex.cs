@@ -10,7 +10,7 @@ namespace Sceelix.Meshes.Data
     public class HalfVertex : Entity
     {
         private static readonly FieldKey NormalKey = new FieldKey("Normal");
-        private static readonly FieldKey ColorKey = new FieldKey("Color");
+        private static readonly FieldKey ColorKey = new FieldKey("UnityEngine.Color");
         private static readonly FieldKey UV0Key = new FieldKey("UV0");
         private static readonly FieldKey TangentKey = new FieldKey("Tangent");
         private static readonly FieldKey BinormalKey = new FieldKey("Binormal");
@@ -36,32 +36,32 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector3D Binormal
+        public UnityEngine.Vector3 Binormal
         {
             get
             {
-                var binormal = Attributes.TryGet(BinormalKey) as Vector3D?;
+                var binormal = Attributes.TryGet(BinormalKey) as UnityEngine.Vector3?;
                 if (binormal != null)
                     return binormal.Value;
 
-                return Vector3D.Zero;
+                return UnityEngine.Vector3.zero;
             }
             set { Attributes.TrySet(BinormalKey, value, true); }
         }
 
 
 
-        public Color Color
+        public UnityEngine.Color Color
         {
             get
             {
-                var geometryNormal = Attributes.TryGet(ColorKey) as Color?;
+                var geometryNormal = Attributes.TryGet(ColorKey) as UnityEngine.Color?;
                 if (geometryNormal.HasValue)
                     return geometryNormal.Value;
 
-                Color? vertexColor = Vertex.Color;
+                UnityEngine.Color? vertexColor = Vertex.Color;
 
-                return vertexColor ?? Color.White;
+                return vertexColor ?? UnityEngine.Color.white;
             }
             set { Attributes.TrySet(ColorKey, value, true); }
         }
@@ -88,15 +88,15 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector3D Normal
+        public UnityEngine.Vector3 Normal
         {
             get
             {
-                var geometryNormal = Attributes.TryGet(NormalKey) as Vector3D?;
+                var geometryNormal = Attributes.TryGet(NormalKey) as UnityEngine.Vector3?;
                 if (geometryNormal.HasValue)
                     return geometryNormal.Value;
 
-                Vector3D? vertexNormal = Vertex.Normal;
+                UnityEngine.Vector3? vertexNormal = Vertex.Normal;
 
                 return vertexNormal ?? Face.Normal;
             }
@@ -133,30 +133,30 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector3D Tangent
+        public UnityEngine.Vector3 Tangent
         {
             get
             {
-                var tangent = Attributes.TryGet(TangentKey) as Vector3D?;
+                var tangent = Attributes.TryGet(TangentKey) as UnityEngine.Vector3?;
                 if (tangent != null)
                     return tangent.Value;
 
-                return Vector3D.Zero;
+                return UnityEngine.Vector3.zero;
             }
             set { Attributes.TrySet(TangentKey, value, true); }
         }
 
 
 
-        public Vector2D UV0
+        public UnityEngine.Vector2 UV0
         {
             get
             {
-                var geometryNormal = Attributes.TryGet(UV0Key) as Vector2D?;
+                var geometryNormal = Attributes.TryGet(UV0Key) as UnityEngine.Vector2?;
                 if (geometryNormal.HasValue)
                     return geometryNormal.Value;
 
-                return Vector2D.Zero;
+                return UnityEngine.Vector2.zero;
             }
             set { Attributes.TrySet(UV0Key, value, true); }
         }
@@ -197,17 +197,17 @@ namespace Sceelix.Meshes.Data
 
 
 
-            public Vector2D? this[int index]
+            public UnityEngine.Vector2? this[int index]
             {
                 get
                 {
-                    var uvCoordinate = HalfVertex.Attributes.TryGet(new FieldKey("UV" + index)) as Vector2D?;
+                    var uvCoordinate = HalfVertex.Attributes.TryGet(new FieldKey("UV" + index)) as UnityEngine.Vector2?;
                     if (uvCoordinate.HasValue)
                         return uvCoordinate.Value;
 
-                    Vector2D? uv = HalfVertex.Vertex.UVs[index];
+                    UnityEngine.Vector2? uv = HalfVertex.Vertex.UVs[index];
 
-                    return uv ?? Vector2D.Zero;
+                    return uv ?? UnityEngine.Vector2.zero;
                 }
                 set { HalfVertex.Attributes.TrySet(new FieldKey("UV" + index), value, true); }
             }

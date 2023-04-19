@@ -19,6 +19,8 @@ using System.Resources;
 using System.Reflection;
 using Sceelix.Meshes.Procedures;
 using Sceelix.Core.Parameters;
+using Sceelix.Meshes.Data;
+using Sceelix.Meshes.Operations;
 
 namespace LazyProcedural
 {
@@ -142,7 +144,7 @@ namespace LazyProcedural
 
             //once we have finished the parameterization, execute it!
             //it will execute twice since we have added 2 entities to the input
-         
+
             meshModifyProc.Execute();
 
             //now we can get the data from the outputs
@@ -155,6 +157,70 @@ namespace LazyProcedural
 
             //this gets (and removes) all the data from all the output ports
             IEnumerable<IEntity> poppedEntities = meshProc.Outputs.DequeueAll();
+        }
+
+        public GameObject MeshConvert(Sceelix.Meshes.Data.MeshEntity meshEntity)
+        {
+            Dictionary<Sceelix.Actors.Data.Material, int> materialToMaterialData = new Dictionary<Sceelix.Actors.Data.Material, int>();
+
+            int indexerValue = 0;
+            GameObject obj = new GameObject("Test MeshConvert");
+            MeshRenderer mesh = obj.AddComponent<MeshRenderer>();
+            MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
+            //List<Material> materials = new List<Material>();
+
+            //Materials = new List<Material>();
+
+            //Mesh meshData = new Mesh();
+            //Mesh.Id = meshEntity.GetHashCode();
+
+
+            //UnityMesh.MeshEntity = meshEntity;
+
+            foreach (Face face in meshEntity)
+            {
+                int index;
+
+                if (!materialToMaterialData.TryGetValue(face.Material, out index))
+                {
+                    index = materialToMaterialData.Count;
+
+                    materialToMaterialData.Add(face.Material, index);
+
+                    //materials.Add(face.Material);
+                    //UnityMesh.SubmeshTriangles.Add(new List<int>());
+                }
+
+                List<FaceTriangle> faceTriangles = face.Triangulate();
+
+                List<Vector3> v = new List<Vector3>();
+                List<Vector3> n = new List<Vector3>();
+                List<Vector3> c = new List<Vector3>();
+
+                foreach (FaceTriangle faceTriangle in faceTriangles)
+                {
+                    //faceTriangle.Vertices.Reverse();
+
+                    //foreach (Vertex vertex in faceTriangle.Vertices)
+                    //{
+                    //    var normal = vertex[face].Normal;
+                    //    var tangent = vertex[face].Tangent;
+                    //    var binormal = vertex[face].Binormal;
+
+
+                    //    //meshFilter.mesh.vertices
+                    //    v.Add(vertex.Position.FlipYZ());
+                    //    UnityMesh.Normals.Add(normal.FlipYZ());
+                    //    UnityMesh.Colors.Add(vertex[face].Color);
+                    //    UnityMesh.Tangents.Add(new Vector4(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f));
+                    //    UnityMesh.Uvs.Add(vertex[face].UV0 * new Vector2(1, -1));
+
+                    //    UnityMesh.SubmeshTriangles[index].Add(indexerValue++);
+                    //}
+                }
+            }
+
+            return obj;
         }
 
 

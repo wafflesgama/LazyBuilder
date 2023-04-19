@@ -109,12 +109,12 @@ namespace Sceelix.Actors.Data
 
 
 
-        /*public void Translate(Vector3D direction, bool scopeRelative)
+        /*public void Translate(UnityEngine.Vector3 direction, bool scopeRelative)
         {
             throw new NotImplementedException();
         }
 
-        public void Scale(Vector3D scaling, Vector3D pivot, bool scopeRelative)
+        public void Scale(UnityEngine.Vector3 scaling, UnityEngine.Vector3 pivot, bool scopeRelative)
         {
             throw new NotImplementedException();
         }*/

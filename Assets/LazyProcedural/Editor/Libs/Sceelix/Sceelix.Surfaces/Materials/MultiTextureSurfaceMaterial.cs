@@ -25,7 +25,7 @@ namespace Sceelix.Surfaces.Materials
         }
 
 
-        public Vector2D UVTiling
+        public UnityEngine.Vector2 UVTiling
         {
             get;
             set;

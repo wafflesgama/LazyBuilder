@@ -38,7 +38,7 @@ namespace Sceelix.Meshes.Parameters
         /// <summary>
         /// Center of the mesh.
         /// </summary>
-        private readonly AttributeParameter<Vector3D> _parameterCentroid = new AttributeParameter<Vector3D>("Centroid", AttributeAccess.Write);
+        private readonly AttributeParameter<UnityEngine.Vector3> _parameterCentroid = new AttributeParameter<UnityEngine.Vector3>("Centroid", AttributeAccess.Write);
 
         /// <summary>
         /// Gets a list of all vertex position pairs of all edges.
@@ -115,9 +115,9 @@ namespace Sceelix.Meshes.Parameters
             if (_parameterAxisSizes.IsMapped)
                 _parameterAxisSizes[meshEntity] = ConvertHelper.Convert<SceeList>(meshEntity.BoxScope.Sizes);
 
-            /*new SceeList(new KeyValuePair<string, object>("X", meshEntity.BoxScope.Sizes.X),
-                    new KeyValuePair<string, object>("Y", meshEntity.BoxScope.Sizes.Y),
-                    new KeyValuePair<string, object>("Z", meshEntity.BoxScope.Sizes.Z));*/
+            /*new SceeList(new KeyValuePair<string, object>("X", meshEntity.BoxScope.Sizes.x),
+                    new KeyValuePair<string, object>("Y", meshEntity.BoxScope.Sizes.y),
+                    new KeyValuePair<string, object>("Z", meshEntity.BoxScope.Sizes.z));*/
 
             if (_parameterEdges.IsMapped)
             {
@@ -132,9 +132,9 @@ namespace Sceelix.Meshes.Parameters
                         SceeList vertexData = new SceeList();
                         var scopeRelativePosition = meshEntity.BoxScope.ToScopePosition(vertex.Position);
 
-                        vertexData.Add("X", scopeRelativePosition.X);
-                        vertexData.Add("Y", scopeRelativePosition.Y);
-                        vertexData.Add("Z", scopeRelativePosition.Z);
+                        vertexData.Add("X", scopeRelativePosition.x);
+                        vertexData.Add("Y", scopeRelativePosition.y);
+                        vertexData.Add("Z", scopeRelativePosition.z);
                         edgeData.Add(vertexData);
                     }
 

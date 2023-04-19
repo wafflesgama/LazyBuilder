@@ -59,8 +59,8 @@ namespace Sceelix.Surfaces.Procedures
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    Vector2D position2D = new Vector2D(startingPosition.X + x * actualCellSize, startingPosition.Y + (rows - y - 1) * actualCellSize);
-                    Vector3D position3D = position2D.ToVector3D();
+                    UnityEngine.Vector2 position2D = new UnityEngine.Vector2(startingPosition.x + x * actualCellSize, startingPosition.y + (rows - y - 1) * actualCellSize);
+                    UnityEngine.Vector3 position3D = position2D.ToVector3();
                     var itemsWithinRadius = faceQuadTree.GetItemsWithinRadius(position2D, 0.1f);
                     float? heightValue = null;
                     foreach (var face in itemsWithinRadius)

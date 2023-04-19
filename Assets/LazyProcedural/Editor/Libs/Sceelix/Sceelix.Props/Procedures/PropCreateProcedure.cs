@@ -71,9 +71,9 @@ namespace Sceelix.Props.Procedures
             private readonly FloatParameter _heightParameter = new FloatParameter("Water Level", 1);
 
             /// <summary>
-            /// Color of the ocean water.
+            /// UnityEngine.Color of the ocean water.
             /// </summary>
-            private readonly ColorParameter _waterColorParameter = new ColorParameter("Water Color", new Color(10, 30, 79, 255));
+            private readonly ColorParameter _waterColorParameter = new ColorParameter("Water UnityEngine.Color", new UnityEngine.Color(10, 30, 79, 255));
 
             /// <summary>
             /// Scale of the ocean waves.

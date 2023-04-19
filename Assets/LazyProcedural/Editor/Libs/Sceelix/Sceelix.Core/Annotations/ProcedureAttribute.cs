@@ -73,7 +73,7 @@ namespace Sceelix.Core.Annotations
 
 
         /// <summary>
-        /// Color code associated to the procedure in hexadecimal (without the #). 
+        /// UnityEngine.Color code associated to the procedure in hexadecimal (without the #). 
         /// Check http://www.2createawebsite.com/build/hex-colors.html for color codes.
         /// </summary>
         public string HexColor

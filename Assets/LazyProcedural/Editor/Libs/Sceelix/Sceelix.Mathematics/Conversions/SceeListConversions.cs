@@ -12,26 +12,26 @@ namespace Sceelix.Mathematics.Conversions
         {
             if (sceelist.IsAssociative)
                 return new BoxScope(
-                    ConvertHelper.Convert<Vector3D>(sceelist["XAxis"]),
-                    ConvertHelper.Convert<Vector3D>(sceelist["YAxis"]),
-                    ConvertHelper.Convert<Vector3D>(sceelist["ZAxis"]),
-                    ConvertHelper.Convert<Vector3D>(sceelist["Translation"]),
-                    ConvertHelper.Convert<Vector3D>(sceelist["Sizes"]));
-            return new BoxScope(ConvertHelper.Convert<Vector3D>(sceelist[0]),
-                ConvertHelper.Convert<Vector3D>(sceelist[1]),
-                ConvertHelper.Convert<Vector3D>(sceelist[2]),
-                ConvertHelper.Convert<Vector3D>(sceelist[3]),
-                ConvertHelper.Convert<Vector3D>(sceelist[4]));
+                    ConvertHelper.Convert<UnityEngine.Vector3>(sceelist["XAxis"]),
+                    ConvertHelper.Convert<UnityEngine.Vector3>(sceelist["YAxis"]),
+                    ConvertHelper.Convert<UnityEngine.Vector3>(sceelist["ZAxis"]),
+                    ConvertHelper.Convert<UnityEngine.Vector3>(sceelist["Translation"]),
+                    ConvertHelper.Convert<UnityEngine.Vector3>(sceelist["Sizes"]));
+            return new BoxScope(ConvertHelper.Convert<UnityEngine.Vector3>(sceelist[0]),
+                ConvertHelper.Convert<UnityEngine.Vector3>(sceelist[1]),
+                ConvertHelper.Convert<UnityEngine.Vector3>(sceelist[2]),
+                ConvertHelper.Convert<UnityEngine.Vector3>(sceelist[3]),
+                ConvertHelper.Convert<UnityEngine.Vector3>(sceelist[4]));
         }
 
 
 
         /// <summary>
-        /// Converts a List to a struct of type Color.
+        /// Converts a List to a struct of type UnityEngine.Color.
         /// </summary>
         /// <param name="sceelist"></param>
         /// <returns></returns>
-        public static Color SceelistToColorConversion(SceeList sceelist)
+        public static UnityEngine.Color SceelistToColorConversion(SceeList sceelist)
         {
             if (sceelist.IsAssociative)
             {
@@ -40,41 +40,41 @@ namespace Sceelix.Mathematics.Conversions
                 var blue = sceelist["Blue"] ?? 255;
                 var alpha = sceelist["Alpha"] ?? 255;
 
-                return new Color(ConvertHelper.Convert<byte>(red), ConvertHelper.Convert<byte>(green), ConvertHelper.Convert<byte>(blue), ConvertHelper.Convert<byte>(alpha));
+                return new UnityEngine.Color(ConvertHelper.Convert<byte>(red), ConvertHelper.Convert<byte>(green), ConvertHelper.Convert<byte>(blue), ConvertHelper.Convert<byte>(alpha));
             }
 
             if (sceelist.Count >= 3)
-                return new Color(ConvertHelper.Convert<byte>(sceelist[0]), ConvertHelper.Convert<byte>(sceelist[1]), ConvertHelper.Convert<byte>(sceelist[2]));
-            if (sceelist.Count >= 4) return new Color(ConvertHelper.Convert<byte>(sceelist[0]), ConvertHelper.Convert<byte>(sceelist[1]), ConvertHelper.Convert<byte>(sceelist[2]), ConvertHelper.Convert<byte>(sceelist[3]));
+                return new UnityEngine.Color(ConvertHelper.Convert<byte>(sceelist[0]), ConvertHelper.Convert<byte>(sceelist[1]), ConvertHelper.Convert<byte>(sceelist[2]));
+            if (sceelist.Count >= 4) return new UnityEngine.Color(ConvertHelper.Convert<byte>(sceelist[0]), ConvertHelper.Convert<byte>(sceelist[1]), ConvertHelper.Convert<byte>(sceelist[2]), ConvertHelper.Convert<byte>(sceelist[3]));
 
-            throw new Exception("Could not convert 'Sceelist' to 'Color'.");
+            throw new Exception("Could not convert 'Sceelist' to 'UnityEngine.Color'.");
         }
 
 
 
-        public static Vector2D SceelistToVector2DConversion(SceeList sceelist)
+        public static UnityEngine.Vector2 SceelistToVector2Conversion(SceeList sceelist)
         {
             if (sceelist.IsAssociative)
-                return new Vector2D(
+                return new UnityEngine.Vector2(
                     ConvertHelper.Convert<float>(sceelist["X"]),
                     ConvertHelper.Convert<float>(sceelist["Y"]));
 
-            return new Vector2D(
+            return new UnityEngine.Vector2(
                 ConvertHelper.Convert<float>(sceelist[0]),
                 ConvertHelper.Convert<float>(sceelist[1]));
         }
 
 
 
-        public static Vector3D SceelistToVectorConversion(SceeList sceelist)
+        public static UnityEngine.Vector3 SceelistToVectorConversion(SceeList sceelist)
         {
             if (sceelist.IsAssociative)
-                return new Vector3D(
+                return new UnityEngine.Vector3(
                     ConvertHelper.Convert<float>(sceelist["X"]),
                     ConvertHelper.Convert<float>(sceelist["Y"]),
                     ConvertHelper.Convert<float>(sceelist["Z"]));
 
-            return new Vector3D(
+            return new UnityEngine.Vector3(
                 ConvertHelper.Convert<float>(sceelist[0]),
                 ConvertHelper.Convert<float>(sceelist[1]),
                 ConvertHelper.Convert<float>(sceelist[2]));

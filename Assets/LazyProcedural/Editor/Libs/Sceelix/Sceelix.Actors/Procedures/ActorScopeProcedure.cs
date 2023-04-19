@@ -46,7 +46,7 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// Position of the Pivot.
             /// </summary>
-            private readonly Vector3DParameter _parameterPosition = new Vector3DParameter("Position", new Vector3D(0.5f, 0.5f, 0.5f));
+            private readonly Vector3Parameter _parameterPosition = new Vector3Parameter("Position", new UnityEngine.Vector3(0.5f, 0.5f, 0.5f));
 
             /// <summary>
             /// Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1).
@@ -101,7 +101,7 @@ namespace Sceelix.Actors.Procedures
             /// <returns></returns>
             protected internal override IActor Transform(IActor actor)
             {
-                actor.BoxScope = new BoxScope(Vector3D.XVector, Vector3D.YVector, Vector3D.ZVector, actor.BoxScope.Translation, actor.BoxScope.Sizes);
+                actor.BoxScope = new BoxScope(UnityEngine.Vector3.right, UnityEngine.Vector3.up, UnityEngine.Vector3.forward, actor.BoxScope.Translation, actor.BoxScope.Sizes);
 
                 return actor;
             }
@@ -125,7 +125,7 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// Axis around which the rotation should be performed.
             /// </summary>
-            private readonly Vector3DParameter _parameterAxis = new Vector3DParameter("Axis", Vector3D.ZVector);
+            private readonly Vector3Parameter _parameterAxis = new Vector3Parameter("Axis", UnityEngine.Vector3.forward);
 
             /// <summary>
             /// Controls if the indicated axis is relative to the current scope or to the world.
@@ -173,7 +173,7 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// The direction to which the mentioned axis should be facing.
             /// </summary>
-            private readonly Vector3DParameter _parameterDirectionParameter = new Vector3DParameter("Direction", Vector3D.One);
+            private readonly Vector3Parameter _parameterDirectionParameter = new Vector3Parameter("Direction", UnityEngine.Vector3.one);
 
 
 
@@ -186,7 +186,7 @@ namespace Sceelix.Actors.Procedures
 
             protected internal override IActor Transform(IActor actor)
             {
-                Vector3D axis = actor.BoxScope.XAxis;
+                UnityEngine.Vector3 axis = actor.BoxScope.XAxis;
 
                 if (_parameterAxisParameter.Value == "Y")
                     axis = actor.BoxScope.YAxis;
@@ -195,8 +195,8 @@ namespace Sceelix.Actors.Procedures
 
                 float angleTo = axis.AngleTo(_parameterDirectionParameter.Value);
 
-                Vector3D rotationAxis = axis.Cross(_parameterDirectionParameter.Value).Normalize();
-                if (!rotationAxis.Equals(Vector3D.Zero))
+                UnityEngine.Vector3 rotationAxis = axis.Cross(_parameterDirectionParameter.Value).normalized;
+                if (!rotationAxis.Equals(UnityEngine.Vector3.zero))
                 {
                     var rotation = Matrix.CreateTranslation(actor.BoxScope.Translation) * Matrix.CreateAxisAngle(rotationAxis, angleTo) * Matrix.CreateTranslation(-actor.BoxScope.Translation);
                     var newScope = actor.BoxScope.Transform(rotation);

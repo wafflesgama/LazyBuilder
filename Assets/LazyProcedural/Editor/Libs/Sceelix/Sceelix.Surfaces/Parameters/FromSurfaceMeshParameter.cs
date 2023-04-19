@@ -51,15 +51,15 @@ namespace Sceelix.Surfaces.Parameters
             for (int i = 0; i < surfaceEntity.NumColumns; i++)
             for (int j = 0; j < surfaceEntity.NumRows; j++)
             {
-                Vector3D normal = new Vector3D();
+                UnityEngine.Vector3 normal = new UnityEngine.Vector3();
 
                 foreach (var halfVertex in vertexMatrix[i, j].HalfVertices)
                     normal += halfVertex.Normal;
 
-                vertexMatrix[i, j].Normal = normal.Normalize();
+                vertexMatrix[i, j].Normal = normal.normalized;
 
                 foreach (var halfVertex in vertexMatrix[i, j].HalfVertices)
-                    halfVertex.UV0 = new Vector2D(i * 0.2f, j * 0.2f);
+                    halfVertex.UV0 = new UnityEngine.Vector2(i * 0.2f, j * 0.2f);
             }
 
             MeshEntity meshEntity = new MeshEntity(faces);

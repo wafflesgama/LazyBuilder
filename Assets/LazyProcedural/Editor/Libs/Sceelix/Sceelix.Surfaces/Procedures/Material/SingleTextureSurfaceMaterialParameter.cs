@@ -21,7 +21,7 @@ namespace Sceelix.Surfaces.Procedures
         /// <summary>
         /// The UV sizing coordinates for texture mapping.
         /// </summary>
-        private readonly Vector2DParameter _parameterMappingMultiplier = new Vector2DParameter("UV", Vector2D.One);
+        private readonly Vector2Parameter _parameterMappingMultiplier = new Vector2Parameter("UV", UnityEngine.Vector2.One);
 
         /// <summary>
         /// Indicates if the defined UV coordinates represent an absolute size in world space, or relative to the surface size.
@@ -41,7 +41,7 @@ namespace Sceelix.Surfaces.Procedures
         {
             surfaceEntity.Material = new SingleTextureSurfaceMaterial(_parameterDiffuseTexture.Value)
             {
-                UVTiling = _parameterAbsoluteSizing.Value ? new Vector2D(surfaceEntity.Width / _parameterMappingMultiplier.Value.X, surfaceEntity.Length / _parameterMappingMultiplier.Value.Y) : _parameterMappingMultiplier.Value
+                UVTiling = _parameterAbsoluteSizing.Value ? new UnityEngine.Vector2(surfaceEntity.Width / _parameterMappingMultiplier.Value.x, surfaceEntity.Length / _parameterMappingMultiplier.Value.y) : _parameterMappingMultiplier.Value
             };
         }
     }

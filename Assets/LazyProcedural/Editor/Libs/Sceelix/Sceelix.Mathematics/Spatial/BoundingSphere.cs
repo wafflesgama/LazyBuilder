@@ -7,17 +7,17 @@ namespace Sceelix.Mathematics.Spatial
     {
         private float _radius;
         private float _radiusSqr;
-        public Vector3D Center;
+        public UnityEngine.Vector3 Center;
 
 
 
-        public BoundingSphere(Vector3D center) : this(center, 0)
+        public BoundingSphere(UnityEngine.Vector3 center) : this(center, 0)
         {
         }
 
 
 
-        public BoundingSphere(Vector3D center, float radius)
+        public BoundingSphere(UnityEngine.Vector3 center, float radius)
         {
             _radius = radius;
             _radiusSqr = radius * radius;
@@ -58,10 +58,10 @@ namespace Sceelix.Mathematics.Spatial
         public bool Intersects(BoundingSphere target)
         {
             double radiusSum = target.Radius + Radius;
-            Vector3D centerDifference = target.Center - Center;
+            UnityEngine.Vector3 centerDifference = target.Center - Center;
 
             //fast check
-            if (centerDifference.X > radiusSum || centerDifference.Y > radiusSum || centerDifference.Z > radiusSum)
+            if (centerDifference.x > radiusSum || centerDifference.y > radiusSum || centerDifference.z > radiusSum)
                 return false;
 
             //slow check

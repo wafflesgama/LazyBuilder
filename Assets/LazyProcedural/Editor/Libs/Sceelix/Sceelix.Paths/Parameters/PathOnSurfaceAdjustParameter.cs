@@ -43,10 +43,10 @@ namespace Sceelix.Paths.Parameters
 
 
 
-        private float GetMinDistanceBetweenCellPoints(float cellSize, Vector2D direction, Vector2D crossdirection)
+        private float GetMinDistanceBetweenCellPoints(float cellSize, UnityEngine.Vector2 direction, UnityEngine.Vector2 crossdirection)
         {
-            var distancePoint = new Vector2D(Math.Sign(crossdirection.X) * cellSize, Math.Sign(crossdirection.Y) * cellSize);
-            Line2D distanceLine = new Line2D(direction, Vector2D.Zero);
+            var distancePoint = new UnityEngine.Vector2(Math.Sign(crossdirection.x) * cellSize, Math.Sign(crossdirection.y) * cellSize);
+            Line2D distanceLine = new Line2D(direction, UnityEngine.Vector2.zero);
 
             return distanceLine.MinDistanceToPoint(distancePoint);
         }
@@ -77,12 +77,12 @@ namespace Sceelix.Paths.Parameters
                         var halfWidth = _parameterWidth.Get(pathEdge) / 2f;
 
                         //var direction = pathEdge.Direction;
-                        var lateralDirection = Vector3D.ZVector.Cross(pathEdge.Direction).Normalize();
-                        var lateralDirection2D = lateralDirection.ToVector2D().Normalize();
+                        var lateralDirection = UnityEngine.Vector3.forward.Cross(pathEdge.Direction).normalized;
+                        var lateralDirection2D = lateralDirection.ToVector2().normalized;
 
-                        var direction2D = pathEdge.Direction.ToVector2D().Normalize();
-                        var source2D = pathEdge.Source.Position.ToVector2D();
-                        var target2D = pathEdge.Target.Position.ToVector2D();
+                        var direction2D = pathEdge.Direction.ToVector2().normalized;
+                        var source2D = pathEdge.Source.Position.ToVector2();
+                        var target2D = pathEdge.Target.Position.ToVector2();
 
                         //determine the distance between point given the direction of the line
                         var frontalDistance = GetMinDistanceBetweenCellPoints(surface.CellSize, direction2D, lateralDirection2D);
@@ -91,16 +91,16 @@ namespace Sceelix.Paths.Parameters
 
                         var sizedlateralDirection2D = lateralDirection2D * (halfWidth + lateralDistance);
 
-                        Plane3D plane = new Plane3D(pathEdge.Direction.Cross(lateralDirection).Normalize(), pathEdge.Source.Position);
+                        Plane3D plane = new Plane3D(pathEdge.Direction.Cross(lateralDirection).normalized, pathEdge.Source.Position);
 
 
                         BoundingRectangle boundingRectangle = new BoundingRectangle();
-                        boundingRectangle.AddPoint(pathEdge.Source.Position.ToVector2D());
-                        boundingRectangle.AddPoint(pathEdge.Target.Position.ToVector2D());
-                        boundingRectangle.AddPoint(pathEdge.Source.Position.ToVector2D() + sizedlateralDirection2D);
-                        boundingRectangle.AddPoint(pathEdge.Source.Position.ToVector2D() - sizedlateralDirection2D);
-                        boundingRectangle.AddPoint(pathEdge.Target.Position.ToVector2D() + sizedlateralDirection2D);
-                        boundingRectangle.AddPoint(pathEdge.Target.Position.ToVector2D() - sizedlateralDirection2D);
+                        boundingRectangle.AddPoint(pathEdge.Source.Position.ToVector2());
+                        boundingRectangle.AddPoint(pathEdge.Target.Position.ToVector2());
+                        boundingRectangle.AddPoint(pathEdge.Source.Position.ToVector2() + sizedlateralDirection2D);
+                        boundingRectangle.AddPoint(pathEdge.Source.Position.ToVector2() - sizedlateralDirection2D);
+                        boundingRectangle.AddPoint(pathEdge.Target.Position.ToVector2() + sizedlateralDirection2D);
+                        boundingRectangle.AddPoint(pathEdge.Target.Position.ToVector2() - sizedlateralDirection2D);
 
                         boundingRectangle.Expand(surface.CellSize);
 
@@ -110,15 +110,15 @@ namespace Sceelix.Paths.Parameters
                         var minCoords = surface.ToCoordinates(boundingRectangle.Min);
                         var maxCoords = surface.ToCoordinates(boundingRectangle.Max);
 
-                        Line2D line = new Line2D(pathEdge.Direction.ToVector2D(), pathEdge.Source.Position.ToVector2D());
+                        Line2D line = new Line2D(pathEdge.Direction.ToVector2(), pathEdge.Source.Position.ToVector2());
                         //line.
 
-                        for (int i = minCoords.X; i <= maxCoords.X; i++)
-                        for (int j = maxCoords.Y; j <= minCoords.Y; j++)
+                        for (int i = minCoords.x; i <= maxCoords.x; i++)
+                        for (int j = maxCoords.y; j <= minCoords.y; j++)
                         {
                             //var height surfaceEntity.Heights[i, j];
                             Coordinate coordinate = new Coordinate(i, j);
-                            Vector2D gridCornerPosition = surface.ToWorldPosition(coordinate);
+                            UnityEngine.Vector2 gridCornerPosition = surface.ToWorldPosition(coordinate);
 
                             //must be within the bound of the line - direction2D* frontalDistance
                             if ((gridCornerPosition - (source2D - direction2D * frontalDistance)).Dot(direction2D) > 0 &&
@@ -162,7 +162,7 @@ namespace Sceelix.Paths.Parameters
                                     if (!edited[i, j] || heightLayer.GetGenericValue(coordinate) > newHeight)
                                     {
                                         heightLayer.SetValue(coordinate, newHeight);
-                                        //surfaceEntity.Colors[i, j] = new Color(0, 255, 0, 0);
+                                        //surfaceEntity.Colors[i, j] = new UnityEngine.Color(0, 255, 0, 0);
 
                                         edited[i, j] = true;
                                     }
@@ -177,11 +177,11 @@ namespace Sceelix.Paths.Parameters
                                             color[k] = (color[k]) / sum;
                                         }
 
-                                        surfaceEntity.Colors[i, j] = new Color(color);*/
+                                        surfaceEntity.Colors[i, j] = new UnityEngine.Color(color);*/
                                 }
                             }
 
-                            //surfaceEntity.Colors[i, j] = new Color(0, 255, 0, 0);
+                            //surfaceEntity.Colors[i, j] = new UnityEngine.Color(0, 255, 0, 0);
                         }
                     }
                 }

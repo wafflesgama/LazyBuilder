@@ -5,7 +5,7 @@ using Sceelix.Mathematics.Data;
 
 namespace Sceelix.Mathematics.Serialization
 {
-    [StandardJsonConverter(typeof(Color))]
+    [StandardJsonConverter(typeof(UnityEngine.Color))]
     public class ColorConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
@@ -24,9 +24,9 @@ namespace Sceelix.Mathematics.Serialization
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Color color = (Color) value;
+            UnityEngine.Color color = (UnityEngine.Color) value;
 
-            writer.WriteValue(color.R / 255f + "," + color.G / 255f + "," + color.B / 255f + "," + color.A / 255f);
+            writer.WriteValue(color.r / 255f + "," + color.g / 255f + "," + color.b / 255f + "," + color.A / 255f);
         }
     }
 }

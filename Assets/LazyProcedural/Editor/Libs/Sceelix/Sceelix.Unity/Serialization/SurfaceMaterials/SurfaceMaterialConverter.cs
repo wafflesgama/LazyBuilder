@@ -7,7 +7,7 @@ using Sceelix.Serialization;
 using Sceelix.Surfaces.Data;
 using Sceelix.Surfaces.Materials;
 using Sceelix.Unity.Annotations;
-using Color = System.Drawing.Color;
+
 
 namespace Sceelix.Unity.Serialization.SurfaceMaterials
 {
@@ -47,7 +47,7 @@ namespace Sceelix.Unity.Serialization.SurfaceMaterials
         protected void SerializeSplatmap(JsonWriter writer, JsonSerializer serializer, float[,,] splatmap)
         {
             writer.WritePropertyName("SplatmapSize");
-            serializer.Serialize(writer, new Vector3D(splatmap.GetLength(0), splatmap.GetLength(1), splatmap.GetLength(2)));
+            serializer.Serialize(writer, new UnityEngine.Vector3(splatmap.GetLength(0), splatmap.GetLength(1), splatmap.GetLength(2)));
 
             writer.WritePropertyName("Splatmap");
             serializer.Serialize(writer, splatmap.ToByteArray());
@@ -70,10 +70,10 @@ namespace Sceelix.Unity.Serialization.SurfaceMaterials
                     writer.WriteStartObject();
 
                     writer.WritePropertyName("TileSize");
-                    serializer.Serialize(writer, new Vector2D(1, 1));
+                    serializer.Serialize(writer, new UnityEngine.Vector2(1, 1));
 
                     writer.WritePropertyName("Texture");
-                    serializer.Serialize(writer, new ResourceContent("WhiteColor", BitmapExtension.CreateColorBitmap(Color.White).ImageToByte()));
+                    serializer.Serialize(writer, new ResourceContent("WhiteColor", BitmapExtension.CreateColorBitmap(UnityEngine.Color.white).ImageToByte()));
 
                     writer.WriteEndObject();
                 }

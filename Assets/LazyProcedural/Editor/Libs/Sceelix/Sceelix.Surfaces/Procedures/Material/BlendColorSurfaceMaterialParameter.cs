@@ -9,7 +9,7 @@ namespace Sceelix.Surfaces.Procedures
     public class BlendColorSurfaceMaterialParameter : SurfaceMaterialParameter
     {
         public BlendColorSurfaceMaterialParameter()
-            : base("Blend Color")
+            : base("Blend UnityEngine.Color")
         {
         }
 

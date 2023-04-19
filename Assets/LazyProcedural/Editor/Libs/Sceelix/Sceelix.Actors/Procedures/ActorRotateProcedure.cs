@@ -47,7 +47,7 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// Position of the Pivot.
             /// </summary>
-            private readonly Vector3DParameter _positionParameter = new Vector3DParameter("Position", new Vector3D(0.5f, 0.5f, 0.5f));
+            private readonly Vector3Parameter _positionParameter = new Vector3Parameter("Position", new UnityEngine.Vector3(0.5f, 0.5f, 0.5f));
 
             /// <summary>
             /// Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1).
@@ -96,14 +96,14 @@ namespace Sceelix.Actors.Procedures
             /// Axis around which the rotation will be performed.
             /// </summary>
             private readonly CompoundParameter _parameterAxis = new CompoundParameter("Axis",
-                new Vector3DParameter("Direction", new Vector3D(1f, 1f, 1f)) {Description = "Direction of the axis."},
+                new Vector3Parameter("Direction", new UnityEngine.Vector3(1f, 1f, 1f)) {Description = "Direction of the axis."},
                 new ChoiceParameter("Relative To", "Scope", "Scope", "World") {Description = "Indicates if the direction is relative to the scope or the world."});
 
             /// <summary>
             /// Pivot that defines the location of the axis.
             /// </summary>
             private readonly CompoundParameter _parameterPivot = new CompoundParameter("Pivot",
-                new Vector3DParameter("Position", new Vector3D(0.5f, 0.5f, 0.5f)) {Description = "Position of the pivot."},
+                new Vector3Parameter("Position", new UnityEngine.Vector3(0.5f, 0.5f, 0.5f)) {Description = "Position of the pivot."},
                 new ChoiceParameter("Offset", "Relative", "Absolute", "Relative") {Description = "Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1)"},
                 new ChoiceParameter("Relative To", "Scope", "Scope", "World") {Description = "Indicates if the position is relative to the scope or the world."}) {IsExpandedAsDefault = false};
 
@@ -121,7 +121,7 @@ namespace Sceelix.Actors.Procedures
                 var angle = MathHelper.ToRadians(_parameterAngle.Value);
 
                 //first let's focus on calculating the pivot
-                var pivot = _parameterPivot["Position"].CastTo<Vector3DParameter>().Value;
+                var pivot = _parameterPivot["Position"].CastTo<Vector3Parameter>().Value;
 
                 if (_parameterPivot["Offset"].CastTo<ChoiceParameter>().Value == "Relative")
                     pivot *= actor.BoxScope.Sizes;
@@ -129,7 +129,7 @@ namespace Sceelix.Actors.Procedures
                 if (_parameterPivot["Relative To"].CastTo<ChoiceParameter>().Value == "Scope")
                     pivot = actor.BoxScope.ToWorldPosition(pivot);
 
-                var axis = _parameterAxis["Direction"].CastTo<Vector3DParameter>().Value.Normalize();
+                var axis = _parameterAxis["Direction"].CastTo<Vector3Parameter>().Value.normalized;
                 if (_parameterAxis["Relative To"].CastTo<ChoiceParameter>().Value == "Scope")
                     axis = actor.BoxScope.ToWorldDirection(axis);
 
@@ -159,13 +159,13 @@ namespace Sceelix.Actors.Procedures
             /// <summary>
             /// The direction to which the mentioned axis should be facing.
             /// </summary>
-            private readonly Vector3DParameter _parameterDirectionParameter = new Vector3DParameter("Direction", Vector3D.One);
+            private readonly Vector3Parameter _parameterDirectionParameter = new Vector3Parameter("Direction", UnityEngine.Vector3.one);
 
             /// <summary>
             /// Pivot that defines the location of the axis.
             /// </summary>
             private readonly CompoundParameter _parameterPivot = new CompoundParameter("Pivot",
-                new Vector3DParameter("Position", new Vector3D(0.5f, 0.5f, 0.5f)) {Description = "Position of the pivot."},
+                new Vector3Parameter("Position", new UnityEngine.Vector3(0.5f, 0.5f, 0.5f)) {Description = "Position of the pivot."},
                 new ChoiceParameter("Offset", "Relative", "Absolute", "Relative") {Description = "Indicates if the position is measured as absolute units or scope-size relative value (between 0 and 1)"},
                 new ChoiceParameter("Relative To", "Scope", "Scope", "World") {Description = "Indicates if the position is relative to the scope or the world."}) {IsExpandedAsDefault = false};
 
@@ -181,7 +181,7 @@ namespace Sceelix.Actors.Procedures
             protected internal override IActor Transform(IActor actor)
             {
                 //first let's focus on calculating the pivot
-                var pivot = _parameterPivot["Position"].CastTo<Vector3DParameter>().Value;
+                var pivot = _parameterPivot["Position"].CastTo<Vector3Parameter>().Value;
 
                 if (_parameterPivot["Offset"].CastTo<ChoiceParameter>().Value == "Relative")
                     pivot *= actor.BoxScope.Sizes;
@@ -189,7 +189,7 @@ namespace Sceelix.Actors.Procedures
                 if (_parameterPivot["Relative To"].CastTo<ChoiceParameter>().Value == "Scope")
                     pivot = actor.BoxScope.ToWorldPosition(pivot);
 
-                Vector3D axis = actor.BoxScope.XAxis;
+                UnityEngine.Vector3 axis = actor.BoxScope.XAxis;
 
                 if (_parameterAxisParameter.Value == "Y")
                     axis = actor.BoxScope.YAxis;

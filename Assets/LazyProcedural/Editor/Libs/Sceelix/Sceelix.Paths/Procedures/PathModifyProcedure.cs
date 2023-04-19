@@ -81,12 +81,12 @@ namespace Sceelix.Paths.Procedures
                 {
                     PathEdge currentEdge = pathEdge;
 
-                    Vector3D direction = pathEdge.Target.Position - pathEdge.Source.Position;
+                    UnityEngine.Vector3 direction = pathEdge.Target.Position - pathEdge.Source.Position;
                     float distance = (pathEdge.Source.Position - pathEdge.Target.Position).Length;
                     if (distance > _parameterMaxSize.Value)
                     {
                         int numNewPoints = (int) (distance / _parameterMaxSize.Value);
-                        Vector3D normalizedDirection = direction.Normalize();
+                        UnityEngine.Vector3 normalizedDirection = direction.normalized;
 
                         //actual spacing, just in case the value is a float
                         float spacing = distance / numNewPoints; // + 1
@@ -288,7 +288,7 @@ namespace Sceelix.Paths.Procedures
 
 
 
-            private void AddVertex(Dictionary<Vector3D, List<PathVertex>> vertices, PathVertex vertex)
+            private void AddVertex(Dictionary<UnityEngine.Vector3, List<PathVertex>> vertices, PathVertex vertex)
             {
                 List<PathVertex> value;
 
@@ -304,7 +304,7 @@ namespace Sceelix.Paths.Procedures
 
 
 
-            private PathVertex CheckForExistingVertex(Vector3D intersection, StaticPathEdge first)
+            private PathVertex CheckForExistingVertex(UnityEngine.Vector3 intersection, StaticPathEdge first)
             {
                 if (intersection.Equals(first.Source.Position))
                     return first.Source;
@@ -322,10 +322,10 @@ namespace Sceelix.Paths.Procedures
             /// </summary>
             /// <param name="network"></param>
             /// <returns></returns>
-            private Dictionary<Vector3D, List<PathVertex>> FindEdgeIntersections(PathEntity network)
+            private Dictionary<UnityEngine.Vector3, List<PathVertex>> FindEdgeIntersections(PathEntity network)
             {
                 //create a dictionary that will hold the cross points
-                Dictionary<Vector3D, List<PathVertex>> vertices = new Dictionary<Vector3D, List<PathVertex>>();
+                Dictionary<UnityEngine.Vector3, List<PathVertex>> vertices = new Dictionary<UnityEngine.Vector3, List<PathVertex>>();
 
                 Queue<StaticPathEdge> streetEdgesQueue = new Queue<StaticPathEdge>(network.Edges.Select(val => new StaticPathEdge(val)));
                 Queue<StaticPathEdge> auxQueue = new Queue<StaticPathEdge>();
@@ -341,7 +341,7 @@ namespace Sceelix.Paths.Procedures
                         //Do the checks only if the the edges are at least close to each other (simple spatial optimization)
                         if (first.IsAtCollidableRange(second))
                         {
-                            Vector3D intersection;
+                            UnityEngine.Vector3 intersection;
 
                             if (first.Source.Position.Equals(second.Source.Position) || first.Source.Position.Equals(second.Target.Position))
                                 intersection = first.Source.Position;
@@ -492,14 +492,14 @@ namespace Sceelix.Paths.Procedures
                     if (!streetEdge.GetLocalAttribute<bool>("Marked", Procedure))
                     {
                         PathVertex otherVertex = streetEdge.OtherVertex(streetVertex);
-                        Vector3D searchDirection = (otherVertex.Position - streetVertex.Position).Normalize();
+                        UnityEngine.Vector3 searchDirection = (otherVertex.Position - streetVertex.Position).normalized;
 
                         RecursiveEdgeReplacement(streetVertex, otherVertex, searchDirection, new[] {streetEdge});
                     }
                 /*if (!streetEdge.Marked)
                         {
                             PathVertex otherVertex = streetEdge.OtherVertex(streetVertex);
-                            Vector3D searchDirection = (otherVertex.Position - streetVertex.Position).Normalize();
+                            UnityEngine.Vector3 searchDirection = (otherVertex.Position - streetVertex.Position).normalized;
 
                             RecursiveEdgeReplacement(streetVertex, otherVertex, searchDirection, new[] {streetEdge});
                         }*/
@@ -562,7 +562,7 @@ namespace Sceelix.Paths.Procedures
 
 
 
-            private void RecursiveEdgeReplacement(PathVertex startingVertex, PathVertex currentVertex, Vector3D searchDirection, IEnumerable<PathEdge> streetEdges)
+            private void RecursiveEdgeReplacement(PathVertex startingVertex, PathVertex currentVertex, UnityEngine.Vector3 searchDirection, IEnumerable<PathEdge> streetEdges)
             {
                 IEnumerable<PathEdge> list = streetEdges as IList<PathEdge> ?? streetEdges.ToList();
 
@@ -570,8 +570,8 @@ namespace Sceelix.Paths.Procedures
                     pathEdge.SetLocalAttribute("Marked", Procedure, true);
                 //streetEdge.Marked = true;
 
-                //IEnumerable<PathEdge> edges = currentVertex.Edges.Where(edge => !edge.Marked && (edge.OtherVertex(currentVertex).Position - currentVertex.Position).Normalize().Equals(searchDirection));
-                IEnumerable<PathEdge> edges = currentVertex.Edges.Where(edge => !edge.GetLocalAttribute<bool>("Marked", Procedure) && (edge.OtherVertex(currentVertex).Position - currentVertex.Position).Normalize().Equals(searchDirection));
+                //IEnumerable<PathEdge> edges = currentVertex.Edges.Where(edge => !edge.Marked && (edge.OtherVertex(currentVertex).Position - currentVertex.Position).normalized.Equals(searchDirection));
+                IEnumerable<PathEdge> edges = currentVertex.Edges.Where(edge => !edge.GetLocalAttribute<bool>("Marked", Procedure) && (edge.OtherVertex(currentVertex).Position - currentVertex.Position).normalized.Equals(searchDirection));
                 foreach (PathEdge streetEdge in edges) RecursiveEdgeReplacement(startingVertex, streetEdge.OtherVertex(currentVertex), searchDirection, list.Union(new[] {streetEdge}));
             }
 
@@ -608,10 +608,10 @@ namespace Sceelix.Paths.Procedures
                 }*/
 
                 //FindEdgeIntersections(network);
-                Dictionary<Vector3D, List<PathVertex>> vertices = FindEdgeIntersections(pathEntity);
+                Dictionary<UnityEngine.Vector3, List<PathVertex>> vertices = FindEdgeIntersections(pathEntity);
 
                 //step 2: look now for vertices sharing the same position and merge them
-                foreach (KeyValuePair<Vector3D, List<PathVertex>> keyValuePair in vertices)
+                foreach (KeyValuePair<UnityEngine.Vector3, List<PathVertex>> keyValuePair in vertices)
                     MergeVertices(keyValuePair.Value);
 
                 FixComplementaryEdges2(pathEntity);
@@ -821,7 +821,7 @@ namespace Sceelix.Paths.Procedures
 
                                     float minDistance = maxWidth1 + maxWidth2;
 
-                                    Vector3D vector3D = vertex1.Position - vertex2.Position;
+                                    UnityEngine.Vector3 vector3D = vertex1.Position - vertex2.Position;
                                     if (vector3D.Length < minDistance)
                                     {
                                         //create a midpoint vertex
@@ -895,7 +895,7 @@ namespace Sceelix.Paths.Procedures
                 public void CreateMidVertices(PathEntity network)
                 {
                     //calculate the centroid of all the considered points
-                    Vector3D sum = Vector3D.Zero;
+                    UnityEngine.Vector3 sum = UnityEngine.Vector3.zero;
 
                     foreach (PathVertex streetVertex in Vertices)
                         sum += streetVertex.Position;
@@ -1044,7 +1044,7 @@ namespace Sceelix.Paths.Procedures
 
 
 
-            private bool CheckSideSize(PathEntity pathEntity, float toleranceDegrees, PathEdge e1, PathEdge e2, PathVertex e1Vertex, PathVertex e2Vertex, Vector3D e1Direction, Vector3D e2Direction, float e1HalfWidth, float e2HalfWidth, float e1Size, float e2Size, Vector3D e1Right, Vector3D e2Left)
+            private bool CheckSideSize(PathEntity pathEntity, float toleranceDegrees, PathEdge e1, PathEdge e2, PathVertex e1Vertex, PathVertex e2Vertex, UnityEngine.Vector3 e1Direction, UnityEngine.Vector3 e2Direction, float e1HalfWidth, float e2HalfWidth, float e1Size, float e2Size, UnityEngine.Vector3 e1Right, UnityEngine.Vector3 e2Left)
             {
                 var angle1 = e2Direction.AngleTo(e1Right);
                 var angle2 = e1Direction.AngleTo(e2Left);
@@ -1091,22 +1091,22 @@ namespace Sceelix.Paths.Procedures
                         {
                             var edge1 = edges[i];
                             var e1Vertex = edge1.OtherVertex(currentVertex);
-                            var e1Direction = (e1Vertex.Position - currentVertex.Position).ProjectToPlane(Vector3D.ZVector);
+                            var e1Direction = (e1Vertex.Position - currentVertex.Position).ProjectToPlane(UnityEngine.Vector3.forward);
                             var e1Size = e1Direction.Length;
-                            e1Direction = e1Direction.Normalize();
+                            e1Direction = e1Direction.normalized;
 
                             var e1HalfWidth = _parameterWidth.Get(edge1) / 2f;
                             var originale1HalfWidth = e1HalfWidth;
-                            var e1Right = e1Direction.Cross(Vector3D.ZVector).Normalize();
+                            var e1Right = e1Direction.Cross(UnityEngine.Vector3.forward).normalized;
                             var e1Left = -e1Right;
 
                             for (int j = i + 1; j < edges.Count; j++)
                             {
                                 var edge2 = edges[j];
                                 var e2Vertex = edge2.OtherVertex(currentVertex);
-                                var e2Direction = (e2Vertex.Position - currentVertex.Position).ProjectToPlane(Vector3D.ZVector);
+                                var e2Direction = (e2Vertex.Position - currentVertex.Position).ProjectToPlane(UnityEngine.Vector3.forward);
                                 var e2Size = edge2.Length;
-                                e2Direction = e2Direction.Normalize();
+                                e2Direction = e2Direction.normalized;
 
                                 //vertices with more than 2 edges (crossings) are not even eligible for deletion
                                 if (e1Vertex.Edges.Count > 2 && e2Vertex.Edges.Count > 2)
@@ -1114,7 +1114,7 @@ namespace Sceelix.Paths.Procedures
 
                                 var e2HalfWidth = _parameterWidth.Get(edge2) / 2f;
 
-                                var e2Right = e2Direction.Cross(Vector3D.ZVector).Normalize();
+                                var e2Right = e2Direction.Cross(UnityEngine.Vector3.forward).normalized;
                                 var e2Left = -e2Right;
 
                                 var sum = (originale1HalfWidth + e2HalfWidth) / 2f;
@@ -1198,7 +1198,7 @@ namespace Sceelix.Paths.Procedures
                     }
                     else
                     {
-                        vertex.Position = vertex.Position + (otherVertex.Position - vertex.Position).Normalize() * amount;
+                        vertex.Position = vertex.Position + (otherVertex.Position - vertex.Position).normalized * amount;
                     }
                 }
 

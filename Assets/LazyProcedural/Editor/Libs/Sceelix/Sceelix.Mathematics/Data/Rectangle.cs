@@ -14,20 +14,20 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public Rectangle(Vector2D min, Vector2D max)
+        public Rectangle(UnityEngine.Vector2 min, UnityEngine.Vector2 max)
         {
-            X = min.X;
-            Y = min.Y;
-            Width = max.X - min.X;
-            Height = max.Y - min.Y;
+            X = min.x;
+            Y = min.y;
+            Width = max.x - min.x;
+            Height = max.y - min.y;
         }
 
 
 
         public Rectangle(BoundingBox boundingBox)
         {
-            X = boundingBox.Min.X;
-            Y = boundingBox.Min.Y;
+            X = boundingBox.Min.x;
+            Y = boundingBox.Min.y;
             Width = boundingBox.Width;
             Height = boundingBox.Length;
         }
@@ -58,10 +58,10 @@ namespace Sceelix.Mathematics.Data
         }
 
 
-        public Vector2D Min => new Vector2D(X, Y);
+        public UnityEngine.Vector2 Min => new UnityEngine.Vector2(X, Y);
 
 
-        public Vector2D Max => new Vector2D(X + Width, Y + Height);
+        public UnityEngine.Vector2 Max => new UnityEngine.Vector2(X + Width, Y + Height);
 
 
 
@@ -74,21 +74,21 @@ namespace Sceelix.Mathematics.Data
 
         public Rectangle Merge(Rectangle rectangle)
         {
-            return new Rectangle(Vector2D.Minimize(rectangle.Min, Min), Vector2D.Maximize(rectangle.Max, Max));
+            return new Rectangle(UnityEngine.Vector2.Minimize(rectangle.Min, Min), UnityEngine.Vector2.Maximize(rectangle.Max, Max));
         }
 
 
 
         public static implicit operator System.Drawing.Rectangle(Rectangle rectangle)
         {
-            return new System.Drawing.Rectangle((int) rectangle.X, (int) rectangle.Y, (int) rectangle.Width, (int) rectangle.Height);
+            return new System.Drawing.Rectangle((int) rectangle.x, (int) rectangle.y, (int) rectangle.Width, (int) rectangle.Height);
         }
 
 
 
         public static implicit operator Rectangle(System.Drawing.Rectangle rectangle)
         {
-            return new Rectangle(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+            return new Rectangle(rectangle.x, rectangle.y, rectangle.Width, rectangle.Height);
         }
     }
 }

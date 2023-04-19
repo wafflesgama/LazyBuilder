@@ -17,7 +17,7 @@ namespace Sceelix.Meshes.Data
             _boxScope = meshEntity.BoxScope;
 
             MeshEntity = meshEntity;
-            RelativeScale = new Vector3D(1 / _boxScope.Sizes.X, 1 / _boxScope.Sizes.Y, 1 / _boxScope.Sizes.Z).MakeValid(1);
+            RelativeScale = new UnityEngine.Vector3(1 / _boxScope.Sizes.x, 1 / _boxScope.Sizes.y, 1 / _boxScope.Sizes.z).MakeValid(1);
 
             //reset the orientation of the mesh
             meshEntity.InsertInto(new BoxScope(sizes: _boxScope.Sizes));
@@ -41,14 +41,14 @@ namespace Sceelix.Meshes.Data
         }
 
 
-        public Vector3D RelativeScale
+        public UnityEngine.Vector3 RelativeScale
         {
             get;
             set;
         }
 
 
-        public Vector3D Scale => RelativeScale * _boxScope.Sizes.ReplaceValue(0, 1);
+        public UnityEngine.Vector3 Scale => RelativeScale * _boxScope.Sizes.ReplaceValue(0, 1);
 
 
 
@@ -62,12 +62,12 @@ namespace Sceelix.Meshes.Data
 
 
 
-        /*public void Translate(Vector3D direction, bool scopeRelative)
+        /*public void Translate(UnityEngine.Vector3 direction, bool scopeRelative)
         {
             _boxScope.Translation += direction;
         }
 
-        public void Scale(Vector3D scaling, Vector3D pivot, bool scopeRelative)
+        public void Scale(UnityEngine.Vector3 scaling, UnityEngine.Vector3 pivot, bool scopeRelative)
         {
             if (scopeRelative)
                 pivot = BoxScope.ToWorldPosition(pivot);

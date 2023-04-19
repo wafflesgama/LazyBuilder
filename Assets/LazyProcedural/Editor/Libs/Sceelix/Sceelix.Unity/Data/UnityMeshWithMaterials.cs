@@ -14,16 +14,16 @@ namespace Sceelix.Unity.Data
 
         public UnityMesh()
         {
-            Positions = new List<Vector3D>();
-            Normals = new List<Vector3D>();
-            Uvs = new List<Vector2D>();
-            Colors = new List<Color>();
-            Tangents = new List<Vector4D>();
+            Positions = new List<UnityEngine.Vector3>();
+            Normals = new List<UnityEngine.Vector3>();
+            Uvs = new List<UnityEngine.Vector2>();
+            Colors = new List<UnityEngine.Color>();
+            Tangents = new List<UnityEngine.Vector4>();
         }
 
 
 
-        public List<Color> Colors
+        public List<UnityEngine.Color> Colors
         {
             get;
             set;
@@ -38,28 +38,28 @@ namespace Sceelix.Unity.Data
         }
 
 
-        public List<Vector3D> Normals
+        public List<UnityEngine.Vector3> Normals
         {
             get;
             set;
         }
 
 
-        public List<Vector3D> Positions
+        public List<UnityEngine.Vector3> Positions
         {
             get;
             set;
         }
 
 
-        public List<Vector4D> Tangents
+        public List<UnityEngine.Vector4> Tangents
         {
             get;
             set;
         }
 
 
-        public List<Vector2D> Uvs
+        public List<UnityEngine.Vector2> Uvs
         {
             get;
             set;
@@ -108,9 +108,9 @@ namespace Sceelix.Unity.Data
 
                     UnityMesh.Positions.Add(vertex.Position.FlipYZ());
                     UnityMesh.Normals.Add(normal.FlipYZ());
-                    UnityMesh.Colors.Add(vertex[face].Color);
-                    UnityMesh.Tangents.Add(new Vector4D(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f));
-                    UnityMesh.Uvs.Add(vertex[face].UV0 * new Vector2D(1, -1));
+                    UnityMesh.Colors.Add(vertex[face].UnityEngine.Color);
+                    UnityMesh.Tangents.Add(new UnityEngine.Vector4(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f));
+                    UnityMesh.Uvs.Add(vertex[face].UV0 * new UnityEngine.Vector2(1, -1));
 
                     UnityMesh.SubmeshTriangles[index].Add(indexerValue++);
                 }

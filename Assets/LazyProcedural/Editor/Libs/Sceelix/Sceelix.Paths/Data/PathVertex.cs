@@ -14,7 +14,7 @@ namespace Sceelix.Paths.Data
 
 
 
-        public PathVertex(Vector3D position)
+        public PathVertex(UnityEngine.Vector3 position)
         {
             Position = position;
         }
@@ -88,7 +88,7 @@ namespace Sceelix.Paths.Data
         /// <summary>
         /// 3D coordinate of the vertex
         /// </summary>
-        public Vector3D Position
+        public UnityEngine.Vector3 Position
         {
             get;
             set;
@@ -107,7 +107,7 @@ namespace Sceelix.Paths.Data
 
 
 
-        private double GetAngle(PathEdge edge, Vector3D firstDirection, Vector3D normal)
+        private double GetAngle(PathEdge edge, UnityEngine.Vector3 firstDirection, UnityEngine.Vector3 normal)
         {
             var direction = edge.GetDirectionFrom(this).ProjectToPlane(normal);
 
@@ -125,7 +125,7 @@ namespace Sceelix.Paths.Data
         /// <param name="firstEdge">The first edge. Must be connected to this vertex! </param>
         /// <param name="normal">The normal around which to rotate.</param>
         /// <returns></returns>
-        public IEnumerable<PathEdge> GetOrderedEdges(PathEdge firstEdge, Vector3D normal)
+        public IEnumerable<PathEdge> GetOrderedEdges(PathEdge firstEdge, UnityEngine.Vector3 normal)
         {
             var firstDirection = firstEdge.GetDirectionFrom(this).ProjectToPlane(normal);
 

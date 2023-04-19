@@ -57,7 +57,7 @@ namespace Sceelix.Core.Graphs
                     if (!string.IsNullOrWhiteSpace(graph.Description))
                         writer.WriteAttributeString("Description", graph.Description);
 
-                    writer.WriteAttributeString("Color", graph.Color);
+                    writer.WriteAttributeString("UnityEngine.Color", graph.UnityEngine.Color);
 
                     //writer.WriteAttributeString("OutputStyle", graph.OutputStyle.ToString());
 

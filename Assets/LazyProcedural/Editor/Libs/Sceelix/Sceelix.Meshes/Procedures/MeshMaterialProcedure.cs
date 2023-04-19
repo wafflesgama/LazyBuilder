@@ -23,7 +23,7 @@ namespace Sceelix.Meshes.Procedures
         /// <summary>
         /// The type of material to apply to the faces of this mesh.
         /// </summary>
-        private readonly SelectListParameter<MeshMaterialParameter> _parameterMaterial = new SelectListParameter<MeshMaterialParameter>("Material", "Color");
+        private readonly SelectListParameter<MeshMaterialParameter> _parameterMaterial = new SelectListParameter<MeshMaterialParameter>("Material", "UnityEngine.Color");
 
 
         public override IEnumerable<string> Tags => base.Tags.Union(_parameterMaterial.SubParameterLabels);
@@ -51,7 +51,7 @@ namespace Sceelix.Meshes.Procedures
             protected internal abstract void Apply(MeshEntity entity);
         }
 
-        #region Color
+        #region UnityEngine.Color
 
         /// <summary>
         /// Renders the faces with a given color.
@@ -60,9 +60,9 @@ namespace Sceelix.Meshes.Procedures
         public class ColorMaterialParameter : MeshMaterialParameter
         {
             /// <summary>
-            /// Color to render the faces with. 
+            /// UnityEngine.Color to render the faces with. 
             /// </summary>
-            private readonly ColorParameter _parameterColor = new ColorParameter("Color", new Color(255, 0, 0));
+            private readonly ColorParameter _parameterColor = new ColorParameter("UnityEngine.Color", new UnityEngine.Color(255, 0, 0));
 
             /// <summary>
             /// The specular power for lighting calculations (deprecated).
@@ -72,7 +72,7 @@ namespace Sceelix.Meshes.Procedures
 
 
             public ColorMaterialParameter()
-                : base("Color")
+                : base("UnityEngine.Color")
             {
             }
 
@@ -95,9 +95,9 @@ namespace Sceelix.Meshes.Procedures
         public class EmissiveMaterialParameter : MeshMaterialParameter
         {
             /// <summary>
-            /// Color to render the faces with. 
+            /// UnityEngine.Color to render the faces with. 
             /// </summary>
-            private readonly ColorParameter _parameterColor = new ColorParameter("Color", new Color(255, 0, 0));
+            private readonly ColorParameter _parameterColor = new ColorParameter("UnityEngine.Color", new UnityEngine.Color(255, 0, 0));
 
 
 
@@ -599,12 +599,12 @@ namespace Sceelix.Meshes.Procedures
                 /// <summary>
                 /// The vector2 value.
                 /// </summary>
-                private readonly Vector2DParameter _parameterValue = new Vector2DParameter("Value", Vector2D.Zero);
+                private readonly Vector2Parameter _parameterValue = new Vector2Parameter("Value", UnityEngine.Vector2.zero);
 
 
 
                 public Vector2PropertyParameter()
-                    : base("Vector2")
+                    : base("UnityEngine.Vector2")
                 {
                 }
 
@@ -621,12 +621,12 @@ namespace Sceelix.Meshes.Procedures
                 /// <summary>
                 /// The vector3 value.
                 /// </summary>
-                private readonly Vector3DParameter _parameterValue = new Vector3DParameter("Value", Vector3D.Zero);
+                private readonly Vector3Parameter _parameterValue = new Vector3Parameter("Value", UnityEngine.Vector3.zero);
 
 
 
                 public Vector3PropertyParameter()
-                    : base("Vector3")
+                    : base("UnityEngine.Vector3")
                 {
                 }
 
@@ -643,12 +643,12 @@ namespace Sceelix.Meshes.Procedures
                 /// <summary>
                 /// The color value.
                 /// </summary>
-                private readonly ColorParameter _parameterValue = new ColorParameter("Value", Color.White);
+                private readonly ColorParameter _parameterValue = new ColorParameter("Value", UnityEngine.Color.white);
 
 
 
                 public ColorPropertyParameter()
-                    : base("Color")
+                    : base("UnityEngine.Color")
                 {
                 }
 
@@ -845,12 +845,12 @@ namespace Sceelix.Meshes.Procedures
                 /// <summary>
                 /// The vector2 value.
                 /// </summary>
-                private readonly Vector2DParameter _parameterValue = new Vector2DParameter("Value", Vector2D.Zero);
+                private readonly Vector2Parameter _parameterValue = new Vector2Parameter("Value", UnityEngine.Vector2.zero);
 
 
 
                 public Vector2PropertyParameter()
-                    : base("Vector2")
+                    : base("UnityEngine.Vector2")
                 {
                 }
 
@@ -867,12 +867,12 @@ namespace Sceelix.Meshes.Procedures
                 /// <summary>
                 /// The vector3 value.
                 /// </summary>
-                private readonly Vector3DParameter _parameterValue = new Vector3DParameter("Value", Vector3D.Zero);
+                private readonly Vector3Parameter _parameterValue = new Vector3Parameter("Value", UnityEngine.Vector3.zero);
 
 
 
                 public Vector3PropertyParameter()
-                    : base("Vector3")
+                    : base("UnityEngine.Vector3")
                 {
                 }
 
@@ -889,12 +889,12 @@ namespace Sceelix.Meshes.Procedures
                 /// <summary>
                 /// The color value.
                 /// </summary>
-                private readonly ColorParameter _parameterValue = new ColorParameter("Value", Color.White);
+                private readonly ColorParameter _parameterValue = new ColorParameter("Value", UnityEngine.Color.white);
 
 
 
                 public ColorPropertyParameter()
-                    : base("Color")
+                    : base("UnityEngine.Color")
                 {
                 }
 

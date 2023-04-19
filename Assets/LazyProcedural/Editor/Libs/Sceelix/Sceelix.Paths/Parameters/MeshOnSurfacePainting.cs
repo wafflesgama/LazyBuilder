@@ -46,13 +46,13 @@ namespace Sceelix.Paths.Parameters
 
 
 
-        public bool ContainsPoint(List<Vector2D> vertices, Vector2D point)
+        public bool ContainsPoint(List<UnityEngine.Vector2> vertices, UnityEngine.Vector2 point)
         {
             bool conclusion = false;
 
             for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
-                if (vertices[i].Y > point.Y != vertices[j].Y > point.Y &&
-                    point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) / (vertices[j].Y - vertices[i].Y) + vertices[i].X)
+                if (vertices[i].y > point.y != vertices[j].y > point.y &&
+                    point.x < (vertices[j].x - vertices[i].x) * (point.y - vertices[i].y) / (vertices[j].y - vertices[i].y) + vertices[i].x)
                     conclusion = !conclusion;
 
             return conclusion;
@@ -76,7 +76,7 @@ namespace Sceelix.Paths.Parameters
                 foreach (MeshEntity meshEntity in meshEntities)
                 foreach (var face in meshEntity.Faces)
                 {
-                    var points = face.Vertices.Select(x => x.Position.ToVector2D()).ToList();
+                    var points = face.Vertices.Select(x => x.Position.ToVector2()).ToList();
 
 
                     BoundingRectangle faceBoundingRectangle = face.BoundingRectangle;
@@ -87,15 +87,15 @@ namespace Sceelix.Paths.Parameters
                     /*if(!surfaceEntity.Contains(faceBoundingRectangle.Min) && !surfaceEntity.Contains(faceBoundingRectangle.Max))
                             continue;*/
 
-                    var minCoords = surfaceEntity.ToCoordinates(Vector2D.Maximize(faceBoundingRectangle.Min, surfaceEntityBoundingRectangle.Min));
-                    var maxCoords = surfaceEntity.ToCoordinates(Vector2D.Minimize(faceBoundingRectangle.Max, surfaceEntityBoundingRectangle.Max));
+                    var minCoords = surfaceEntity.ToCoordinates(UnityEngine.Vector2.Maximize(faceBoundingRectangle.Min, surfaceEntityBoundingRectangle.Min));
+                    var maxCoords = surfaceEntity.ToCoordinates(UnityEngine.Vector2.Minimize(faceBoundingRectangle.Max, surfaceEntityBoundingRectangle.Max));
 
 
-                    for (int i = minCoords.X; i <= maxCoords.X; i++)
-                    for (int j = maxCoords.Y; j <= minCoords.Y; j++)
+                    for (int i = minCoords.x; i <= maxCoords.x; i++)
+                    for (int j = maxCoords.y; j <= minCoords.y; j++)
                     {
                         //var height surfaceEntity.Heights[i, j];
-                        Vector2D gridCornerPosition = surfaceEntity.ToWorldPosition(new Coordinate(i, j));
+                        UnityEngine.Vector2 gridCornerPosition = surfaceEntity.ToWorldPosition(new Coordinate(i, j));
 
                         if (ContainsPoint(points, gridCornerPosition)) SetDataIndex(i, j, values, textureIndex, value);
                     }

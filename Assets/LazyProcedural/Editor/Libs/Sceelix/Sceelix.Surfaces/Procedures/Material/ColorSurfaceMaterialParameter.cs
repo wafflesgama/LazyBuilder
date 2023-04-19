@@ -14,12 +14,12 @@ namespace Sceelix.Surfaces.Procedures
         /// <summary>
         /// The color to render the surface with.
         /// </summary>
-        private readonly ColorParameter _parameterColor = new ColorParameter("Color", Color.Red);
+        private readonly ColorParameter _parameterColor = new ColorParameter("UnityEngine.Color", UnityEngine.Color.red);
 
 
 
         public ColorSurfaceMaterialParameter()
-            : base("Color")
+            : base("UnityEngine.Color")
         {
         }
 

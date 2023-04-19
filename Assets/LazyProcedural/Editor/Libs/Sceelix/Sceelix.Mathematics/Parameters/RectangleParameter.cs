@@ -32,8 +32,8 @@ namespace Sceelix.Mathematics.Parameters
             get { return new Rectangle(X.Value, Y.Value, Width.Value, Height.Value); }
             set
             {
-                X.Value = value.X;
-                Y.Value = value.Y;
+                X.Value = value.x;
+                Y.Value = value.y;
                 Width.Value = value.Width;
                 Height.Value = value.Height;
             }

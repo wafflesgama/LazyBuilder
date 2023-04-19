@@ -3,11 +3,12 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Sceelix.Annotations;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Serialization
 {
-    [StandardJsonConverter(typeof(Vector4D))]
-    public class Vector4DConverter : JsonConverter
+    [StandardJsonConverter(typeof(UnityEngine.Vector4))]
+    public class Vector4Converter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -25,9 +26,9 @@ namespace Sceelix.Mathematics.Serialization
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            Vector4D vector = (Vector4D) value;
+            UnityEngine.Vector4 vector = (UnityEngine.Vector4) value;
 
-            writer.WriteValue(vector.X.ToString(CultureInfo.InvariantCulture) + "," + vector.Y.ToString(CultureInfo.InvariantCulture) + "," + vector.Z.ToString(CultureInfo.InvariantCulture) + "," + vector.W.ToString(CultureInfo.InvariantCulture));
+            writer.WriteValue(vector.x.ToString(CultureInfo.InvariantCulture) + "," + vector.y.ToString(CultureInfo.InvariantCulture) + "," + vector.z.ToString(CultureInfo.InvariantCulture) + "," + vector.w.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

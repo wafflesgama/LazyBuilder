@@ -84,17 +84,17 @@ namespace Sceelix.Unity.Serialization
             EntityConverter.SerializeCommonUnityAttributes(writer, surfaceEntity, serializer);
 
             writer.WritePropertyName("Position");
-            serializer.Serialize(writer, surfaceEntity.Origin.ToVector3D().FlipYZ());
+            serializer.Serialize(writer, surfaceEntity.Origin.ToVector3().FlipYZ());
 
             writer.WritePropertyName("Resolution");
             writer.WriteValue(surfaceEntity.NumRows);
 
             writer.WritePropertyName("Size");
-            serializer.Serialize(writer, new Vector3D(surfaceEntity.Width, Math.Max(1, surfaceEntity.MaximumZ), surfaceEntity.Length));
+            serializer.Serialize(writer, new UnityEngine.Vector3(surfaceEntity.Width, Math.Max(1, surfaceEntity.MaximumZ), surfaceEntity.Length));
 
             var surfaceHeights = GetSurfaceHeights(surfaceEntity);
             writer.WritePropertyName("HeightsResolution");
-            serializer.Serialize(writer, new Vector2D(surfaceHeights.GetLength(0), surfaceHeights.GetLength(1)));
+            serializer.Serialize(writer, new UnityEngine.Vector2(surfaceHeights.GetLength(0), surfaceHeights.GetLength(1)));
 
             writer.WritePropertyName("Heights");
             serializer.Serialize(writer, surfaceHeights.ToByteArray());

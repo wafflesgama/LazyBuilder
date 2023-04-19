@@ -111,7 +111,7 @@ namespace Sceelix.Surfaces.Data
 
 
 
-        public T GetGenericValue(Vector2D worldPosition, SampleMethod sampleMethod = SampleMethod.Clamp)
+        public T GetGenericValue(UnityEngine.Vector2 worldPosition, SampleMethod sampleMethod = SampleMethod.Clamp)
         {
             return (T) GetValue(worldPosition, sampleMethod);
         }
@@ -120,7 +120,7 @@ namespace Sceelix.Surfaces.Data
 
         public override object GetValue(Coordinate surfaceCoordinate)
         {
-            return _values[surfaceCoordinate.X, surfaceCoordinate.Y];
+            return _values[surfaceCoordinate.x, surfaceCoordinate.y];
         }
 
 
@@ -129,8 +129,8 @@ namespace Sceelix.Surfaces.Data
         {
             var sampleMethodFunc = sampleMethod.ToIntFunction();
 
-            var layerColumn = sampleMethodFunc(surfaceCoordinate.X, 0, NumColumns - 1);
-            var layerRow = sampleMethodFunc(surfaceCoordinate.Y, 0, NumRows - 1);
+            var layerColumn = sampleMethodFunc(surfaceCoordinate.x, 0, NumColumns - 1);
+            var layerRow = sampleMethodFunc(surfaceCoordinate.y, 0, NumRows - 1);
             var newCoordinate = new Coordinate(layerColumn, layerRow);
             if (!Contains(newCoordinate)) return DefaultValue;
 
@@ -139,23 +139,23 @@ namespace Sceelix.Surfaces.Data
 
 
 
-        public override object GetValue(Vector2D worldPosition, SampleMethod sampleMethod = SampleMethod.Clamp)
+        public override object GetValue(UnityEngine.Vector2 worldPosition, SampleMethod sampleMethod = SampleMethod.Clamp)
         {
             var c0 = ToLayerCoordinates(worldPosition);
             var c1 = ToLayerCoordinatesUpper(worldPosition);
 
-            Vector2D topLeftPosition = _surface.ToWorldPosition(c0);
-            Vector2D bottomRightPosition = _surface.ToWorldPosition(c1);
+            UnityEngine.Vector2 topLeftPosition = _surface.ToWorldPosition(c0);
+            UnityEngine.Vector2 bottomRightPosition = _surface.ToWorldPosition(c1);
 
-            var fractionX = c0.X == c1.X ? 0 : (worldPosition.X - topLeftPosition.X) / (bottomRightPosition.X - topLeftPosition.X);
-            var fractionY = c0.Y == c1.Y ? 0 : (topLeftPosition.Y - worldPosition.Y) / (topLeftPosition.Y - bottomRightPosition.Y);
+            var fractionX = c0.x == c1.x ? 0 : (worldPosition.x - topLeftPosition.x) / (bottomRightPosition.x - topLeftPosition.x);
+            var fractionY = c0.y == c1.y ? 0 : (topLeftPosition.y - worldPosition.y) / (topLeftPosition.y - bottomRightPosition.y);
 
             var val = _interpolationFunction(fractionX, fractionY, new[]
             {
-                GetValue(new Coordinate(c0.X, c0.Y), sampleMethod),
-                GetValue(new Coordinate(c1.X, c0.Y), sampleMethod),
-                GetValue(new Coordinate(c0.X, c1.Y), sampleMethod),
-                GetValue(new Coordinate(c1.X, c1.Y), sampleMethod)
+                GetValue(new Coordinate(c0.x, c0.y), sampleMethod),
+                GetValue(new Coordinate(c1.x, c0.y), sampleMethod),
+                GetValue(new Coordinate(c0.x, c1.y), sampleMethod),
+                GetValue(new Coordinate(c1.x, c1.y), sampleMethod)
             });
             return val;
         }
@@ -215,18 +215,18 @@ namespace Sceelix.Surfaces.Data
         public override void SetValue(Coordinate layerCoordinate, object value)
         {
             //changes the getter to the default one
-            _values[layerCoordinate.X, layerCoordinate.Y] = (T) value;
+            _values[layerCoordinate.x, layerCoordinate.y] = (T) value;
         }
 
 
 
         //TODO:Review if the surface version can be used instead
-        public Coordinate ToLayerCoordinates(Vector2D worldPosition)
+        public Coordinate ToLayerCoordinates(UnityEngine.Vector2 worldPosition)
         {
             var relativePosition = worldPosition - _surface.Origin;
 
-            var coordX = (int) (relativePosition.X / _surface.CellSize);
-            var coordY = NumRows - 2 - (int) (relativePosition.Y / _surface.CellSize);
+            var coordX = (int) (relativePosition.x / _surface.CellSize);
+            var coordY = NumRows - 2 - (int) (relativePosition.y / _surface.CellSize);
 
             return new Coordinate(coordX, coordY);
         }
@@ -234,12 +234,12 @@ namespace Sceelix.Surfaces.Data
 
 
         //TODO:Review if the surface version can be used instead
-        private Coordinate ToLayerCoordinatesUpper(Vector2D worldPosition)
+        private Coordinate ToLayerCoordinatesUpper(UnityEngine.Vector2 worldPosition)
         {
             var relativePosition = worldPosition - _surface.Origin;
 
-            var coordX = (int) Math.Ceiling(relativePosition.X / _surface.CellSize);
-            var coordY = NumRows - 1 - (int) Math.Floor(relativePosition.Y / _surface.CellSize);
+            var coordX = (int) Math.Ceiling(relativePosition.x / _surface.CellSize);
+            var coordY = NumRows - 1 - (int) Math.Floor(relativePosition.y / _surface.CellSize);
 
             return new Coordinate(coordX, coordY);
         }

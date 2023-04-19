@@ -5,9 +5,9 @@ using Sceelix.Mathematics.Data;
 
 namespace Sceelix.Mathematics.Parameters.Infos
 {
-    public class Vector3DParameterInfo : PrimitiveParameterInfo<Vector3D> //CompoundParameterInfo
+    public class Vector3ParameterInfo : PrimitiveParameterInfo<UnityEngine.Vector3> //CompoundParameterInfo
     {
-        public Vector3DParameterInfo(string label)
+        public Vector3ParameterInfo(string label)
             : base(label)
         {
             /*Fields.Add(new FloatParameterInfo("X"));
@@ -17,14 +17,14 @@ namespace Sceelix.Mathematics.Parameters.Infos
 
 
 
-        public Vector3DParameterInfo(Vector3DParameter parameter)
+        public Vector3ParameterInfo(Vector3Parameter parameter)
             : base(parameter)
         {
         }
 
 
 
-        public Vector3DParameterInfo(XmlElement xmlNode)
+        public Vector3ParameterInfo(XmlElement xmlNode)
             : base(xmlNode)
         {
         }
@@ -36,13 +36,13 @@ namespace Sceelix.Mathematics.Parameters.Infos
             get
             {
                 var fixedValue = FixedValue;
-                return "new Vector3D(" + fixedValue.X + "," + fixedValue.Y + "," + fixedValue.Z + ")";
+                return "new UnityEngine.Vector3(" + fixedValue.x + "," + fixedValue.y + "," + fixedValue.z + ")";
             }
         }
 
 
 
-        /*public Vector3D FixedValue
+        /*public UnityEngine.Vector3 FixedValue
         {
             get
             {
@@ -50,13 +50,13 @@ namespace Sceelix.Mathematics.Parameters.Infos
                 float y = Fields[1].CastTo<FloatParameterInfo>().FixedValue;
                 float z = Fields[2].CastTo<FloatParameterInfo>().FixedValue;
 
-                return new Vector3D(x, y, z);
+                return new UnityEngine.Vector3(x, y, z);
             }
             set
             {
-                Fields[0].CastTo<FloatParameterInfo>().FixedValue = value.X;
-                Fields[1].CastTo<FloatParameterInfo>().FixedValue = value.Y;
-                Fields[2].CastTo<FloatParameterInfo>().FixedValue = value.Z;
+                Fields[0].CastTo<FloatParameterInfo>().FixedValue = value.x;
+                Fields[1].CastTo<FloatParameterInfo>().FixedValue = value.y;
+                Fields[2].CastTo<FloatParameterInfo>().FixedValue = value.z;
             }
         }*/
 
@@ -64,7 +64,7 @@ namespace Sceelix.Mathematics.Parameters.Infos
 
         public override Parameter ToParameter()
         {
-            return new Vector3DParameter(Label, FixedValue);
+            return new Vector3Parameter(Label, FixedValue);
         }
     }
 }

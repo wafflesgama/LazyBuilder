@@ -45,7 +45,7 @@ namespace Sceelix.Points.Data
 
 
 
-        public Vector3D Centroid
+        public UnityEngine.Vector3 Centroid
         {
             get { return Vertices.Select(x => x.Position).Aggregate((sum, val) => sum + val); }
         }

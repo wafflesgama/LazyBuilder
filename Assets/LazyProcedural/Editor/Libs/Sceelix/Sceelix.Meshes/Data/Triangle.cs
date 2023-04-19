@@ -5,7 +5,7 @@ namespace Sceelix.Meshes.Data
 {
     public class Triangle
     {
-        protected Vector3D _normal;
+        protected UnityEngine.Vector3 _normal;
         protected List<Vertex> vertices;
 
 
@@ -28,7 +28,7 @@ namespace Sceelix.Meshes.Data
 
 
 
-        public Vector3D Normal => _normal;
+        public UnityEngine.Vector3 Normal => _normal;
 
 
         public Vertex V0 => vertices[0];
@@ -51,19 +51,19 @@ namespace Sceelix.Meshes.Data
 
         private void CalculateNormal()
         {
-            _normal = Vector3D.Cross(V2.Position - V0.Position, V1.Position - V0.Position);
-            _normal = _normal.Normalize();
+            _normal = UnityEngine.Vector3.Cross(V2.Position - V0.Position, V1.Position - V0.Position);
+            _normal = _normal.normalized;
         }
 
 
 
-        public static bool OtherSide(Vector3D p1, Vector3D a, Vector3D b, Vector3D c)
+        public static bool OtherSide(UnityEngine.Vector3 p1, UnityEngine.Vector3 a, UnityEngine.Vector3 b, UnityEngine.Vector3 c)
         {
-            Vector3D cp1 = Vector3D.Cross(b - a, p1 - a);
-            Vector3D cp2 = Vector3D.Cross(c - a, b - a);
+            UnityEngine.Vector3 cp1 = UnityEngine.Vector3.Cross(b - a, p1 - a);
+            UnityEngine.Vector3 cp2 = UnityEngine.Vector3.Cross(c - a, b - a);
 
-            if (Vector3D.IsCollinear(cp1, cp2) && Vector3D.Dot(cp1, cp2) >= 0)
-                //Console.WriteLine(Vector3.Dot(cp1, cp2));
+            if (UnityEngine.Vector3.IsCollinear(cp1, cp2) && UnityEngine.Vector3.Dot(cp1, cp2) >= 0)
+                //Console.WriteLine(UnityEngine.Vector3.Dot(cp1, cp2));
                 //if ()
                 return true;
 
@@ -77,20 +77,20 @@ namespace Sceelix.Meshes.Data
         //            PL = a plane with point V0 and normal n
         //    Output: *B = base point on PL of perpendicular from P
         //    Return: the distance from P to the plane PL
-        private double PointDistanceToPlane(Vector3D point)
+        private double PointDistanceToPlane(UnityEngine.Vector3 point)
         {
-            float sn = -Vector3D.Dot(_normal, point - V0.Position);
-            float sd = Vector3D.Dot(_normal, _normal);
+            float sn = -UnityEngine.Vector3.Dot(_normal, point - V0.Position);
+            float sd = UnityEngine.Vector3.Dot(_normal, _normal);
             float sb = sn / sd;
 
-            Vector3D pointPerpendicular = point + _normal * sb;
+            UnityEngine.Vector3 pointPerpendicular = point + _normal * sb;
 
-            return Vector3D.Distance(point, pointPerpendicular);
+            return UnityEngine.Vector3.Distance(point, pointPerpendicular);
         }
 
 
 
-        public bool PointInTriangle(Vector3D p)
+        public bool PointInTriangle(UnityEngine.Vector3 p)
         {
             //first check if the point is on the same plane
             //if (PointDistanceToPlane(p) > 0)
@@ -116,15 +116,15 @@ namespace Sceelix.Meshes.Data
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static bool SameSide(Vector3D p1, Vector3D a, Vector3D b, Vector3D c)
+        public static bool SameSide(UnityEngine.Vector3 p1, UnityEngine.Vector3 a, UnityEngine.Vector3 b, UnityEngine.Vector3 c)
         {
-            Vector3D cp1 = Vector3D.Cross(b - a, p1 - a);
-            Vector3D cp2 = Vector3D.Cross(b - a, c - a);
+            UnityEngine.Vector3 cp1 = UnityEngine.Vector3.Cross(b - a, p1 - a);
+            UnityEngine.Vector3 cp2 = UnityEngine.Vector3.Cross(b - a, c - a);
 
-            //if (Vector3.Dot(cp1, cp2) >= 0)
-            //Console.WriteLine(Vector3.Dot(cp1, cp2));
-            //if (Vector3.IsCollinear(cp1,cp2))
-            if (Vector3D.IsCollinear(cp1, cp2) && Vector3D.Dot(cp1, cp2) >= 0)
+            //if (UnityEngine.Vector3.Dot(cp1, cp2) >= 0)
+            //Console.WriteLine(UnityEngine.Vector3.Dot(cp1, cp2));
+            //if (UnityEngine.Vector3.IsCollinear(cp1,cp2))
+            if (UnityEngine.Vector3.IsCollinear(cp1, cp2) && UnityEngine.Vector3.Dot(cp1, cp2) >= 0)
                 return true;
 
             return false;

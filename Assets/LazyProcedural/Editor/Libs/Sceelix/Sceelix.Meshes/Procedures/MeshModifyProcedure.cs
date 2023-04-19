@@ -94,12 +94,12 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private List<Face> Lathe(Face face, Vector3D xAxis, Vector3D yAxis, Vector3D zAxis, Vector3D translation)
+            private List<Face> Lathe(Face face, UnityEngine.Vector3 xAxis, UnityEngine.Vector3 yAxis, UnityEngine.Vector3 zAxis, UnityEngine.Vector3 translation)
             {
                 float horizontalAngle = (float) (Math.PI * 2) / _parameterSegments.Value;
 
-                Vector3D[] xDirs = new Vector3D[_parameterSegments.Value];
-                Vector3D[] yDirs = new Vector3D[_parameterSegments.Value];
+                UnityEngine.Vector3[] xDirs = new UnityEngine.Vector3[_parameterSegments.Value];
+                UnityEngine.Vector3[] yDirs = new UnityEngine.Vector3[_parameterSegments.Value];
 
                 List<Face> faces = new List<Face>();
                 List<CircularList<Vertex>> listVertexList = new List<CircularList<Vertex>>();
@@ -110,15 +110,15 @@ namespace Sceelix.Meshes.Procedures
                     xDirs[i] = xAxis * (float) Math.Cos(Math.PI * 2 - horizontalAngle * i);
                     yDirs[i] = yAxis * (float) Math.Sin(Math.PI * 2 - horizontalAngle * i);
 
-                    //points.Add(new Vector3D(x, y, 0));
+                    //points.Add(new UnityEngine.Vector3(x, y, 0));
                 }
 
                 foreach (Vertex vertex in face.Vertices)
                 {
-                    Vector3D positionInsideScope = vertex.Position - translation;
+                    UnityEngine.Vector3 positionInsideScope = vertex.Position - translation;
 
                     float heightOnAxis = positionInsideScope.Dot(zAxis);
-                    Vector3D heightAxis = zAxis * heightOnAxis;
+                    UnityEngine.Vector3 heightAxis = zAxis * heightOnAxis;
                     float distance = (heightAxis - positionInsideScope).Length;
 
                     CircularList<Vertex> vertexList = new CircularList<Vertex>(_parameterSegments.Value);
@@ -146,9 +146,9 @@ namespace Sceelix.Meshes.Procedures
             {
                 List<Face> startingFaces = meshEntity.ToList();
 
-                Vector3D xAxis;
-                Vector3D yAxis;
-                Vector3D zAxis;
+                UnityEngine.Vector3 xAxis;
+                UnityEngine.Vector3 yAxis;
+                UnityEngine.Vector3 zAxis;
 
                 switch (_parameterAxis.Value)
                 {
@@ -266,7 +266,7 @@ namespace Sceelix.Meshes.Procedures
             {
                 foreach (Vertex vertex in meshEntity.FaceVertices)
                 {
-                    Vector3D normal = Vector3D.Zero;
+                    UnityEngine.Vector3 normal = UnityEngine.Vector3.zero;
 
                     foreach (HalfVertex halfVertex in vertex.HalfVertices)
                         normal += halfVertex.Face.Normal;
@@ -324,9 +324,9 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private void CreatePyramid(MeshEntity meshEntity, Face face, Vector3D sizedDirection, bool cap)
+            private void CreatePyramid(MeshEntity meshEntity, Face face, UnityEngine.Vector3 sizedDirection, bool cap)
             {
-                Vector3D centroid = face.Centroid;
+                UnityEngine.Vector3 centroid = face.Centroid;
 
                 centroid += sizedDirection;
 
@@ -386,9 +386,9 @@ namespace Sceelix.Meshes.Procedures
 
                     for (int i = 0; i < vertices.Count; i++)
                     {
-                        Vector3D previousPosition = vertices[i - 1].Position;
-                        Vector3D currentPosition = vertices[i].Position;
-                        Vector3D nextPosition = vertices[i + 1].Position;
+                        UnityEngine.Vector3 previousPosition = vertices[i - 1].Position;
+                        UnityEngine.Vector3 currentPosition = vertices[i].Position;
+                        UnityEngine.Vector3 nextPosition = vertices[i + 1].Position;
 
                         if ((previousPosition - currentPosition).Cross(nextPosition - currentPosition).Dot(face.Normal) < 0)
                         {
@@ -460,11 +460,11 @@ namespace Sceelix.Meshes.Procedures
 
             private static void Spherify(MeshEntity meshEntity, Face face, float height, float circleSectionAngle, int segments)
             {
-                Vector3D centroid = face.Centroid;
-                Vector3D sizedDirection = face.Normal * height;
+                UnityEngine.Vector3 centroid = face.Centroid;
+                UnityEngine.Vector3 sizedDirection = face.Normal * height;
 
                 Vertex vertexCentroid = new Vertex(centroid + sizedDirection);
-                Vector3D lastPoint = vertexCentroid.Position;
+                UnityEngine.Vector3 lastPoint = vertexCentroid.Position;
 
                 CircularList<CircularList<Vertex>> circularList = new CircularList<CircularList<Vertex>>();
 
@@ -473,22 +473,22 @@ namespace Sceelix.Meshes.Procedures
                 {
                     CircularList<Vertex> vertexList = new CircularList<Vertex>(segments);
 
-                    Vector3D xDirection = lastPoint - firstPoint.Position;
-                    Vector3D midPoint = firstPoint.Position + xDirection / 2f;
+                    UnityEngine.Vector3 xDirection = lastPoint - firstPoint.Position;
+                    UnityEngine.Vector3 midPoint = firstPoint.Position + xDirection / 2f;
 
-                    xDirection = xDirection.Normalize();
+                    xDirection = xDirection.normalized;
 
-                    Vector3D planeNormal = (lastPoint - centroid).Cross(firstPoint.Position - centroid).Normalize();
+                    UnityEngine.Vector3 planeNormal = (lastPoint - centroid).Cross(firstPoint.Position - centroid).normalized;
 
-                    Vector3D directionToCenter = xDirection.Cross(planeNormal).Normalize();
+                    UnityEngine.Vector3 directionToCenter = xDirection.Cross(planeNormal).normalized;
                     float lengthToCenter = (float) ((lastPoint - midPoint).Length / Math.Tan(MathHelper.ToRadians(circleSectionAngle / 2f)));
-                    Vector3D rotationPivot = midPoint + directionToCenter * lengthToCenter;
+                    UnityEngine.Vector3 rotationPivot = midPoint + directionToCenter * lengthToCenter;
 
                     float angleRadians = MathHelper.ToRadians(circleSectionAngle / segments);
 
-                    Matrix matrix = Matrix.CreateTranslation(rotationPivot.X, rotationPivot.Y, rotationPivot.Z) * Matrix.CreateAxisAngle(planeNormal, -angleRadians) * Matrix.CreateTranslation(-rotationPivot.X, -rotationPivot.Y, -rotationPivot.Z);
+                    Matrix matrix = Matrix.CreateTranslation(rotationPivot.x, rotationPivot.y, rotationPivot.z) * Matrix.CreateAxisAngle(planeNormal, -angleRadians) * Matrix.CreateTranslation(-rotationPivot.x, -rotationPivot.y, -rotationPivot.z);
 
-                    Vector3D currentPosition = firstPoint.Position;
+                    UnityEngine.Vector3 currentPosition = firstPoint.Position;
 
                     //given the section angle, pick the first point and rotate it (segments-1) times around the discoverd pivot
                     vertexList.Add(firstPoint);
@@ -610,17 +610,17 @@ namespace Sceelix.Meshes.Procedures
 
                 for (int i = 0; i < vertexCount; i++)
                 {
-                    Vector3D firstVector = (face[i - 1].Position - face[i].Position).Normalize();
-                    Vector3D secondVector = (face[i + 1].Position - face[i].Position).Normalize();
+                    UnityEngine.Vector3 firstVector = (face[i - 1].Position - face[i].Position).normalized;
+                    UnityEngine.Vector3 secondVector = (face[i + 1].Position - face[i].Position).normalized;
 
                     float actualAmount = (float) (amount / Math.Sin(firstVector.AngleTo(secondVector) / 2f));
 
-                    Vector3D direction = (secondVector + firstVector).Normalize();
+                    UnityEngine.Vector3 direction = (secondVector + firstVector).normalized;
 
                     if (firstVector.IsCollinear(secondVector))
-                        direction = face.Normal.Cross(firstVector).Normalize();
+                        direction = face.Normal.Cross(firstVector).normalized;
 
-                    if (secondVector.Cross(firstVector).Normalize().Equals(face.Normal))
+                    if (secondVector.Cross(firstVector).normalized.Equals(face.Normal))
                         holeVertices.Add(new Vertex(face[i].Position - direction * actualAmount));
                     else
                         holeVertices.Add(new Vertex(face[i].Position + direction * actualAmount));
@@ -667,15 +667,15 @@ namespace Sceelix.Meshes.Procedures
 
                 for (int i = 0; i < vertexCount; i++)
                 {
-                    Vector3D firstVector = (face[i - 1].Position - face[i].Position).Normalize();
-                    Vector3D secondVector = (face[i + 1].Position - face[i].Position).Normalize();
+                    UnityEngine.Vector3 firstVector = (face[i - 1].Position - face[i].Position).normalized;
+                    UnityEngine.Vector3 secondVector = (face[i + 1].Position - face[i].Position).normalized;
 
-                    Vector3D direction = (secondVector + firstVector).Normalize();
+                    UnityEngine.Vector3 direction = (secondVector + firstVector).normalized;
 
                     float actualAmount = (float) (amount / Math.Sin(firstVector.AngleTo(secondVector) / 2f));
 
                     //if it is a convex angle or a concave angle
-                    outsideRing.Add(secondVector.Cross(firstVector).Normalize().Equals(face.Normal)
+                    outsideRing.Add(secondVector.Cross(firstVector).normalized.Equals(face.Normal)
                         ? new Vertex(face[i].Position + direction * actualAmount)
                         : new Vertex(face[i].Position - direction * actualAmount));
                 }
@@ -768,7 +768,7 @@ namespace Sceelix.Meshes.Procedures
 
                 if (polyNode.IsHole && parentFace != null)
                 {
-                    var positions = polyNode.Contour.Select(point => point.ToVector3D(alignedScope));
+                    var positions = polyNode.Contour.Select(point => point.ToVector3(alignedScope));
 
                     if (reverse)
                         positions = positions.Reverse();
@@ -777,7 +777,7 @@ namespace Sceelix.Meshes.Procedures
                 }
                 else if (polyNode.Contour.Any())
                 {
-                    var positions = polyNode.Contour.Select(point => point.ToVector3D(alignedScope));
+                    var positions = polyNode.Contour.Select(point => point.ToVector3(alignedScope));
 
                     if (reverse)
                         positions = positions.Reverse();
@@ -957,7 +957,7 @@ namespace Sceelix.Meshes.Procedures
             private readonly SelectListParameter _parameterStyle = new SelectListParameter("Style",
                 () => new CompoundParameter("Simple") {Description = "A simple prism-like solid, built from a central axis defined by the scope orientation."},
                 () => new CompoundParameter("Skeleton") {Description = "A prism-like solid built from a central skeleton axis defined by the face shape."},
-                () => new Vector2DParameter("Overhang", new Vector2D(1, 1)) {Description = "Similar to the \"simple\", but creating extra overhang faces, resembling a roof-like structure."});
+                () => new Vector2Parameter("Overhang", new UnityEngine.Vector2(1, 1)) {Description = "Similar to the \"simple\", but creating extra overhang faces, resembling a roof-like structure."});
 
 
             /// <summary>
@@ -1013,7 +1013,7 @@ namespace Sceelix.Meshes.Procedures
                     {
                         var polygon = edgeResult.Polygon;
 
-                        List<Vector3D> positions = new List<Vector3D>();
+                        List<UnityEngine.Vector3> positions = new List<UnityEngine.Vector3>();
 
                         foreach (Vector2d vector2D in polygon)
                         {
@@ -1041,7 +1041,7 @@ namespace Sceelix.Meshes.Procedures
 
                     if (angle)
                     {
-                        var maxDistance = Math.Max(Math.Max(alignedScope.Sizes.X, alignedScope.Sizes.Y), alignedScope.Sizes.Z) / 2;
+                        var maxDistance = Math.Max(Math.Max(alignedScope.Sizes.x, alignedScope.Sizes.y), alignedScope.Sizes.z) / 2;
 
                         actualValue = (float) (maxDistance / Math.Tan(MathHelper.ToRadians(value / 2)));
                     }
@@ -1052,9 +1052,9 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private IEnumerable<Face> CreatePyramid(Face face, Vector3D sizedDirection)
+            private IEnumerable<Face> CreatePyramid(Face face, UnityEngine.Vector3 sizedDirection)
             {
-                Vector3D centroid = face.Centroid;
+                UnityEngine.Vector3 centroid = face.Centroid;
 
                 centroid += sizedDirection;
 
@@ -1082,20 +1082,20 @@ namespace Sceelix.Meshes.Procedures
             /// <returns></returns>
             private Line3D DefinePlanes(BoxScope planeScope, float height, out Plane3D plane0, out Plane3D plane1, out Plane3D planeOrthogonal)
             {
-                Vector3D xSizedAxis = planeScope.XAxis * planeScope.Sizes.X;
-                Vector3D ySizedAxis = planeScope.YAxis * planeScope.Sizes.Y;
+                UnityEngine.Vector3 xSizedAxis = planeScope.XAxis * planeScope.Sizes.x;
+                UnityEngine.Vector3 ySizedAxis = planeScope.YAxis * planeScope.Sizes.y;
 
                 //first, define the actual 2 rectangles that define the roof
-                Vector3D point0 = new Vector3D(planeScope.Translation + xSizedAxis);
-                Vector3D point1 = new Vector3D(planeScope.Translation);
-                Vector3D point2 = new Vector3D(planeScope.Translation + ySizedAxis / 2f + planeScope.ZAxis * height);
-                Vector3D point3 = new Vector3D(planeScope.Translation + xSizedAxis + ySizedAxis / 2f + planeScope.ZAxis * height);
+                UnityEngine.Vector3 point0 = new UnityEngine.Vector3(planeScope.Translation + xSizedAxis);
+                UnityEngine.Vector3 point1 = new UnityEngine.Vector3(planeScope.Translation);
+                UnityEngine.Vector3 point2 = new UnityEngine.Vector3(planeScope.Translation + ySizedAxis / 2f + planeScope.ZAxis * height);
+                UnityEngine.Vector3 point3 = new UnityEngine.Vector3(planeScope.Translation + xSizedAxis + ySizedAxis / 2f + planeScope.ZAxis * height);
 
-                Vector3D point4 = new Vector3D(planeScope.Translation + ySizedAxis);
-                Vector3D point5 = new Vector3D(planeScope.Translation + xSizedAxis + ySizedAxis);
+                UnityEngine.Vector3 point4 = new UnityEngine.Vector3(planeScope.Translation + ySizedAxis);
+                UnityEngine.Vector3 point5 = new UnityEngine.Vector3(planeScope.Translation + xSizedAxis + ySizedAxis);
 
-                Vector3D plane0Normal = (point0 - point1).Cross(point2 - point1);
-                Vector3D plane1Normal = (point4 - point5).Cross(point3 - point5);
+                UnityEngine.Vector3 plane0Normal = (point0 - point1).Cross(point2 - point1);
+                UnityEngine.Vector3 plane1Normal = (point4 - point5).Cross(point3 - point5);
 
                 plane0 = new Plane3D(plane0Normal, point0);
                 plane1 = new Plane3D(plane1Normal, point4);
@@ -1138,9 +1138,9 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private Vector3D FromVector2d(Vector2d position, float z, BoxScope planarScope)
+            private UnityEngine.Vector3 FromVector2d(Vector2d position, float z, BoxScope planarScope)
             {
-                return planarScope.ToWorldPosition(new Vector3D((float) position.X, (float) position.Y, z));
+                return planarScope.ToWorldPosition(new UnityEngine.Vector3((float) position.X, (float) position.Y, z));
             }
 
 
@@ -1168,7 +1168,7 @@ namespace Sceelix.Meshes.Procedures
 
                     extendedBaseVertexList.Add(extendedVertex = new ExtendedVertex(edge.V0, extendedBaseVertexList.Count));
 
-                    Vector3D intersectionPoint;
+                    UnityEngine.Vector3 intersectionPoint;
                     Edge.EdgeIntersectionResult edgeLine3DIntersection = edge.PlaneIntersection(middleLinePlane, out intersectionPoint);
                     if (edgeLine3DIntersection == Edge.EdgeIntersectionResult.IntersectingV0 || edgeLine3DIntersection == Edge.EdgeIntersectionResult.Coincident) extendedVertex.IsCrossPoint = true;
 
@@ -1243,11 +1243,11 @@ namespace Sceelix.Meshes.Procedures
                     Face wallFace = null;
 
                     if (vertex0 != vertex0Top && vertex1 != vertex1Top)
-                        wallFace = new Face(vertex0, vertex1, vertex1Top, vertex0Top) {Material = face.Material}; //, Color = face.Color
+                        wallFace = new Face(vertex0, vertex1, vertex1Top, vertex0Top) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                     else if (vertex0 != vertex0Top)
-                        wallFace = new Face(vertex0, vertex1, vertex0Top) {Material = face.Material}; //, Color = face.Color
+                        wallFace = new Face(vertex0, vertex1, vertex0Top) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                     else if (vertex1 != vertex1Top)
-                        wallFace = new Face(vertex0, vertex1, vertex1Top) {Material = face.Material}; //, Color = face.Color
+                        wallFace = new Face(vertex0, vertex1, vertex1Top) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
 
                     if (wallFace != null)
                     {
@@ -1273,11 +1273,11 @@ namespace Sceelix.Meshes.Procedures
             {
                 BoxScope planeScope = face.GetDerivedScope(meshEntity.BoxScope);
 
-                Vector3D xOverhang = planeScope.XAxis.Normalize() * overhangSizeX;
-                Vector3D yOverhang = planeScope.YAxis.Normalize() * overhangSizeY;
+                UnityEngine.Vector3 xOverhang = planeScope.XAxis.normalized * overhangSizeX;
+                UnityEngine.Vector3 yOverhang = planeScope.YAxis.normalized * overhangSizeY;
 
-                Vector3D xSizedAxis = planeScope.XAxis * planeScope.Sizes.X;
-                Vector3D ySizedAxis = planeScope.YAxis * planeScope.Sizes.Y;
+                UnityEngine.Vector3 xSizedAxis = planeScope.XAxis * planeScope.Sizes.x;
+                UnityEngine.Vector3 ySizedAxis = planeScope.YAxis * planeScope.Sizes.y;
 
                 //first, create the actual 2 rectangles that define the roof
                 Vertex point0 = new Vertex(planeScope.Translation + xSizedAxis + xOverhang - yOverhang);
@@ -1312,7 +1312,7 @@ namespace Sceelix.Meshes.Procedures
                 {
                     extendedBaseVertexList.Add(edge.V0);
 
-                    Vector3D intersectionPoint;
+                    UnityEngine.Vector3 intersectionPoint;
                     Edge.EdgeIntersectionResult intersection = edge.PlaneIntersection(middlePlane, out intersectionPoint);
                     //Edge.EdgeIntersectionResult intersection = edge.LineIntersection(middleLine, out intersectionPoint);
                     if (intersection == Edge.EdgeIntersectionResult.IntersectingMiddle)
@@ -1357,11 +1357,11 @@ namespace Sceelix.Meshes.Procedures
                     Face wallFace = null;
 
                     if (vertex0 != vertex0Top && vertex1 != vertex1Top)
-                        wallFace = new Face(vertex0, vertex1, vertex1Top, vertex0Top) {Material = face.Material}; //, Color = face.Color
+                        wallFace = new Face(vertex0, vertex1, vertex1Top, vertex0Top) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                     else if (vertex0 != vertex0Top)
-                        wallFace = new Face(vertex0, vertex1, vertex0Top) {Material = face.Material}; //, Color = face.Color
+                        wallFace = new Face(vertex0, vertex1, vertex0Top) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                     else if (vertex1 != vertex1Top)
-                        wallFace = new Face(vertex0, vertex1, vertex1Top) {Material = face.Material}; //, Color = face.Color
+                        wallFace = new Face(vertex0, vertex1, vertex1Top) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
 
                     if (wallFace != null)
                     {
@@ -1373,11 +1373,11 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private Vector2d ToVector2d(Vector3D position, BoxScope planarScope)
+            private Vector2d ToVector2d(UnityEngine.Vector3 position, BoxScope planarScope)
             {
                 var rotatedVector = planarScope.ToScopePosition(position);
 
-                return new Vector2d(rotatedVector.X, rotatedVector.Y);
+                return new Vector2d(rotatedVector.x, rotatedVector.y);
             }
 
 
@@ -1393,12 +1393,12 @@ namespace Sceelix.Meshes.Procedures
                         BoxScope planeScope = face.GetDerivedScope(meshEntity.BoxScope);
 
                         //determine the actual height
-                        float height = amountItem.Label == "Angle" ? planeScope.Sizes.X / 2f / (float) Math.Tan(MathHelper.ToRadians(amountItem.Value / 2)) : amountItem.Value;
+                        float height = amountItem.Label == "Angle" ? planeScope.Sizes.x / 2f / (float) Math.Tan(MathHelper.ToRadians(amountItem.Value / 2)) : amountItem.Value;
 
                         if (styleItem.Label == "Overhang")
                         {
-                            var overhang = (Vector2DParameter) styleItem;
-                            ShedRoof(meshEntity, face, height, overhang.Value.X, overhang.Value.Y);
+                            var overhang = (Vector2Parameter) styleItem;
+                            ShedRoof(meshEntity, face, height, overhang.Value.x, overhang.Value.y);
                         }
                         else if (styleItem.Label == "Skeleton")
                         {
@@ -1531,30 +1531,30 @@ namespace Sceelix.Meshes.Procedures
                             var furthestVertex = previousVertex[face].GetLocalAttribute<Vertex>("FurthestEndVertex", Procedure);
                             if (furthestVertex != null)
                                 //innerFaceVertices.Add(furthestVertex);
-                                innerVertexProperties.Add(new VertexProperty {InnerVertex = furthestVertex, BoundaryVertex = currentVertex, IsFurthestEndVertex = true, TextureCoordinate = previousVertex[face].GetLocalAttribute<Vector2D>("FurthestTextureCoord", Procedure)});
+                                innerVertexProperties.Add(new VertexProperty {InnerVertex = furthestVertex, BoundaryVertex = currentVertex, IsFurthestEndVertex = true, TextureCoordinate = previousVertex[face].GetLocalAttribute<UnityEngine.Vector2>("FurthestTextureCoord", Procedure)});
 
 
                             var closestVertex = currentVertex[face].GetLocalAttribute<Vertex>("ClosestEndVertex", Procedure);
                             if (closestVertex != null)
                                 //innerFaceVertices.Add(closestVertex);
-                                innerVertexProperties.Add(new VertexProperty {InnerVertex = closestVertex, BoundaryVertex = currentVertex, IsClosestEndVertex = true, TextureCoordinate = currentVertex[face].GetLocalAttribute<Vector2D>("ClosestTextureCoord", Procedure)});
+                                innerVertexProperties.Add(new VertexProperty {InnerVertex = closestVertex, BoundaryVertex = currentVertex, IsClosestEndVertex = true, TextureCoordinate = currentVertex[face].GetLocalAttribute<UnityEngine.Vector2>("ClosestTextureCoord", Procedure)});
                             break;
                         case VertexBoundaryType.FullBoundary:
 
                             var centerPosition = currentVertex.Position;
 
-                            Vector3D firstVector = previousVertex.Position - centerPosition;
-                            Vector3D secondVector = nextVertex.Position - centerPosition;
+                            UnityEngine.Vector3 firstVector = previousVertex.Position - centerPosition;
+                            UnityEngine.Vector3 secondVector = nextVertex.Position - centerPosition;
 
-                            Vector3D normalizedFirstVector = firstVector.Normalize();
-                            Vector3D normalizedSecondVector = secondVector.Normalize();
+                            UnityEngine.Vector3 normalizedFirstVector = firstVector.normalized;
+                            UnityEngine.Vector3 normalizedSecondVector = secondVector.normalized;
 
                             float actualAmount = -(float) (value / Math.Sin(normalizedFirstVector.AngleTo(normalizedSecondVector) / 2f));
 
-                            Vector3D direction = (normalizedSecondVector + normalizedFirstVector).Normalize();
+                            UnityEngine.Vector3 direction = (normalizedSecondVector + normalizedFirstVector).normalized;
 
                             if (normalizedFirstVector.IsCollinear(normalizedSecondVector))
-                                direction = face.Normal.Cross(normalizedFirstVector).Normalize();
+                                direction = face.Normal.Cross(normalizedFirstVector).normalized;
 
 
                             var firstVectorFraction = value / firstVector.Length;
@@ -1563,11 +1563,11 @@ namespace Sceelix.Meshes.Procedures
                             var firstTextureVector = previousVertex[face].UV0 - currentVertex[face].UV0;
                             var secondTextureVector = nextVertex[face].UV0 - currentVertex[face].UV0;
 
-                            var newVertexTexCoordinate = currentVertex[face].UV0 + firstTextureVector.Normalize() * firstTextureVector.Length * firstVectorFraction + secondTextureVector.Normalize() * secondTextureVector.Length * secondVectorFraction;
+                            var newVertexTexCoordinate = currentVertex[face].UV0 + firstTextureVector.normalized * firstTextureVector.Length * firstVectorFraction + secondTextureVector.normalized * secondTextureVector.Length * secondVectorFraction;
 
 
-                            //Vector3D newPosition = centerPosition + direction * actualAmount;
-                            if (normalizedSecondVector.Cross(normalizedFirstVector).Normalize().Equals(face.Normal))
+                            //UnityEngine.Vector3 newPosition = centerPosition + direction * actualAmount;
+                            if (normalizedSecondVector.Cross(normalizedFirstVector).normalized.Equals(face.Normal))
                                 //innerFaceVertices.Add(new Vertex(centerPosition + direction * actualAmount));
                                 innerVertexProperties.Add(new VertexProperty {BoundaryVertex = currentVertex, InnerVertex = new Vertex(centerPosition + direction * actualAmount), TextureCoordinate = newVertexTexCoordinate});
                             else
@@ -1588,7 +1588,7 @@ namespace Sceelix.Meshes.Procedures
                     {
                         // && !(nextVertexProperties.BoundaryVertex == null && currentVertexProperties.IsFurthestEndVertex)
                         List<Vertex> vs = new List<Vertex>();
-                        List<Vector2D> textureCoords = new List<Vector2D>();
+                        List<UnityEngine.Vector2> textureCoords = new List<UnityEngine.Vector2>();
 
                         vs.Add(nextVertex.InnerVertex);
                         vs.Add(currentVertex.InnerVertex);
@@ -1652,7 +1652,7 @@ namespace Sceelix.Meshes.Procedures
                         {
                             var otherVertex = edge.OtherVertex(vertex);
 
-                            var insetPosition = vertex.Position + (otherVertex.Position - vertex.Position).Normalize() * amount;
+                            var insetPosition = vertex.Position + (otherVertex.Position - vertex.Position).normalized * amount;
                             var newVertex = new Vertex(insetPosition);
                             vertex.Attributes.SetAttributesTo(newVertex.Attributes);
 
@@ -1666,7 +1666,7 @@ namespace Sceelix.Meshes.Procedures
 
                                 var fraction = amount / size;
 
-                                var newVertexTexCoordinate = halfVertex.UV0 + textureVector.Normalize() * textureSize * fraction;
+                                var newVertexTexCoordinate = halfVertex.UV0 + textureVector.normalized * textureSize * fraction;
 
                                 //halfVertex.TextureCoordinate = 
 
@@ -1686,7 +1686,7 @@ namespace Sceelix.Meshes.Procedures
 
                                 var fraction = 1 - amount / size;
 
-                                var newVertexTexCoordinate = halfVertex.UV0 + textureVector.Normalize() * textureSize * fraction;
+                                var newVertexTexCoordinate = halfVertex.UV0 + textureVector.normalized * textureSize * fraction;
 
                                 halfVertex.SetLocalAttribute("FurthestTextureCoord", Procedure, newVertexTexCoordinate);
                                 halfVertex.SetLocalAttribute("FurthestEndVertex", Procedure, newVertex);
@@ -1736,7 +1736,7 @@ namespace Sceelix.Meshes.Procedures
                 }
 
 
-                public Vector2D TextureCoordinate
+                public UnityEngine.Vector2 TextureCoordinate
                 {
                     get;
                     set;
@@ -1982,7 +1982,7 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private void ExtrudeAlongDirection(MeshEntity meshEntity, Face face, Vector3D sizedDirection)
+            private void ExtrudeAlongDirection(MeshEntity meshEntity, Face face, UnityEngine.Vector3 sizedDirection)
             {
                 List<Vertex> vertices = new List<Vertex>();
 
@@ -1990,7 +1990,7 @@ namespace Sceelix.Meshes.Procedures
                 foreach (Vertex vertex in face.Vertices)
                     vertices.Add(new Vertex(vertex.Position + sizedDirection));
 
-                Face topFace = new Face(vertices) {Material = face.Material}; //, Color = face.Color
+                Face topFace = new Face(vertices) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                 _parameterAttributeSection[topFace] = "Top";
                 meshEntity.Add(topFace);
 
@@ -2004,7 +2004,7 @@ namespace Sceelix.Meshes.Procedures
 
                         for (int i = 0; i < hole.Count; i++)
                         {
-                            var newFace = new Face(hole[i], hole[i + 1], topFaceHole[i + 1], topFaceHole[i]) {Material = face.Material}; //, Color = face.Color
+                            var newFace = new Face(hole[i], hole[i + 1], topFaceHole[i + 1], topFaceHole[i]) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                             _parameterAttributeSection[newFace] = "Inside";
                             meshEntity.Add(newFace);
                         }
@@ -2016,7 +2016,7 @@ namespace Sceelix.Meshes.Procedures
                 //now add the side faces
                 for (int i = 0; i < face.Vertices.Count(); i++)
                 {
-                    var sideFace = new Face(face[i], face[i + 1], topFace[i + 1], topFace[i]) {Material = face.Material}; //, Color = face.Color
+                    var sideFace = new Face(face[i], face[i + 1], topFace[i + 1], topFace[i]) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                     _parameterAttributeSection[sideFace] = "Side";
                     meshEntity.Add(sideFace);
                 }
@@ -2038,23 +2038,23 @@ namespace Sceelix.Meshes.Procedures
             /// <returns>The inside of the offset. The outside faces are added to the passed shape.</returns>
             private void ExtrudeOffsetInside(MeshEntity meshEntity, Face face, float amount, float extrudeAmount)
             {
-                Vector3D extrudeDirection = face.Normal;
+                UnityEngine.Vector3 extrudeDirection = face.Normal;
                 int vertexCount = face.Vertices.Count();
                 CircularList<Vertex> insideVertices = new CircularList<Vertex>();
 
                 for (int i = 0; i < vertexCount; i++)
                 {
-                    Vector3D firstVector = (face[i - 1].Position - face[i].Position).Normalize();
-                    Vector3D secondVector = (face[i + 1].Position - face[i].Position).Normalize();
+                    UnityEngine.Vector3 firstVector = (face[i - 1].Position - face[i].Position).normalized;
+                    UnityEngine.Vector3 secondVector = (face[i + 1].Position - face[i].Position).normalized;
 
-                    Vector3D direction = (secondVector + firstVector).Normalize();
+                    UnityEngine.Vector3 direction = (secondVector + firstVector).normalized;
 
                     float actualAmount = (float) (amount / Math.Sin(firstVector.AngleTo(secondVector) / 2f));
 
                     if (firstVector.IsCollinear(secondVector))
-                        direction = face.Normal.Cross(firstVector).Normalize();
+                        direction = face.Normal.Cross(firstVector).normalized;
 
-                    if (secondVector.Cross(firstVector).Normalize().Equals(face.Normal))
+                    if (secondVector.Cross(firstVector).normalized.Equals(face.Normal))
                         insideVertices.Add(new Vertex(face[i].Position - direction * actualAmount + extrudeDirection * extrudeAmount));
                     else
                         insideVertices.Add(new Vertex(face[i].Position + direction * actualAmount + extrudeDirection * extrudeAmount));
@@ -2111,7 +2111,7 @@ namespace Sceelix.Meshes.Procedures
             /// <summary>
             /// Direction of the extrusion.
             /// </summary>
-            private readonly Vector3DParameter _parameterDirection = new Vector3DParameter("Direction", new Vector3D(1, 0, 1));
+            private readonly Vector3Parameter _parameterDirection = new Vector3Parameter("Direction", new UnityEngine.Vector3(1, 0, 1));
 
             /// <summary>
             /// Amount of offset at the end of the extrude. 
@@ -2150,9 +2150,9 @@ namespace Sceelix.Meshes.Procedures
             /// <param name="bendTop"></param>
             /// <param name="amount"></param>
             /// <param name="createCap"></param>
-            public void DirectionalExtrude(MeshEntity meshEntity, Vector3D direction, bool bendTop)
+            public void DirectionalExtrude(MeshEntity meshEntity, UnityEngine.Vector3 direction, bool bendTop)
             {
-                if (direction.IsNaN || direction == Vector3D.Zero)
+                if (direction.IsNaN || direction == UnityEngine.Vector3.zero)
                     return;
 
                 foreach (var face in meshEntity.Faces.ToList()) ExtrudeAlongDirection(meshEntity, face, direction, bendTop);
@@ -2160,9 +2160,9 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private void ExtrudeAlongDirection(MeshEntity meshEntity, Face face, Vector3D sizedDirection, bool bendTop)
+            private void ExtrudeAlongDirection(MeshEntity meshEntity, Face face, UnityEngine.Vector3 sizedDirection, bool bendTop)
             {
-                Vector3D normalDirection = sizedDirection.Normalize();
+                UnityEngine.Vector3 normalDirection = sizedDirection.normalized;
                 Plane3D plane3D = new Plane3D(-normalDirection, face.Centroid + sizedDirection);
 
                 List<Vertex> vertices = new List<Vertex>();
@@ -2177,7 +2177,7 @@ namespace Sceelix.Meshes.Procedures
                 }
 
 
-                Face topFace = new Face(vertices) {Material = face.Material}; //, Color = face.Color
+                Face topFace = new Face(vertices) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                 _parameterAttributeSection[topFace] = "Top";
                 meshEntity.Add(topFace);
 
@@ -2194,7 +2194,7 @@ namespace Sceelix.Meshes.Procedures
 
                         for (int i = 0; i < hole.Count; i++)
                         {
-                            var newFace = new Face(hole[i], hole[i + 1], topFaceHole[i + 1], topFaceHole[i]) {Material = face.Material}; //, Color = face.Color
+                            var newFace = new Face(hole[i], hole[i + 1], topFaceHole[i + 1], topFaceHole[i]) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                             _parameterAttributeSection[newFace] = "Inside";
                             meshEntity.Add(newFace);
                         }
@@ -2206,7 +2206,7 @@ namespace Sceelix.Meshes.Procedures
                 //now add the side faces
                 for (int i = 0; i < face.Vertices.Count(); i++)
                 {
-                    var sideFace = new Face(face[i], face[i + 1], topFace[i + 1], topFace[i]) {Material = face.Material}; //, Color = face.Color
+                    var sideFace = new Face(face[i], face[i + 1], topFace[i + 1], topFace[i]) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                     _parameterAttributeSection[sideFace] = "Side";
                     meshEntity.Add(sideFace);
                 }
@@ -2223,27 +2223,27 @@ namespace Sceelix.Meshes.Procedures
             /// <param name="offsetAmount">Amount of offset. Must be a positive value.</param>
             /// <param name="extrudeAmount"></param>
             /// <returns>The inside of the offset. The outside faces are added to the passed shape.</returns>
-            private void ExtrudeOffsetInside(MeshEntity meshEntity, Face face, float offsetAmount, Vector3D extrudeDirection, bool bendTop)
+            private void ExtrudeOffsetInside(MeshEntity meshEntity, Face face, float offsetAmount, UnityEngine.Vector3 extrudeDirection, bool bendTop)
             {
                 int vertexCount = face.Vertices.Count();
                 CircularList<Vertex> holeVertices = new CircularList<Vertex>();
 
-                Vector3D normalDirection = extrudeDirection.Normalize();
+                UnityEngine.Vector3 normalDirection = extrudeDirection.normalized;
                 Plane3D plane3D = new Plane3D(-normalDirection, face.Centroid + extrudeDirection);
 
                 for (int i = 0; i < vertexCount; i++)
                 {
-                    Vector3D firstVector = (face[i - 1].Position - face[i].Position).Normalize();
-                    Vector3D secondVector = (face[i + 1].Position - face[i].Position).Normalize();
+                    UnityEngine.Vector3 firstVector = (face[i - 1].Position - face[i].Position).normalized;
+                    UnityEngine.Vector3 secondVector = (face[i + 1].Position - face[i].Position).normalized;
 
-                    Vector3D direction = (secondVector + firstVector).Normalize();
+                    UnityEngine.Vector3 direction = (secondVector + firstVector).normalized;
 
                     float actualAmount = (float) (offsetAmount / Math.Sin(firstVector.AngleTo(secondVector) / 2f));
 
                     if (firstVector.IsCollinear(secondVector))
-                        direction = face.Normal.Cross(firstVector).Normalize();
+                        direction = face.Normal.Cross(firstVector).normalized;
 
-                    if (secondVector.Cross(firstVector).Normalize().Equals(face.Normal))
+                    if (secondVector.Cross(firstVector).normalized.Equals(face.Normal))
                     {
                         if (bendTop)
                             extrudeDirection = normalDirection * plane3D.DistanceToPoint(face[i].Position - direction * offsetAmount);
@@ -2252,7 +2252,7 @@ namespace Sceelix.Meshes.Procedures
                     }
                     else
                     {
-                        Vector3D offsettedPoint = face[i].Position + direction * offsetAmount;
+                        UnityEngine.Vector3 offsettedPoint = face[i].Position + direction * offsetAmount;
                         float distanceToPoint = plane3D.DistanceToPoint(offsettedPoint);
 
                         if (bendTop)
@@ -2283,12 +2283,12 @@ namespace Sceelix.Meshes.Procedures
             {
                 _parameterAttributeSection = parameterAttributeSection;
 
-                Vector3D direction = _parameterDirection.Value;
+                UnityEngine.Vector3 direction = _parameterDirection.Value;
 
                 var bendTop = _parameterBendTop.Value;
 
                 if (_parameterRelativeTo.Value == "Scope")
-                    direction = meshEntity.BoxScope.ToWorldDirection(direction); //.XAxis * direction.X + meshEntity.BoxScope.YAxis * direction.Y + meshEntity.BoxScope.ZAxis * direction.Z;
+                    direction = meshEntity.BoxScope.ToWorldDirection(direction); //.XAxis * direction.x + meshEntity.BoxScope.YAxis * direction.y + meshEntity.BoxScope.ZAxis * direction.z;
 
                 var baseFaces = meshEntity.Faces.ToList();
 
@@ -2348,12 +2348,12 @@ namespace Sceelix.Meshes.Procedures
                 {
                     //List<HalfVertex> halfVertices = vertex.HalfVertices;
                     var adjacentFaces = vertex.AdjacentFaces.ToList();
-                    Vector3D vector3D = adjacentFaces[0].Normal;
+                    UnityEngine.Vector3 vector3D = adjacentFaces[0].Normal;
                     for (int i = 1; i < adjacentFaces.Count; i++)
                     {
                         //vector3D = vector3D + ((adjacentFaces[i].Normal - vector3D)/2f);
                         var angleHalf = vector3D.AngleTo(adjacentFaces[i].Normal) / 2f;
-                        vector3D = (vector3D + adjacentFaces[i].Normal).Normalize() / (float) Math.Cos(angleHalf);
+                        vector3D = (vector3D + adjacentFaces[i].Normal).normalized / (float) Math.Cos(angleHalf);
                     }
 
                     if (adjacentFaces.Count > 1)
@@ -2388,7 +2388,7 @@ namespace Sceelix.Meshes.Procedures
                 foreach (Vertex vertex in face.Vertices)
                     vertices.Add(_vertexDictionary[vertex]);
 
-                Face topFace = new Face(vertices) {Material = face.Material}; //, Color = face.Color
+                Face topFace = new Face(vertices) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                 _attributeSection[topFace] = "Top";
                 meshEntity.Add(topFace);
 
@@ -2396,7 +2396,7 @@ namespace Sceelix.Meshes.Procedures
                 for (int i = 0; i < face.Vertices.Count(); i++)
                     if (face[i].AdjacentFaces.Intersect(face[i + 1].AdjacentFaces).Count() <= 1)
                     {
-                        var sideFace = new Face(face[i], face[i + 1], topFace[i + 1], topFace[i]) {Material = face.Material}; //, Color = face.Color
+                        var sideFace = new Face(face[i], face[i + 1], topFace[i + 1], topFace[i]) {Material = face.Material}; //, UnityEngine.Color = face.UnityEngine.Color
                         _attributeSection[sideFace] = "Side";
                         meshEntity.Add(sideFace);
                     }
@@ -2420,7 +2420,7 @@ namespace Sceelix.Meshes.Procedures
             /// <summary>
             /// The angle around which to rotate.
             /// </summary>
-            private readonly Vector3DParameter _parameterAxis = new Vector3DParameter("Axis", Vector3D.XVector);
+            private readonly Vector3Parameter _parameterAxis = new Vector3Parameter("Axis", UnityEngine.Vector3.right);
 
             /// <summary>
             /// The type of sizing to consider.<br/>
@@ -2451,7 +2451,7 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private Plane3D CalculateRotationPlane(Face face, Vector3D axis, float radius)
+            private Plane3D CalculateRotationPlane(Face face, UnityEngine.Vector3 axis, float radius)
             {
                 Plane3D plane3D = new Plane3D(face.Normal.Cross(axis), face.Vertices.First().Position);
 
@@ -2465,13 +2465,13 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private void RotationExtrude(MeshEntity meshEntity, Face face, Vector3D axis, float radius, float angle, int segments)
+            private void RotationExtrude(MeshEntity meshEntity, Face face, UnityEngine.Vector3 axis, float radius, float angle, int segments)
             {
                 Plane3D rotationPlane = CalculateRotationPlane(face, axis, radius);
 
                 float angleRadians = -MathHelper.ToRadians(angle / segments);
 
-                List<Vector3D> basePoints = face.Vertices.Select(x => meshEntity.BoxScope.ToScopePosition(x.Position)).ToList();
+                List<UnityEngine.Vector3> basePoints = face.Vertices.Select(x => meshEntity.BoxScope.ToScopePosition(x.Position)).ToList();
 
                 float segmentScale = (_parameterScaling.Value - 1) / segments;
 
@@ -2482,17 +2482,17 @@ namespace Sceelix.Meshes.Procedures
 
                 for (int i = 1; i <= segments; i++)
                 {
-                    Matrix matrix = Matrix.CreateTranslation(rotationPlane.Point0.X, rotationPlane.Point0.Y, rotationPlane.Point0.Z)
+                    Matrix matrix = Matrix.CreateTranslation(rotationPlane.Point0.x, rotationPlane.Point0.y, rotationPlane.Point0.z)
                                     * Matrix.CreateAxisAngle(axis, -angleRadians * i)
-                                    * Matrix.CreateTranslation(-rotationPlane.Point0.X, -rotationPlane.Point0.Y, -rotationPlane.Point0.Z);
+                                    * Matrix.CreateTranslation(-rotationPlane.Point0.x, -rotationPlane.Point0.y, -rotationPlane.Point0.z);
 
                     CircularList<Vertex> sectionList = new CircularList<Vertex>();
 
-                    foreach (Vector3D point in basePoints)
+                    foreach (UnityEngine.Vector3 point in basePoints)
                     {
-                        Vector3D scaledPoint = point * (1 + segmentScale * i);
+                        UnityEngine.Vector3 scaledPoint = point * (1 + segmentScale * i);
 
-                        Vector3D worldPosition = meshEntity.BoxScope.ToWorldPosition(scaledPoint);
+                        UnityEngine.Vector3 worldPosition = meshEntity.BoxScope.ToWorldPosition(scaledPoint);
 
                         worldPosition = matrix.Transform(worldPosition);
                         sectionList.Add(new Vertex(worldPosition));
@@ -2529,7 +2529,7 @@ namespace Sceelix.Meshes.Procedures
             {
                 _parameterAttributeSection = parameterAttributeSection;
 
-                Vector3D scopePosition = meshEntity.BoxScope.ToWorldDirection(_parameterAxis.Value).Normalize();
+                UnityEngine.Vector3 scopePosition = meshEntity.BoxScope.ToWorldDirection(_parameterAxis.Value).normalized;
 
                 float radius = _parameterSizing.Value == "Radius" ? amount : amount / (_parameterAngle.Value / 360 * 2 * 3.1415926535f);
 

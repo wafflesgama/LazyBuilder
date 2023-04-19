@@ -39,31 +39,31 @@ namespace Sceelix.Unity.Serialization
             {
                 writer.WritePropertyName("Positions");
                 writer.WriteStartArray();
-                foreach (Vector3D position in mesh.Positions)
+                foreach (UnityEngine.Vector3 position in mesh.Positions)
                     serializer.Serialize(writer, position);
                 writer.WriteEndArray();
 
                 writer.WritePropertyName("Normals");
                 writer.WriteStartArray();
-                foreach (Vector3D normal in mesh.Normals)
+                foreach (UnityEngine.Vector3 normal in mesh.Normals)
                     serializer.Serialize(writer, normal);
                 writer.WriteEndArray();
 
                 writer.WritePropertyName("Colors");
                 writer.WriteStartArray();
-                foreach (Color color in mesh.Colors)
+                foreach (UnityEngine.Color color in mesh.Colors)
                     serializer.Serialize(writer, color);
                 writer.WriteEndArray();
 
                 writer.WritePropertyName("UVs");
                 writer.WriteStartArray();
-                foreach (Vector2D uv in mesh.Uvs)
+                foreach (UnityEngine.Vector2 uv in mesh.Uvs)
                     serializer.Serialize(writer, uv);
                 writer.WriteEndArray();
 
                 writer.WritePropertyName("Tangents");
                 writer.WriteStartArray();
-                foreach (Vector4D tangent in mesh.Tangents)
+                foreach (UnityEngine.Vector4 tangent in mesh.Tangents)
                     serializer.Serialize(writer, tangent);
                 writer.WriteEndArray();
 

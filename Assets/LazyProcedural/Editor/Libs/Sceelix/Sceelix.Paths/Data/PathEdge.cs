@@ -30,7 +30,7 @@ namespace Sceelix.Paths.Data
         /// <summary>
         /// Vector indicating the direction of the pathedge, already normalized.
         /// </summary>
-        public Vector3D Direction => (Target.Position - Source.Position).Normalize();
+        public UnityEngine.Vector3 Direction => (Target.Position - Source.Position).normalized;
 
 
         public bool IsAttached =>
@@ -47,7 +47,7 @@ namespace Sceelix.Paths.Data
         public Line3D Line3D => new Line3D(Target.Position - Source.Position, Source.Position);
 
 
-        public LineSegment2D LineSegment2D => new LineSegment2D(Source.Position.ToVector2D(), Target.Position.ToVector2D());
+        public LineSegment2D LineSegment2D => new LineSegment2D(Source.Position.ToVector2(), Target.Position.ToVector2());
 
 
         public LineSegment3D LineSegment3D => new LineSegment3D(Source.Position, Target.Position);
@@ -154,7 +154,7 @@ namespace Sceelix.Paths.Data
         /// </summary>
         /// <param name="pathVertex">Vertex where to start from (it assumes that the given vertex is one the edge's vertices).</param>
         /// <returns>Direction from the given vertex.</returns>
-        public Vector3D GetDirectionFrom(PathVertex pathVertex)
+        public UnityEngine.Vector3 GetDirectionFrom(PathVertex pathVertex)
         {
             return OtherVertex(pathVertex).Position - pathVertex.Position;
         }
@@ -166,9 +166,9 @@ namespace Sceelix.Paths.Data
         /// </summary>
         /// <param name="position">Position in 3D world to verify.</param>
         /// <returns>True if the position lies on this edge, otherwise false.</returns>
-        public bool HasPointInBetween(Vector3D position)
+        public bool HasPointInBetween(UnityEngine.Vector3 position)
         {
-            return Math.Abs((position - Source.Position).Normalize().Dot((position - Target.Position).Normalize()) - -1) < Vector3D.Precision;
+            return Math.Abs((position - Source.Position).normalized.Dot((position - Target.Position).normalized) - -1) < UnityEngine.Vector3.Precision;
         }
 
 

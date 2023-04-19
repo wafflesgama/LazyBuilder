@@ -66,14 +66,14 @@ namespace Sceelix.Unity.Data
         }
 
 
-        public Vector3D RelativeScale
+        public UnityEngine.Vector3 RelativeScale
         {
             get;
             set;
-        } = new Vector3D(1, 1, 1);
+        } = new UnityEngine.Vector3(1, 1, 1);
 
 
-        public Vector3D Scale => (RelativeScale * BoxScope.Sizes).ReplaceValue(0, 1);
+        public UnityEngine.Vector3 Scale => (RelativeScale * BoxScope.Sizes).ReplaceValue(0, 1);
 
 
         public string ScaleMode

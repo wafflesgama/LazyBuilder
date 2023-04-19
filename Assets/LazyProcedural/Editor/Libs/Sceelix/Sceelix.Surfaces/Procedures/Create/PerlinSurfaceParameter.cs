@@ -60,7 +60,7 @@ namespace Sceelix.Surfaces.Procedures
         /// <summary>
         /// Offset of the noise function. One can see this as a "translation" of the function.
         /// </summary>
-        private readonly Vector2DParameter _parameterOffset = new Vector2DParameter("Offset");
+        private readonly Vector2Parameter _parameterOffset = new Vector2Parameter("Offset");
 
 
 
@@ -77,7 +77,7 @@ namespace Sceelix.Surfaces.Procedures
 
             int columns = (int) (_parameterWidth.Value / _parameterCellSize.Value) + 1;
             int rows = (int) (_parameterLength.Value / _parameterCellSize.Value) + 1;
-            Vector2D offset = _parameterOffset.Value;
+            UnityEngine.Vector2 offset = _parameterOffset.Value;
 
             float[,] heights = new float[columns, rows];
 
@@ -88,8 +88,8 @@ namespace Sceelix.Surfaces.Procedures
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    var actualX = x * cellSize + offset.X;
-                    var actualY = (rows - y - 1) * cellSize + offset.Y;
+                    var actualX = x * cellSize + offset.x;
+                    var actualY = (rows - y - 1) * cellSize + offset.y;
 
                     var value = (float) perlin.Noise2D(actualX, actualY) * 0.5f + 0.5f;
 

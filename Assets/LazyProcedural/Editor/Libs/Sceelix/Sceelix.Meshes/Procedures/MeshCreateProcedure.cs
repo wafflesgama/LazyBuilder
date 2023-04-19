@@ -146,14 +146,14 @@ namespace Sceelix.Meshes.Procedures
                 float halfHeight = height / 2;*/
 
                 //create the 8 vertices
-                Vertex vBottomBackLeft = new Vertex(new Vector3D(0, 0, 0));
-                Vertex vBottomBackRight = new Vertex(new Vector3D(width, 0, 0));
-                Vertex vBottomFrontLeft = new Vertex(new Vector3D(0, length, 0));
-                Vertex vBottomFrontRight = new Vertex(new Vector3D(width, length, 0));
-                Vertex vTopBackLeft = new Vertex(new Vector3D(0, 0, height));
-                Vertex vTopBackRight = new Vertex(new Vector3D(width, 0, height));
-                Vertex vTopFrontLeft = new Vertex(new Vector3D(0, length, height));
-                Vertex vTopFrontRight = new Vertex(new Vector3D(width, length, height));
+                Vertex vBottomBackLeft = new Vertex(new UnityEngine.Vector3(0, 0, 0));
+                Vertex vBottomBackRight = new Vertex(new UnityEngine.Vector3(width, 0, 0));
+                Vertex vBottomFrontLeft = new Vertex(new UnityEngine.Vector3(0, length, 0));
+                Vertex vBottomFrontRight = new Vertex(new UnityEngine.Vector3(width, length, 0));
+                Vertex vTopBackLeft = new Vertex(new UnityEngine.Vector3(0, 0, height));
+                Vertex vTopBackRight = new Vertex(new UnityEngine.Vector3(width, 0, height));
+                Vertex vTopFrontLeft = new Vertex(new UnityEngine.Vector3(0, length, height));
+                Vertex vTopFrontRight = new Vertex(new UnityEngine.Vector3(width, length, height));
 
                 //create the 6 faces
                 faces.Add(new Face(vTopBackRight, vTopBackLeft, vTopFrontLeft, vTopFrontRight)); //top face
@@ -210,12 +210,12 @@ namespace Sceelix.Meshes.Procedures
 
 
                 //create the 8 vertices
-                Vertex v1 = new Vertex(new Vector3D(0, radius, 0));
-                Vertex v2 = new Vertex(new Vector3D(radius, 0, 0));
-                Vertex v3 = new Vertex(new Vector3D(0, -radius, 0));
-                Vertex v4 = new Vertex(new Vector3D(-radius, 0, 0));
-                Vertex v5 = new Vertex(new Vector3D(0, 0, radius));
-                Vertex v6 = new Vertex(new Vector3D(0, 0, -radius));
+                Vertex v1 = new Vertex(new UnityEngine.Vector3(0, radius, 0));
+                Vertex v2 = new Vertex(new UnityEngine.Vector3(radius, 0, 0));
+                Vertex v3 = new Vertex(new UnityEngine.Vector3(0, -radius, 0));
+                Vertex v4 = new Vertex(new UnityEngine.Vector3(-radius, 0, 0));
+                Vertex v5 = new Vertex(new UnityEngine.Vector3(0, 0, radius));
+                Vertex v6 = new Vertex(new UnityEngine.Vector3(0, 0, -radius));
 
 
                 faces.Add(new Face(v1, v2, v5));
@@ -275,20 +275,20 @@ namespace Sceelix.Meshes.Procedures
                 float Y2 = (float) ((H2 - H1) / 2.0);
                 float Y1 = Y2 + H1;
 
-                Vertex vA = new Vertex(new Vector3D(0, 0, Y1));
-                Vertex vB = new Vertex(new Vector3D(0, R, Y2));
-                Vertex vC = new Vertex(new Vector3D(Cz, Cx, Y2));
-                Vertex vD = new Vertex(new Vector3D(S / 2, -H, Y2));
+                Vertex vA = new Vertex(new UnityEngine.Vector3(0, 0, Y1));
+                Vertex vB = new Vertex(new UnityEngine.Vector3(0, R, Y2));
+                Vertex vC = new Vertex(new UnityEngine.Vector3(Cz, Cx, Y2));
+                Vertex vD = new Vertex(new UnityEngine.Vector3(S / 2, -H, Y2));
 
-                Vertex vE = new Vertex(new Vector3D(-S / 2, -H, Y2));
-                Vertex vF = new Vertex(new Vector3D(-Cz, Cx, Y2));
-                Vertex vG = new Vertex(new Vector3D(0, -R, -Y2));
-                Vertex vH = new Vertex(new Vector3D(-Cz, -Cx, -Y2));
+                Vertex vE = new Vertex(new UnityEngine.Vector3(-S / 2, -H, Y2));
+                Vertex vF = new Vertex(new UnityEngine.Vector3(-Cz, Cx, Y2));
+                Vertex vG = new Vertex(new UnityEngine.Vector3(0, -R, -Y2));
+                Vertex vH = new Vertex(new UnityEngine.Vector3(-Cz, -Cx, -Y2));
 
-                Vertex vI = new Vertex(new Vector3D(-S / 2, H, -Y2));
-                Vertex vJ = new Vertex(new Vector3D(S / 2, H, -Y2));
-                Vertex vK = new Vertex(new Vector3D(Cz, -Cx, -Y2));
-                Vertex vL = new Vertex(new Vector3D(0, 0, -Y1));
+                Vertex vI = new Vertex(new UnityEngine.Vector3(-S / 2, H, -Y2));
+                Vertex vJ = new Vertex(new UnityEngine.Vector3(S / 2, H, -Y2));
+                Vertex vK = new Vertex(new UnityEngine.Vector3(Cz, -Cx, -Y2));
+                Vertex vL = new Vertex(new UnityEngine.Vector3(0, 0, -Y1));
 
 
                 faces.Add(new Face(vB, vC, vA));
@@ -376,30 +376,30 @@ namespace Sceelix.Meshes.Procedures
                 float Ay = d5 + Fy;
 
 
-                Vertex vA = new Vertex(new Vector3D(0, d1, Ay));
-                Vertex vB = new Vertex(new Vector3D(d3, d4, Ay));
-                Vertex vC = new Vertex(new Vector3D(s / 2, -d2, Ay));
-                Vertex vD = new Vertex(new Vector3D(-s / 2, -d2, Ay));
+                Vertex vA = new Vertex(new UnityEngine.Vector3(0, d1, Ay));
+                Vertex vB = new Vertex(new UnityEngine.Vector3(d3, d4, Ay));
+                Vertex vC = new Vertex(new UnityEngine.Vector3(s / 2, -d2, Ay));
+                Vertex vD = new Vertex(new UnityEngine.Vector3(-s / 2, -d2, Ay));
 
-                Vertex vE = new Vertex(new Vector3D(-d3, d4, Ay));
-                Vertex vF = new Vertex(new Vector3D(0, Fx, Fy));
-                Vertex vG = new Vertex(new Vector3D((float) (Fx * Math.Cos(t2)), (float) (Fx * Math.Sin(t2)), Fy));
-                Vertex vH = new Vertex(new Vector3D((float) (Fx * Math.Cos(t3)), (float) (-Fx * Math.Sin(t3)), Fy));
+                Vertex vE = new Vertex(new UnityEngine.Vector3(-d3, d4, Ay));
+                Vertex vF = new Vertex(new UnityEngine.Vector3(0, Fx, Fy));
+                Vertex vG = new Vertex(new UnityEngine.Vector3((float) (Fx * Math.Cos(t2)), (float) (Fx * Math.Sin(t2)), Fy));
+                Vertex vH = new Vertex(new UnityEngine.Vector3((float) (Fx * Math.Cos(t3)), (float) (-Fx * Math.Sin(t3)), Fy));
 
-                Vertex vI = new Vertex(new Vector3D((float) (-Fx * Math.Cos(t3)), (float) (-Fx * Math.Sin(t3)), Fy));
-                Vertex vJ = new Vertex(new Vector3D((float) (-Fx * Math.Cos(t2)), (float) (Fx * Math.Sin(t2)), Fy));
-                Vertex vK = new Vertex(new Vector3D((float) (Fx * Math.Cos(t3)), (float) (Fx * Math.Sin(t3)), -Fy));
-                Vertex vL = new Vertex(new Vector3D((float) (Fx * Math.Cos(t2)), (float) (-Fx * Math.Sin(t2)), -Fy));
+                Vertex vI = new Vertex(new UnityEngine.Vector3((float) (-Fx * Math.Cos(t3)), (float) (-Fx * Math.Sin(t3)), Fy));
+                Vertex vJ = new Vertex(new UnityEngine.Vector3((float) (-Fx * Math.Cos(t2)), (float) (Fx * Math.Sin(t2)), Fy));
+                Vertex vK = new Vertex(new UnityEngine.Vector3((float) (Fx * Math.Cos(t3)), (float) (Fx * Math.Sin(t3)), -Fy));
+                Vertex vL = new Vertex(new UnityEngine.Vector3((float) (Fx * Math.Cos(t2)), (float) (-Fx * Math.Sin(t2)), -Fy));
 
-                Vertex vM = new Vertex(new Vector3D(0, -Fx, -Fy));
-                Vertex vN = new Vertex(new Vector3D((float) (-Fx * Math.Cos(t2)), (float) (-Fx * Math.Sin(t2)), -Fy));
-                Vertex vO = new Vertex(new Vector3D((float) (-Fx * Math.Cos(t3)), (float) (Fx * Math.Sin(t3)), -Fy));
-                Vertex vP = new Vertex(new Vector3D(s / 2, d2, -Ay));
+                Vertex vM = new Vertex(new UnityEngine.Vector3(0, -Fx, -Fy));
+                Vertex vN = new Vertex(new UnityEngine.Vector3((float) (-Fx * Math.Cos(t2)), (float) (-Fx * Math.Sin(t2)), -Fy));
+                Vertex vO = new Vertex(new UnityEngine.Vector3((float) (-Fx * Math.Cos(t3)), (float) (Fx * Math.Sin(t3)), -Fy));
+                Vertex vP = new Vertex(new UnityEngine.Vector3(s / 2, d2, -Ay));
 
-                Vertex vQ = new Vertex(new Vector3D(d3, -d4, -Ay));
-                Vertex vR = new Vertex(new Vector3D(0, -d1, -Ay));
-                Vertex vS = new Vertex(new Vector3D(-d3, -d4, -Ay));
-                Vertex vT = new Vertex(new Vector3D(-s / 2, d2, -Ay));
+                Vertex vQ = new Vertex(new UnityEngine.Vector3(d3, -d4, -Ay));
+                Vertex vR = new Vertex(new UnityEngine.Vector3(0, -d1, -Ay));
+                Vertex vS = new Vertex(new UnityEngine.Vector3(-d3, -d4, -Ay));
+                Vertex vT = new Vertex(new UnityEngine.Vector3(-s / 2, d2, -Ay));
 
                 faces.Add(new Face(vR, vS, vN, vI, vM));
                 faces.Add(new Face(vH, vC, vB, vG, vL));
@@ -476,8 +476,8 @@ namespace Sceelix.Meshes.Procedures
                 float verticalAngle = (float) Math.PI / verticalSegs;
 
                 //these are the points at the extremes
-                Vertex topPoint = new Vertex(new Vector3D(0, 0, radius));
-                Vertex bottomPoint = new Vertex(new Vector3D(0, 0, -radius));
+                Vertex topPoint = new Vertex(new UnityEngine.Vector3(0, 0, radius));
+                Vertex bottomPoint = new Vertex(new UnityEngine.Vector3(0, 0, -radius));
 
                 List<Vertex> vertices = new List<Vertex>();
 
@@ -505,7 +505,7 @@ namespace Sceelix.Meshes.Procedures
                     if (j == 1)
                     {
                         //for (int i = 0; i < horizontalSegs; i++)
-                        //    vertices.Add(new Vertex(new Vector3D((float)Math.Cos(Math.PI * 2 - horizontalAngle * i) * radius * (float)Math.Cos(verticalAngle * j), (float)Math.Sin(Math.PI * 2 - horizontalAngle * i) * radius * (float)Math.Abs(Math.Cos(verticalAngle * j)), radius * (float)Math.Cos(verticalAngle * j))));
+                        //    vertices.Add(new Vertex(new UnityEngine.Vector3((float)Math.Cos(Math.PI * 2 - horizontalAngle * i) * radius * (float)Math.Cos(verticalAngle * j), (float)Math.Sin(Math.PI * 2 - horizontalAngle * i) * radius * (float)Math.Abs(Math.Cos(verticalAngle * j)), radius * (float)Math.Cos(verticalAngle * j))));
                         //vertices = GetSphereLine(horizontalSegs, horizontalAngle, verticalAngle, j, radius);
                         vertices = GetSphereLine(horizontalSegs, j, horizontalPrecalculations, verticalPrecalculations, radius);
 
@@ -535,7 +535,7 @@ namespace Sceelix.Meshes.Procedures
                 MeshEntity meshEntity = new MeshEntity(faces, new BoxScope(MeshEntity.GetBoundingBox(faces)));
 
                 //ResetToOriginProcedure.ResetToOrigin(MeshEntity,true);
-                //TranslateShapeProcedure.Translate(MeshEntity, new Vector3D(radius, radius,radius), false);
+                //TranslateShapeProcedure.Translate(MeshEntity, new UnityEngine.Vector3(radius, radius,radius), false);
 
                 return meshEntity;
             }
@@ -546,7 +546,7 @@ namespace Sceelix.Meshes.Procedures
             {
                 List<Vertex> vertices = new List<Vertex>();
 
-                for (int i = 0; i < horizontalSegs; i++) vertices.Add(new Vertex(new Vector3D(horizontalPrecalculations[i, 1] * radius * verticalPrecalculations[j, 0], horizontalPrecalculations[i, 0] * radius * verticalPrecalculations[j, 0], radius * verticalPrecalculations[j, 1])));
+                for (int i = 0; i < horizontalSegs; i++) vertices.Add(new Vertex(new UnityEngine.Vector3(horizontalPrecalculations[i, 1] * radius * verticalPrecalculations[j, 0], horizontalPrecalculations[i, 0] * radius * verticalPrecalculations[j, 0], radius * verticalPrecalculations[j, 1])));
 
                 //"close" the list
                 vertices.Add(vertices[0]);
@@ -658,24 +658,24 @@ namespace Sceelix.Meshes.Procedures
             /// <summary>
             /// Points defining the boundary of the face. At least 3 points are required and the first and last point should differ.
             /// </summary>
-            private readonly ListParameter<Vector3DParameter> _boundaryParameter = new ListParameter<Vector3DParameter>("Boundary", () => new Vector3DParameter("Point", new Vector3D()) {Description = "Point of the boundary"});
+            private readonly ListParameter<Vector3Parameter> _boundaryParameter = new ListParameter<Vector3Parameter>("Boundary", () => new Vector3Parameter("Point", new UnityEngine.Vector3()) {Description = "Point of the boundary"});
 
 
 
             public FaceMeshParameter()
                 : base("Face")
             {
-                /*Vector3DParameter v1 = (Vector3DParameter)_boundaryParameter.Add("Point");
-                Vector3DParameter v2 = (Vector3DParameter)_boundaryParameter.Add("Point");
-                v2.Value = new Vector3D(0, 3, 0);
+                /*Vector3Parameter v1 = (Vector3Parameter)_boundaryParameter.Add("Point");
+                Vector3Parameter v2 = (Vector3Parameter)_boundaryParameter.Add("Point");
+                v2.Value = new UnityEngine.Vector3(0, 3, 0);
 
-                Vector3DParameter v3 = (Vector3DParameter)_boundaryParameter.Add("Point");
-                v3.Value = new Vector3D(3, 0, 0);*/
+                Vector3Parameter v3 = (Vector3Parameter)_boundaryParameter.Add("Point");
+                v3.Value = new UnityEngine.Vector3(3, 0, 0);*/
             }
 
 
 
-            public static MeshEntity CreateFace(IEnumerable<Vector3D> vectors)
+            public static MeshEntity CreateFace(IEnumerable<UnityEngine.Vector3> vectors)
             {
                 return new MeshEntity(new Face(vectors));
             }
@@ -729,8 +729,8 @@ namespace Sceelix.Meshes.Procedures
                 float halfWidth = width / 2f;
                 float halfHeight = height / 2f;
 
-                Face face = new Face(new Vector3D(halfWidth, -halfHeight), new Vector3D(-halfWidth, -halfHeight),
-                    new Vector3D(-halfWidth, halfHeight), new Vector3D(halfWidth, halfHeight));
+                Face face = new Face(new UnityEngine.Vector3(halfWidth, -halfHeight), new UnityEngine.Vector3(-halfWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight), new UnityEngine.Vector3(halfWidth, halfHeight));
                 return new MeshEntity(face);
             }
         }
@@ -779,12 +779,12 @@ namespace Sceelix.Meshes.Procedures
                 float halfHeight = height / 2f;
 
                 Face face = new Face(
-                    new Vector3D(halfWidth, -halfHeight),
-                    new Vector3D(-halfWidth, -halfHeight),
-                    new Vector3D(-halfWidth, halfHeight),
-                    new Vector3D(-halfWidth + internalWidth, halfHeight),
-                    new Vector3D(-halfWidth + internalWidth, -halfHeight + internalHeight),
-                    new Vector3D(halfWidth, -halfHeight + internalHeight));
+                    new UnityEngine.Vector3(halfWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + internalWidth, halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + internalWidth, -halfHeight + internalHeight),
+                    new UnityEngine.Vector3(halfWidth, -halfHeight + internalHeight));
 
                 return new MeshEntity(face);
             }
@@ -849,14 +849,14 @@ namespace Sceelix.Meshes.Procedures
                 float sideInternalWidth = (width - internalWidth) / 2;
 
                 Face face = new Face(
-                    new Vector3D(halfWidth - sideInternalWidth, -halfHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, -halfHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, halfHeight - internalHeight),
-                    new Vector3D(-halfWidth, halfHeight - internalHeight),
-                    new Vector3D(-halfWidth, halfHeight),
-                    new Vector3D(halfWidth, halfHeight),
-                    new Vector3D(halfWidth, halfHeight - internalHeight),
-                    new Vector3D(halfWidth - sideInternalWidth, halfHeight - internalHeight));
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, halfHeight - internalHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight - internalHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth, halfHeight - internalHeight),
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, halfHeight - internalHeight));
 
                 return new MeshEntity(face);
             }
@@ -914,14 +914,14 @@ namespace Sceelix.Meshes.Procedures
 
 
                 Face face = new Face(
-                    new Vector3D(halfWidth, -halfHeight),
-                    new Vector3D(-halfWidth, -halfHeight),
-                    new Vector3D(-halfWidth, halfHeight),
-                    new Vector3D(-halfWidth + internalWidth, halfHeight),
-                    new Vector3D(-halfWidth + internalWidth, -halfHeight + internalHeight),
-                    new Vector3D(halfWidth - internalWidth, -halfHeight + internalHeight),
-                    new Vector3D(halfWidth - internalWidth, halfHeight),
-                    new Vector3D(halfWidth, halfHeight));
+                    new UnityEngine.Vector3(halfWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + internalWidth, halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + internalWidth, -halfHeight + internalHeight),
+                    new UnityEngine.Vector3(halfWidth - internalWidth, -halfHeight + internalHeight),
+                    new UnityEngine.Vector3(halfWidth - internalWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth, halfHeight));
 
                 return new MeshEntity(face);
             }
@@ -980,14 +980,14 @@ namespace Sceelix.Meshes.Procedures
                 float sideInternalHeight = (width - internalHeight) / 2;
 
                 Face face = new Face(
-                    new Vector3D(halfWidth, -halfHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, -halfHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, -halfHeight + sideInternalHeight),
-                    new Vector3D(-halfWidth, -halfHeight + sideInternalHeight),
-                    new Vector3D(-halfWidth, halfHeight),
-                    new Vector3D(halfWidth - sideInternalWidth, halfHeight),
-                    new Vector3D(halfWidth - sideInternalWidth, halfHeight - sideInternalHeight),
-                    new Vector3D(halfWidth, halfHeight - sideInternalHeight));
+                    new UnityEngine.Vector3(halfWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, -halfHeight + sideInternalHeight),
+                    new UnityEngine.Vector3(-halfWidth, -halfHeight + sideInternalHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, halfHeight - sideInternalHeight),
+                    new UnityEngine.Vector3(halfWidth, halfHeight - sideInternalHeight));
 
                 return new MeshEntity(face);
             }
@@ -1039,18 +1039,18 @@ namespace Sceelix.Meshes.Procedures
                 float sideInternalHeight = (width - internalHeight) / 2;
 
                 Face face = new Face(
-                    new Vector3D(halfWidth - sideInternalWidth, -halfHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, -halfHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, -halfHeight + sideInternalHeight),
-                    new Vector3D(-halfWidth, -halfHeight + sideInternalHeight),
-                    new Vector3D(-halfWidth, halfHeight - sideInternalHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, halfHeight - sideInternalHeight),
-                    new Vector3D(-halfWidth + sideInternalWidth, halfHeight),
-                    new Vector3D(halfWidth - sideInternalWidth, halfHeight),
-                    new Vector3D(halfWidth - sideInternalWidth, halfHeight - sideInternalHeight),
-                    new Vector3D(halfWidth, halfHeight - sideInternalHeight),
-                    new Vector3D(halfWidth, -halfHeight + sideInternalHeight),
-                    new Vector3D(halfWidth - sideInternalWidth, -halfHeight + sideInternalHeight));
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, -halfHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, -halfHeight + sideInternalHeight),
+                    new UnityEngine.Vector3(-halfWidth, -halfHeight + sideInternalHeight),
+                    new UnityEngine.Vector3(-halfWidth, halfHeight - sideInternalHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, halfHeight - sideInternalHeight),
+                    new UnityEngine.Vector3(-halfWidth + sideInternalWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, halfHeight),
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, halfHeight - sideInternalHeight),
+                    new UnityEngine.Vector3(halfWidth, halfHeight - sideInternalHeight),
+                    new UnityEngine.Vector3(halfWidth, -halfHeight + sideInternalHeight),
+                    new UnityEngine.Vector3(halfWidth - sideInternalWidth, -halfHeight + sideInternalHeight));
 
                 return new MeshEntity(face);
             }
@@ -1095,14 +1095,14 @@ namespace Sceelix.Meshes.Procedures
             {
                 float horizontalAngle = (float) (Math.PI * 2) / segments;
 
-                List<Vector3D> points = new List<Vector3D>();
+                List<UnityEngine.Vector3> points = new List<UnityEngine.Vector3>();
 
                 for (int i = 0; i < segments; i++)
                 {
                     float y = (float) Math.Sin(Math.PI * 2 - horizontalAngle * i) * radius;
                     float x = (float) Math.Cos(Math.PI * 2 - horizontalAngle * i) * radius;
 
-                    points.Add(new Vector3D(x, y, 0));
+                    points.Add(new UnityEngine.Vector3(x, y, 0));
                 }
 
                 MeshEntity meshEntity = new MeshEntity(new Face(points));
@@ -1157,7 +1157,7 @@ namespace Sceelix.Meshes.Procedures
                 int segments = pointNumber * 2;
                 float horizontalAngle = (float) (Math.PI * 2) / segments;
 
-                List<Vector3D> points = new List<Vector3D>();
+                List<UnityEngine.Vector3> points = new List<UnityEngine.Vector3>();
 
                 for (int i = 0; i < segments; i++)
                 {
@@ -1166,7 +1166,7 @@ namespace Sceelix.Meshes.Procedures
                     float y = (float) Math.Cos(horizontalAngle * i) * actualRadius;
                     float x = (float) Math.Sin(horizontalAngle * i) * actualRadius;
 
-                    points.Add(new Vector3D(x, y, 0));
+                    points.Add(new UnityEngine.Vector3(x, y, 0));
                 }
 
                 MeshEntity meshEntity = new MeshEntity(new Face(points));
@@ -1226,11 +1226,11 @@ namespace Sceelix.Meshes.Procedures
 
 
 
-            private static void AddFaceOrHole(List<Face> faces, List<Vector3D> pointList)
+            private static void AddFaceOrHole(List<Face> faces, List<UnityEngine.Vector3> pointList)
             {
                 Face face = new Face(pointList.ToArray());
 
-                if (face.Normal.Equals(-Vector3D.ZVector))
+                if (face.Normal.Equals(-UnityEngine.Vector3.forward))
                     faces.Add(face);
                 else
                     faces.Last().AddHole(pointList.Select(val => new Vertex(val)));
@@ -1259,7 +1259,7 @@ namespace Sceelix.Meshes.Procedures
                 for (int i = 0; i < text.Length; i++)
                 {
                     List<Face> faces = new List<Face>();
-                    List<Vector3D> pointList = new List<Vector3D>();
+                    List<UnityEngine.Vector3> pointList = new List<UnityEngine.Vector3>();
 
                     FontFamily fontFamily = new FontFamily(font);
                     GraphicsPath path = new GraphicsPath();
@@ -1278,14 +1278,14 @@ namespace Sceelix.Meshes.Procedures
                             pointList.Clear();
                         }
 
-                        pointList.Add(new Vector3D(pathPoint.X, pathPoint.Y, 0));
+                        pointList.Add(new UnityEngine.Vector3(pathPoint.x, pathPoint.y, 0));
                     }
 
                     if (pointList.Count > 0)
                         AddFaceOrHole(faces, pointList);
 
-                    var boundingRectangle = new BoundingRectangle(faces.SelectMany(x => x.AllVertices).Select(x => x.Position.ToVector2D()));
-                    startingX = boundingRectangle.Max.X;
+                    var boundingRectangle = new BoundingRectangle(faces.SelectMany(x => x.AllVertices).Select(x => x.Position.ToVector2()));
+                    startingX = boundingRectangle.Max.x;
 
                     if (attributeCharacter != null)
                         foreach (Face face in faces)
@@ -1299,8 +1299,8 @@ namespace Sceelix.Meshes.Procedures
                 MeshEntity meshEntity = new MeshEntity(allFaces);
 
                 //by default, the letters are facing down (not quite inverted), so we have to rotate it back
-                meshEntity.Rotate(180, Vector3D.XVector, Vector3D.Zero);
-                //RotateShapeProcedure.Rotate(meshEntity, Vector3D.XVector, Vector3D.Zero, (float)MathHelper.Pi, false);
+                meshEntity.Rotate(180, UnityEngine.Vector3.right, UnityEngine.Vector3.zero);
+                //RotateShapeProcedure.Rotate(meshEntity, UnityEngine.Vector3.right, UnityEngine.Vector3.zero, (float)MathHelper.Pi, false);
 
                 //resets the scope
                 meshEntity.BoxScope = BoxScope.Identity;
@@ -1357,30 +1357,30 @@ namespace Sceelix.Meshes.Procedures
                     do
                     {
                         value = random.Float(0, _parameterSize.Value); //WRONG!
-                    } while (intervals.Any(interval => Math.Abs(interval - value) < Vector3D.Precision));
+                    } while (intervals.Any(interval => Math.Abs(interval - value) < UnityEngine.Vector3.Precision));
 
                     intervals.Add(value);
                 }
 
                 List<float> orderedIntervals = intervals.OrderBy(val => val).ToList();
-                List<Vector3D> upperVertices = new List<Vector3D>();
-                List<Vector3D> lowerVertices = new List<Vector3D>();
+                List<UnityEngine.Vector3> upperVertices = new List<UnityEngine.Vector3>();
+                List<UnityEngine.Vector3> lowerVertices = new List<UnityEngine.Vector3>();
 
-                Vector3D minValue = new Vector3D(orderedIntervals[0], random.Float(-_parameterSize.Value, _parameterSize.Value));
-                Vector3D maxValue = new Vector3D(orderedIntervals.Last(), random.Float(-_parameterSize.Value, _parameterSize.Value));
+                UnityEngine.Vector3 minValue = new UnityEngine.Vector3(orderedIntervals[0], random.Float(-_parameterSize.Value, _parameterSize.Value));
+                UnityEngine.Vector3 maxValue = new UnityEngine.Vector3(orderedIntervals.Last(), random.Float(-_parameterSize.Value, _parameterSize.Value));
 
                 upperVertices.Add(minValue);
 
                 //float length = (maxValue - minValue).Length;
                 //Line3D line = new Line3D(maxValue - minValue, minValue);
-                Vector3D lineDirection = (maxValue - minValue).Normalize();
-                Vector3D updirection = Vector3D.ZVector.Cross(lineDirection).Normalize();
+                UnityEngine.Vector3 lineDirection = (maxValue - minValue).normalized;
+                UnityEngine.Vector3 updirection = UnityEngine.Vector3.forward.Cross(lineDirection).normalized;
 
                 for (int i = 1; i < orderedIntervals.Count - 1; i++)
                 {
                     float x = orderedIntervals[i];
                     float y = random.Float(-_parameterSize.Value, _parameterSize.Value);
-                    Vector3D vector3D = minValue + lineDirection * (x - orderedIntervals[0]) + updirection * y;
+                    UnityEngine.Vector3 vector3D = minValue + lineDirection * (x - orderedIntervals[0]) + updirection * y;
 
                     if (y >= 0)
                         upperVertices.Add(vector3D);
@@ -1394,11 +1394,11 @@ namespace Sceelix.Meshes.Procedures
                                     float height = _random.Value.Float(-_size.Value, _size.Value);
                                     if (height >= 0)
                                     {
-                                        upperVertices.Add(new Vector3D(orderedInterval, height, 0));
+                                        upperVertices.Add(new UnityEngine.Vector3(orderedInterval, height, 0));
                                     }
                                     else
                                     {
-                                        lowerVertices.Add(new Vector3D(orderedInterval, height, 0));
+                                        lowerVertices.Add(new UnityEngine.Vector3(orderedInterval, height, 0));
                                     }
                                 }*/
                 upperVertices.Add(maxValue);

@@ -24,7 +24,7 @@ namespace Sceelix.Mathematics.Spatial
         /// <returns>
         ///   <c>true</c> if the point is behind or on the given planes; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(Vector3D point)
+        public bool Contains(UnityEngine.Vector3 point)
         {
             return _planes.All(x => x.LocationToPlane(point) != PointToPlaneLocation.Above);
         }
@@ -41,7 +41,7 @@ namespace Sceelix.Mathematics.Spatial
 
 
 
-        public bool Contains(params Vector3D[] positions)
+        public bool Contains(params UnityEngine.Vector3[] positions)
         {
             return _planes.All(plane => positions.Any(point => plane.LocationToPlane(point) != PointToPlaneLocation.Above));
         }

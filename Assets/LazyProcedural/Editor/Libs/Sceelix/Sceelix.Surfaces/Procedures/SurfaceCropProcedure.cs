@@ -64,43 +64,43 @@ namespace Sceelix.Surfaces.Procedures
         {
             var surfaceEntity = _input.Read();
 
-            Vector2D oldSize = surfaceEntity.BoxScope.Sizes.ToVector2D();
-            Vector2D newSize = new Vector2D(_parameterWidth.Value, _parameterHeight.Value);
-            Vector2D minCorner = surfaceEntity.Origin;
+            UnityEngine.Vector2 oldSize = surfaceEntity.BoxScope.Sizes.ToVector2();
+            UnityEngine.Vector2 newSize = new UnityEngine.Vector2(_parameterWidth.Value, _parameterHeight.Value);
+            UnityEngine.Vector2 minCorner = surfaceEntity.Origin;
 
             switch (_parameterAnchor.Value)
             {
                 case Anchor.BottomLeft:
-                    minCorner = minCorner + new Vector2D(0, 0) - new Vector2D(0, 0);
+                    minCorner = minCorner + new UnityEngine.Vector2(0, 0) - new UnityEngine.Vector2(0, 0);
                     break;
                 case Anchor.BottomCenter:
-                    minCorner = minCorner + new Vector2D(oldSize.X / 2, 0) - new Vector2D(newSize.X / 2, 0);
+                    minCorner = minCorner + new UnityEngine.Vector2(oldSize.x / 2, 0) - new UnityEngine.Vector2(newSize.x / 2, 0);
                     break;
                 case Anchor.BottomRight:
-                    minCorner = minCorner + new Vector2D(oldSize.X, 0) - new Vector2D(newSize.X, 0);
+                    minCorner = minCorner + new UnityEngine.Vector2(oldSize.x, 0) - new UnityEngine.Vector2(newSize.x, 0);
                     break;
                 case Anchor.MidLeft:
-                    minCorner = minCorner + new Vector2D(0, oldSize.Y / 2) - new Vector2D(0, newSize.Y / 2);
+                    minCorner = minCorner + new UnityEngine.Vector2(0, oldSize.y / 2) - new UnityEngine.Vector2(0, newSize.y / 2);
                     break;
                 case Anchor.MidCenter:
-                    minCorner = minCorner + new Vector2D(oldSize.X / 2, oldSize.Y / 2) - new Vector2D(newSize.X / 2, newSize.Y / 2);
+                    minCorner = minCorner + new UnityEngine.Vector2(oldSize.x / 2, oldSize.y / 2) - new UnityEngine.Vector2(newSize.x / 2, newSize.y / 2);
                     break;
                 case Anchor.MidRight:
-                    minCorner = minCorner + new Vector2D(oldSize.X, oldSize.Y / 2) - new Vector2D(newSize.X, newSize.Y / 2);
+                    minCorner = minCorner + new UnityEngine.Vector2(oldSize.x, oldSize.y / 2) - new UnityEngine.Vector2(newSize.x, newSize.y / 2);
                     break;
                 case Anchor.TopLeft:
-                    minCorner = minCorner + new Vector2D(0, oldSize.Y) - new Vector2D(0, newSize.Y);
+                    minCorner = minCorner + new UnityEngine.Vector2(0, oldSize.y) - new UnityEngine.Vector2(0, newSize.y);
                     break;
                 case Anchor.TopCenter:
-                    minCorner = minCorner + new Vector2D(oldSize.X / 2, oldSize.Y) - new Vector2D(newSize.X / 2, newSize.Y);
+                    minCorner = minCorner + new UnityEngine.Vector2(oldSize.x / 2, oldSize.y) - new UnityEngine.Vector2(newSize.x / 2, newSize.y);
                     break;
                 case Anchor.TopRight:
-                    minCorner = minCorner + new Vector2D(oldSize.X, oldSize.Y) - new Vector2D(newSize.X, newSize.Y);
+                    minCorner = minCorner + new UnityEngine.Vector2(oldSize.x, oldSize.y) - new UnityEngine.Vector2(newSize.x, newSize.y);
                     break;
             }
 
-            var numColumns = (int) (newSize.X / surfaceEntity.CellSize) + 1;
-            var numRows = (int) (newSize.Y / surfaceEntity.CellSize) + 1;
+            var numColumns = (int) (newSize.x / surfaceEntity.CellSize) + 1;
+            var numRows = (int) (newSize.y / surfaceEntity.CellSize) + 1;
 
             var newSurfaceEntity = new SurfaceEntity(numColumns, numRows, surfaceEntity.CellSize);
             newSurfaceEntity.Origin = minCorner;

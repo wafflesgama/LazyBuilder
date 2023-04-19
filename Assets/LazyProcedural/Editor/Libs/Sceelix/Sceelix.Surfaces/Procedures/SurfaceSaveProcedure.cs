@@ -15,7 +15,7 @@ using Sceelix.Mathematics.Helpers;
 using Sceelix.Serialization;
 using Sceelix.Surfaces.Data;
 using Sceelix.Surfaces.Extensions;
-using Color = System.Drawing.Color;
+
 
 namespace Sceelix.Surfaces.Procedures
 {
@@ -174,7 +174,7 @@ namespace Sceelix.Surfaces.Procedures
                             var fraction = heightLayer.GetGenericValue(new Coordinate(i, j)) / height;
                             fraction = MathHelper.Clamp(fraction, 0f, 1f);
                             //var fraction = action(i, j);
-                            fastBitmap.SetPixel(i, j, Color.FromArgb(255, (byte) (255f * fraction), (byte) (255 * fraction), (byte) (255 * fraction)));
+                            fastBitmap.SetPixel(i, j, new UnityEngine.Color(255, (byte) (255f * fraction), (byte) (255 * fraction), (byte) (255 * fraction)));
                         }
                     }
 
@@ -219,7 +219,7 @@ namespace Sceelix.Surfaces.Procedures
                 var fileName = Path.GetFileNameWithoutExtension(_parameterFile.Value);
                 var directory = Path.GetDirectoryName(_parameterFile.Value);
 
-                Mathematics.Data.Color[,] colorArray = entity.Layers.OfType<BlendLayer>().ToColorArray(entity.NumColumns, entity.NumRows);
+                Mathematics.UnityEngine.Color[,] colorArray = entity.Layers.OfType<BlendLayer>().ToColorArray(entity.NumColumns, entity.NumRows);
 
 
                 var heightLayer = entity.GetLayer<HeightLayer>();
@@ -294,7 +294,7 @@ namespace Sceelix.Surfaces.Procedures
 
                 int numColumns = entity.NumColumns;
                 int numRows = entity.NumRows;
-                Func<int, int, Vector3D> action = (column, row) => normalLayer.GetGenericValue(new Coordinate(column, row));
+                Func<int, int, UnityEngine.Vector3> action = (column, row) => normalLayer.GetGenericValue(new Coordinate(column, row));
 
                 if (_parameterResolution.Value == "Layer")
                 {
@@ -311,7 +311,7 @@ namespace Sceelix.Surfaces.Procedures
                     for (int j = 0; j < numRows; j++)
                     {
                         var normal = action(i, j);
-                        fastBitmap.SetPixel(i, j, Color.FromArgb(255, (byte) (255f * normal.X), (byte) (255 * normal.Y), (byte) (255 * normal.Z)));
+                        fastBitmap.SetPixel(i, j, new UnityEngine.Color(255, (byte) (255f * normal.x), (byte) (255 * normal.y), (byte) (255 * normal.z)));
                     }
                 }
 
@@ -395,7 +395,7 @@ namespace Sceelix.Surfaces.Procedures
                             {
                                 var fraction = action(i, j);
                                 //var fraction = action(i, j);
-                                fastBitmap.SetPixel(i, j, Color.FromArgb(255, (byte) (255f * fraction), (byte) (255 * fraction), (byte) (255 * fraction)));
+                                fastBitmap.SetPixel(i, j, new UnityEngine.Color(255, (byte) (255f * fraction), (byte) (255 * fraction), (byte) (255 * fraction)));
                             }
                         }
 

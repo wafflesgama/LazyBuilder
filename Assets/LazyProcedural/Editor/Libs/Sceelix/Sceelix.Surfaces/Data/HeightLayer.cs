@@ -56,20 +56,20 @@ namespace Sceelix.Surfaces.Data
         /// <param name="surfaceColumn">The surface column.</param>
         /// <param name="surfaceRow">The surface row.</param>
         /// <returns></returns>
-        public Vector3D GetPosition(Coordinate surfaceCoordinate)
+        public UnityEngine.Vector3 GetPosition(Coordinate surfaceCoordinate)
         {
             var worldPosition2D = Surface.ToWorldPosition(surfaceCoordinate);
 
-            return new Vector3D(worldPosition2D, (float) GetValue(surfaceCoordinate));
+            return new UnityEngine.Vector3(worldPosition2D, (float) GetValue(surfaceCoordinate));
         }
 
 
 
-        public Vector3D GetPosition(Coordinate surfaceCoordinate, SampleMethod sampleMethod)
+        public UnityEngine.Vector3 GetPosition(Coordinate surfaceCoordinate, SampleMethod sampleMethod)
         {
             var worldPosition2D = Surface.ToWorldPosition(surfaceCoordinate);
 
-            return new Vector3D(worldPosition2D, (float) GetValue(surfaceCoordinate, sampleMethod));
+            return new UnityEngine.Vector3(worldPosition2D, (float) GetValue(surfaceCoordinate, sampleMethod));
         }
 
 

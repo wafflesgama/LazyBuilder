@@ -52,7 +52,7 @@ namespace Sceelix.Meshes.Procedures
 
             if (polyNode.IsHole && parentFace != null)
             {
-                var positions = polyNode.Contour.Select(point => point.ToVector3D(alignedScope));
+                var positions = polyNode.Contour.Select(point => point.ToVector3(alignedScope));
 
                 if (reverse)
                     positions = positions.Reverse();
@@ -61,7 +61,7 @@ namespace Sceelix.Meshes.Procedures
             }
             else if (polyNode.Contour.Any())
             {
-                var positions = polyNode.Contour.Select(point => point.ToVector3D(alignedScope));
+                var positions = polyNode.Contour.Select(point => point.ToVector3(alignedScope));
 
                 if (reverse)
                     positions = positions.Reverse();
@@ -90,7 +90,7 @@ namespace Sceelix.Meshes.Procedures
 
             List<Face> totalMeshFaces = new List<Face>();
 
-            var groupingByPlane = sourceMesh.Union(targetMesh).GroupBy(val => new {Normal = val.Normal.Round(), DistanceToPoint = Math.Round(val.Plane.DistanceToPoint(Vector3D.Zero), 3)});
+            var groupingByPlane = sourceMesh.Union(targetMesh).GroupBy(val => new {Normal = val.Normal.Round(), DistanceToPoint = Math.Round(val.Plane.DistanceToPoint(UnityEngine.Vector3.zero), 3)});
             foreach (var group in groupingByPlane)
             {
                 //for each group, we need a target (the clip) and a source (the subject)

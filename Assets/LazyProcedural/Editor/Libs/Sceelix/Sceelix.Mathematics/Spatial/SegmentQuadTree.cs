@@ -19,7 +19,7 @@ namespace Sceelix.Mathematics.Spatial
 
 
         /*
-        protected override Vector2D GetItemPoint(LineSegment2D item)
+        protected override UnityEngine.Vector2 GetItemPoint(LineSegment2D item)
 		{
 			return item;
 		}

@@ -55,14 +55,14 @@ namespace Sceelix.Actors.Procedures
                 IActor source = actorsPair.Key;
                 IActor target = actorsPair.Value;
 
-                var xFraction = _parameterXAxisAlignment.SelectedItem.GetAxisFraction(source.BoxScope.Sizes.X, target.BoxScope.Sizes.X);
-                var yFraction = _parameterYAxisAlignment.SelectedItem.GetAxisFraction(source.BoxScope.Sizes.Y, target.BoxScope.Sizes.Y);
-                var zFraction = _parameterZAxisAlignment.SelectedItem.GetAxisFraction(source.BoxScope.Sizes.Z, target.BoxScope.Sizes.Z);
+                var xFraction = _parameterXAxisAlignment.SelectedItem.GetAxisFraction(source.BoxScope.Sizes.x, target.BoxScope.Sizes.x);
+                var yFraction = _parameterYAxisAlignment.SelectedItem.GetAxisFraction(source.BoxScope.Sizes.y, target.BoxScope.Sizes.y);
+                var zFraction = _parameterZAxisAlignment.SelectedItem.GetAxisFraction(source.BoxScope.Sizes.z, target.BoxScope.Sizes.z);
 
                 var targetScope = target.BoxScope;
                 var newTarget = new BoxScope(targetScope.XAxis, targetScope.YAxis, targetScope.ZAxis,
-                    targetScope.Translation * new Vector3D(xFraction.BaseTranslation, yFraction.BaseTranslation, zFraction.BaseTranslation) + targetScope.ToWorldDirection(new Vector3D(xFraction.RelativeTranslation, yFraction.RelativeTranslation, zFraction.RelativeTranslation)),
-                    new Vector3D(xFraction.RelativeSize, yFraction.RelativeSize, zFraction.RelativeSize));
+                    targetScope.Translation * new UnityEngine.Vector3(xFraction.BaseTranslation, yFraction.BaseTranslation, zFraction.BaseTranslation) + targetScope.ToWorldDirection(new UnityEngine.Vector3(xFraction.RelativeTranslation, yFraction.RelativeTranslation, zFraction.RelativeTranslation)),
+                    new UnityEngine.Vector3(xFraction.RelativeSize, yFraction.RelativeSize, zFraction.RelativeSize));
 
                 source.InsertInto(newTarget);
 

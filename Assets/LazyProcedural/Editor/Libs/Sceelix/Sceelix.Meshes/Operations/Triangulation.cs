@@ -36,17 +36,17 @@ namespace Sceelix.Meshes.Operations
 
             //return triangulation edges that we can use to do interpolations, if needed
             for (int i = 1; i < contourVertices.Length; i++)
-                yield return new TriangulationEdge((Vertex) contourVertices[i - 1].Data, (Vertex) contourVertices[i].Data, ToVector3D(contourVertices[i - 1].Position), ToVector3D(contourVertices[i].Position));
+                yield return new TriangulationEdge((Vertex) contourVertices[i - 1].Data, (Vertex) contourVertices[i].Data, ToVector3(contourVertices[i - 1].Position), ToVector3(contourVertices[i].Position));
 
             tess.AddContour(contourVertices, hole ? ContourOrientation.CounterClockwise : ContourOrientation.Clockwise);
 
-            yield return new TriangulationEdge((Vertex) contourVertices.Last().Data, (Vertex) contourVertices.First().Data, ToVector3D(contourVertices.Last().Position), ToVector3D(contourVertices.First().Position));
+            yield return new TriangulationEdge((Vertex) contourVertices.Last().Data, (Vertex) contourVertices.First().Data, ToVector3(contourVertices.Last().Position), ToVector3(contourVertices.First().Position));
             //yield break;
         }
 
 
 
-        private static Vertex CreateInterpolatedVertex(Face face, Vector3D position, List<TriangulationEdge> edges)
+        private static Vertex CreateInterpolatedVertex(Face face, UnityEngine.Vector3 position, List<TriangulationEdge> edges)
         {
             foreach (TriangulationEdge triangulationEdge in edges)
                 if (triangulationEdge.ContainsPoint(position))
@@ -57,16 +57,16 @@ namespace Sceelix.Meshes.Operations
 
 
 
-        private static Vec3 ToVec3(Vector3D position)
+        private static Vec3 ToVec3(UnityEngine.Vector3 position)
         {
-            return new Vec3 {X = position.X, Y = position.Y, Z = position.Z};
+            return new Vec3 {X = position.x, Y = position.y, Z = position.z};
         }
 
 
 
-        private static Vector3D ToVector3D(Vec3 position)
+        private static UnityEngine.Vector3 ToVector3(Vec3 position)
         {
-            return new Vector3D(position.X, position.Y, position.Z);
+            return new UnityEngine.Vector3(position.x, position.y, position.z);
         }
 
 
@@ -137,13 +137,13 @@ namespace Sceelix.Meshes.Operations
 
             List<TriangulationEdge> triangulationEdges = new List<TriangulationEdge>();
 
-            if (!face.Normal.Equals(Vector3D.ZVector))
+            if (!face.Normal.Equals(UnityEngine.Vector3.forward))
             {
-                Vector3D rotationAxis = face.Normal.Cross(Vector3D.ZVector);
-                if (rotationAxis.Equals(Vector3D.Zero))
-                    rotationAxis = Vector3D.XVector;
+                UnityEngine.Vector3 rotationAxis = face.Normal.Cross(UnityEngine.Vector3.forward);
+                if (rotationAxis.Equals(UnityEngine.Vector3.zero))
+                    rotationAxis = UnityEngine.Vector3.right;
 
-                float angle = face.Normal.AngleTo(Vector3D.ZVector);
+                float angle = face.Normal.AngleTo(UnityEngine.Vector3.forward);
 
                 rotationMatrix = Matrix.CreateAxisAngle(rotationAxis, angle);
             }
@@ -170,7 +170,7 @@ namespace Sceelix.Meshes.Operations
                 {
                     Vec3 position = tess.Vertices[i].Position;
                     tess.Vertices[i].Data =
-                        CreateInterpolatedVertex(face, ToVector3D(position), triangulationEdges);
+                        CreateInterpolatedVertex(face, ToVector3(position), triangulationEdges);
                 }
 
             // Convert results to FaceTriangles
@@ -183,7 +183,7 @@ namespace Sceelix.Meshes.Operations
                     if (index == -1)
                         continue;
 
-                    //var v = new Vertex(Vector3D.New(tess.Vertices[index].Position.X, tess.Vertices[index].Position.Y, tess.Vertices[index].Position.Z));
+                    //var v = new Vertex(UnityEngine.Vector3.New(tess.Vertices[index].Position.x, tess.Vertices[index].Position.y, tess.Vertices[index].Position.z));
                     vertices.Add((Vertex) tess.Vertices[index].Data);
                 }
 
@@ -207,14 +207,14 @@ namespace Sceelix.Meshes.Operations
     /// </summary>
     internal class TriangulationEdge
     {
-        private readonly Vector3D _rotatedV0Pos;
-        private readonly Vector3D _rotatedV1Pos;
+        private readonly UnityEngine.Vector3 _rotatedV0Pos;
+        private readonly UnityEngine.Vector3 _rotatedV1Pos;
         private readonly Vertex _v0;
         private readonly Vertex _v1;
 
 
 
-        public TriangulationEdge(Vertex v0, Vertex v1, Vector3D rotatedV0Pos, Vector3D rotatedV1Pos)
+        public TriangulationEdge(Vertex v0, Vertex v1, UnityEngine.Vector3 rotatedV0Pos, UnityEngine.Vector3 rotatedV1Pos)
         {
             _v0 = v0;
             _v1 = v1;
@@ -224,15 +224,15 @@ namespace Sceelix.Meshes.Operations
 
 
 
-        public bool ContainsPoint(Vector3D position)
+        public bool ContainsPoint(UnityEngine.Vector3 position)
         {
-            float dot = (position - _rotatedV0Pos).Normalize().Dot((position - _rotatedV1Pos).Normalize());
-            return Math.Abs(dot + 1) < Vector3D.Precision;
+            float dot = (position - _rotatedV0Pos).normalized.Dot((position - _rotatedV1Pos).normalized);
+            return Math.Abs(dot + 1) < UnityEngine.Vector3.Precision;
         }
 
 
 
-        public Vertex InterpolatePoint(Face face, Vector3D position)
+        public Vertex InterpolatePoint(Face face, UnityEngine.Vector3 position)
         {
             return _v0.CreateInterpolatedVertex(face, position, _v1);
         }

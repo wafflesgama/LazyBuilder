@@ -20,20 +20,20 @@ namespace Sceelix.Paths.Data
             Edge = edge;
 
             Direction = Target.Position - Source.Position;
-            NormalizedDirection = Direction.Normalize();
+            NormalizedDirection = Direction.normalized;
             CenterPoint = Source.Position + NormalizedDirection * Length;
             Length = Direction.Length;
         }
 
 
 
-        public Vector3D CenterPoint
+        public UnityEngine.Vector3 CenterPoint
         {
             get;
         }
 
 
-        public Vector3D Direction
+        public UnityEngine.Vector3 Direction
         {
             get;
         }
@@ -54,7 +54,7 @@ namespace Sceelix.Paths.Data
         public LineSegment3D LineSegment => new LineSegment3D(Source.Position, Target.Position);
 
 
-        public Vector3D NormalizedDirection
+        public UnityEngine.Vector3 NormalizedDirection
         {
             get;
         }
@@ -98,7 +98,7 @@ namespace Sceelix.Paths.Data
 
             return new []{new StaticStreetEdge(_street,_v0,vNew),new StaticStreetEdge(_street,vNew,_v1)};
         }*/
-        public Vector3D CalculateIntersection(StaticPathEdge otherEdge, bool includingEnds)
+        public UnityEngine.Vector3 CalculateIntersection(StaticPathEdge otherEdge, bool includingEnds)
         {
             return LineSegment.Intersection(otherEdge.LineSegment, includingEnds);
         }
@@ -107,31 +107,31 @@ namespace Sceelix.Paths.Data
 
         /*public float MiddleIntersectionValue(StaticPathEdge otherEdge, bool includingEnds)
         {
-            Vector3D p1 = Source.Position;
-            Vector3D p2 = otherEdge.Source.Position;
-            Vector3D v1 = Target.Position - p1;
-            Vector3D v2 = otherEdge.Target.Position - p2;
+            UnityEngine.Vector3 p1 = Source.Position;
+            UnityEngine.Vector3 p2 = otherEdge.Source.Position;
+            UnityEngine.Vector3 v1 = Target.Position - p1;
+            UnityEngine.Vector3 v2 = otherEdge.Target.Position - p2;
 
-            Vector3D v1v2 = v1.Cross(v2);
+            UnityEngine.Vector3 v1v2 = v1.Cross(v2);
 
-            if (v1v2.ExactlyEquals(Vector3D.Zero))
+            if (v1v2.ExactlyEquals(UnityEngine.Vector3.zero))
             {
                 return float.PositiveInfinity;
             }
 
 
-            Vector3D p1p2 = p2 - p1;
-            Vector3D p1p2v2 = p1p2.Cross(v2);
+            UnityEngine.Vector3 p1p2 = p2 - p1;
+            UnityEngine.Vector3 p1p2v2 = p1p2.Cross(v2);
 
             if (!v1v2.IsCollinear(p1p2v2))
                 return float.NaN;
 
             //REFACTORING NEEDED!!!
-            float a = Vector3D.GetCommonMultiplier(p1p2v2, v1v2);
+            float a = UnityEngine.Vector3.GetCommonMultiplier(p1p2v2, v1v2);
 
-            Vector3D aV1p1p2 = v1*a - p1p2;
+            UnityEngine.Vector3 aV1p1p2 = v1*a - p1p2;
 
-            double b = Vector3D.GetCommonMultiplier(aV1p1p2, v2);
+            double b = UnityEngine.Vector3.GetCommonMultiplier(aV1p1p2, v2);
 
             if (includingEnds)
             {
@@ -163,16 +163,16 @@ namespace Sceelix.Paths.Data
 
 
 
-        public bool HasPointInBetween(Vector3D position)
+        public bool HasPointInBetween(UnityEngine.Vector3 position)
         {
-            return Math.Abs((position - Source.Position).Normalize().Dot((position - Target.Position).Normalize()) - -1) < Vector3D.Precision;
+            return Math.Abs((position - Source.Position).normalized.Dot((position - Target.Position).normalized) - -1) < UnityEngine.Vector3.Precision;
         }
 
 
 
-        public bool HasPointInBetween(Vector3D position, float precision)
+        public bool HasPointInBetween(UnityEngine.Vector3 position, float precision)
         {
-            return Math.Abs((position - Source.Position).Normalize().Dot((position - Target.Position).Normalize()) - -1) < precision;
+            return Math.Abs((position - Source.Position).normalized.Dot((position - Target.Position).normalized) - -1) < precision;
         }
 
 
@@ -187,7 +187,7 @@ namespace Sceelix.Paths.Data
         /*public bool IsAtSameLine(StaticStreetEdge second)
         {
             float dotDirection = this.NormalizedDirection.Dot(second.NormalizedDirection);
-            float dotStartingPoints = ( - second.V0.Position).Normalize().Dot(NormalizedDirection);
+            float dotStartingPoints = ( - second.V0.Position).normalized.Dot(NormalizedDirection);
 
             this.V0.Position.MultipleOf(second.V0.Position);
 

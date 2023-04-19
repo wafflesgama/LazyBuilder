@@ -42,7 +42,7 @@ namespace Sceelix.Extensions
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static Bitmap CreateColorBitmap(Color color, PixelFormat format = PixelFormat.Format32bppArgb)
+        public static Bitmap CreateColorBitmap(UnityEngine.Color color, PixelFormat format = PixelFormat.Format32bppArgb)
         {
             Bitmap bitmap = new Bitmap(1, 1, format);
 
