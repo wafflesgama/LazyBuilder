@@ -13,7 +13,9 @@ namespace LazyProcedural
 
         private VisualElement _root;
         //-----Header Area
-
+        private Button _testPlusButton;
+        private Button _testMinusButton;
+        private Slider _testSlider;
 
         //-----Main Area
         private Graph graph;
@@ -61,6 +63,7 @@ namespace LazyProcedural
         {
 
             InitVariables();
+            MainController.OpenTest();
             //InitPreferences();
 
             SetupBaseUI();
@@ -110,11 +113,19 @@ namespace LazyProcedural
         private void SetupBindings()
         {
 
+            //-----Header Area
+            _testPlusButton = (Button)_root.Q("Add");
+            _testMinusButton = (Button)_root.Q("Remove");
+            _testSlider = (Slider)_root.Q("Value");
+
+            
             //-----Main Area
 
 
 
+
             //-----Footer Area
+
 
             //Debug Messager
             _debugMssg = (TextElement)_root.Q("Debug");
@@ -159,10 +170,27 @@ namespace LazyProcedural
             //_serversDropdown.RegisterValueChangedCallback(x => ServerChanged(x.newValue));
             //_generateBttn.clicked += Generate;
 
+            _testPlusButton.clicked += MoreGen;
+            _testMinusButton.clicked += LessGen;
+            _testSlider.RegisterValueChangedCallback(x => MainController.CallSystemProcedureSample(x.newValue));
 
             //Footer Menu Items
             _aboutDrop.RegisterValueChangedCallback(x => OnAboutMenuChanged(x.newValue));
             _settingdDrop.RegisterValueChangedCallback(x => OnSettingsMenuChanged(x.newValue));
+        }
+
+        private float extruee = 1f;
+        private const float dif = .1f;
+        void MoreGen()
+        {
+            extruee+= dif;
+            MainController.CallSystemProcedureSample(extruee);
+        }
+
+        void LessGen()
+        {
+            extruee-= dif;
+            MainController.CallSystemProcedureSample(extruee);
         }
 
 

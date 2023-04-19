@@ -51,11 +51,11 @@ namespace LazyProcedural
 
             ParameterManager.Initialize();
 
-            CallSystemProcedureSample();
+            //CallSystemProcedureSample(2);
         }
 
 
-        private static void CallSystemProcedureSample()
+        public static void CallSystemProcedureSample(float extrude)
         {
             //you should create a LoadEnvironment instance and pass it to your procedures, so that it can find resources (files, textures, etc.)
             ProcedureEnvironment environment = new ProcedureEnvironment(new ResourceManager($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}", Assembly.GetExecutingAssembly()));
@@ -79,6 +79,8 @@ namespace LazyProcedural
             meshProc.Execute();
 
             MeshModifyProcedure meshModifyProc = new MeshModifyProcedure();
+            var op = meshModifyProc.Parameters["Operation"];
+            op.Parameters[0].Parameters["Amount"].Set(extrude);
 
             var test = meshModifyProc.Inputs[0];
             //var test2 = meshModifyProc.Parameters[0].Inputs[0];
@@ -151,7 +153,7 @@ namespace LazyProcedural
             //now we can get the data from the outputs
             //this peeks (but not removes) one item from the first ouput
             IEntity entity = meshProc.Outputs[0].Peek();
-            IEntity entity2 = meshModifyProc.Outputs[0].Peek();
+            //IEntity entity2 = meshModifyProc.Outputs[0].Peek();
 
             MeshCreate((MeshEntity)entity);
 
@@ -162,16 +164,26 @@ namespace LazyProcedural
             IEnumerable<IEntity> poppedEntities = meshProc.Outputs.DequeueAll();
         }
 
+        public static Material CreateDefaultMaterial()
+        {
+            if (UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset == null)
+                return new Material(AssetDatabase.GetBuiltinExtraResource<Shader>("Standard.shader"));
+            else
+                return new Material(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.defaultMaterial);
+        }
+
         public static GameObject MeshCreate(Sceelix.Meshes.Data.MeshEntity meshEntity)
         {
             Dictionary<Sceelix.Actors.Data.Material, int> materialToMaterialData = new Dictionary<Sceelix.Actors.Data.Material, int>();
 
             int indexerValue = 0;
             //GameObject obj = new GameObject("Test MeshConvert");
-            //MeshRenderer mesh = obj.AddComponent<MeshRenderer>();
+            //MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
             //MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
-            GameObject obj = GameObject.Find("teste");
-            MeshRenderer mesh = obj.GetComponent<MeshRenderer>();
+
+            //meshRenderer.material = CreateDefaultMaterial();
+            GameObject obj = GameObject.Find("Cube");
+            //MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
 
             //List<Material> materials = new List<Material>();
@@ -184,12 +196,16 @@ namespace LazyProcedural
 
             //UnityMesh.MeshEntity = meshEntity;
 
-            List<int> subT = new List<int>();
+            List<List<int>> subMeshT = new List<List<int>>();
             List<Vector2> uv = new List<Vector2>();
             List<Vector3> v = new List<Vector3>();
             List<Vector3> n = new List<Vector3>();
             List<Vector4> t = new List<Vector4>();
             List<UnityEngine.Color> c = new List<UnityEngine.Color>();
+            List<Sceelix.Actors.Data.Material> materials = new List<Sceelix.Actors.Data.Material>();
+
+            var m = new Mesh();
+            m.name = "Test Mesh";
 
             foreach (Face face in meshEntity)
             {
@@ -201,32 +217,30 @@ namespace LazyProcedural
 
                     materialToMaterialData.Add(face.Material, index);
 
-                    //materials.Add(face.Material);
-                    //UnityMesh.SubmeshTriangles.Add(new List<int>());
+                    materials.Add(face.Material);
+                    subMeshT.Add(new List<int>());
+                    //UnityMesh.SubmeshTriangles.(new List<int>());
                 }
 
                 List<FaceTriangle> faceTriangles = face.Triangulate();
 
 
-
                 foreach (FaceTriangle faceTriangle in faceTriangles)
                 {
-                    faceTriangle.Vertices.Reverse();
-
+                    //faceTriangle.Vertices.Reverse();
                     foreach (Vertex vertex in faceTriangle.Vertices)
                     {
                         var normal = vertex[face].Normal;
                         var tangent = vertex[face].Tangent;
                         var binormal = vertex[face].Binormal;
 
-                        //meshFilter.mesh.uv
                         v.Add(vertex.Position.FlipYZ().ToVector3());
                         n.Add(normal.FlipYZ().ToVector3());
-                        t.Add((new Vector4D(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f).ToVector4()));
                         c.Add(vertex[face].Color.ToUnityColor());
+                        t.Add((new Vector4D(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f).ToVector4()));
                         uv.Add((vertex[face].UV0 * new Vector2D(1, -1)).ToVector2());
-                        subT.Add(indexerValue++);
 
+                        subMeshT[index].Add(indexerValue++);
                         //meshFilter.mesh.triangles
                         //UnityMesh.Normals.Add(normal.FlipYZ());
                         //UnityMesh.Colors.Add(vertex[face].Color);
@@ -235,30 +249,29 @@ namespace LazyProcedural
                         //UnityMesh.SubmeshTriangles[index].Add(indexerValue++);
 
                     }
+
                 }
 
             }
-            var m = new Mesh();
-            m.name = "Test Mesh";
 
-            //        m.vertices = new Vector3[]
-            //        {
-            //new Vector3(0,0,0),
-            //new Vector3(0,0,1),
-            //new Vector3(1,0,0)
-            //        };
 
-            //        m.triangles = new int[] { 0, 1, 2 };
 
             m.vertices = v.ToArray();
-            //m.normals = n.ToArray();
-            //m.tangents = t.ToArray();
-            //m.uv = uv.ToArray();
-            //m.RecalculateBounds();
+            m.normals = n.ToArray();
+            m.colors = c.ToArray();
+            m.uv = uv.ToArray();
+            m.tangents = t.ToArray();
+            m.subMeshCount = subMeshT.Count;
+            m.RecalculateBounds();
+            for (int i = 0; i < subMeshT.Count; i++)
+            {
+                m.SetTriangles(subMeshT[i], i);
+            }
+
             ////meshFilter.mesh.subMeshCount= uv.ToArray();
 
 
-            meshFilter.mesh = m;
+            meshFilter.sharedMesh = m;
 
             return obj;
         }
