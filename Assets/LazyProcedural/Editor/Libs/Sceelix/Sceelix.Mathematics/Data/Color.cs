@@ -19,7 +19,7 @@ namespace Sceelix.Mathematics.Data
             {
                 var value = fieldInfo.GetValue(null);
                 if (value is Color)
-                    ColorNames.Add(fieldInfo.Name, (Color) value);
+                    ColorNames.Add(fieldInfo.Name, (Color)value);
             }
         }
 
@@ -71,10 +71,10 @@ namespace Sceelix.Mathematics.Data
         /// <param name="color"></param>
         public Color(float[] color)
         {
-            R = (byte) (color[0] * 255);
-            G = (byte) (color[1] * 255);
-            B = (byte) (color[2] * 255);
-            A = (byte) (color[3] * 255);
+            R = (byte)(color[0] * 255);
+            G = (byte)(color[1] * 255);
+            B = (byte)(color[2] * 255);
+            A = (byte)(color[3] * 255);
         }
 
 
@@ -126,42 +126,42 @@ namespace Sceelix.Mathematics.Data
 
         public static Color operator +(Color a, Color b)
         {
-            return new Color((byte) (a.R + b.R), (byte) (a.G + b.G), (byte) (a.B + b.B), (byte) (a.A + b.A));
+            return new Color((byte)(a.R + b.R), (byte)(a.G + b.G), (byte)(a.B + b.B), (byte)(a.A + b.A));
         }
 
 
 
         public static Color operator -(Color a, Color b)
         {
-            return new Color((byte) (a.R - b.R), (byte) (a.G - b.G), (byte) (a.B - b.B), (byte) (a.A - b.A));
+            return new Color((byte)(a.R - b.R), (byte)(a.G - b.G), (byte)(a.B - b.B), (byte)(a.A - b.A));
         }
 
 
 
         public static Color operator +(Color a, float scalar)
         {
-            return new Color((byte) (a.R + scalar), (byte) (a.G + scalar), (byte) (a.B + scalar), (byte) (a.A + scalar));
+            return new Color((byte)(a.R + scalar), (byte)(a.G + scalar), (byte)(a.B + scalar), (byte)(a.A + scalar));
         }
 
 
 
         public static Color operator -(Color a, float scalar)
         {
-            return new Color((byte) (a.R - scalar), (byte) (a.G - scalar), (byte) (a.B - scalar), (byte) (a.A - scalar));
+            return new Color((byte)(a.R - scalar), (byte)(a.G - scalar), (byte)(a.B - scalar), (byte)(a.A - scalar));
         }
 
 
 
         public static Color operator *(Color a, float scalar)
         {
-            return new Color((byte) (a.R * scalar), (byte) (a.G * scalar), (byte) (a.B * scalar), (byte) (a.A * scalar));
+            return new Color((byte)(a.R * scalar), (byte)(a.G * scalar), (byte)(a.B * scalar), (byte)(a.A * scalar));
         }
 
 
 
         public static Color operator /(Color a, float scalar)
         {
-            return new Color((byte) (a.R / scalar), (byte) (a.G / scalar), (byte) (a.B / scalar), (byte) (a.A / scalar));
+            return new Color((byte)(a.R / scalar), (byte)(a.G / scalar), (byte)(a.B / scalar), (byte)(a.A / scalar));
         }
 
 
@@ -186,7 +186,7 @@ namespace Sceelix.Mathematics.Data
         /// <returns></returns>
         public byte[] ToArray()
         {
-            return new[] {R, G, B, A};
+            return new[] { R, G, B, A };
         }
 
 
@@ -197,9 +197,14 @@ namespace Sceelix.Mathematics.Data
         /// <returns></returns>
         public float[] ToFloatArray()
         {
-            return new[] {R / 255f, G / 255f, B / 255f, A / 255f};
+            return new[] { R / 255f, G / 255f, B / 255f, A / 255f };
         }
 
+
+        public UnityEngine.Color ToUnityColor()
+        {
+            return new UnityEngine.Color(R, G, B, A);
+        }
 
 
         public bool Equals(Color other)
@@ -212,7 +217,7 @@ namespace Sceelix.Mathematics.Data
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Color && Equals((Color) obj);
+            return obj is Color && Equals((Color)obj);
         }
 
 
@@ -247,7 +252,7 @@ namespace Sceelix.Mathematics.Data
 
         public static Color HsvToRgb(double h, double s, double v)
         {
-            int hi = (int) Math.Floor(h / 60.0) % 6;
+            int hi = (int)Math.Floor(h / 60.0) % 6;
             double f = h / 60.0 - Math.Floor(h / 60.0);
 
             double p = v * (1.0 - s);
@@ -295,7 +300,7 @@ namespace Sceelix.Mathematics.Data
         /// <returns></returns>
         private static Color FromDoubles(double r, double g, double b)
         {
-            return new Color((byte) (r * 255.0), (byte) (g * 255.0), (byte) (b * 255.0), 255);
+            return new Color((byte)(r * 255.0), (byte)(g * 255.0), (byte)(b * 255.0), 255);
         }
 
 
@@ -312,9 +317,9 @@ namespace Sceelix.Mathematics.Data
 
             var components = hexString.SplitSize(2).ToArray();
 
-            var red = (byte) int.Parse(components[0], NumberStyles.HexNumber);
-            var green = (byte) int.Parse(components[1], NumberStyles.HexNumber);
-            var blue = (byte) int.Parse(components[2], NumberStyles.HexNumber);
+            var red = (byte)int.Parse(components[0], NumberStyles.HexNumber);
+            var green = (byte)int.Parse(components[1], NumberStyles.HexNumber);
+            var blue = (byte)int.Parse(components[2], NumberStyles.HexNumber);
 
             return new Color(red, green, blue, 255);
         }

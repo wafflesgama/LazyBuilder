@@ -19,6 +19,9 @@ using System.Resources;
 using System.Reflection;
 using Sceelix.Meshes.Procedures;
 using Sceelix.Core.Parameters;
+using Sceelix.Meshes.Data;
+using Sceelix.Meshes.Operations;
+using Sceelix.Mathematics.Data;
 
 namespace LazyProcedural
 {
@@ -142,7 +145,7 @@ namespace LazyProcedural
 
             //once we have finished the parameterization, execute it!
             //it will execute twice since we have added 2 entities to the input
-         
+
             meshModifyProc.Execute();
 
             //now we can get the data from the outputs
@@ -150,11 +153,114 @@ namespace LazyProcedural
             IEntity entity = meshProc.Outputs[0].Peek();
             IEntity entity2 = meshModifyProc.Outputs[0].Peek();
 
+            MeshCreate((MeshEntity)entity);
+
             //this peeks all the data from all the output ports
-            List<IEntity> entities = meshProc.Outputs.PeekAll().ToList();
+            //List<IEntity> entities = meshProc.Outputs.PeekAll().ToList();
 
             //this gets (and removes) all the data from all the output ports
             IEnumerable<IEntity> poppedEntities = meshProc.Outputs.DequeueAll();
+        }
+
+        public static GameObject MeshCreate(Sceelix.Meshes.Data.MeshEntity meshEntity)
+        {
+            Dictionary<Sceelix.Actors.Data.Material, int> materialToMaterialData = new Dictionary<Sceelix.Actors.Data.Material, int>();
+
+            int indexerValue = 0;
+            //GameObject obj = new GameObject("Test MeshConvert");
+            //MeshRenderer mesh = obj.AddComponent<MeshRenderer>();
+            //MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
+            GameObject obj = GameObject.Find("teste");
+            MeshRenderer mesh = obj.GetComponent<MeshRenderer>();
+            MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
+
+            //List<Material> materials = new List<Material>();
+
+            //Materials = new List<Material>();
+
+            //Mesh meshData = new Mesh();
+            //Mesh.Id = meshEntity.GetHashCode();
+
+
+            //UnityMesh.MeshEntity = meshEntity;
+
+            List<int> subT = new List<int>();
+            List<Vector2> uv = new List<Vector2>();
+            List<Vector3> v = new List<Vector3>();
+            List<Vector3> n = new List<Vector3>();
+            List<Vector4> t = new List<Vector4>();
+            List<UnityEngine.Color> c = new List<UnityEngine.Color>();
+
+            foreach (Face face in meshEntity)
+            {
+                int index;
+
+                if (!materialToMaterialData.TryGetValue(face.Material, out index))
+                {
+                    index = materialToMaterialData.Count;
+
+                    materialToMaterialData.Add(face.Material, index);
+
+                    //materials.Add(face.Material);
+                    //UnityMesh.SubmeshTriangles.Add(new List<int>());
+                }
+
+                List<FaceTriangle> faceTriangles = face.Triangulate();
+
+
+
+                foreach (FaceTriangle faceTriangle in faceTriangles)
+                {
+                    faceTriangle.Vertices.Reverse();
+
+                    foreach (Vertex vertex in faceTriangle.Vertices)
+                    {
+                        var normal = vertex[face].Normal;
+                        var tangent = vertex[face].Tangent;
+                        var binormal = vertex[face].Binormal;
+
+                        //meshFilter.mesh.uv
+                        v.Add(vertex.Position.FlipYZ().ToVector3());
+                        n.Add(normal.FlipYZ().ToVector3());
+                        t.Add((new Vector4D(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f).ToVector4()));
+                        c.Add(vertex[face].Color.ToUnityColor());
+                        uv.Add((vertex[face].UV0 * new Vector2D(1, -1)).ToVector2());
+                        subT.Add(indexerValue++);
+
+                        //meshFilter.mesh.triangles
+                        //UnityMesh.Normals.Add(normal.FlipYZ());
+                        //UnityMesh.Colors.Add(vertex[face].Color);
+                        //UnityMesh.Tangents.Add(new Vector4(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f));
+                        //UnityMesh.Uvs.Add(vertex[face].UV0 * new Vector2(1, -1));
+                        //UnityMesh.SubmeshTriangles[index].Add(indexerValue++);
+
+                    }
+                }
+
+            }
+            var m = new Mesh();
+            m.name = "Test Mesh";
+
+            //        m.vertices = new Vector3[]
+            //        {
+            //new Vector3(0,0,0),
+            //new Vector3(0,0,1),
+            //new Vector3(1,0,0)
+            //        };
+
+            //        m.triangles = new int[] { 0, 1, 2 };
+
+            m.vertices = v.ToArray();
+            //m.normals = n.ToArray();
+            //m.tangents = t.ToArray();
+            //m.uv = uv.ToArray();
+            //m.RecalculateBounds();
+            ////meshFilter.mesh.subMeshCount= uv.ToArray();
+
+
+            meshFilter.mesh = m;
+
+            return obj;
         }
 
 

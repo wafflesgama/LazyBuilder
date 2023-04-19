@@ -140,7 +140,10 @@ namespace Sceelix.Mathematics.Data
             return a.SquareLength - b.SquareLength <= radius * radius;
         }
 
-
+        public UnityEngine.Vector2 ToVector2()
+        {
+            return new UnityEngine.Vector2(X, Y);
+        }
 
         public Vector3D ToVector3D(float z = 0)
         {
@@ -158,7 +161,7 @@ namespace Sceelix.Mathematics.Data
 
         public float[] ToArray()
         {
-            return new[] {X, Y};
+            return new[] { X, Y };
         }
 
 
@@ -200,7 +203,7 @@ namespace Sceelix.Mathematics.Data
             float dx = X - b.X;
             float dy = Y - b.Y;
 
-            return (float) Math.Sqrt(dx * dx + dy * dy);
+            return (float)Math.Sqrt(dx * dx + dy * dy);
         }
 
 
@@ -210,7 +213,7 @@ namespace Sceelix.Mathematics.Data
             float dx = a.X - b.X;
             float dy = a.Y - b.Y;
 
-            return (float) Math.Sqrt(dx * dx + dy * dy);
+            return (float)Math.Sqrt(dx * dx + dy * dy);
         }
 
 
@@ -238,7 +241,7 @@ namespace Sceelix.Mathematics.Data
         {
             float f = Dot(b) / (Length * b.Length);
 
-            return (float) Math.Acos(Math.Round(f, PrecisionDigits));
+            return (float)Math.Acos(Math.Round(f, PrecisionDigits));
         }
 
 
@@ -251,7 +254,7 @@ namespace Sceelix.Mathematics.Data
         /// <returns>The angle between the two vectors, in radians.</returns>
         public static float Angle(Vector2D a, Vector2D b)
         {
-            return (float) Math.Acos(Dot(a, b) / (a.Length * b.Length));
+            return (float)Math.Acos(Dot(a, b) / (a.Length * b.Length));
         }
 
 
@@ -308,14 +311,14 @@ namespace Sceelix.Mathematics.Data
         //  User-defined conversion from double to Digit
         public static implicit operator Point(Vector2D vector)
         {
-            return new Point((int) vector.X, (int) vector.Y);
+            return new Point((int)vector.X, (int)vector.Y);
         }
 
 
 
         public static implicit operator Size(Vector2D vector)
         {
-            return new Size((int) vector.X, (int) vector.Y);
+            return new Size((int)vector.X, (int)vector.Y);
         }
 
 
@@ -400,7 +403,7 @@ namespace Sceelix.Mathematics.Data
             set
             {
                 _precisionDigits = value;
-                Precision = (float) Math.Pow(0.1, _precisionDigits);
+                Precision = (float)Math.Pow(0.1, _precisionDigits);
             }
         }
 
@@ -419,7 +422,7 @@ namespace Sceelix.Mathematics.Data
         public float SquareLength => X * X + Y * Y;
 
 
-        public float Length => (float) Math.Sqrt(X * X + Y * Y);
+        public float Length => (float)Math.Sqrt(X * X + Y * Y);
 
         #endregion
     }

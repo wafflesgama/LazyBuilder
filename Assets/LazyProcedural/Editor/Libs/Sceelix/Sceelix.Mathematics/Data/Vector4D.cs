@@ -85,7 +85,7 @@ namespace Sceelix.Mathematics.Data
             float dz = Z - b.Z;
             float dw = Z - b.W;
 
-            return (float) Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
+            return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
         }
 
 
@@ -97,7 +97,7 @@ namespace Sceelix.Mathematics.Data
             float dz = a.Z - b.Z;
             float dw = a.W - b.W;
 
-            return (float) Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
+            return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
         }
 
 
@@ -147,16 +147,16 @@ namespace Sceelix.Mathematics.Data
 
 
 
-/*public Vector4D Cross(Vector4D b)
-                {
-                    return new Vector4D(_y*b._z - _z*b._y, _z*b._x - _x*b._z, _x*b._y - _y*b._x);
-                }
-        
-        
-                public static Vector3D Cross(Vector3D a, Vector3D b)
-                {
-                    return new Vector3D(a._y*b._z - a._z*b._y, a._z*b._x - a._x*b._z, a._x*b._y - a._y*b._x);
-                }*/
+        /*public Vector4D Cross(Vector4D b)
+                        {
+                            return new Vector4D(_y*b._z - _z*b._y, _z*b._x - _x*b._z, _x*b._y - _y*b._x);
+                        }
+
+
+                        public static Vector3D Cross(Vector3D a, Vector3D b)
+                        {
+                            return new Vector3D(a._y*b._z - a._z*b._y, a._z*b._x - a._x*b._z, a._x*b._y - a._y*b._x);
+                        }*/
 
 
 
@@ -169,17 +169,17 @@ namespace Sceelix.Mathematics.Data
         {
             float f = Dot(b) / (Length * b.Length);
 
-            return (float) Math.Acos(Math.Round(f, PrecisionDigits));
+            return (float)Math.Acos(Math.Round(f, PrecisionDigits));
         }
 
 
 
-/*public float AngleAroundAxisTo(Vector3D axis, Vector3D b)
-                {
-                    float f = Dot(b) / (Length * b.Length);
-        
-                    return (float)Math.Acos(Math.Round(f, PrecisionDigits));
-                }*/
+        /*public float AngleAroundAxisTo(Vector3D axis, Vector3D b)
+                        {
+                            float f = Dot(b) / (Length * b.Length);
+
+                            return (float)Math.Acos(Math.Round(f, PrecisionDigits));
+                        }*/
 
 
 
@@ -191,7 +191,7 @@ namespace Sceelix.Mathematics.Data
         /// <returns>The angle between the two vectors, in radians.</returns>
         public static float Angle(Vector4D a, Vector4D b)
         {
-            return (float) Math.Acos(Dot(a, b) / (a.Length * b.Length));
+            return (float)Math.Acos(Dot(a, b) / (a.Length * b.Length));
         }
 
 
@@ -199,6 +199,10 @@ namespace Sceelix.Mathematics.Data
         public float this[int index] => ToArray()[index];
 
 
+        public UnityEngine.Vector4 ToVector4()
+        {
+            return new UnityEngine.Vector4(X, Y, Z, W);
+        }
 
         public float this[string coordinate]
         {
@@ -230,14 +234,14 @@ namespace Sceelix.Mathematics.Data
 
 
 
-/*public Vector3D ProjectToPlane(Vector3D planeNormal)
-                {
-                    var sideDirection = Cross(planeNormal);
-        
-                    var planeDirection = planeNormal.Cross(sideDirection).Normalize();
-        
-                    return planeDirection * Dot(this, planeDirection);
-                }*/
+        /*public Vector3D ProjectToPlane(Vector3D planeNormal)
+                        {
+                            var sideDirection = Cross(planeNormal);
+
+                            var planeDirection = planeNormal.Cross(sideDirection).Normalize();
+
+                            return planeDirection * Dot(this, planeDirection);
+                        }*/
 
 
 
@@ -245,7 +249,7 @@ namespace Sceelix.Mathematics.Data
         {
             if (obj is Vector4D)
             {
-                var v = (Vector4D) obj;
+                var v = (Vector4D)obj;
 
                 return Math.Abs(X - v.X) < Precision && Math.Abs(Y - v.Y) < Precision &&
                        Math.Abs(Z - v.Z) < Precision && Math.Abs(W - v.W) < Precision;
@@ -306,10 +310,10 @@ namespace Sceelix.Mathematics.Data
 
 
 
-/*public bool IsCollinear(Vector4D v1)
-                {
-                    return IsCollinear(this, v1);
-                }*/
+        /*public bool IsCollinear(Vector4D v1)
+                        {
+                            return IsCollinear(this, v1);
+                        }*/
 
         /*public static float Precision
         {
@@ -320,22 +324,22 @@ namespace Sceelix.Mathematics.Data
 
         public Vector4D Round()
         {
-            return new Vector4D((float) Math.Round(X, PrecisionDigits), (float) Math.Round(Y, PrecisionDigits), (float) Math.Round(Z, PrecisionDigits), (float) Math.Round(W, PrecisionDigits));
+            return new Vector4D((float)Math.Round(X, PrecisionDigits), (float)Math.Round(Y, PrecisionDigits), (float)Math.Round(Z, PrecisionDigits), (float)Math.Round(W, PrecisionDigits));
         }
 
 
 
         public Vector4D Round(int decimalCases)
         {
-            return new Vector4D((float) Math.Round(X, decimalCases), (float) Math.Round(Y, decimalCases), (float) Math.Round(Z, decimalCases), (float) Math.Round(W, decimalCases));
+            return new Vector4D((float)Math.Round(X, decimalCases), (float)Math.Round(Y, decimalCases), (float)Math.Round(Z, decimalCases), (float)Math.Round(W, decimalCases));
         }
 
 
 
-/*public bool IsCollinear(Vector4D v2, float tolerance)
-                {
-                    return Cross(this.Normalize(), v2.Normalize()).Length < tolerance;
-                }*/
+        /*public bool IsCollinear(Vector4D v2, float tolerance)
+                        {
+                            return Cross(this.Normalize(), v2.Normalize()).Length < tolerance;
+                        }*/
 
         /*public static bool IsCollinear(Vector3D v1, Vector3D v2)
         {
@@ -397,19 +401,19 @@ namespace Sceelix.Mathematics.Data
 
 
 
-/*public static float GetCommonMultiplier(Vector3D v1, Vector3D v2)
-                {
-                    float a = 0;
-        
-                    if (v2.X != 0)
-                        a = v1.X/v2.X;
-                    else if (v2.Y != 0)
-                        a = v1.Y/v2.Y;
-                    else if (v2.Z != 0)
-                        a = v1.Z/v2.Z;
-        
-                    return a;
-                }*/
+        /*public static float GetCommonMultiplier(Vector3D v1, Vector3D v2)
+                        {
+                            float a = 0;
+
+                            if (v2.X != 0)
+                                a = v1.X/v2.X;
+                            else if (v2.Y != 0)
+                                a = v1.Y/v2.Y;
+                            else if (v2.Z != 0)
+                                a = v1.Z/v2.Z;
+
+                            return a;
+                        }*/
 
         /*public static int LongAxis(ref Vector3D v)
         {
@@ -475,7 +479,7 @@ namespace Sceelix.Mathematics.Data
 
         public float[] ToArray()
         {
-            return new[] {X, Y, Z, W};
+            return new[] { X, Y, Z, W };
         }
 
         #endregion
@@ -621,7 +625,7 @@ namespace Sceelix.Mathematics.Data
         }
 
 
-        public float Length => (float) Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+        public float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
 
 
         public float SquareLength => X * X + Y * Y + Z * Z + W * W;
@@ -708,7 +712,7 @@ namespace Sceelix.Mathematics.Data
             set
             {
                 _precisionDigits = value;
-                Precision = (float) Math.Pow(0.1, _precisionDigits);
+                Precision = (float)Math.Pow(0.1, _precisionDigits);
             }
         }
 

@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using Sceelix.Extensions;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Data
 {
@@ -73,7 +74,7 @@ namespace Sceelix.Mathematics.Data
             float dy = Y - b.Y;
             float dz = Z - b.Z;
 
-            return (float) Math.Sqrt(dx * dx + dy * dy + dz * dz);
+            return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
 
@@ -84,7 +85,7 @@ namespace Sceelix.Mathematics.Data
             float dy = a.Y - b.Y;
             float dz = a.Z - b.Z;
 
-            return (float) Math.Sqrt(dx * dx + dy * dy + dz * dz);
+            return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
 
@@ -155,7 +156,7 @@ namespace Sceelix.Mathematics.Data
         {
             float f = Dot(b) / (Length * b.Length);
 
-            return (float) Math.Acos(Math.Round(f, PrecisionDigits));
+            return (float)Math.Acos(Math.Round(f, PrecisionDigits));
         }
 
 
@@ -163,26 +164,26 @@ namespace Sceelix.Mathematics.Data
         public float AngleToOrdered(Vector3D b, Vector3D axis)
         {
             if (Cross(b).Dot(axis) > 0)
-                return (float) (Math.PI + AngleTo(-b));
+                return (float)(Math.PI + AngleTo(-b));
 
             return AngleTo(b);
         }
 
 
 
-/*public float AngleAroundAxisTo(Vector3D axis, Vector3D b)
-                {
-                    float f = Dot(b) / (Length * b.Length);
-        
-                    return (float)Math.Acos(Math.Round(f, PrecisionDigits));
-                }*/
+        /*public float AngleAroundAxisTo(Vector3D axis, Vector3D b)
+                        {
+                            float f = Dot(b) / (Length * b.Length);
+
+                            return (float)Math.Acos(Math.Round(f, PrecisionDigits));
+                        }*/
 
 
 
         public Vector3D Rotate(Vector3D axis, float angle)
         {
-            return (this - axis * (axis * this)) * (float) Math.Cos(angle)
-                   + axis.Cross(this) * (float) Math.Sin(angle) +
+            return (this - axis * (axis * this)) * (float)Math.Cos(angle)
+                   + axis.Cross(this) * (float)Math.Sin(angle) +
                    axis * (axis * this);
         }
 
@@ -190,7 +191,7 @@ namespace Sceelix.Mathematics.Data
 
         public float this[int index] => ToArray()[index];
 
-
+   
 
         public float this[string coordinate]
         {
@@ -235,7 +236,7 @@ namespace Sceelix.Mathematics.Data
         {
             if (obj is Vector3D)
             {
-                var v = (Vector3D) obj;
+                var v = (Vector3D)obj;
 
                 return Math.Abs(X - v.X) < Precision && Math.Abs(Y - v.Y) < Precision &&
                        Math.Abs(Z - v.Z) < Precision;
@@ -303,23 +304,23 @@ namespace Sceelix.Mathematics.Data
 
 
 
-/*public static float Precision
-                {
-                    get { return _precision; }
-                }*/
+        /*public static float Precision
+                        {
+                            get { return _precision; }
+                        }*/
 
 
 
         public Vector3D Round()
         {
-            return new Vector3D((float) Math.Round(X, PrecisionDigits), (float) Math.Round(Y, PrecisionDigits), (float) Math.Round(Z, PrecisionDigits));
+            return new Vector3D((float)Math.Round(X, PrecisionDigits), (float)Math.Round(Y, PrecisionDigits), (float)Math.Round(Z, PrecisionDigits));
         }
 
 
 
         public Vector3D Round(int decimalCases)
         {
-            return new Vector3D((float) Math.Round(X, decimalCases), (float) Math.Round(Y, decimalCases), (float) Math.Round(Z, decimalCases));
+            return new Vector3D((float)Math.Round(X, decimalCases), (float)Math.Round(Y, decimalCases), (float)Math.Round(Z, decimalCases));
         }
 
 
@@ -335,7 +336,7 @@ namespace Sceelix.Mathematics.Data
 
         public static Vector3D Average(params Vector3D[] vectors)
         {
-            return Average((IEnumerable<Vector3D>) vectors);
+            return Average((IEnumerable<Vector3D>)vectors);
         }
 
 
@@ -474,6 +475,10 @@ namespace Sceelix.Mathematics.Data
         }
 
 
+        public Vector3 ToVector3()
+        {
+            return new Vector3(X, Y, Z);
+        }
 
         public Vector2D ToVector2D()
         {
@@ -538,7 +543,7 @@ namespace Sceelix.Mathematics.Data
 
         public float[] ToArray()
         {
-            return new[] {X, Y, Z};
+            return new[] { X, Y, Z };
         }
 
 
@@ -721,7 +726,7 @@ namespace Sceelix.Mathematics.Data
         }
 
 
-        public float Length => (float) Math.Sqrt(SquareLength);
+        public float Length => (float)Math.Sqrt(SquareLength);
 
 
         public float SquareLength => X * X + Y * Y + Z * Z;
@@ -816,7 +821,7 @@ namespace Sceelix.Mathematics.Data
             set
             {
                 _precisionDigits = value;
-                Precision = (float) Math.Pow(0.1, _precisionDigits);
+                Precision = (float)Math.Pow(0.1, _precisionDigits);
             }
         }
 
