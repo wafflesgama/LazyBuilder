@@ -63,8 +63,6 @@ namespace LazyProcedural
 
 
 
-
-
             //g2.Parameters
 
             MeshCreateProcedure meshProc = new MeshCreateProcedure();
@@ -82,6 +80,7 @@ namespace LazyProcedural
             //procedure.Inputs[0].Input.Enqueue
 
             //meshProc.Execute();
+            long elapsedMs;
 
             MeshModifyProcedure meshModifyProc = new MeshModifyProcedure();
             var op = meshModifyProc.Parameters["Operation"];
@@ -160,8 +159,17 @@ namespace LazyProcedural
             //this peeks (but not removes) one item from the first ouput
             //IEntity entity2 = meshModifyProc.Outputs[0].Peek();
 
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch2 = System.Diagnostics.Stopwatch.StartNew();
 
             var g = new Sceelix.Core.Graphs.Graph();
+            
+            watch2.Stop();
+           elapsedMs = watch2.ElapsedMilliseconds;
+            Debug.Log("Time took to calculate new Graph " + elapsedMs);
+            watch2.Reset();
+            watch2.Restart();
+
             //g.AddNode(new Sceelix.Core.Graphs.Node())
             //var meshNode= new MeshCreateNode()
             var meshNode = new SystemNode(meshProc, new Point(0, 0));
@@ -169,14 +177,43 @@ namespace LazyProcedural
             g.AddNode(meshNode);
             g.AddNode(meshModNode);
 
+            watch2.Stop();
+            elapsedMs = watch2.ElapsedMilliseconds;
+            Debug.Log("Time took to calculate add Nodes " + elapsedMs);
+            watch2.Reset();
+            watch2.Restart();
+
             //Sceelix.Core.Graphs.Edge edge = new Sceelix.Core.Graphs.Edge(meshProc.Outputs[0].OutputPort, meshModifyProc.Inputs[0].InputPort);
             Sceelix.Core.Graphs.Edge edge = new Sceelix.Core.Graphs.Edge(meshNode.OutputPorts[0], meshModNode.InputPorts[0]);
             g.AddEdge(edge);
 
+            watch2.Stop();
+            elapsedMs = watch2.ElapsedMilliseconds;
+            Debug.Log("Time took to calculate add edge " + elapsedMs);
+            watch2.Reset();
+            watch2.Restart();
+
             IndependentGraphProcedure g2 = new IndependentGraphProcedure(g, "aa", environment);
+
+            watch2.Stop();
+            elapsedMs = watch2.ElapsedMilliseconds;
+            Debug.Log("Time took to calculate IndependentGraphProcedure " + elapsedMs);
+            watch2.Reset();
+            watch2.Restart();
+
             g2.Execute();
 
-            var entities = g2.Outputs.DequeueAll();
+            watch2.Stop();
+            elapsedMs = watch2.ElapsedMilliseconds;
+            Debug.Log("Time took to calculate Execute " + elapsedMs);
+            watch2.Reset();
+            watch2.Restart();
+
+            watch.Stop();
+            elapsedMs = watch.ElapsedMilliseconds;
+            Debug.Log("Time took to calculate Total " + elapsedMs);
+
+            //var entities = g2.Outputs.DequeueAll();
             if (g2.Outputs.Count > 0)
             {
                 IEntity entity = g2.Outputs[0].Peek();
