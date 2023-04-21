@@ -1,0 +1,9 @@
+
+.unity-text-field > .unity-base-field__input{
+     background-color: transparent;
+     border-color: transparent;
+}
+
+.category:hover{
+         background-color: rgb(43, 93, 135);
+}

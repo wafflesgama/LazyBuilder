@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Header" style="height: 50px; background-color: rgb(39, 39, 39); padding-top: 7px; padding-left: 4px; padding-right: 4px;">
+        <ui:Label text="Create Node" display-tooltip-when-elided="true" style="-unity-font-style: normal;" />
+        <ui:VisualElement name="Searchbar" style="flex-direction: row; height: 21px; background-color: rgb(69, 69, 69); border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; align-items: center; padding-left: 8px; padding-right: 6px; padding-top: 2px; padding-bottom: 2px;">
+            <ui:VisualElement style="width: 14px; height: 14px; background-color: rgb(255, 255, 255);" />
+            <ui:TextField picking-mode="Ignore" style="flex-grow: 1; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Body" style="flex-grow: 1;">
+        <ui:VisualElement name="Category" class="category" style="height: 25px; padding-top: 0; padding-bottom: 0; justify-content: flex-end;">
+            <ui:Foldout text="Artistic" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

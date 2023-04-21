@@ -108,6 +108,8 @@ namespace LazyProcedural
             _graph = _root.Q("Graph");
             _graph.Add(graph);
 
+
+
         }
 
         private void SetupBindings()
@@ -118,7 +120,7 @@ namespace LazyProcedural
             _testMinusButton = (Button)_root.Q("Remove");
             _testSlider = (Slider)_root.Q("Value");
 
-            
+
             //-----Main Area
 
 
@@ -183,13 +185,13 @@ namespace LazyProcedural
         private const float dif = .1f;
         void MoreGen()
         {
-            extruee+= dif;
+            extruee += dif;
             MainController.CallSystemProcedureSample(extruee);
         }
 
         void LessGen()
         {
-            extruee-= dif;
+            extruee -= dif;
             MainController.CallSystemProcedureSample(extruee);
         }
 
@@ -208,7 +210,7 @@ namespace LazyProcedural
 
             else if (e.keyCode == KeyCode.Space)
             {
-                //Search();
+                OpenSearch();
                 //_searchBar.Focus();
             }
 
@@ -226,6 +228,29 @@ namespace LazyProcedural
 
         #endregion BaseUI
 
+
+        private void OpenSearch()
+        {
+            var searchWindow = new SearchWindow();
+            searchWindow.ShowPopup();
+            float windowsScale = 1.25f; // must be 1.25f if using 125%
+            var pos = Event.current.mousePosition* windowsScale;
+            Vector2 offset = new Vector2(-25, 100);
+
+            var actualScreenPosition = new Vector2(
+                pos.x,
+
+            // the Y position is flipped, so we have to account for that
+            // we also have to account for parts above the "Scene" window
+            Screen.height - (pos.y + 25)
+            );
+
+            Vector2 mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
+
+            //searchWindow.position = new Rect(mousePos.x, mousePos.y, position.width, position.height);
+            searchWindow.position = new Rect(actualScreenPosition, searchWindow.position.size);
+            //searchWindow.position = new Rect(actualScreenPosition, searchWindow.position.size);
+        }
 
 
         private void OnAboutMenuChanged(string option)
