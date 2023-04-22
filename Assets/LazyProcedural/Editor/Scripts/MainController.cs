@@ -22,7 +22,6 @@ using Sceelix.Core.Parameters;
 using Sceelix.Meshes.Data;
 using Sceelix.Meshes.Operations;
 using Sceelix.Mathematics.Data;
-using Sceelix.Core.Graphs;
 
 namespace LazyProcedural
 {
@@ -53,141 +52,37 @@ namespace LazyProcedural
             ParameterManager.Initialize();
 
             //CallSystemProcedureSample(2);
+            environment = new ProcedureEnvironment(new ResourceManager($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}", Assembly.GetExecutingAssembly()));
+
+            meshProc = new MeshCreateProcedure();
+            meshProc.Parameters["Primitive"].Set("Cone");
+
+            meshModifyProc = new MeshModifyProcedure();
         }
 
+        static ProcedureEnvironment environment;
+        static MeshCreateProcedure meshProc;
+        static MeshModifyProcedure meshModifyProc;
 
         public static void CallSystemProcedureSample(float extrude)
         {
-            //you should create a LoadEnvironment instance and pass it to your procedures, so that it can find resources (files, textures, etc.)
-            ProcedureEnvironment environment = new ProcedureEnvironment(new ResourceManager($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}", Assembly.GetExecutingAssembly()));
-
-
-
-
-
-            //g2.Parameters
-
-            MeshCreateProcedure meshProc = new MeshCreateProcedure();
-
-            meshProc.Parameters["Primitive"].Set("Cone");
-
-
-            //create an instance of the system procedure and set the loadenvironment
-            //LogProcedure procedure = new LogProcedure();
-            //procedure.Environment = environment;
-
-            //parameters are set in this way, using the same labels as viewed in the Sceelix Designer
-            //procedure.Parameters["Inputs"].Set("Single");
-
-            //procedure.Inputs[0].Input.Enqueue
-
-            //meshProc.Execute();
-
-            MeshModifyProcedure meshModifyProc = new MeshModifyProcedure();
             var op = meshModifyProc.Parameters["Operation"];
             op.Parameters[0].Parameters["Amount"].Set(extrude);
 
-            //var test = meshModifyProc.Inputs[0];
-            //var test2 = meshModifyProc.Parameters[0].Inputs[0];
 
-            //meshModifyProc.Inputs[0].Enqueue(meshProc.Outputs[0].Peek());
-
-            //CopyProcedure copyProcedure = new CopyProcedure();
-
-            //copyProcedure.Parameters["Operation"].Set("Standard");
-
-            //copyProcedure.Parameters["Number of Copies"]
-            //copyProcedure.Parameters["Operation"].Inputs[0].Enqueue(meshProc.Outputs[0].Peek());
-            //copyProcedure.Inputs[0].Enqueue(meshProc.Outputs[0].Peek());
-
-            //procedure.Outputs
-            //for lists, there are several options for settings data
-            //1) Set a string, which will add an item with that label to the list
-            //alternatively, you could use the same Set function for lists, which does the same as Add
-            //procedure.Parameters["Messages"].Set("Text");
-            //procedure.Parameters["Messages"].Parameters.Last().Set("Hello!");
-
-            ////2) Set an enumerable of strings, which will add several items with those labels to the list
-            //procedure.Parameters["Messages"].Set(new[] { "Text", "Text" });
-            //procedure.Parameters["Messages"].Parameters[1].Set("This is a second message.");
-            //procedure.Parameters["Messages"].Parameters[2].Set("This is a third message.");
-
-            //You can also set data within a loop
-            //var listParameter = procedure.Parameters["Messages"];
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    listParameter.Set("Text");
-
-            //    //you can set expressions (and reference attribute values) using the overload of the set function.
-            //    listParameter.Parameters[i].SetExpression((inputData, currentEntity) => String.Format("The value of the attribute is '{0}'", inputData.Get(new GlobalAttributeKey("MyAttribute"), true)));
-            //}
-
-            //to see what's stored in the parameter, you can always get it
-            ////var data = listParameter.Get();
-            //Console.WriteLine(data);
-
-            //3) You can use Sceelix's associative array, the Sceelist
-            //bu setting it, you'll replace all the above
-            //SceeList sceelist = new SceeList(new KeyValuePair<string, object>("Text", "Message 4."), new KeyValuePair<string, object>("Text", "Message 5."), new KeyValuePair<string, object>("Text", "Message 6."));
-            //Uncomment to see the result
-            //listParameter.Set(sceelist);
+            meshProc.Execute();
 
 
-
-            //Now, to set the inputs
-            //let's create a new entity
-            //var newEntity = new Entity();
-            //newEntity.Attributes.Add(new GlobalAttributeKey("MyAttribute"), 123);
-
-            //in this case, the input is tied to "Single" parameter, so you would need to do this.
-
-            //procedure.Parameters["Inputs"].Parameters["Single"].Inputs["Single"].Enqueue(newEntity);
-
-            //or, after you have set all the parameters, you can call this function
-            //to set all the ports and then use the procedure.Inputs field
-            //procedure.UpdateParameterPorts();
-
-            //var otherEntity = new Entity();
-            //otherEntity.Attributes.Add(new GlobalAttributeKey("MyAttribute"), "This is another value!");
-            //procedure.Inputs[0].Enqueue(otherEntity);
-
-            //once we have finished the parameterization, execute it!
-            //it will execute twice since we have added 2 entities to the input
-
-            //meshModifyProc.Execute();
-
-            //now we can get the data from the outputs
-            //this peeks (but not removes) one item from the first ouput
-            //IEntity entity2 = meshModifyProc.Outputs[0].Peek();
+            meshModifyProc.Inputs[0].Enqueue(meshProc.Outputs[0].Peek().DeepClone());
+            meshModifyProc.Execute();
 
 
-            var g = new Sceelix.Core.Graphs.Graph();
-            //g.AddNode(new Sceelix.Core.Graphs.Node())
-            //var meshNode= new MeshCreateNode()
-            var meshNode = new SystemNode(meshProc, new Point(0, 0));
-            var meshModNode = new SystemNode(meshModifyProc, new Point(0, 0));
-            g.AddNode(meshNode);
-            g.AddNode(meshModNode);
+            IEntity entity = meshProc.Outputs[0].Peek();
+            IEntity entity2 = meshModifyProc.Outputs[0].Peek();
 
-            //Sceelix.Core.Graphs.Edge edge = new Sceelix.Core.Graphs.Edge(meshProc.Outputs[0].OutputPort, meshModifyProc.Inputs[0].InputPort);
-            Sceelix.Core.Graphs.Edge edge = new Sceelix.Core.Graphs.Edge(meshNode.OutputPorts[0], meshModNode.InputPorts[0]);
-            g.AddEdge(edge);
+            MeshCreate((MeshEntity)entity, "Cube");
+            MeshCreate((MeshEntity)entity2, "Cube 2");
 
-            IndependentGraphProcedure g2 = new IndependentGraphProcedure(g, "aa", environment);
-            g2.Execute();
-
-            var entities = g2.Outputs.DequeueAll();
-            if (g2.Outputs.Count > 0)
-            {
-                IEntity entity = g2.Outputs[0].Peek();
-                MeshCreate((MeshEntity)entity);
-            }
-
-            //this peeks all the data from all the output ports
-            //List<IEntity> entities = meshProc.Outputs.PeekAll().ToList();
-
-            //this gets (and removes) all the data from all the output ports
-            //IEnumerable<IEntity> poppedEntities = meshProc.Outputs.DequeueAll();
         }
 
         public static Material CreateDefaultMaterial()
@@ -198,7 +93,7 @@ namespace LazyProcedural
                 return new Material(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.defaultMaterial);
         }
 
-        public static GameObject MeshCreate(Sceelix.Meshes.Data.MeshEntity meshEntity)
+        public static GameObject MeshCreate(Sceelix.Meshes.Data.MeshEntity meshEntity, string objName)
         {
             Dictionary<Sceelix.Actors.Data.Material, int> materialToMaterialData = new Dictionary<Sceelix.Actors.Data.Material, int>();
 
@@ -208,7 +103,7 @@ namespace LazyProcedural
             //MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
 
             //meshRenderer.material = CreateDefaultMaterial();
-            GameObject obj = GameObject.Find("Cube");
+            GameObject obj = GameObject.Find(objName);
             //MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
 
