@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityGraph = UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-
+using Sceelix.Core.Procedures;
+using UnityEngine;
+using Sceelix.Meshes.Procedures;
 
 namespace LazyProcedural
 {
     public class Graph : UnityGraph.GraphView
     {
+        public event NodeEvent OnNodeSelected;
+
 
         public Graph()
         {
@@ -18,31 +22,57 @@ namespace LazyProcedural
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new FreehandSelector());
-            this.AddManipulator(new ClickSelector()); 
+            this.AddManipulator(new ClickSelector());
 
             var zoomer = new ContentZoomer();
             zoomer.maxScale = 10;
             this.AddManipulator(zoomer);
 
+            AddNode(typeof(MeshCreateProcedure));
+            AddNode(typeof(MeshDecomposeProcedure));
+            AddNode(typeof(MeshModifyProcedure));
+            AddNode(typeof(MeshLoftProcedure));
 
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
-            AddElement(ObjectFactory.InstantiateTestNode());
+            this.graphViewChanged = new GraphViewChanged(OnGraphChanged);
+            //AddNode()
         }
+
+
+        private GraphViewChange OnGraphChanged(UnityGraph.GraphViewChange change)
+        {
+            //if (change.edgesToCreate.Count > 0)
+            //    foreach (var edge in change.edgesToCreate)
+            //        OnEdgeConnected(edge);
+
+            //if(change.elementsToRemove.Count > 0)
+            //{
+            //    foreach (var element in change.elementsToRemove)
+            //    {
+            //        if(element.GetType()== typeof(UnityGraph.Edge)) 
+            //            OnEdgeDisconnected((UnityGraph.Edge)element);   
+            //    }
+            //}
+
+            return change;
+        }
+
+        //private void OnEdgeConnected(UnityGraph.Edge edge)
+        //{
+        //    Node inNode = (Node)edge.input.node;
+        //    Node outNode= (Node)edge.output.node;
+
+        //    int inIndex= inNode.GetPortIndex((Port)edge.input);
+        //    int outIndex= outNode.GetPortIndex((Port)edge.output);
+
+        //    //inNode.nodeData.Inputs.
+        //}
+
+        //private void OnEdgeDisconnected(UnityGraph.Edge edge)
+        //{
+
+        //}
+
+
 
         public override List<UnityGraph.Port> GetCompatiblePorts(UnityGraph.Port startPort, NodeAdapter nodeAdapter)
         {
@@ -65,8 +95,8 @@ namespace LazyProcedural
 
                 if (!checkedNodes.ContainsKey(endNode))
                 {
-                    //Check if there recursiveness between the end and start nodes (if connecting them would create a loop)
-                    var connectionResult = CheckConnection(endNode, startNode);
+                //Check if there recursiveness between the end and start nodes (if connecting them would create a loop)
+                var connectionResult = CheckConnection(endNode, startNode);
                     checkedNodes.Add(endNode, connectionResult);
                     if (connectionResult)
                         return;
@@ -78,6 +108,25 @@ namespace LazyProcedural
             });
 
             return compatiblePorts;
+        }
+
+        public void AddNode(Type procedureType)
+        {
+            if (!procedureType.IsSubclassOf(typeof(Procedure)))
+            {
+                Debug.LogError("Cannot create non-procedure node");
+                return;
+            }
+
+            var node = ObjectFactory.CreateNode(procedureType);
+            node.OnNodeSelected += Node_OnNodeSelected;
+            AddElement(node);
+        }
+
+        private void Node_OnNodeSelected(Node node)
+        {
+            if (OnNodeSelected != null)
+                OnNodeSelected.Invoke(node);
         }
 
         public bool CheckTypeCompatiblity(Type inType, Type outType)

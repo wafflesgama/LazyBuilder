@@ -194,6 +194,11 @@ namespace Sceelix.Core.Parameters
         }
 
 
+        public IEnumerable<string> GetAvailableFunctions()
+        {
+            return _creationFunctionsDictionary.Keys;
+        }
+
 
         private static IEnumerable<Func<Parameter, Parameter>> GetCreationFunctions<T>(
             IEnumerable<Func<T>> baseCreationFunctions) where T : Parameter

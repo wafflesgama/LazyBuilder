@@ -40,29 +40,17 @@ namespace LazyProcedural
         [MenuItem("Tools/Lazy Procedural/Test Sceelix #g")]
         public static void OpenTest()
         {
-            ScriptableObject scriptSource = new MainController();
-            PathFactory.Init(scriptSource);
-
-            SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
-
-            var checkTypes = SceelixDomain.Types.ToList();
-
-            EngineManager.Initialize();
-
-            ParameterManager.Initialize();
-
-            //CallSystemProcedureSample(2);
-            environment = new ProcedureEnvironment(new ResourceManager($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}", Assembly.GetExecutingAssembly()));
-
+           
             meshProc = new MeshCreateProcedure();
+            
             meshProc.Parameters["Primitive"].Set("Cone");
 
             meshModifyProc = new MeshModifyProcedure();
         }
 
         static ProcedureEnvironment environment;
-        static MeshCreateProcedure meshProc;
-        static MeshModifyProcedure meshModifyProc;
+        public static MeshCreateProcedure meshProc;
+       public static MeshModifyProcedure meshModifyProc;
 
         public static void CallSystemProcedureSample(float extrude)
         {
@@ -211,8 +199,17 @@ namespace LazyProcedural
             Selection.activeObject = target;
 
             string graphName = Path.GetFileNameWithoutExtension(path);
-            GraphWindow(graphName);
+
+            ShowGraph();
+
+            //var windows =UnityEditor.Experimental.GraphView.GraphViewEditorWindow.ShowGraphViewWindowWithTools<GraphWindow>();
+
             return true;
+        }
+
+        public static void ShowGraph(string graphName="Test")
+        {
+            GraphWindow(graphName);
         }
 
         public void CreateGraph()

@@ -5,20 +5,29 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor.Experimental.GraphView;
+using Sceelix.Loading;
+using Sceelix.Core;
+using Sceelix.Core.Parameters;
+using Sceelix.Core.Environments;
+using System.Resources;
+using System.Reflection;
 
 namespace LazyProcedural
 {
-    public class GraphWindow : EditorWindow
+    public class GraphWindow : UnityEditor.Experimental.GraphView.GraphViewEditorWindow
     {
 
         private VisualElement _root;
+        private Graph graph;
+
         //-----Header Area
+        private Button _showContextButton;
         private Button _testPlusButton;
         private Button _testMinusButton;
         private Slider _testSlider;
 
         //-----Main Area
-        private Graph graph;
         private VisualElement _graph;
 
 
@@ -36,7 +45,9 @@ namespace LazyProcedural
         private PopupField<string> _aboutDrop;
         private VisualElement _aboutIcon;
 
-
+        //Windows
+        private ContextWindow _contextWindow;
+        private bool isContextOpen;
 
         //Messages
 
@@ -61,12 +72,24 @@ namespace LazyProcedural
 
         private void OnEnable()
         {
+            PathFactory.Init(this);
+
+            SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
+
+            EngineManager.Initialize();
+
+            ParameterManager.Initialize();
+
+        
+
 
             InitVariables();
             MainController.OpenTest();
             //InitPreferences();
 
             SetupBaseUI();
+            SetupExtraWindows();
+
             SetupBindings();
             SetupPatchedDropdowns();
             SetupIcons();
@@ -76,7 +99,45 @@ namespace LazyProcedural
 
             SetupFooterMenuItems();
 
+            graph.OnNodeSelected += OnNodeSelected;
+
             LogMessage("Setup finished");
+
+            //_contextWindow.ShowNode(MainController.meshProc);
+
+        }
+
+        private void OnNodeSelected(Node node)
+        {
+            _contextWindow.ShowNode(node.nodeData);
+        }
+
+        private void OpenCloseContextWindow()
+        {
+            if (isContextOpen)
+                CloseContextWindow();
+            else
+                OpenContextWindow();
+        }
+        private void OpenContextWindow()
+        {
+            if (isContextOpen) return;
+
+            _contextWindow = new ContextWindow();
+            _contextWindow.Show();
+            isContextOpen = true;
+        }
+        private void CloseContextWindow()
+        {
+            if (!isContextOpen) return;
+
+            _contextWindow.Close();
+            isContextOpen = false;
+        }
+
+        private void OnDestroy()
+        {
+            _contextWindow.Close();
         }
 
 
@@ -108,9 +169,33 @@ namespace LazyProcedural
             _graph = _root.Q("Graph");
             _graph.Add(graph);
 
+            //graphvi
+
+            //this.
+
+
+            //var b = new UnityEditor.Experimental.GraphView.GraphViewBlackboardWindow();
+            //b.SelectGraphViewFromWindow(this, graph);
+            //b.Show();
+            //b.SelectGraphViewFromWindow()
+            //b.SelectGraphViewFromWindow(graph);
+            //b.visible = true;
+            //b.style.height = 220f;
+            //b.style.width = 100f;
+            //graph.ReleaseBlackboard(b);
+            //var blackB = graph.GetBlackboard();
+            //blackB.showInMiniMap = true;
 
 
         }
+
+        private void SetupExtraWindows()
+        {
+            _contextWindow = new ContextWindow();
+
+        }
+
+
 
         private void SetupBindings()
         {
@@ -119,7 +204,7 @@ namespace LazyProcedural
             _testPlusButton = (Button)_root.Q("Add");
             _testMinusButton = (Button)_root.Q("Remove");
             _testSlider = (Slider)_root.Q("Value");
-
+            _showContextButton = (Button)_root.Q("ShowContextBttn");
 
             //-----Main Area
 
@@ -176,6 +261,7 @@ namespace LazyProcedural
             _testMinusButton.clicked += LessGen;
             _testSlider.RegisterValueChangedCallback(x => MainController.CallSystemProcedureSample(x.newValue));
 
+            _showContextButton.clicked += OpenCloseContextWindow;
             //Footer Menu Items
             _aboutDrop.RegisterValueChangedCallback(x => OnAboutMenuChanged(x.newValue));
             _settingdDrop.RegisterValueChangedCallback(x => OnSettingsMenuChanged(x.newValue));
@@ -234,7 +320,7 @@ namespace LazyProcedural
             var searchWindow = new SearchWindow();
             searchWindow.ShowPopup();
             float windowsScale = 1.25f; // must be 1.25f if using 125%
-            var pos = Event.current.mousePosition* windowsScale;
+            var pos = Event.current.mousePosition * windowsScale;
             Vector2 offset = new Vector2(-25, 100);
 
             var actualScreenPosition = new Vector2(

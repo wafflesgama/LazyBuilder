@@ -27,8 +27,12 @@ namespace LazyProcedural
             //EditorGUI.TextArea(Rect.zero, "Ssdadasds asdasd");
             //EditorGUIUtility.set(gameObject, (Texture2D)iconContent.image);
             //GUILayout.be
-            GUILayout.Button("Open Graph");
-            GUILayout.Button("See Generated Code");
+            if (
+            GUILayout.Button("Open Graph"))
+            {
+                MainController.ShowGraph();
+            }
+            //GUILayout.Button("See Generated Code");
 
             //base.OnInspectorGUI();
         }

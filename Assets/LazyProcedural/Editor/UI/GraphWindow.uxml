@@ -6,6 +6,7 @@
         <ui:Button text="-" display-tooltip-when-elided="true" name="Remove" />
         <ui:Slider picking-mode="Ignore" value="1" high-value="6" name="Value" low-value="0" style="width: 85px;" />
         <ui:VisualElement name="Spacer" style="flex-grow: 1;" />
+        <ui:Button text="Context" display-tooltip-when-elided="true" name="ShowContextBttn" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-left-color: rgba(0, 0, 0, 0.5); border-right-color: rgba(0, 0, 0, 0.5); border-top-color: rgba(0, 0, 0, 0.5); border-bottom-color: rgba(0, 0, 0, 0.5); border-right-width: 0; background-color: rgb(60, 60, 60);" />
         <ui:Button text="Save asset" display-tooltip-when-elided="true" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-left-color: rgba(0, 0, 0, 0.5); border-right-color: rgba(0, 0, 0, 0.5); border-top-color: rgba(0, 0, 0, 0.5); border-bottom-color: rgba(0, 0, 0, 0.5); border-right-width: 0; background-color: rgb(60, 60, 60);" />
     </ui:VisualElement>
     <ui:VisualElement name="Graph" style="flex-grow: 1; background-color: rgb(34, 34, 34);" />
