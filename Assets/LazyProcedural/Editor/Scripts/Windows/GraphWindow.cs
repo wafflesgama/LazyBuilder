@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -74,17 +75,17 @@ namespace LazyProcedural
         {
             PathFactory.Init(this);
 
-            SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
+            //SceelixDomain.LoadAssembliesFrom($"{PathFactory.absoluteToolPath}\\{PathFactory.SCEELIX_PATH}");
 
-            EngineManager.Initialize();
+            //EngineManager.Initialize();
 
-            ParameterManager.Initialize();
-
-        
-
-
+            //ParameterManager.Initialize();
+            GenerationManager.Init();
             InitVariables();
-            MainController.OpenTest();
+
+
+            //MainController.OpenTest();
+
             //InitPreferences();
 
             SetupBaseUI();
@@ -257,9 +258,10 @@ namespace LazyProcedural
             //_serversDropdown.RegisterValueChangedCallback(x => ServerChanged(x.newValue));
             //_generateBttn.clicked += Generate;
 
-            _testPlusButton.clicked += MoreGen;
-            _testMinusButton.clicked += LessGen;
-            _testSlider.RegisterValueChangedCallback(x => MainController.CallSystemProcedureSample(x.newValue));
+            //_testPlusButton.clicked += MoreGen;
+            //_testMinusButton.clicked += LessGen;
+            _testSlider.RegisterValueChangedCallback(ChangedSlider);
+            //_testSlider.RegisterValueChangedCallback(x => MainController.CallSystemProcedureSample(x.newValue));
 
             _showContextButton.clicked += OpenCloseContextWindow;
             //Footer Menu Items
@@ -267,19 +269,30 @@ namespace LazyProcedural
             _settingdDrop.RegisterValueChangedCallback(x => OnSettingsMenuChanged(x.newValue));
         }
 
-        private float extruee = 1f;
-        private const float dif = .1f;
-        void MoreGen()
-        {
-            extruee += dif;
-            MainController.CallSystemProcedureSample(extruee);
-        }
+        //private float extruee = 1f;
+        //private const float dif = .1f;
 
-        void LessGen()
+        private void ChangedSlider(ChangeEvent<float> value)
         {
-            extruee -= dif;
-            MainController.CallSystemProcedureSample(extruee);
+            var modifyNode = (Node)graph.nodes.ToList().FirstOrDefault(x => ((Node)x).nodeData.GetType() == typeof(Sceelix.Meshes.Procedures.MeshModifyProcedure));
+            var op = modifyNode.nodeData.Parameters["Operation"];
+            op.Parameters[0].Parameters["Amount"].Set(value.newValue);
+
+            var meshes = GenerationManager.ExecuteGraph(graph.nodes.ToList());
+            MainController.MeshCreate((Sceelix.Meshes.Data.MeshEntity)meshes[0], "Cube");
+
         }
+        //void MoreGen()
+        //{
+        //    extruee += dif;
+        //    MainController.CallSystemProcedureSample(extruee);
+        //}
+
+        //void LessGen()
+        //{
+        //    extruee -= dif;
+        //    MainController.CallSystemProcedureSample(extruee);
+        //}
 
 
         private void SetupInputCallbacks()

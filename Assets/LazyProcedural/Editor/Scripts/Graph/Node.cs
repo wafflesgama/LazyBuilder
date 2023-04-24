@@ -87,6 +87,10 @@ namespace LazyProcedural
             return outPorts.IndexOf(port);
         }
 
+        public bool IsRootNode()
+        {
+            return inPorts.Count == 0;
+        }
         public int GetTotalConnectedPorts(bool inPorts)
         {
             return inPorts ? this.inPorts.Where(x=> x.connected).Count() : this.outPorts.Where(x => x.connected).Count();
