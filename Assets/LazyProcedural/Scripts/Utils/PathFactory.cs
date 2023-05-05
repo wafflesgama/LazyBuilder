@@ -24,6 +24,7 @@ namespace LazyProcedural
         //UI Layouts
         public const string GRAPH_WINDOW_LAYOUT_FILE = "GraphWindow";
         public const string SEARCH_WINDOW_LAYOUT_FILE = "SearchWindow";
+        public const string CONTEXT_WINDOW_LAYOUT_FILE = "ContextWindow";
 
         public const string ICON_FULL_FILE = "Icon_F";
         public const string ICON_SMALL_FILE = "Icon_S";

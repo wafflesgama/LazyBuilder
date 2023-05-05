@@ -18,6 +18,7 @@ namespace LazyProcedural
         private Vector2 addMousePos;
         private GenerationManager generationManager;
         private ProcessorManager processorManager;
+        private GeoGraphComponent graphComponent;
 
         //-----Header Area
         private Button _showContextButton;
@@ -73,6 +74,7 @@ namespace LazyProcedural
         {
 
             InitVariables();
+            InitGraph();
 
             SetupBaseUI();
             SetupExtraWindows();
@@ -96,11 +98,35 @@ namespace LazyProcedural
 
             SetupFooterMenuItems();
 
-            graph.OnNodeSelected += OnNodeSelected;
 
             FocusOnGraph();
 
             LogMessage("Setup finished");
+
+        }
+
+        private void InitVariables()
+        {
+            PathFactory.Init();
+
+            generationManager = new GenerationManager();
+
+            processorManager = new ProcessorManager();
+
+            ProcedureInfoManager.Init();
+
+            WindowManager.Init();
+
+            graphComponent = GraphComponentFinder.FindComponent();
+
+        }
+        private void InitGraph()
+        {
+            graph = new Graph();
+
+            graph.OnNodeSelected += OnNodeSelected;
+
+            graph.OnGraphChanged += OnGraphChanged;
 
         }
 
@@ -111,8 +137,9 @@ namespace LazyProcedural
 
             var pos = addMousePos;
             pos = _root.ChangeCoordinatesTo(_root.parent, pos - this.position.position);
-            //Vector2 worldMousePosition = _root.ChangeCoordinatesTo(_root.parent, pos - position.position);
             graph.AddNode(nodeInfo, pos);
+
+            RunGraph();
         }
 
 
@@ -121,7 +148,12 @@ namespace LazyProcedural
             if (graph.selection.Count > 1) return;
 
             OpenContextWindow();
-            _contextWindow.ShowNode(node.nodeData);
+            _contextWindow.BuildNodeParameters(node.nodeData);
+        }
+
+        private void OnGraphChanged()
+        {
+            RunGraph();
         }
 
         private void OpenCloseContextWindow()
@@ -134,7 +166,7 @@ namespace LazyProcedural
         private void OpenContextWindow()
         {
             if (_contextWindow == null)
-                _contextWindow = new ContextWindow();
+                _contextWindow = new ContextWindow(this);
 
             _contextWindow.Show();
         }
@@ -154,21 +186,7 @@ namespace LazyProcedural
         }
 
 
-        private void InitVariables()
-        {
-            PathFactory.Init();
 
-            graph = new Graph();
-
-            generationManager = new GenerationManager();
-
-            processorManager = new ProcessorManager();
-
-            ProcedureInfoManager.Init();
-
-            WindowManager.Init();
-
-        }
 
 
         #region Base UI
@@ -420,6 +438,11 @@ namespace LazyProcedural
         }
 
 
+        public void OnGraphValueUpdated()
+        {
+            RunGraph();
+        }
+
         private void DuplicateSelection()
         {
             var mousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
@@ -430,8 +453,12 @@ namespace LazyProcedural
 
         private void RunGraph()
         {
+            if (graphComponent == null)
+                graphComponent = GraphComponentFinder.FindComponent();
+
             var meshes = generationManager.ExecuteGraph(graph.nodes.ToList());
-            processorManager.Process(meshes);
+
+            processorManager.Populate(meshes, graphComponent);
         }
 
 

@@ -10,7 +10,9 @@ namespace Sceelix.Processors
 {
     interface IProcessor
     {
-        public GameObject Process(IEntity input);
+        public IEnumerable<Type> Require(IEntity input);
+        public void Process(RecycleObject recycleObject);
+
     }
 
     [AttributeUsage(AttributeTargets.Class)]

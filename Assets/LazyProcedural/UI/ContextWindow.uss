@@ -1,0 +1,39 @@
+
+
+
+.parameter {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.dropdown-parameter {
+    margin-left: 3px;
+    padding-left: 2px;
+    padding-top: 0;
+}
+
+.addList > .unity-popup-field__input {
+    min-width: 30px;
+    max-width: 30px;
+    flex-grow: 0;
+    padding-left: 8px;
+    /*background-color: red;*/
+    font-size: 16px !important;
+}
+
+.addList > Label {
+    flex-grow: 1;
+}
+
+.addList > .unity-popup-field__input > .unity-base-popup-field__text {
+}
+
+.addList > .unity-popup-field__input > .unity-base-popup-field__arrow {
+    display: none;
+}
+
+Label:hover{
+      background-color: rgb(66, 66, 66);
+      -unity-text-outline: 20 white;
+      -unity-font-style: italic
+}

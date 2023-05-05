@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Data
 {
@@ -72,6 +73,15 @@ namespace Sceelix.Mathematics.Data
             Y = vector3D.Y;
             Z = vector3D.Z;
             W = w;
+        }
+
+
+        public Vector4D(Vector4 vector4)
+        {
+            X = vector4.x;
+            Y = vector4.y;
+            Z = vector4.z;
+            W = vector4.w;
         }
 
         #endregion

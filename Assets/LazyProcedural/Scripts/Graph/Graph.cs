@@ -13,7 +13,7 @@ namespace LazyProcedural
     public class Graph : UnityGraph.GraphView
     {
         public event NodeEvent OnNodeSelected;
-
+        public event Action OnGraphChanged;
 
         public Graph()
         {
@@ -29,44 +29,18 @@ namespace LazyProcedural
             this.AddManipulator(zoomer);
 
 
-            this.graphViewChanged = new GraphViewChanged(OnGraphChanged);
+            this.graphViewChanged = new GraphViewChanged(OnGraphViewChanged);
         }
 
 
-        private GraphViewChange OnGraphChanged(UnityGraph.GraphViewChange change)
+        private GraphViewChange OnGraphViewChanged(UnityGraph.GraphViewChange change)
         {
-            //if (change.edgesToCreate.Count > 0)
-            //    foreach (var edge in change.edgesToCreate)
-            //        OnEdgeConnected(edge);
 
-            //if(change.elementsToRemove.Count > 0)
-            //{
-            //    foreach (var element in change.elementsToRemove)
-            //    {
-            //        if(element.GetType()== typeof(UnityGraph.Edge)) 
-            //            OnEdgeDisconnected((UnityGraph.Edge)element);   
-            //    }
-            //}
+            if (OnGraphChanged != null)
+                OnGraphChanged.Invoke();
 
             return change;
         }
-
-        //private void OnEdgeConnected(UnityGraph.Edge edge)
-        //{
-        //    Node inNode = (Node)edge.input.node;
-        //    Node outNode= (Node)edge.output.node;
-
-        //    int inIndex= inNode.GetPortIndex((Port)edge.input);
-        //    int outIndex= outNode.GetPortIndex((Port)edge.output);
-
-        //    //inNode.nodeData.Inputs.
-        //}
-
-        //private void OnEdgeDisconnected(UnityGraph.Edge edge)
-        //{
-
-        //}
-
 
 
         public override List<UnityGraph.Port> GetCompatiblePorts(UnityGraph.Port startPort, NodeAdapter nodeAdapter)
@@ -99,6 +73,8 @@ namespace LazyProcedural
                 else if (checkedNodes[endNode])
                     return;
 
+
+
                 compatiblePorts.Add(endPort);
             });
 
@@ -127,11 +103,12 @@ namespace LazyProcedural
         {
             if (OnNodeSelected != null)
                 OnNodeSelected.Invoke(node);
+
         }
 
         public bool CheckTypeCompatiblity(Type inType, Type outType)
         {
-            return inType == outType;
+            return inType == outType || inType.IsAssignableFrom(outType) || outType.IsAssignableFrom(inType);
         }
 
 

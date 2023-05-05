@@ -77,6 +77,14 @@ namespace Sceelix.Mathematics.Data
             A = (byte)(color[3] * 255);
         }
 
+        public Color(UnityEngine.Color color)
+        {
+            R = (byte)(color.r * 255);
+            G = (byte)(color.g * 255);
+            B = (byte)(color.b * 255);
+            A = (byte)(color.a * 255);
+        }
+
 
 
         /// <summary>

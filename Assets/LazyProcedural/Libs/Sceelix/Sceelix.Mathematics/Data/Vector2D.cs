@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Data
 {
@@ -29,6 +30,12 @@ namespace Sceelix.Mathematics.Data
         {
             X = vector3D.X;
             Y = vector3D.Y;
+        }
+
+        public Vector2D(Vector2 vector2)
+        {
+            X = vector2.x;
+            Y = vector2.y;
         }
 
         #endregion

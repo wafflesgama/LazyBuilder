@@ -1,6 +1,7 @@
 using Sceelix.Core;
 using Sceelix.Core.Data;
 using Sceelix.Core.Environments;
+using Sceelix.Core.IO;
 using Sceelix.Core.Parameters;
 using Sceelix.Loading;
 using System.Collections;
@@ -44,9 +45,11 @@ namespace LazyProcedural
 
         public List<IEntity> ExecuteGraph(List<Node> nodes)
         {
-            List<IEntity> output;
+            List<IEntity> output = new List<IEntity>();
 
             List<Node> rootNodes = GetRootNodes(nodes);
+
+            if (rootNodes == null || rootNodes.Count == 0) return output;
 
             executionOrderMatrix = new Dictionary<Node, int>();
 
@@ -61,10 +64,10 @@ namespace LazyProcedural
             return output;
         }
 
-        private  List<List<Node>> ConvertMatrixToList()
+        private List<List<Node>> ConvertMatrixToList()
         {
 
-            var numOrders=executionOrderMatrix.Values.Max()+1;
+            var numOrders = executionOrderMatrix.Values.Max() + 1;
             List<List<Node>> nodesByExecutionOrder = new List<List<Node>>();
             for (int i = 0; i < numOrders; i++)
             {
@@ -108,39 +111,93 @@ namespace LazyProcedural
 
             foreach (var nodesOfOrder in nodesByExecutionOrder)
             {
-                foreach (var node in nodesOfOrder)
+                foreach (var outNode in nodesOfOrder)
                 {
-                    node.nodeData.Execute();
+                    outNode.nodeData.Execute();
 
                     //If is terminal Node then append all the output to results
-                    if (node.GetTotalConnectedPorts(inPorts: false) == 0)
+                    if (outNode.GetTotalConnectedPorts(inPorts: false) == 0)
                     {
-                        foreach (var output in node.nodeData.Outputs)
+                        foreach (var outPort in outNode.outPorts)
                         {
-                            var resultEntry = output.Dequeue();
-                            if (resultEntry != null)
-                                result.Add(resultEntry);
+                            if (outPort.outputData.Peek() == null) continue;
+
+                            var resultEntry = outPort.outputData.DequeueAll();
+                            result.AddRange(resultEntry);
                         }
+                        //foreach (var output in outNode.nodeData.Outputs)
+                        //{
+                        //    if (output.Peek() == null) continue;
+
+                        //    var resultEntry = output.Dequeue();
+                        //    result.Add(resultEntry);
+                        //}
+
+                        //foreach (var output in outNode.nodeData.SubOutputs)
+                        //{
+                        //    if (output.Peek() == null) continue;
+
+                        //    var resultEntry = output.Dequeue();
+                        //    result.Add(resultEntry);
+                        //}
                         continue;
                     }
 
-                    foreach (var outPort in node.outPorts)
+                    foreach (var outPort in outNode.outPorts)
                     {
                         foreach (var edge in outPort.connections)
                         {
                             Node inNode = (Node)edge.input.node;
-                            int inIndex = inNode.GetPortIndex((Port)edge.input);
-                            int outIndex = node.GetPortIndex((Port)edge.output);
+                            //int inIndex = inNode.GetPortIndex((Port)edge.input);
+                            //int outIndex = node.GetPortIndex((Port)edge.output);
+                            Port castedInPort = (Port)edge.input;
+                            Port castedOutPort = (Port)edge.output;
 
-                            var executionResult = node.nodeData.Outputs[outIndex].Peek();
+                            var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
 
                             //Append a clone of the current Node result to the input of the connected Node
-                            inNode.nodeData.Inputs[inIndex].Input.Enqueue(executionResult.DeepClone());
+                            GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x=>x.DeepClone()));
                         }
                     }
                 }
             }
             return result;
+        }
+
+        private OutputReference GetOutput(Node node, Port port)
+        {
+            if (port.isDirectAccessPort)
+                return node.nodeData.Outputs[port.accessIndex[0]];
+
+            ParameterReference param = node.nodeData.Parameters[port.accessIndex[0]];
+
+            //Iterates until the pre-last element
+            for (int i = 0; i < port.accessIndex.Length - 1; i++)
+            {
+                //First element skipped since its accessed through the node
+                if (i == 0) continue;
+                param = param.Parameters[port.accessIndex[i]];
+            }
+            //Access the Outputs through the last index of the array
+            return param.Outputs[port.accessIndex[port.accessIndex.Length - 1]];
+        }
+
+        private InputReference GetInput(Node node, Port port)
+        {
+            if (port.isDirectAccessPort)
+                return node.nodeData.Inputs[port.accessIndex[0]];
+
+            ParameterReference param = node.nodeData.Parameters[port.accessIndex[0]];
+
+            //Iterates until the pre-last element
+            for (int i = 0; i < port.accessIndex.Length - 1; i++)
+            {
+                //First element skipped since its accessed through the node
+                if (i == 0) continue;
+                param = param.Parameters[port.accessIndex[i]];
+            }
+            //Access the Outputs through the last index of the array
+            return param.Inputs[port.accessIndex[port.accessIndex.Length - 1]];
         }
 
 

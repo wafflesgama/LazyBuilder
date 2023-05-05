@@ -181,6 +181,25 @@ namespace Sceelix.Core.Parameters
             }
         }
 
+        public void Remove(string label)
+        {
+            InitializeDictionary();
+
+            Func<Parameter, Parameter> creationFunction;
+            if (!_creationFunctionsDictionary.TryGetValue(label, out creationFunction))
+                throw new KeyNotFoundException(string.Format("No subitem with name '{0}' exists in parameter '{1}'.", label, Label));
+
+            if (!ReachedLimit)
+            {
+                var parameter = creationFunction.Invoke(this);
+                Items.Remove(parameter);
+            }
+            else if (MaxSize == 1) //if it reached the limit, but can only support one item
+            {
+                Items[0] = creationFunction.Invoke(this);
+            }
+        }
+
 
 
         internal override void Evaluate(InputData inputData)

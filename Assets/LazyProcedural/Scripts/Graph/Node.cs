@@ -23,8 +23,11 @@ namespace LazyProcedural
 
         public event NodeEvent OnNodeSelected;
 
-        
-        public Node(ProcedureInfo nodeInfo,Procedure nodeData)
+        private List<(Sceelix.Core.IO.InputReference, int[])> inputsToAdd;
+        private List<(Sceelix.Core.IO.OutputReference, int[])> outputsToAdd;
+
+
+        public Node(ProcedureInfo nodeInfo, Procedure nodeData)
         {
 
             title = nodeInfo.Label;
@@ -32,7 +35,6 @@ namespace LazyProcedural
 
             this.nodeData = nodeData;
 
-            CreatePorts();
             RefreshNode();
         }
 
@@ -43,33 +45,97 @@ namespace LazyProcedural
 
             nodeData = sourceNode.nodeData;
 
-            CreatePorts();
             RefreshNode();
         }
 
-        private void CreatePorts()
+        public void RefreshNode()
         {
-            foreach (var input in nodeData.Inputs)
+            RegisterPorts();
+            AppendPorts();
+        }
+
+        private void RegisterPorts()
+        {
+            //First Add the direct access ports
+            for (int i = 0; i < nodeData.Inputs.Count; i++)
             {
-                var port = new Port(input.Input);
+                var port = new Port(nodeData.Inputs[i].Input, true, new int[] { i });
                 inPorts.Add(port);
             }
 
-            foreach (var output in nodeData.Outputs)
+            for (int i = 0; i < nodeData.Outputs.Count; i++)
             {
-                var port = new Port(output.Output);
+                var port = new Port(nodeData.Outputs[i].Output, true, new int[] { i });
+                outPorts.Add(port);
+            }
+
+            inputsToAdd = new List<(Sceelix.Core.IO.InputReference, int[])>();
+            outputsToAdd = new List<(Sceelix.Core.IO.OutputReference, int[])>();
+            List<int> accessIndex = new List<int>();
+            accessIndex.Add(0);
+
+            //Then search for additional ports nested in the parameter fields
+            for (int i = 0; i < nodeData.Parameters.Count; i++)
+            {
+                accessIndex[0] = i;
+                SearchForSubInputsOutputs(nodeData.Parameters[i], accessIndex);
+            }
+
+
+            //Then add the new ports of nested access
+            foreach (var input in inputsToAdd)
+            {
+                var port = new Port(input.Item1.Input, false, input.Item2);
+                inPorts.Add(port);
+            }
+
+            foreach (var output in outputsToAdd)
+            {
+                var port = new Port(output.Item1.Output, false, output.Item2);
                 outPorts.Add(port);
             }
 
         }
 
-        public void RefreshNode()
+
+        private void SearchForSubInputsOutputs(Sceelix.Core.Parameters.ParameterReference parameter, List<int> accessIndex)
         {
+
+            for (int i = 0; i < parameter.Inputs.Count; i++)
+            {
+                var finalList = accessIndex.ToList();
+                finalList.Add(i);
+                inputsToAdd.Add((parameter.Inputs[i], finalList.ToArray()));
+            }
+
+            for (int i = 0; i < parameter.Outputs.Count; i++)
+            {
+                var finalList = accessIndex.ToList();
+                finalList.Add(i);
+                outputsToAdd.Add((parameter.Outputs[i], finalList.ToArray()));
+            }
+
+            for (int i = 0; i < parameter.Parameters.Count; i++)
+            {
+
+                var childParameter = parameter.Parameters[i];
+                accessIndex.Add(i);
+                SearchForSubInputsOutputs(childParameter, accessIndex);
+                accessIndex.RemoveAt(accessIndex.Count - 1);
+            }
+
+        }
+
+
+        private void AppendPorts()
+        {
+            this.inputContainer.Clear();
             foreach (var inPort in inPorts)
             {
                 this.inputContainer.Add(inPort);
             }
 
+            this.outputContainer.Clear();
             foreach (var outPort in outPorts)
             {
                 this.outputContainer.Add(outPort);
@@ -78,6 +144,7 @@ namespace LazyProcedural
             this.RefreshExpandedState();
             this.RefreshPorts();
         }
+
 
         public override void OnUnselected()
         {
@@ -105,7 +172,7 @@ namespace LazyProcedural
         }
         public int GetTotalConnectedPorts(bool inPorts)
         {
-            return inPorts ? this.inPorts.Where(x=> x.connected).Count() : this.outPorts.Where(x => x.connected).Count();
+            return inPorts ? this.inPorts.Where(x => x.connected).Count() : this.outPorts.Where(x => x.connected).Count();
         }
     }
 }

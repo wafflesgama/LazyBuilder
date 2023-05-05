@@ -12,6 +12,8 @@ namespace Sceelix.Processors
     {
         private Dictionary<Type, Type> processors = new Dictionary<Type, Type>();
 
+        public bool destructiveProcess = true;
+
         public ProcessorManager()
         {
             SetProcessors();
@@ -24,8 +26,65 @@ namespace Sceelix.Processors
         }
 
 
-        public void Process(IEnumerable<IEntity> entities)
+
+        public void Populate(IEnumerable<IEntity> entities, GeoGraphComponent component)
         {
+            var requiredObjects = Require(entities);
+
+            var objecReuseInfos = component.GetObjectReuseInfo_Greedy(requiredObjects);
+
+            //var missingObjects = objecReuseInfo.Where(x => x.ExistingObject == null);
+
+
+            List<RecycleObject> recycleObjectsAdded = new List<RecycleObject>();
+
+            foreach (var objecReuseInfo in objecReuseInfos)
+            {
+
+                if (objecReuseInfo.recycledObject.gameObject == null)
+                {
+                    GameObject gameObjectToAdd = new GameObject("Empty");
+                    objecReuseInfo.recycledObject.gameObject = gameObjectToAdd;
+                    recycleObjectsAdded.Add(objecReuseInfo.recycledObject);
+                }
+
+                foreach (var componentToRemove in objecReuseInfo.ComponentsToRemove)
+                {
+                    if (componentToRemove == typeof(Transform)) continue;
+
+                    component.DestroyComponent((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove)));
+                    objecReuseInfo.recycledObject.components.Remove(componentToRemove);
+                }
+
+                foreach (var componentToAdd in objecReuseInfo.ComponentsToAdd)
+                {
+                    if (componentToAdd == typeof(Transform)) continue;
+
+                    objecReuseInfo.recycledObject.gameObject.AddComponent(componentToAdd);
+                    objecReuseInfo.recycledObject.components.Add(componentToAdd);
+
+                }
+            }
+
+            //Reset all the parenting of the objects
+            objecReuseInfos.ForEach(objecReuseInfo => objecReuseInfo.recycledObject.gameObject.transform.parent = component.transform);
+
+            //Then process all the entitties in the respective RecycledObjects
+            Process(objecReuseInfos.Select(x => x.recycledObject));
+
+            //Destroy objects in excess
+            if (destructiveProcess)
+            {
+                var surplus = component.GetRecycleObjectsSurplus(objecReuseInfos);
+                component.RemoveRecycleObjects(surplus);
+            }
+
+            component.AddRecycleObjects(recycleObjectsAdded);
+        }
+
+        private List<RecycleObject> Require(IEnumerable<IEntity> entities)
+        {
+            List<RecycleObject> result = new List<RecycleObject>();
             foreach (IEntity entity in entities)
             {
                 Type entityType = entity.GetType();
@@ -38,10 +97,33 @@ namespace Sceelix.Processors
                 }
 
                 IProcessor processor = (IProcessor)Activator.CreateInstance(processors[entityType]);
-                processor.Process(entity);
+                var typesRequired = processor.Require(entity);
 
+                RecycleObject recycleObject = new RecycleObject { components = typesRequired.ToList(), entity = entity };
+                result.Add(recycleObject);
+            }
+
+            return result;
+        }
+
+        private void Process(IEnumerable<RecycleObject> recycledObjects)
+        {
+            foreach (RecycleObject recycledObject in recycledObjects)
+            {
+                Type entityType = recycledObject.entity.GetType();
+                bool hasProcessor = processors.ContainsKey(entityType);
+
+                if (!hasProcessor)
+                {
+                    Debug.LogError($"{entityType.Name} Processor not implemented or is missing a ProcessorAttribute");
+                    break;
+                }
+
+                IProcessor processor = (IProcessor)Activator.CreateInstance(processors[entityType]);
+                processor.Process(recycledObject);
             }
 
         }
+
     }
 }
