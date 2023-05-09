@@ -124,7 +124,7 @@ public class ContextWindow : EditorWindow
         var currentAcessingIndex = acessingIndex.ToList();
 
         ////If it is a Value Set field of an Attribute
-      
+
         //else
         //If it is a Compound Tree field (i.e the Attribute Header)
         if (parameterRef.ParameterInfo.MetaType == "Compound")
@@ -156,7 +156,7 @@ public class ContextWindow : EditorWindow
             TextField stringField = new TextField();
 
             stringField.label = parameter.Label;
-            stringField.value = parameterValue.ToString();
+            stringField.value = parameterRef.Parameter.RawExpression;
             stringField.RegisterValueChangedCallback(value =>
             {
                 var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
@@ -342,7 +342,7 @@ public class ContextWindow : EditorWindow
             field = toggleField;
         }
         //If it is an Attribute parameter of an addable List
-        else  if (parameterRef.ParameterInfo.MetaType == "Attribute")
+        else if (parameterRef.ParameterInfo.MetaType == "Attribute")
         {
             TextField stringField = new TextField();
 
@@ -350,8 +350,12 @@ public class ContextWindow : EditorWindow
             stringField.value = parameterValue != null ? parameterValue.ToString() : "";
             stringField.RegisterValueChangedCallback(value =>
             {
-                var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
+                ParameterReference param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
+                AttributeParameter attrParam = (AttributeParameter)parameter;
+                //attrParam.EntityEvaluation;
                 param.Set(value.newValue);
+                //procedure.
+                //procedure.A
                 _graphWindow.OnGraphValueUpdated();
             });
             field = stringField;
@@ -369,8 +373,8 @@ public class ContextWindow : EditorWindow
                 _graphWindow.OnGraphValueUpdated();
             });
 
-        
-           
+
+
             field = stringField;
         }
 

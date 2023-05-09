@@ -117,6 +117,15 @@ namespace Sceelix.Core.Parameters
         }
 
 
+        /// <summary>
+        /// The current submitted raw expression
+        /// </summary>
+        public string RawExpression
+        {
+            get;
+            set;
+        }
+
 
         /// <summary>
         /// Indicates if the parameter will be visible and accessible externally. Default is true.
