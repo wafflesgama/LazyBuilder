@@ -7,11 +7,18 @@ using UnityGraph = UnityEditor.Experimental.GraphView;
 using UnityEditor;
 using Sceelix.Core.Procedures;
 using System.Linq;
+using Sceelix.Core.Parameters;
+using System;
 
 namespace LazyProcedural
 {
     public delegate void NodeEvent(Node node);
 
+    public class ChangedParameterInfo
+    {
+        public bool isExpression = false;
+        public object value;
+    }
     public class Node : UnityGraph.Node
     {
         public GUID guid { get; private set; }
@@ -20,6 +27,7 @@ namespace LazyProcedural
         public List<Port> outPorts { get; private set; } = new List<Port>();
 
         public Procedure nodeData { get; private set; }
+        public Dictionary<int[], ChangedParameterInfo> changedDataParams { get; private set; }
 
         public event NodeEvent OnNodeSelected;
 
@@ -33,17 +41,36 @@ namespace LazyProcedural
             title = nodeInfo.Label;
             tooltip = nodeInfo.Label;
 
+            changedDataParams = new Dictionary<int[], ChangedParameterInfo>();
             this.nodeData = nodeData;
 
             RefreshNode();
         }
 
-        public Node(Node sourceNode)
+        public Node(Node sourceNode, bool linkedCopy = false)
         {
             title = sourceNode.title;
             tooltip = sourceNode.tooltip;
 
-            nodeData = sourceNode.nodeData;
+            changedDataParams = new Dictionary<int[], ChangedParameterInfo>();
+
+            if (linkedCopy)
+                nodeData = sourceNode.nodeData;
+            else
+            {
+                nodeData = (Procedure)Activator.CreateInstance(sourceNode.nodeData.GetType());
+                foreach (var changeParam in sourceNode.changedDataParams)
+                {
+                    var param = GetParameterFromAcessingIndex(changeParam.Key.ToList(), nodeData);
+
+                    if (changeParam.Value.isExpression)
+                        param.SetExpression((string)changeParam.Value.value);
+                    else
+                        param.Set(changeParam.Value.value);
+
+                    ChangedDataParameter(changeParam.Key, changeParam.Value);
+                }
+            }
 
             RefreshNode();
         }
@@ -145,6 +172,16 @@ namespace LazyProcedural
             this.RefreshPorts();
         }
 
+        public void ChangedDataParameter(IEnumerable<int> accessingIndex, ChangedParameterInfo changedParameterInfo)
+        {
+            int[] key = accessingIndex.ToArray();
+
+            if (!changedDataParams.ContainsKey(key))
+                changedDataParams.Add(key, null);
+
+            changedDataParams[key] = changedParameterInfo;
+        }
+
 
         public override void OnUnselected()
         {
@@ -173,6 +210,27 @@ namespace LazyProcedural
         public int GetTotalConnectedPorts(bool inPorts)
         {
             return inPorts ? this.inPorts.Where(x => x.connected).Count() : this.outPorts.Where(x => x.connected).Count();
+        }
+
+
+        private ParameterReference GetParameterFromAcessingIndex(List<int> acessingIndex, Procedure procedure)
+        {
+            if (acessingIndex == null || acessingIndex.Count == 0) return null;
+
+            ParameterReference reference = procedure.Parameters[acessingIndex[0]];
+            bool firstElement = true;
+            foreach (var index in acessingIndex)
+            {
+                if (firstElement)
+                {
+                    firstElement = false;
+                    continue;
+                }
+
+                reference = reference.Parameters[index];
+            }
+
+            return reference;
         }
     }
 }

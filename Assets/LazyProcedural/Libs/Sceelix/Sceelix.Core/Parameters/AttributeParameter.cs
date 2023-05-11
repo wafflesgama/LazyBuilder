@@ -170,7 +170,7 @@ namespace Sceelix.Core.Parameters
                     obj.Attributes.TrySet(AttributeKey, value, replace);
 
                     if (AttributeKey is LocalAttributeKey)
-                        ((LocalAttributeKey) AttributeKey).Procedure.HasLocalAttributes = true;
+                        ((LocalAttributeKey)AttributeKey).Procedure.HasLocalAttributes = true;
 
                     //since entities can have many subitems, clearing local variables could result in a huge
                     //overhead. What we do here is store references to the entities for deletion on procedure
@@ -209,9 +209,9 @@ namespace Sceelix.Core.Parameters
 
 
 
-        internal static AttributeKey GetKey(string attributeName, Procedure parentProcedure)
+        internal static AttributeKey GetKey(string attributeName, Procedure parentProcedure, bool isGlobal = true)
         {
-            if (attributeName.StartsWithLowerCase())
+            if (!isGlobal)
                 return new LocalAttributeKey(attributeName, parentProcedure);
 
             return new GlobalAttributeKey(attributeName);
@@ -288,7 +288,7 @@ namespace Sceelix.Core.Parameters
             }
             else
             {
-                var attributeParameter = (AttributeParameterInfo) argument;
+                var attributeParameter = (AttributeParameterInfo)argument;
 
                 Set(attributeParameter.AttributeString);
             }
@@ -300,13 +300,13 @@ namespace Sceelix.Core.Parameters
         {
             if (value is string)
             {
-                AttributeString = (string) value;
+                AttributeString = (string)value;
                 _attributeKey = null;
             }
             else if (value is AttributeKey)
             {
                 //we don't have a superclass for all types of keys!
-                _attributeKey = (AttributeKey) value;
+                _attributeKey = (AttributeKey)value;
                 AttributeString = "You shouldn't be looking at me!";
             }
         }

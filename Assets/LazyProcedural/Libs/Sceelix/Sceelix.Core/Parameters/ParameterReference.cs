@@ -121,6 +121,7 @@ namespace Sceelix.Core.Parameters
 
         public void SetExpression(string expression, Procedure masterProcedure = null)
         {
+            Parameter.RawExpression = expression;
             Parameter.SetExpression(ExpressionParser.Parse(expression).GetCompiledExpressionTree(masterProcedure, Parameter.Procedure, typeof(object)));
         }
     }
