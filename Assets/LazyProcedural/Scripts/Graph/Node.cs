@@ -9,6 +9,7 @@ using Sceelix.Core.Procedures;
 using System.Linq;
 using Sceelix.Core.Parameters;
 using System;
+using UnityEngine.UIElements;
 
 namespace LazyProcedural
 {
@@ -16,18 +17,20 @@ namespace LazyProcedural
 
     public class ChangedParameterInfo
     {
+        public int[] accessIndex;
         public bool isExpression = false;
         public object value;
     }
     public class Node : UnityGraph.Node
     {
-        public GUID guid { get; private set; }
+        public string id { get; private set; }
+        public string typeTitle { get; private set; }
 
         public List<Port> inPorts { get; private set; } = new List<Port>();
         public List<Port> outPorts { get; private set; } = new List<Port>();
 
         public Procedure nodeData { get; private set; }
-        public Dictionary<int[], ChangedParameterInfo> changedDataParams { get; private set; }
+        public List<ChangedParameterInfo> changedDataParams { get; private set; }
 
         public event NodeEvent OnNodeSelected;
 
@@ -35,24 +38,35 @@ namespace LazyProcedural
         private List<(Sceelix.Core.IO.OutputReference, int[])> outputsToAdd;
 
 
-        public Node(ProcedureInfo nodeInfo, Procedure nodeData)
+
+        //New Node Constrcutor
+        public Node(ProcedureInfo nodeDataInfo)
         {
+            id = GUID.Generate().ToString();
 
-            title = nodeInfo.Label;
-            tooltip = nodeInfo.Label;
+            typeTitle = nodeDataInfo.Label;
+            title = nodeDataInfo.Label;
+            tooltip = nodeDataInfo.Label;
 
-            changedDataParams = new Dictionary<int[], ChangedParameterInfo>();
-            this.nodeData = nodeData;
+            changedDataParams = new List<ChangedParameterInfo>();
+            nodeData = (Procedure)Activator.CreateInstance(nodeDataInfo.Type);
 
+            SetupExtraUI();
             RefreshNode();
         }
 
+
+
+        //Copy Constructor
         public Node(Node sourceNode, bool linkedCopy = false)
         {
+            id = GUID.Generate().ToString();
+
+            typeTitle = sourceNode.typeTitle;
             title = sourceNode.title;
             tooltip = sourceNode.tooltip;
 
-            changedDataParams = new Dictionary<int[], ChangedParameterInfo>();
+            changedDataParams = new List<ChangedParameterInfo>();
 
             if (linkedCopy)
                 nodeData = sourceNode.nodeData;
@@ -61,25 +75,89 @@ namespace LazyProcedural
                 nodeData = (Procedure)Activator.CreateInstance(sourceNode.nodeData.GetType());
                 foreach (var changeParam in sourceNode.changedDataParams)
                 {
-                    var param = GetParameterFromAcessingIndex(changeParam.Key.ToList(), nodeData);
+                    var param = GetParameterFromAcessingIndex(changeParam.accessIndex.ToList(), nodeData);
 
-                    if (changeParam.Value.isExpression)
-                        param.SetExpression((string)changeParam.Value.value);
+                    if (changeParam.isExpression)
+                        param.SetExpression((string)changeParam.value);
                     else
-                        param.Set(changeParam.Value.value);
+                        param.Set(changeParam.value);
 
-                    ChangedDataParameter(changeParam.Key, changeParam.Value);
+                    ChangedDataParameter(changeParam);
                 }
             }
 
+            SetupExtraUI();
+            RefreshNode();
+        }
+
+        //Load Constructor
+        public Node(string id, string name, Type nodeDataType, Vector2 position, ChangedParameterInfo[] changedParams)
+        {
+            this.id = id;
+            ProcedureInfo nodeDataInfo = ProcedureInfoManager.GetProcedure(nodeDataType);
+
+            typeTitle = nodeDataInfo.Label;
+            title = name != null ? name : nodeDataInfo.Label;
+            tooltip = nodeDataInfo.Label;
+
+            this.SetPosition(new Rect(position, GetPosition().size));
+
+            nodeData = (Procedure)Activator.CreateInstance(nodeDataType);
+
+            changedDataParams = new List<ChangedParameterInfo>();
+
+            foreach (var changeParam in changedParams)
+            {
+                var param = GetParameterFromAcessingIndex(changeParam.accessIndex.ToList(), nodeData);
+
+                if (changeParam.isExpression)
+                    param.SetExpression((string)changeParam.value);
+                else
+                    param.Set(changeParam.value);
+
+                ChangedDataParameter(changeParam);
+            }
+
+            SetupExtraUI();
             RefreshNode();
         }
 
         public void RefreshNode()
         {
+            nodeData.UpdateParameterPorts();
             RegisterPorts();
             AppendPorts();
         }
+
+
+
+
+        private void SetupExtraUI()
+        {
+            var titleLabel = titleContainer.Q("title-label");
+
+            Label subTitleLabel = new Label();
+            subTitleLabel.text = typeTitle;
+            subTitleLabel.style.paddingLeft = 9;
+            subTitleLabel.style.fontSize = 8;
+            subTitleLabel.style.marginTop = -6;
+            subTitleLabel.style.color = new Color(0.56f, 0.56f, 0.56f);
+
+
+            var titlesContainer = new VisualElement();
+            titlesContainer.style.flexDirection = FlexDirection.Column;
+            titlesContainer.Add(titleLabel);
+            titlesContainer.Add(subTitleLabel);
+
+
+            var buttonsContainer = titleContainer.Q("title-button-container");
+
+            titleContainer.Add(titlesContainer);
+            titleContainer.Add(buttonsContainer);
+            //titleContainer.Add(colapseButton);
+        }
+
+        //public void AddCo
 
         private void RegisterPorts()
         {
@@ -112,12 +190,16 @@ namespace LazyProcedural
             //Then add the new ports of nested access
             foreach (var input in inputsToAdd)
             {
+                //Do not add if it is duplicate
+                if (inPorts.Any(x => x.inputData.Identifier == input.Item1.Identifier)) continue;
                 var port = new Port(input.Item1.Input, false, input.Item2);
                 inPorts.Add(port);
             }
 
             foreach (var output in outputsToAdd)
             {
+                //Do not add if it is duplicate
+                if (outPorts.Any(x => x.outputData.Identifier == output.Item1.Identifier)) continue;
                 var port = new Port(output.Item1.Output, false, output.Item2);
                 outPorts.Add(port);
             }
@@ -172,14 +254,14 @@ namespace LazyProcedural
             this.RefreshPorts();
         }
 
-        public void ChangedDataParameter(IEnumerable<int> accessingIndex, ChangedParameterInfo changedParameterInfo)
+        public void ChangedDataParameter(ChangedParameterInfo changedParameterInfo)
         {
-            int[] key = accessingIndex.ToArray();
+            if (!changedDataParams.Any(x => x.accessIndex == changedParameterInfo.accessIndex))
+                changedDataParams.Add(new ChangedParameterInfo { accessIndex = changedParameterInfo.accessIndex });
 
-            if (!changedDataParams.ContainsKey(key))
-                changedDataParams.Add(key, null);
-
-            changedDataParams[key] = changedParameterInfo;
+            var param = changedDataParams.FirstOrDefault(x => x.accessIndex == changedParameterInfo.accessIndex);
+            param.value = changedParameterInfo.value;
+            param.isExpression = changedParameterInfo.isExpression;
         }
 
 

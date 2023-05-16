@@ -1,5 +1,27 @@
 
+#addButton {
+    visibility: hidden;
+}
 
+#subTitleLabel {
+    visibility: hidden;
+}
+
+#titleLabel{
+    font-size:20px;
+    font-style:italic;
+}
+
+
+Foldout > Toggle > VisualElement {
+  align-items:center;
+  align-content:center;
+  padding-top:5px;
+}
+    Foldout > Toggle > VisualElement > .unity-toggle__checkmark {
+        margin-top: 9px !important;
+        padding-top: 5px;
+    }
 
 .parameter {
     margin-top: 2px;
@@ -32,8 +54,25 @@
     display: none;
 }
 
-Label:hover{
-      background-color: rgb(66, 66, 66);
-      -unity-text-outline: 20 white;
-      -unity-font-style: italic
+/*Label:not(#titleLabel) {
+    background-color: red;
+}*/
+
+#titleLabel {
+    color: red !important;
+    font-size: 15px;
+}
+
+.parameter> Label:hover {
+    background-color: rgb(66, 66, 66);
+    -unity-text-outline: 20 white;
+    -unity-font-style: italic
+}
+
+#titleLabel:hover {
+    background-color: transparent !important;
+}
+
+#subTitleLabel:hover {
+    background-color: transparent !important;
 }

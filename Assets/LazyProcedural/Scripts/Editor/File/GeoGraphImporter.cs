@@ -28,86 +28,89 @@ namespace LazyProcedural
         [MenuItem("Assets/Create/Lazy Procedural/Example Graph", false, 1)]
         public static void CreateNewAsset()
         {
-            GeoGraphAsset asset = new GeoGraphAsset("");
+            TextAsset asset = new TextAsset("");
+            //ProjectWindowUtil.CreateAsset("", "");
             ProjectWindowUtil.CreateAsset(asset, "Graph.geograph");
         }
     }
 
 
-    [CreateAssetMenu]
-    public class VehicleTypeInfo : ScriptableObject
-    {
-        // Class that represents a specific type of vehicle
-        [Range(0.1f, 100f)]
-        public float m_MaxSpeed = 0.1f;
-
-        [Range(0.1f, 10f)]
-        public float m_MaxAcceration = 0.1f;
-
-        // This class could have many other vehicle parameters, such as Turning Radius, Range, Damage etc
-    }
-
-
-    ///// <summary>
-    ///// A custom scripted importer that handles importing ".geograph" files as text assets.
-    ///// </summary>
-    //[ScriptedImporter(1, PathFactory.GRAPH_TYPE)]
-    //public class GeoGraphImporter : ScriptedImporter
+    //[CreateAssetMenu]
+    //public class VehicleTypeInfo : ScriptableObject
     //{
-    //    [SerializeField] private GeoGraphDataAsset graph;
+    //    // Class that represents a specific type of vehicle
+    //    [Range(0.1f, 100f)]
+    //    public float m_MaxSpeed = 0.1f;
 
-    //    public override void OnImportAsset(AssetImportContext ctx)
-    //    {
-    //        MainController.Init();
+    //    [Range(0.1f, 10f)]
+    //    public float m_MaxAcceration = 0.1f;
 
-    //        string fileText = File.ReadAllText(ctx.assetPath);
-
-    //        //Hardcoded to match the TYPE Variable name size (plus the " ")
-    //        var type = fileText.Substring(fileText.IndexOf("TYPE:") + 5);
-
-    //        //Remove paragraph characters
-    //        type = type.Replace("\n", "");
-
-    //        graph = new GeoGraphDataAsset(CreateDefaultGraph(type));
-
-    //        Texture2D icon = Utils.FetchImage(PathFactory.BuildImageFilePath(PathFactory.ICON_FULL_FILE, true));
-    //        ctx.AddObjectToAsset("Graph", graph, icon);
-    //    }
-
-    //    private string CreateDefaultGraph(string type)
-    //    {
-    //        switch (type)
-    //        {
-    //            case "Example":
-    //                break;
-    //            default:
-    //                break;
-    //        }
-    //        return "";
-    //    }
-
+    //    // This class could have many other vehicle parameters, such as Turning Radius, Range, Damage etc
     //}
 
-    public class GeoGraphAsset : ScriptableObject
-    {
-        
-        public string test;
 
-        public GeoGraphAsset(string data)
+    /// <summary>
+    /// A custom scripted importer that handles importing ".geograph" files as text assets.
+    /// </summary>
+    [ScriptedImporter(1, PathFactory.GRAPH_TYPE)]
+    public class GeoGraphImporter : ScriptedImporter
+    {
+        //[SerializeField] public string data;
+
+        public override void OnImportAsset(AssetImportContext ctx)
         {
-            this.test = data;
+            //MainController.Init();
+
+            string fileText = File.ReadAllText(ctx.assetPath);
+
+            //Hardcoded to match the TYPE Variable name size (plus the " ")
+            //var type = fileText.Substring(fileText.IndexOf("TYPE:") + 5);
+
+            ////Remove paragraph characters
+            //type = type.Replace("\n", "");
+
+            //data = CreateDefaultGraph(type);
+
+            Texture2D icon = Utils.FetchImage(PathFactory.BuildImageFilePath(PathFactory.ICON_FULL_FILE, true));
+            TextAsset desc = new TextAsset("Geometry Graph for Lazy Procedural Builder");
+            ctx.AddObjectToAsset("Description", desc, icon);
+            //ctx.AddObjectToAsset("Graph", data, icon);
         }
+
+        private string CreateDefaultGraph(string type)
+        {
+            switch (type)
+            {
+                case "Example":
+                    break;
+                default:
+                    break;
+            }
+            return "as";
+        }
+
     }
 
-    public class GeoGraphDataAsset : TextAsset
-    {
-        public string test;
+    //public class GeoGraphAsset : ScriptableObject
+    //{
 
-        public GeoGraphDataAsset(string data)
-        {
-            this.test = data;
-        }
-    }
+    //    public string test;
+
+    //    public GeoGraphAsset(string data)
+    //    {
+    //        this.test = data;
+    //    }
+    //}
+
+    //public class GeoGraphDataAsset : TextAsset
+    //{
+    //    public string test;
+
+    //    public GeoGraphDataAsset(string data)
+    //    {
+    //        this.test = data;
+    //    }
+    //}
 
 
 }

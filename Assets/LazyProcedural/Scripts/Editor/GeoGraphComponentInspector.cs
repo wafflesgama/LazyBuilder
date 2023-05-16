@@ -19,7 +19,7 @@ namespace LazyProcedural
             ObjectField objectField = new ObjectField();
 
             objectField.label = "Asset Name";
-            objectField.objectType = typeof(GeoGraphAsset);
+            //objectField.objectType = typeof(GeoGraphAsset);
             myInspector.Add(objectField);
 
             return myInspector;

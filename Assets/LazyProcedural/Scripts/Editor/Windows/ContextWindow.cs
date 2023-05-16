@@ -14,51 +14,95 @@ using System.Linq;
 using Sceelix.Mathematics.Data;
 using System;
 using Sceelix.Core.Data;
+using UnityGraph = UnityEditor.Experimental.GraphView;
 
-public class ContextWindow : EditorWindow
+public class ContextWindow : UnityGraph.Blackboard
 {
     private VisualElement _root;
 
     private GraphWindow _graphWindow;
 
+
+    private EventCallback<ChangeEvent<string>> currentNameChangeCallback;
+
+
+    private Label _typeLabel;
+    private TextField _nameField;
+
+
+    private ScrollView _parametersContainer;
     public ContextWindow(GraphWindow graphWindow)
     {
         _graphWindow = graphWindow;
+        Setup();
     }
 
-    private void OnEnable()
+    private void Setup()
     {
         SetupBaseUI();
+        StripDefaultElements();
+        SetupBindings();
     }
 
     private void SetupBaseUI()
     {
-        _root = rootVisualElement;
+        _root = contentContainer;
+
+
+        if (_root == null) return;
+
+        subTitle = "";
+        title = "Context";
 
         // Loads and clones our VisualTree (eg. our UXML structure) inside the root.
-        //var quickToolVisualTree = (VisualTreeAsset)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.SEARCH_WINDOW_LAYOUT_FILE), typeof(VisualTreeAsset));
-        //quickToolVisualTree.CloneTree(_root);
+        var visualTree = (VisualTreeAsset)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.CONTEXT_WINDOW_LAYOUT_FILE), typeof(VisualTreeAsset));
+        visualTree.CloneTree(_root);
 
         var styleSheet = (StyleSheet)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.CONTEXT_WINDOW_LAYOUT_FILE, false), typeof(StyleSheet));
-        _root.styleSheets.Add(styleSheet);
-
+        this.styleSheets.Add(styleSheet);
 
     }
-    public void BuildNodeParameters(Node node)
-    {
-        _root.Clear();
 
+    private void SetupBindings()
+    {
+        _parametersContainer = (ScrollView)_root.Q("Params");
+        _nameField = (TextField)_root.Q("NameField");
+        _typeLabel = (Label)_root.Q("TypeLabel");
+    }
+
+    private void StripDefaultElements()
+    {
+        //_root.Q("addButton").visible = false;
+    }
+    public void BuildNodeInfo(Node node)
+    {
+        _typeLabel.text = node.typeTitle;
+        _nameField.value = node.title;
+
+
+        if (currentNameChangeCallback != null)
+            _nameField.UnregisterValueChangedCallback(currentNameChangeCallback);
+
+        currentNameChangeCallback = x =>
+         {
+             node.title = x.newValue;
+         };
+        _nameField.RegisterValueChangedCallback(currentNameChangeCallback);
+
+
+        //Build Paramters
+        _parametersContainer.Clear();
         var accessingIndex = new List<int>();
         accessingIndex.Add(0);
-
         for (int i = 0; i < node.nodeData.Parameters.Count; i++)
         {
             accessingIndex[accessingIndex.Count - 1] = i;
-            BuildParameter(_root, node.nodeData.Parameters[i], false, accessingIndex.ToList(), node);
+            BuildNodeParameter(_parametersContainer, node.nodeData.Parameters[i], false, accessingIndex.ToList(), node);
         }
     }
 
-    private void BuildParameter(VisualElement container, ParameterReference parameter, bool descendedFromSelectList, List<int> accessingIndex, Node node)
+
+    private void BuildNodeParameter(VisualElement container, ParameterReference parameter, bool descendedFromSelectList, List<int> accessingIndex, Node node)
     {
         Procedure procedure = node.nodeData;
 
@@ -109,7 +153,7 @@ public class ContextWindow : EditorWindow
         {
             accessingIndex[accessingIndex.Count - 1] = i;
             var childParameter = parameter.Parameters[i];
-            BuildParameter(descendedFromSelectList ? container : foldout, childParameter, isSelectList, accessingIndex, node);
+            BuildNodeParameter(descendedFromSelectList ? container : foldout, childParameter, isSelectList, accessingIndex, node);
         }
     }
 
@@ -152,7 +196,7 @@ public class ContextWindow : EditorWindow
                 var listParameter = (ListParameter)parameter;
 
                 listParameter.Remove(parameter.Label);
-                BuildNodeParameters(node);
+                BuildNodeInfo(node);
             });
 
             field = stringField;
@@ -168,7 +212,7 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameterRef.SetExpression(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { isExpression = true, value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = true, value = value.newValue });
                 //param.Set();
                 _graphWindow.OnGraphValueUpdated();
             });
@@ -208,7 +252,7 @@ public class ContextWindow : EditorWindow
 
                 listParameter.Add(value.newValue);
                 popupField.value = defaultLabel;
-                BuildNodeParameters(node);
+                BuildNodeInfo(node);
                 _graphWindow.OnGraphValueUpdated();
             });
 
@@ -235,8 +279,8 @@ public class ContextWindow : EditorWindow
                 //param.Set(value.newValue);
                 parameter.Set(value.newValue);
 
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
-                BuildNodeParameters(node);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                BuildNodeInfo(node);
                 _graphWindow.OnGraphValueUpdated();
             });
 
@@ -258,8 +302,8 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
-                BuildNodeParameters(node);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                BuildNodeInfo(node);
                 _graphWindow.OnGraphValueUpdated();
             });
 
@@ -275,7 +319,7 @@ public class ContextWindow : EditorWindow
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 Sceelix.Mathematics.Data.Color convertedValue = new Sceelix.Mathematics.Data.Color(value.newValue);
                 parameter.Set(convertedValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = colorField;
@@ -290,6 +334,7 @@ public class ContextWindow : EditorWindow
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 Vector4D convertedValue = new Vector4D(value.newValue);
                 parameter.Set(convertedValue);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = vector3Field;
@@ -303,7 +348,7 @@ public class ContextWindow : EditorWindow
             {
                 Vector3D convertedValue = new Vector3D(value.newValue).FlipYZ();
                 parameter.Set(convertedValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = vector3Field;
@@ -318,7 +363,7 @@ public class ContextWindow : EditorWindow
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 Vector2D convertedValue = new Vector2D(value.newValue);
                 parameter.Set(convertedValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = vector3Field;
@@ -331,8 +376,8 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
-                BuildNodeParameters(node);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                BuildNodeInfo(node);
                 _graphWindow.OnGraphValueUpdated();
             });
             field = enumField;
@@ -346,7 +391,7 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = integerField;
@@ -359,7 +404,7 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 //System.Single convertedvalue = value.newValue;
                 //param.Set(convertedvalue);
                 _graphWindow.OnGraphValueUpdated();
@@ -375,7 +420,7 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = toggleField;
@@ -393,7 +438,7 @@ public class ContextWindow : EditorWindow
                 //AttributeParameter attrParam = (AttributeParameter)parameter;
                 //attrParam.EntityEvaluation;
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 //param.Set(value.newValue);
                 //procedure.
                 //procedure.A
@@ -411,7 +456,7 @@ public class ContextWindow : EditorWindow
             {
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
                 parameter.Set(value.newValue);
-                node.ChangedDataParameter(currentAcessingIndex, new ChangedParameterInfo { value = value.newValue });
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 _graphWindow.OnGraphValueUpdated();
             });
 
@@ -423,7 +468,7 @@ public class ContextWindow : EditorWindow
         contextMenuOperations.Add(parameterRef.IsExpression ? "Convert To Fixed Value" : "Convert To Expression", (x) =>
          {
              parameter.IsExpression = !parameter.IsExpression;
-             BuildNodeParameters(node);
+             BuildNodeInfo(node);
          });
 
 
@@ -441,7 +486,7 @@ public class ContextWindow : EditorWindow
         return field;
     }
 
-    
+
 
 
 }

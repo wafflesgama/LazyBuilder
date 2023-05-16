@@ -47,6 +47,12 @@ namespace LazyProcedural
             relativeToolPath = result.Item2.RelativeFormat();
         }
 
+        public static void TryInit()
+        {
+            if (!string.IsNullOrEmpty(absoluteToolPath)) return;
+            Init();
+        }
+
         private static (string, string) FindLazyProceduralPath(string startPath)
         {
             var folderPath = Directory.GetDirectories(startPath, BASE_FOLDER, SearchOption.AllDirectories)
@@ -79,6 +85,7 @@ namespace LazyProcedural
 
         public static string BuildUiFilePath(string fileName, bool layoutFile = true, bool absolute = false)
         {
+            TryInit();
             var rootPath = absolute ? absoluteToolPath : relativeToolPath;
             var fileType = layoutFile ? LAYOUT_TYPE : STYLE_TYPE;
             var path = $"{rootPath}/{UI_PATH}/{fileName}.{fileType}";
@@ -92,6 +99,8 @@ namespace LazyProcedural
 
         public static string BuildImageFilePath(string fileName, bool absolute = false)
         {
+            TryInit();
+
             var rootPath = absolute ? absoluteToolPath : relativeToolPath;
             var path = $"{rootPath}/{IMAGES_PATH}/{fileName}.{IMAGE_TYPE}";
 

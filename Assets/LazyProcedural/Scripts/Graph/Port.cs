@@ -16,6 +16,8 @@ namespace LazyProcedural
     {
         const Orientation DEF_ORIENTATION = Orientation.Horizontal;
 
+        public string id;
+
         //If Port can be accessed through Inputs/Outputs or through Parameter's Inputs/Outputs
         public bool isDirectAccessPort;
 
@@ -31,6 +33,7 @@ namespace LazyProcedural
         //}
         public Port(SceelixData.Output outputData, bool directAccess, int[] accessIndex) : base(DEF_ORIENTATION, Direction.Output, Capacity.Multi, outputData.EntityType)
         {
+            id= Guid.NewGuid().ToString();
             //title = outputData.Description;
             this.outputData = outputData;
             this.isDirectAccessPort = directAccess;
@@ -41,6 +44,7 @@ namespace LazyProcedural
 
         public Port(SceelixData.Input inputData, bool directAccess, int[] accessIndex) : base(DEF_ORIENTATION, Direction.Input, inputData.InputNature == SceelixData.InputNature.Single ? Capacity.Single : Capacity.Multi, inputData.EntityType)
         {
+            id = Guid.NewGuid().ToString();
             //title = inputData.Description;
             this.inputData = inputData;
             this.isDirectAccessPort = directAccess;

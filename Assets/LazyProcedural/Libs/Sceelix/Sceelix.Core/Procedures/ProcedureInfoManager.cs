@@ -26,6 +26,8 @@ namespace Sceelix.Core.Procedures
             var allProcedures = SceelixDomain.Types.Where(type => typeof(Procedure).IsAssignableFrom(type) && type.GetCustomAttributes(typeof(ProcedureAttribute), true).Count() > 0);
             ProceduresInfo.AddRange(allProcedures.Select(x => new ProcedureInfo(x)));
         }
+
+        public static ProcedureInfo GetProcedure(Type procedureType) => ProceduresInfo.FirstOrDefault(x => x.Type == procedureType);
     }
 
     public class ProcedureInfo

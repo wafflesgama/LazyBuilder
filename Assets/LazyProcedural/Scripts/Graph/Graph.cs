@@ -36,6 +36,7 @@ namespace LazyProcedural
         private GraphViewChange OnGraphViewChanged(UnityGraph.GraphViewChange change)
         {
 
+
             if (OnGraphChanged != null)
                 OnGraphChanged.Invoke();
 
@@ -81,6 +82,16 @@ namespace LazyProcedural
             return compatiblePorts;
         }
 
+        //Loading from file
+        public void AddNodes(IEnumerable<Node> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                node.OnNodeSelected += Node_OnNodeSelected;
+                AddElement(node);
+            }
+        }
+
 
         public void AddNode(ProcedureInfo procedureInfo, Vector2 pos)
         {
@@ -90,13 +101,28 @@ namespace LazyProcedural
             //    return;
             //}
 
-            var node = ObjectFactory.CreateNode(procedureInfo);
+            var node = new Node(procedureInfo);
 
             pos = contentViewContainer.WorldToLocal(pos);
             node.SetPosition(new Rect(pos, node.GetPosition().size));
 
             node.OnNodeSelected += Node_OnNodeSelected;
             AddElement(node);
+        }
+
+        public void AddEdges(IEnumerable<Edge> edges)
+        {
+            foreach (var edge in edges)
+            {
+                //AddElement(edge);
+                var unityEdge = edge.input.ConnectTo(edge.output);
+                AddElement(unityEdge);
+            }
+        }
+        public void AddEdge(Port outPort, Port inPort)
+        {
+            var edge = new Edge { output = outPort, input = inPort };
+            AddElement(edge);
         }
 
         private void Node_OnNodeSelected(Node node)

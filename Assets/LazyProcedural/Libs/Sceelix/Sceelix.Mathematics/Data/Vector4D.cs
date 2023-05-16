@@ -362,7 +362,15 @@ namespace Sceelix.Mathematics.Data
         }*/
 
 
+        public static Vector4D Parse(string s)
+        {
+            var stringValue = s;
+            stringValue = stringValue.Replace("(", "");
+            stringValue = stringValue.Replace(")", "");
 
+            var splittedValues = stringValue.Split(',');
+            return new Vector4D(float.Parse(splittedValues[0]), float.Parse(splittedValues[1]), float.Parse(splittedValues[2]), float.Parse(splittedValues[3]));
+        }
         public override string ToString()
         {
             //return string.Format("X: {0}, Y: {1}, Z: {2}", _x.ToString(CultureInfo.InvariantCulture), _y.ToString(CultureInfo.InvariantCulture), _z.ToString(CultureInfo.InvariantCulture));

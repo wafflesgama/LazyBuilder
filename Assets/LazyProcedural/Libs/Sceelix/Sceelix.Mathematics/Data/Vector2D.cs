@@ -343,6 +343,15 @@ namespace Sceelix.Mathematics.Data
             return new Vector2D(size.Width, size.Height);
         }
 
+        public static Vector2D Parse(string s)
+        {
+            var stringValue = s;
+            stringValue = stringValue.Replace("(", "");
+            stringValue = stringValue.Replace(")", "");
+
+            var splittedValues = stringValue.Split(',');
+            return new Vector2D(float.Parse(splittedValues[0]), float.Parse(splittedValues[1]));
+        }
 
 
         public string ToString(string format, IFormatProvider provider = null)
@@ -351,6 +360,8 @@ namespace Sceelix.Mathematics.Data
 
             return string.Format(format, X.ToString(provider), Y.ToString(provider));
         }
+
+
 
         #endregion
 

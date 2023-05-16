@@ -187,6 +187,8 @@ namespace Sceelix.Mathematics.Data
         }
 
 
+        
+
 
         /// <summary>
         /// Converts the color to an array of 0-255 byte values.
@@ -479,6 +481,16 @@ namespace Sceelix.Mathematics.Data
         public static Color YellowGreen = new Color(154, 205, 50, 255);
 
 
+        public static Color Parse(string s)
+        {
+            var stringValue = s;
+            stringValue = stringValue.Replace("RGBA", "");
+            stringValue = stringValue.Replace("(", "");
+            stringValue = stringValue.Replace(")", "");
+
+            var splittedValues = stringValue.Split(',');
+            return new Color(splittedValues.Select(x => float.Parse(x)).ToArray());
+        }
 
         public static Color? GetColorByPrettyName(string colorName)
         {

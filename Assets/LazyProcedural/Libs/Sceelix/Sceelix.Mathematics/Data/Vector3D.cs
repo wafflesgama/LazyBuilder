@@ -877,6 +877,15 @@ namespace Sceelix.Mathematics.Data
         #endregion
 
 
+        public static Vector3D Parse(string s)
+        {
+            var stringValue = s;
+            stringValue = stringValue.Replace("(", "");
+            stringValue = stringValue.Replace(")", "");
+
+            var splittedValues = stringValue.Split(',');
+            return new Vector3D(float.Parse(splittedValues[0]), float.Parse(splittedValues[1]), float.Parse(splittedValues[2]));
+        }
 
         public string ToString(string format, IFormatProvider provider = null)
         {

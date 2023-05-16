@@ -7,25 +7,28 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Sceelix.Core.Procedures;
 using Sceelix.Processors;
+using UnityEditor.Experimental.GraphView;
 
 namespace LazyProcedural
 {
     public class GraphWindow : UnityEditor.Experimental.GraphView.GraphViewEditorWindow
     {
+        public string filePath;
 
         private VisualElement _root;
         private Graph graph;
         private Vector2 addMousePos;
+
+
         private GenerationManager generationManager;
         private ProcessorManager processorManager;
         private GeoGraphComponent graphComponent;
+        private GraphPersistance graphPersistance;
 
         //-----Header Area
+        private Button _saveButton;
         private Button _showContextButton;
         private Button _runButton;
-        private Button _testPlusButton;
-        private Button _testMinusButton;
-        private Slider _testSlider;
 
         //-----Main Area
         private VisualElement _graph;
@@ -70,7 +73,15 @@ namespace LazyProcedural
         const string CONFIRM_MSG = "Go Ahead";
         const string CANCEL_MSG = "Cancel";
 
-        private void OnEnable()
+        bool initialized;
+        private void OnFocus()
+        {
+            if (!initialized)
+                Setup();
+        }
+
+
+        private void Setup()
         {
 
             InitVariables();
@@ -80,7 +91,9 @@ namespace LazyProcedural
             SetupExtraWindows();
 
 
-            //Blackboard b= new Blackboard(graph);
+            //Blackboard b = new Blackboard(graph);
+            //b.
+  
             //graph.Add(b);
 
             //Blackboard b2 = new Blackboard(graph);
@@ -103,6 +116,8 @@ namespace LazyProcedural
 
             LogMessage("Setup finished");
 
+            initialized = true;
+
         }
 
         private void InitVariables()
@@ -113,21 +128,29 @@ namespace LazyProcedural
 
             processorManager = new ProcessorManager();
 
-            ProcedureInfoManager.Init();
+            graphPersistance = new GraphPersistance();
 
-            WindowManager.Init();
+            ProcedureInfoManager.Init();
 
             graphComponent = GraphComponentFinder.FindComponent();
 
         }
         private void InitGraph()
         {
+
             graph = new Graph();
+
+            if (graphPersistance.filePath == null)
+                graphPersistance.filePath = filePath;
+
+            var loadedGraph = graphPersistance.LoadGraph();
+
+            graph.AddNodes(loadedGraph.Item1);
+            graph.AddEdges(loadedGraph.Item2);
 
             graph.OnNodeSelected += OnNodeSelected;
 
             graph.OnGraphChanged += OnGraphChanged;
-
         }
 
 
@@ -148,7 +171,7 @@ namespace LazyProcedural
             if (graph.selection.Count > 1) return;
 
             OpenContextWindow();
-            _contextWindow.BuildNodeParameters(node.nodeData);
+            _contextWindow.BuildNodeInfo(node);
         }
 
         private void OnGraphChanged()
@@ -156,27 +179,35 @@ namespace LazyProcedural
             RunGraph();
         }
 
+        private void SaveGraph()
+        {
+            if (graphPersistance.filePath == null)
+                graphPersistance.filePath = filePath;
+
+            graphPersistance.SaveGraph(graph.nodes.ToList().Select(x => (Node)x));
+        }
+
         private void OpenCloseContextWindow()
         {
-            if (_contextWindow != null)
-                CloseContextWindow();
-            else
-                OpenContextWindow();
+            //if (_contextWindow != null)
+            //    CloseContextWindow();
+            //else
+            //    OpenContextWindow();
+
+            _contextWindow.visible = !_contextWindow.visible;
         }
         private void OpenContextWindow()
         {
-            if (_contextWindow == null)
-                _contextWindow = new ContextWindow(this);
+            //if (_contextWindow == null)
+            //    _contextWindow = new ContextWindow(this);
 
-            _contextWindow.Show();
+            _contextWindow.visible = true;
         }
         private void CloseContextWindow()
         {
             if (_contextWindow == null) return;
 
-            _contextWindow.Close();
-
-            _contextWindow = null;
+            _contextWindow.visible = false;
         }
 
 
@@ -229,8 +260,9 @@ namespace LazyProcedural
 
         private void SetupExtraWindows()
         {
-            //_contextWindow = new ContextWindow();
-
+            _contextWindow = new ContextWindow(this);
+            _contextWindow.visible = false;
+            graph.Add(_contextWindow);
         }
 
 
@@ -239,9 +271,7 @@ namespace LazyProcedural
         {
 
             //-----Header Area
-            _testPlusButton = (Button)_root.Q("Add");
-            _testMinusButton = (Button)_root.Q("Remove");
-            _testSlider = (Slider)_root.Q("Value");
+            _saveButton = (Button)_root.Q("SaveBttn");
             _showContextButton = (Button)_root.Q("ShowContextBttn");
             _runButton = (Button)_root.Q("RunBttn");
 
@@ -294,6 +324,8 @@ namespace LazyProcedural
         private void SetupCallbacks()
         {
 
+            //Header Items
+            _saveButton.clicked += SaveGraph;
             _showContextButton.clicked += OpenCloseContextWindow;
             _runButton.clicked += RunGraph;
 
@@ -306,7 +338,7 @@ namespace LazyProcedural
         private void SetupInputCallbacks()
         {
             _root.RegisterCallback<KeyDownEvent>(OnKeyboardKeyDown, TrickleDown.TrickleDown);
-            _root.RegisterCallback<MouseDownEvent>(OnMouseKeyDown, TrickleDown.TrickleDown);
+            //_root.RegisterCallback<MouseDownEvent>(OnMouseKeyDown, TrickleDown.TrickleDown);
         }
 
 
@@ -322,6 +354,11 @@ namespace LazyProcedural
             if (e.ctrlKey && e.keyCode == KeyCode.D)
             {
                 DuplicateSelection();
+            }
+            else
+            if (e.ctrlKey && e.keyCode == KeyCode.S)
+            {
+                SaveGraph();
             }
 
             else if (e.keyCode == KeyCode.Space)

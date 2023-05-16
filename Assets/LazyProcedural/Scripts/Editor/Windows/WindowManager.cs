@@ -7,17 +7,9 @@ namespace LazyProcedural
 {
     public class WindowManager : EditorWindow
     {
-
         public static SceneView sceneWindow { get; private set; }
 
-        [MenuItem("Tools/Lazy Procedural/Init #i")]
-        public static void Init()
-        {
-            PathFactory.Init();
-        }
-
-
-        //Handles correct behaviour when double-clicking a .graph asset assigned to a field
+        //Handles correct behaviour when double-clicking a Graph asset assigned to a field
         [OnOpenAsset]
         public static bool OnOpenGraph(int instanceID, int line)
         {
@@ -29,37 +21,39 @@ namespace LazyProcedural
 
             Selection.activeObject = target;
 
-            string graphName = Path.GetFileNameWithoutExtension(path);
-
-            ShowGraph();
-
-            //var windows =UnityEditor.Experimental.GraphView.GraphViewEditorWindow.ShowGraphViewWindowWithTools<GraphWindow>();
+            OpenGraph(path);
 
             return true;
         }
 
 
-        [MenuItem("Tools/Lazy Procedural/Test Graph #g")]
-        public static void ShowGraph()
+        //[MenuItem("Tools/Lazy Procedural/Test Graph #g")]
+        //public static void ShowGraph()
+        //{
+        //    OpenGraph("Test");
+        //}
+
+
+        public static void OpenGraph(string path)
         {
-            ShowGraph("Test");
-        }
-        public static void ShowGraph(string graphName)
-        {
-            GraphWindow(graphName);
+            OpenGraphWindow(path);
         }
 
-        private static void GraphWindow(string graphName = "")
+        private static void OpenGraphWindow(string path)
         {
-            if (Application.isPlaying) return;
+            var graphName = Path.GetFileNameWithoutExtension(path);
+            //if (Application.isPlaying) return;
 
-            GetSceneWindow();
-            var window = GetWindow<GraphWindow>();
+            //GetSceneWindow();
+
+            GraphWindow graphWindow = new GraphWindow { filePath= path};
+            //GraphWindow graphWindow = CreateWindow<GraphWindow>();
+            //graphWindow.filePath = path;
 
             Texture2D icon = Utils.FetchImage(PathFactory.BuildImageFilePath(PathFactory.ICON_SMALL_FILE, true));
 
-            window.titleContent = new GUIContent(graphName == "" ? "New Geo Graph" : graphName, icon);
-            window.Show();
+            graphWindow.titleContent = new GUIContent(graphName, icon);
+            graphWindow.Show();
         }
 
 
