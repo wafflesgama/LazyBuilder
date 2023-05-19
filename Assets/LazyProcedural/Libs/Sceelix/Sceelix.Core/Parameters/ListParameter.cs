@@ -189,15 +189,13 @@ namespace Sceelix.Core.Parameters
             if (!_creationFunctionsDictionary.TryGetValue(label, out creationFunction))
                 throw new KeyNotFoundException(string.Format("No subitem with name '{0}' exists in parameter '{1}'.", label, Label));
 
-            if (!ReachedLimit)
-            {
-                var parameter = creationFunction.Invoke(this);
-                Items.Remove(parameter);
-            }
-            else if (MaxSize == 1) //if it reached the limit, but can only support one item
-            {
-                Items[0] = creationFunction.Invoke(this);
-            }
+            var parameter = creationFunction.Invoke(this);
+            Remove(parameter);
+        }
+
+        public void Remove(Parameter parameter)
+        {
+            Items.Remove(parameter);
         }
 
 
@@ -237,15 +235,25 @@ namespace Sceelix.Core.Parameters
         {
             var val = CachedParameterCreationFuncs.GetOrCompute(type, () =>
              {
-                 var types = ParameterManager.ParameterTypes.Where(paramType => type.IsAssignableFrom(paramType)
+                 Type typeToLook = type.IsGenericType ? type.BaseType : type;
+
+                 Type genericType = type.IsGenericType ? type.GenericTypeArguments[0] : type;
+
+                 IEnumerable<Type> types;
+                 types = ParameterManager.ParameterTypes.Where(paramType => typeToLook.IsAssignableFrom(paramType)
                                                                                 && typeof(Parameter).IsAssignableFrom(paramType)
-                                                                                && !paramType.IsAbstract).OrderBy(x => x.Name);
+                                                                                && !paramType.IsAbstract).OrderBy(x => x.Name).ToList();
+
+
                  var funcList = new List<Func<Parameter, Parameter>>();
 
                  foreach (Type source in types)
                  {
-                     var expression = Expression.New(source);
+                     //Skip non generic in case of creating a generic type
+                     if (type.IsGenericType && !source.IsGenericType) continue;
 
+                     var creationSource = type.IsGenericType ? source.MakeGenericType(genericType) : source;
+                     var expression = Expression.New(creationSource);
                      var compiledExpression = Expression.Lambda<Func<Parameter>>(expression).Compile();
 
                      funcList.Add(parent =>
@@ -259,6 +267,7 @@ namespace Sceelix.Core.Parameters
                  return funcList;
              });
             return val;
+
         }
 
 

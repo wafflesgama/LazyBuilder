@@ -1,46 +1,25 @@
 {
     "Nodes": [
         {
-            "Id": "52fef6d347b8c744c8d0f6953c021b62",
-            "Name": "Mesh Modify",
+            "Id": "878a65ca9402b374fa5fb11ca51823a6",
+            "Name": "Random",
             "Position": {
-                "x": 386.0,
-                "y": 147.0
+                "x": 909.0,
+                "y": 410.0
             },
-            "Type": "Sceelix.Meshes.Procedures.MeshModifyProcedure",
+            "Type": "Sceelix.Core.Procedures.RandomProcedure",
             "ChangedParams": [],
+            "CreatedParams": [],
             "InPorts": [
                 {
-                    "Id": "7ad48661-187a-4acc-8b2b-cad4c1be86de",
+                    "Id": "8f036ec1-c183-40bf-bc1f-250c0067d4a2",
                     "Connections": []
                 }
             ],
             "OutPorts": [
                 {
-                    "Id": "8b0513f4-334d-4b0f-8ff8-ce60ae99a3a5",
+                    "Id": "11d3d072-fa55-4d6c-9dd7-a9611126bcc5",
                     "Connections": []
-                }
-            ]
-        },
-        {
-            "Id": "3dcb02faa2edda547b83a7775d33197e",
-            "Name": "shit",
-            "Position": {
-                "x": 136.0,
-                "y": 277.0
-            },
-            "Type": "Sceelix.Meshes.Procedures.MeshCreateProcedure",
-            "ChangedParams": [],
-            "InPorts": [],
-            "OutPorts": [
-                {
-                    "Id": "d1fd2f2b-c648-4294-a48d-c6dee95320d6",
-                    "Connections": [
-                        {
-                            "DestinationNodeId": "52fef6d347b8c744c8d0f6953c021b62",
-                            "DestinationPortIndex": 0
-                        }
-                    ]
                 }
             ]
         }

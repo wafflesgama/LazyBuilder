@@ -16,7 +16,7 @@ using System;
 using Sceelix.Core.Data;
 using UnityGraph = UnityEditor.Experimental.GraphView;
 
-public class ContextWindow : UnityGraph.Blackboard
+public class ContextWindow : EditorWindow
 {
     private VisualElement _root;
 
@@ -31,14 +31,24 @@ public class ContextWindow : UnityGraph.Blackboard
 
 
     private ScrollView _parametersContainer;
+
+    private bool initialized=false;
     public ContextWindow(GraphWindow graphWindow)
     {
         _graphWindow = graphWindow;
+    }
+
+    private void OnFocus()
+    {
         Setup();
     }
 
     private void Setup()
     {
+        if (initialized) return;
+
+        initialized = true;
+
         SetupBaseUI();
         StripDefaultElements();
         SetupBindings();
@@ -46,20 +56,20 @@ public class ContextWindow : UnityGraph.Blackboard
 
     private void SetupBaseUI()
     {
-        _root = contentContainer;
+        _root = rootVisualElement;
 
 
         if (_root == null) return;
 
-        subTitle = "";
-        title = "Context";
+        //subTitle = "";
+        //title = "Context";
 
         // Loads and clones our VisualTree (eg. our UXML structure) inside the root.
         var visualTree = (VisualTreeAsset)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.CONTEXT_WINDOW_LAYOUT_FILE), typeof(VisualTreeAsset));
         visualTree.CloneTree(_root);
 
         var styleSheet = (StyleSheet)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.CONTEXT_WINDOW_LAYOUT_FILE, false), typeof(StyleSheet));
-        this.styleSheets.Add(styleSheet);
+        _root.styleSheets.Add(styleSheet);
 
     }
 
@@ -174,30 +184,21 @@ public class ContextWindow : UnityGraph.Blackboard
 
         var currentAcessingIndex = acessingIndex.ToList();
 
-        ////If it is a Value Set field of an Attribute
 
-        //else
         //If it is a Compound Tree field (i.e the Attribute Header)
         if (parameterRef.ParameterInfo.MetaType == "Compound")
         {
             TextField stringField = new TextField();
 
             stringField.label = parameter.Label;
-            //stringField.value = parameterValue.ToString();
-            //stringField.RegisterValueChangedCallback(value =>
+
+            //contextMenuOperations.Add("Delete Attribute", (x) =>
             //{
-            //    //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
-            //    //param.Set(value.newValue);
-            //    //_graphWindow.OnGraphValueUpdated();
+            //    var listParameter = (ListParameter)parameter;
+
+            //    listParameter.Remove(parameter.Label);
+            //    BuildNodeInfo(node);
             //});
-
-            contextMenuOperations.Add("Delete Attribute", (x) =>
-            {
-                var listParameter = (ListParameter)parameter;
-
-                listParameter.Remove(parameter.Label);
-                BuildNodeInfo(node);
-            });
 
             field = stringField;
         }
@@ -210,10 +211,26 @@ public class ContextWindow : UnityGraph.Blackboard
             stringField.value = parameterRef.Parameter.RawExpression;
             stringField.RegisterValueChangedCallback(value =>
             {
+                //var addedValues = value.newValue.Replace(value.previousValue, "");
+
+                //if(addedValues == "\n")
+                //{
+
+                //}
+                //else
+                //{
+
+                //}
                 //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
-                parameterRef.SetExpression(value.newValue);
+                parameter.RawExpression = value.newValue;
+                //parameterRef.SetExpression(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = true, value = value.newValue });
                 //param.Set();
+                //_graphWindow.OnGraphValueUpdated();
+            });
+            stringField.RegisterCallback<FocusOutEvent>(x =>
+            {
+                parameterRef.ApplyRawExpression();
                 _graphWindow.OnGraphValueUpdated();
             });
             field = stringField;
@@ -221,21 +238,68 @@ public class ContextWindow : UnityGraph.Blackboard
         }
 
         else
-        // If it is an Attribute addable List
-    if (parameterType.ToString().Contains(typeof(ListParameter).ToString()))
+        //If object list Parameter
+        if (parameterType.ToString().Contains(typeof(ObjectListParameter<>).ToString()))
         {
+            var objectListParam = (ObjectListParameter<object>)parameter;
+            ObjectField objectField = new ObjectField();
+            objectField.label = parameter.Label;
+
+            var objectType = parameterType.GetGenericArguments()[0];
+
+            objectField.objectType = objectType;
+            objectField.value = (UnityEngine.Object)parameterValue;
+
+
+
+            objectField.RegisterValueChangedCallback(value =>
+            {
+                parameter.Set(value.newValue);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+
+                if (value.newValue != null)
+                    _graphWindow.OnGraphValueUpdated();
+
+            });
+
+
+            field = objectField;
+        }
+        //If single object Paramter
+        else if (parameterType.ToString().StartsWith(typeof(ObjectParameter).ToString()))
+        {
+            var objectParam = (ObjectParameter)parameter;
+            ObjectField objectField = new ObjectField();
+            objectField.label = parameter.Label;
+
+            var objectType = parameterType.GetGenericArguments()[0];
+
+            objectField.objectType = objectType;
+            objectField.value = (UnityEngine.Object)parameterValue;
+
+            objectField.RegisterValueChangedCallback(value =>
+            {
+                parameter.Set(value.newValue);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+
+                if (value.newValue != null)
+                    _graphWindow.OnGraphValueUpdated();
+
+            });
+
+            field = objectField;
+        }
+        else
+            // If it is an Attribute addable List
+            if (parameterType.ToString().Contains(typeof(ListParameter).ToString()))
+        {
+
             var listParameter = (ListParameter)parameter;
 
             var choices = listParameter.GetAvailableFunctions();
 
-            Foldout foldout = new Foldout();
-            foldout.style.marginLeft = 15;
-            foldout.text = " ";
-
-            //var parameterList = (SceeList)parameterValue;
             PopupField<string> popupField = new PopupField<string>();
             popupField.choices = choices.ToList();
-            //popupField.value = parameterList.Keys[0];
 
             string defaultLabel = "+";
             popupField.value = defaultLabel;
@@ -253,13 +317,13 @@ public class ContextWindow : UnityGraph.Blackboard
                 listParameter.Add(value.newValue);
                 popupField.value = defaultLabel;
                 BuildNodeInfo(node);
+
+                node.CreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName= value.newValue });    
                 _graphWindow.OnGraphValueUpdated();
             });
 
 
             field = popupField;
-            //toggleChildLabel.Add(field);
-            //field.AddToClassList("dropdown-parameter");
 
         }
         else
@@ -463,6 +527,17 @@ public class ContextWindow : UnityGraph.Blackboard
 
 
             field = stringField;
+        }
+
+        if (parameter.Root!= parameter && parameter.Root.GetType().ToString().Contains(typeof(ListParameter).ToString()))
+        {
+            contextMenuOperations.Add("Delete Attribute", (x) =>
+            {
+                var listParameter = (ListParameter)parameter.Root;
+                node.RemoveCreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = parameter.Label});
+                listParameter.Remove(parameter);
+                BuildNodeInfo(node);
+            });
         }
 
         contextMenuOperations.Add(parameterRef.IsExpression ? "Convert To Fixed Value" : "Convert To Expression", (x) =>

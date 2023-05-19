@@ -17,8 +17,8 @@ namespace Sceelix.Core.Parameters
         protected ObjectParameter(string label, object defaultValue)
             : base(label, defaultValue)
         {
-            //by default, the object parameter uses an expression
-            IsExpression = true;
+            ////by default, the object parameter uses an expression
+            //IsExpression = true;
         }
 
 
@@ -48,6 +48,12 @@ namespace Sceelix.Core.Parameters
     /// </summary>
     public class ObjectParameter<T> : ObjectParameter
     {
+
+        public ObjectParameter():base(typeof(T).Name,default(T))
+        {
+
+        }
+
         public ObjectParameter(string label)
             : base(label, default(T))
         {

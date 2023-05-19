@@ -21,6 +21,11 @@ namespace LazyProcedural
         public bool isExpression = false;
         public object value;
     }
+    public class CreatedParameterInfo
+    {
+        public int[] accessIndex;
+        public string parameterName;
+    }
     public class Node : UnityGraph.Node
     {
         public string id { get; private set; }
@@ -31,6 +36,7 @@ namespace LazyProcedural
 
         public Procedure nodeData { get; private set; }
         public List<ChangedParameterInfo> changedDataParams { get; private set; }
+        public List<CreatedParameterInfo> createdDataParams { get; private set; }
 
         public event NodeEvent OnNodeSelected;
 
@@ -49,6 +55,7 @@ namespace LazyProcedural
             tooltip = nodeDataInfo.Label;
 
             changedDataParams = new List<ChangedParameterInfo>();
+            createdDataParams = new List<CreatedParameterInfo>();
             nodeData = (Procedure)Activator.CreateInstance(nodeDataInfo.Type);
 
             SetupExtraUI();
@@ -67,15 +74,25 @@ namespace LazyProcedural
             tooltip = sourceNode.tooltip;
 
             changedDataParams = new List<ChangedParameterInfo>();
+            createdDataParams = new List<CreatedParameterInfo>();
 
             if (linkedCopy)
                 nodeData = sourceNode.nodeData;
             else
             {
                 nodeData = (Procedure)Activator.CreateInstance(sourceNode.nodeData.GetType());
+
+
+                foreach (var createdDataParam in sourceNode.createdDataParams)
+                {
+                    var param = GetParameterFromAcessingIndex(createdDataParam.accessIndex.ToList());
+                    ListParameter listParam = (ListParameter)param.Parameter;
+                    listParam.Add(createdDataParam.parameterName);
+                }
+
                 foreach (var changeParam in sourceNode.changedDataParams)
                 {
-                    var param = GetParameterFromAcessingIndex(changeParam.accessIndex.ToList(), nodeData);
+                    var param = GetParameterFromAcessingIndex(changeParam.accessIndex.ToList());
 
                     if (changeParam.isExpression)
                         param.SetExpression((string)changeParam.value);
@@ -91,7 +108,7 @@ namespace LazyProcedural
         }
 
         //Load Constructor
-        public Node(string id, string name, Type nodeDataType, Vector2 position, ChangedParameterInfo[] changedParams)
+        public Node(string id, string name, Type nodeDataType, Vector2 position, CreatedParameterInfo[] createdParams, ChangedParameterInfo[] changedParams)
         {
             this.id = id;
             ProcedureInfo nodeDataInfo = ProcedureInfoManager.GetProcedure(nodeDataType);
@@ -105,10 +122,19 @@ namespace LazyProcedural
             nodeData = (Procedure)Activator.CreateInstance(nodeDataType);
 
             changedDataParams = new List<ChangedParameterInfo>();
+            createdDataParams = new List<CreatedParameterInfo>();
+
+
+            foreach (var createdDataParam in createdParams)
+            {
+                var param = GetParameterFromAcessingIndex(createdDataParam.accessIndex.ToList());
+                ListParameter listParam = (ListParameter)param.Parameter;
+                listParam.Add(createdDataParam.parameterName);
+            }
 
             foreach (var changeParam in changedParams)
             {
-                var param = GetParameterFromAcessingIndex(changeParam.accessIndex.ToList(), nodeData);
+                var param = GetParameterFromAcessingIndex(changeParam.accessIndex.ToList());
 
                 if (changeParam.isExpression)
                     param.SetExpression((string)changeParam.value);
@@ -256,12 +282,27 @@ namespace LazyProcedural
 
         public void ChangedDataParameter(ChangedParameterInfo changedParameterInfo)
         {
-            if (!changedDataParams.Any(x => x.accessIndex == changedParameterInfo.accessIndex))
+            if (!changedDataParams.Any(x => x.accessIndex.SequenceEqual(changedParameterInfo.accessIndex)))
                 changedDataParams.Add(new ChangedParameterInfo { accessIndex = changedParameterInfo.accessIndex });
 
-            var param = changedDataParams.FirstOrDefault(x => x.accessIndex == changedParameterInfo.accessIndex);
+            var param = changedDataParams.FirstOrDefault(x => x.accessIndex.SequenceEqual(changedParameterInfo.accessIndex));
             param.value = changedParameterInfo.value;
             param.isExpression = changedParameterInfo.isExpression;
+        }
+
+        public void CreatedDataParameter(CreatedParameterInfo createdParameterInfo)
+        {
+            createdDataParams.Add(createdParameterInfo);
+        }
+
+        public void RemoveCreatedDataParameter(CreatedParameterInfo createdToRemoveParameterInfo)
+        {
+            var paramsOfRemoved = changedDataParams.Where(x => createdToRemoveParameterInfo.accessIndex.Except(x.accessIndex).Count() <= 0).ToList();
+            changedDataParams = changedDataParams.Except(paramsOfRemoved).ToList();
+
+            var paramInfo = createdDataParams.FirstOrDefault(x => x.accessIndex.SequenceEqual(createdToRemoveParameterInfo.accessIndex) && createdToRemoveParameterInfo.parameterName == x.parameterName);
+            createdDataParams.Remove(paramInfo);
+
         }
 
 
@@ -295,11 +336,11 @@ namespace LazyProcedural
         }
 
 
-        private ParameterReference GetParameterFromAcessingIndex(List<int> acessingIndex, Procedure procedure)
+        private ParameterReference GetParameterFromAcessingIndex(List<int> acessingIndex)
         {
             if (acessingIndex == null || acessingIndex.Count == 0) return null;
 
-            ParameterReference reference = procedure.Parameters[acessingIndex[0]];
+            ParameterReference reference = nodeData.Parameters[acessingIndex[0]];
             bool firstElement = true;
             foreach (var index in acessingIndex)
             {

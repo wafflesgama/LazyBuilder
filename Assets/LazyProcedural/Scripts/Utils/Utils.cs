@@ -132,6 +132,13 @@ namespace LazyProcedural
             return tex;
         }
 
+
+        public static void TryInvoke(this Action action)
+        {
+            if (action != null)
+                action();
+
+        }
     }
 
 

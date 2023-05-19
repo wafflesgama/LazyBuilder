@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -80,7 +81,6 @@ namespace LazyProcedural
                 Setup();
         }
 
-
         private void Setup()
         {
 
@@ -93,7 +93,7 @@ namespace LazyProcedural
 
             //Blackboard b = new Blackboard(graph);
             //b.
-  
+
             //graph.Add(b);
 
             //Blackboard b2 = new Blackboard(graph);
@@ -150,7 +150,7 @@ namespace LazyProcedural
 
             graph.OnNodeSelected += OnNodeSelected;
 
-            graph.OnGraphChanged += OnGraphChanged;
+            graph.OnGraphStructureChanged += OnGraphStructureChanged;
         }
 
 
@@ -174,7 +174,14 @@ namespace LazyProcedural
             _contextWindow.BuildNodeInfo(node);
         }
 
-        private void OnGraphChanged()
+        private async void OnGraphStructureChanged()
+        {
+            //Delaying to graph process the structure changes
+            await Task.Delay(3);
+            RunGraph();
+        }
+
+        public void OnGraphValueUpdated()
         {
             RunGraph();
         }
@@ -189,25 +196,28 @@ namespace LazyProcedural
 
         private void OpenCloseContextWindow()
         {
-            //if (_contextWindow != null)
-            //    CloseContextWindow();
-            //else
-            //    OpenContextWindow();
+            if (_contextWindow != null)
+                CloseContextWindow();
+            else
+                OpenContextWindow();
 
-            _contextWindow.visible = !_contextWindow.visible;
+            //_contextWindow.visible = !_contextWindow.visible;
         }
         private void OpenContextWindow()
         {
-            //if (_contextWindow == null)
-            //    _contextWindow = new ContextWindow(this);
+            if (_contextWindow == null)
+                _contextWindow = new ContextWindow(this);
 
-            _contextWindow.visible = true;
+
+            _contextWindow.Show();
+            //_contextWindow.visible = true;
         }
         private void CloseContextWindow()
         {
             if (_contextWindow == null) return;
 
-            _contextWindow.visible = false;
+            _contextWindow.Close();
+            //_contextWindow.visible = false;
         }
 
 
@@ -260,9 +270,9 @@ namespace LazyProcedural
 
         private void SetupExtraWindows()
         {
-            _contextWindow = new ContextWindow(this);
-            _contextWindow.visible = false;
-            graph.Add(_contextWindow);
+            //_contextWindow = new ContextWindow(this);
+            //_contextWindow.visible = false;
+            //graph.Add(_contextWindow);
         }
 
 
@@ -373,10 +383,10 @@ namespace LazyProcedural
             }
         }
 
-        private void OnMouseKeyDown(MouseDownEvent e)
-        {
+        //private void OnMouseKeyDown(MouseDownEvent e)
+        //{
 
-        }
+        //}
 
 
         #endregion BaseUI
@@ -475,10 +485,7 @@ namespace LazyProcedural
         }
 
 
-        public void OnGraphValueUpdated()
-        {
-            RunGraph();
-        }
+
 
         private void DuplicateSelection()
         {

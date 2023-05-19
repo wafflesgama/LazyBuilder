@@ -13,7 +13,7 @@ namespace LazyProcedural
     public class Graph : UnityGraph.GraphView
     {
         public event NodeEvent OnNodeSelected;
-        public event Action OnGraphChanged;
+        public event Action OnGraphStructureChanged;
 
         public Graph()
         {
@@ -30,18 +30,19 @@ namespace LazyProcedural
 
 
             this.graphViewChanged = new GraphViewChanged(OnGraphViewChanged);
+           
         }
 
 
         private GraphViewChange OnGraphViewChanged(UnityGraph.GraphViewChange change)
         {
+            if (change.edgesToCreate == null && change.elementsToRemove == null) return change;
 
-
-            if (OnGraphChanged != null)
-                OnGraphChanged.Invoke();
+            OnGraphStructureChanged.TryInvoke();
 
             return change;
         }
+
 
 
         public override List<UnityGraph.Port> GetCompatiblePorts(UnityGraph.Port startPort, NodeAdapter nodeAdapter)
@@ -108,6 +109,8 @@ namespace LazyProcedural
 
             node.OnNodeSelected += Node_OnNodeSelected;
             AddElement(node);
+
+            OnGraphStructureChanged.TryInvoke();
         }
 
         public void AddEdges(IEnumerable<Edge> edges)

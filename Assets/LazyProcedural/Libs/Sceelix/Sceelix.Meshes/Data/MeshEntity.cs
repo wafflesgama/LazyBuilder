@@ -125,7 +125,7 @@ namespace Sceelix.Meshes.Data
 
         public virtual MeshEntity CreateDerived(IEnumerable<Face> collection, bool deriveScope = true)
         {
-            MeshEntity newMeshEntity = (MeshEntity) new MeshEntity(collection).DeepClone();
+            MeshEntity newMeshEntity = (MeshEntity)new MeshEntity(collection).DeepClone();
 
             if (deriveScope)
                 newMeshEntity.AdjustScope(BoxScope);
@@ -139,7 +139,7 @@ namespace Sceelix.Meshes.Data
 
         public virtual MeshEntity CreateDerived(Face face, bool deriveScope = true)
         {
-            MeshEntity newMeshEntity = (MeshEntity) new MeshEntity(face).DeepClone();
+            MeshEntity newMeshEntity = (MeshEntity)new MeshEntity(face).DeepClone();
 
             if (deriveScope)
                 newMeshEntity.AdjustScope(BoxScope);
@@ -153,7 +153,7 @@ namespace Sceelix.Meshes.Data
 
         public override IEntity DeepClone()
         {
-            MeshEntity clonedMeshEntity = (MeshEntity) base.DeepClone();
+            MeshEntity clonedMeshEntity = (MeshEntity)base.DeepClone();
 
             clonedMeshEntity._boxScope = _boxScope;
             clonedMeshEntity._faces = new List<Face>();
@@ -436,9 +436,35 @@ namespace Sceelix.Meshes.Data
             }
         }
 
+        public UnityEngine.Material[] Materials
+        {
+            get
+            {
+                return Faces.Select(x => x.Material).Distinct().ToArray();
+            }
+            set
+            {
+                Dictionary<UnityEngine.Material, int> keyValuePairs = new Dictionary<UnityEngine.Material, int>();
+                int currentIndex = -1;
+                foreach (Face face in _faces)
+                {
+                    if (!keyValuePairs.ContainsKey(face.Material))
+                    {
+                        if (currentIndex + 1 >= value.Length)
+                            continue;
 
+                        currentIndex++;
+                        keyValuePairs.Add(face.Material, currentIndex);
+                    }
 
-        public Material Material
+                    var materialIndex = keyValuePairs[face.Material];
+                    face.Material = value[materialIndex];
+                }
+            }
+
+        }
+
+        public UnityEngine.Material Material
         {
             set
             {

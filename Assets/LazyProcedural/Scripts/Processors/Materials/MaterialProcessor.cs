@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class MaterialProcessor
 {
-   public Material Process(Sceelix.Actors.Data.Material sourceMaterial)
+    public Material Process(Material sourceMaterial)
     {
-        Material material = CreateDefaultMaterial();
+        if (sourceMaterial != null) return sourceMaterial;
 
-        return material;
-        //material.color=sourceMaterial.
+        return CreateDefaultMaterial();
     }
 
     public static Material CreateDefaultMaterial()

@@ -8,8 +8,8 @@ namespace Sceelix.Core.Parameters.Infos
         public ObjectParameterInfo(string label)
             : base(label)
         {
-            IsExpression = true;
-            ParsedExpression = new ParsedExpression(new ConstantExpressionNode(""));
+            //IsExpression = true;
+            //ParsedExpression = new ParsedExpression(new ConstantExpressionNode(""));
         }
 
 

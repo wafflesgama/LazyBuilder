@@ -16,7 +16,7 @@ namespace Sceelix.Processors
     {
         public void Process(IEntity entity, GameObject gameObject)
         {
-            Dictionary<Sceelix.Actors.Data.Material, int> materialToMaterialData = new Dictionary<Sceelix.Actors.Data.Material, int>();
+            Dictionary<Material, int> materialToMaterialData = new Dictionary<Material, int>();
 
             MeshEntity meshEntity = entity as MeshEntity;
 
@@ -35,7 +35,7 @@ namespace Sceelix.Processors
             List<Vector3> n = new List<Vector3>();
             List<Vector4> t = new List<Vector4>();
             List<UnityEngine.Color> c = new List<UnityEngine.Color>();
-            List<Sceelix.Actors.Data.Material> materials = new List<Sceelix.Actors.Data.Material>();
+            List<Material> materials = new List<Material>();
 
             var m = new Mesh();
             m.name = "Mesh";

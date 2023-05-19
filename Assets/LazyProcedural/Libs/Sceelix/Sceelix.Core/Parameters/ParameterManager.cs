@@ -13,13 +13,14 @@ namespace Sceelix.Core.Parameters
         public static List<Type> ParameterTypes
         {
             get;
+            private set;
         } = new List<Type>();
 
 
 
         public static void Init()
         {
-            ParameterTypes.AddRange(SceelixDomain.Types.Where(type => typeof(Parameter).IsAssignableFrom(type)));
+            ParameterTypes = SceelixDomain.Types.Where(type => typeof(Parameter).IsAssignableFrom(type)).ToList();
         }
     }
 }

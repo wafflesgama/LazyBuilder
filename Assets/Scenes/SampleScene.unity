@@ -123,87 +123,134 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &637561361
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+--- !u!21 &590546726
+Material:
   serializedVersion: 6
-  m_Component:
-  - component: {fileID: 637561362}
-  - component: {fileID: 637561364}
-  - component: {fileID: 637561363}
-  m_Layer: 0
-  m_Name: Mesh Entity
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &637561362
-Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637561361}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.972021, y: -3.123808, z: 3.6177614}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 848155451}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &637561363
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637561361}
-  m_Mesh: {fileID: 2101076613}
---- !u!23 &637561364
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637561361}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2087155036}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  m_Name: Lit
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ClearCoat: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossinessSource: 0
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionSource: 0
+    - _Shininess: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &653260035
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +463,134 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!21 &792286865
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Lit
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ClearCoat: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossinessSource: 0
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionSource: 0
+    - _Shininess: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &848155449
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,10 +631,224 @@ Transform:
   m_LocalPosition: {x: 8.972021, y: 3.123808, z: -3.6177614}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 637561362}
+  - {fileID: 903214914}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &903214913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903214914}
+  - component: {fileID: 903214916}
+  - component: {fileID: 903214915}
+  m_Layer: 0
+  m_Name: Mesh Entity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &903214914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903214913}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.972021, y: -3.123808, z: 3.6177614}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 848155451}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &903214915
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903214913}
+  m_Mesh: {fileID: 2039304874}
+--- !u!23 &903214916
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903214913}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 1017831795}
+  - {fileID: 792286865}
+  - {fileID: 590546726}
+  - {fileID: 1760243352}
+  - {fileID: 1592508247}
+  - {fileID: 1547357704}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!21 &1017831795
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Lit
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ClearCoat: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossinessSource: 0
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionSource: 0
+    - _Shininess: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1270760616
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +1022,434 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
+--- !u!1 &1524574418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1524574420}
+  - component: {fileID: 1524574419}
+  m_Layer: 0
+  m_Name: Foo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1524574419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524574418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b99e56b4b31a9648b95b3d87c79c2cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mesh: {fileID: 6641808096354247438, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+--- !u!4 &1524574420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524574418}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.09991725, y: 0.33239096, z: 1.2218268}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1547357704
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Lit
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ClearCoat: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossinessSource: 0
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionSource: 0
+    - _Shininess: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+--- !u!21 &1592508247
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Lit
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ClearCoat: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossinessSource: 0
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionSource: 0
+    - _Shininess: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+--- !u!21 &1760243352
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Lit
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClearCoatMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ClearCoat: 0
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossinessSource: 0
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ReflectionSource: 0
+    - _Shininess: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!43 &1763569423
 Mesh:
   m_ObjectHideFlags: 0
@@ -892,135 +1709,68 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &2087155036
-Material:
-  serializedVersion: 6
+--- !u!1001 &1918490390
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Lit
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BaseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ClearCoatMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cube:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicSpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _BumpScale: 1
-    - _ClearCoat: 0
-    - _ClearCoatMask: 0
-    - _ClearCoatSmoothness: 0
-    - _Cull: 2
-    - _Cutoff: 0.5
-    - _DetailAlbedoMapScale: 1
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _EnvironmentReflections: 1
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossinessSource: 0
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _Mode: 0
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
-    - _QueueOffset: 0
-    - _ReceiveShadows: 1
-    - _ReflectionSource: 0
-    - _Shininess: 1
-    - _Smoothness: 0.5
-    - _SmoothnessTextureChannel: 0
-    - _SpecSource: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Surface: 0
-    - _UVSec: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
-    m_Colors:
-    - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
---- !u!43 &2101076613
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.411
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 11b8a73f66cce3a48b28ada9b5eee370, type: 2}
+    - target: {fileID: 919132149155446097, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+      propertyPath: m_Name
+      value: bag
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 30ce807e77defe943887315b241ae93e, type: 3}
+--- !u!43 &2039304874
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1031,14 +1781,64 @@ Mesh:
   m_SubMeshes:
   - serializedVersion: 2
     firstByte: 0
-    indexCount: 180
+    indexCount: 6
     topology: 0
     baseVertex: 0
     firstVertex: 0
-    vertexCount: 180
+    vertexCount: 6
     localAABB:
-      m_Center: {x: 0.5, y: 0.5, z: 0.5}
-      m_Extent: {x: 1.5, y: 1.5, z: 1.5}
+      m_Center: {x: 0.5, y: 1, z: 0.5}
+      m_Extent: {x: 0.5, y: 0, z: 0.5}
+  - serializedVersion: 2
+    firstByte: 12
+    indexCount: 6
+    topology: 0
+    baseVertex: 0
+    firstVertex: 6
+    vertexCount: 6
+    localAABB:
+      m_Center: {x: 0.5, y: 0.5, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0}
+  - serializedVersion: 2
+    firstByte: 24
+    indexCount: 6
+    topology: 0
+    baseVertex: 0
+    firstVertex: 12
+    vertexCount: 6
+    localAABB:
+      m_Center: {x: 0, y: 0.5, z: 0.5}
+      m_Extent: {x: 0, y: 0.5, z: 0.5}
+  - serializedVersion: 2
+    firstByte: 36
+    indexCount: 6
+    topology: 0
+    baseVertex: 0
+    firstVertex: 18
+    vertexCount: 6
+    localAABB:
+      m_Center: {x: 1, y: 0.5, z: 0.5}
+      m_Extent: {x: 0, y: 0.5, z: 0.5}
+  - serializedVersion: 2
+    firstByte: 48
+    indexCount: 6
+    topology: 0
+    baseVertex: 0
+    firstVertex: 24
+    vertexCount: 6
+    localAABB:
+      m_Center: {x: 0.5, y: 0, z: 0.5}
+      m_Extent: {x: 0.5, y: 0, z: 0.5}
+  - serializedVersion: 2
+    firstByte: 60
+    indexCount: 6
+    topology: 0
+    baseVertex: 0
+    firstVertex: 30
+    vertexCount: 6
+    localAABB:
+      m_Center: {x: 0.5, y: 0.5, z: 1}
+      m_Extent: {x: 0.5, y: 0.5, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -1055,10 +1855,10 @@ Mesh:
   m_KeepVertices: 1
   m_KeepIndices: 1
   m_IndexFormat: 0
-  m_IndexBuffer: 00000100020003000400050006000700080009000a000b000c000d000e000f0010001100120013001400150016001700180019001a001b001c001d001e001f0020002100220023002400250026002700280029002a002b002c002d002e002f0030003100320033003400350036003700380039003a003b003c003d003e003f0040004100420043004400450046004700480049004a004b004c004d004e004f0050005100520053005400550056005700580059005a005b005c005d005e005f0060006100620063006400650066006700680069006a006b006c006d006e006f0070007100720073007400750076007700780079007a007b007c007d007e007f0080008100820083008400850086008700880089008a008b008c008d008e008f0090009100920093009400950096009700980099009a009b009c009d009e009f00a000a100a200a300a400a500a600a700a800a900aa00ab00ac00ad00ae00af00b000b100b200b300
+  m_IndexBuffer: 00000100020003000400050006000700080009000a000b000c000d000e000f0010001100120013001400150016001700180019001a001b001c001d001e001f002000210022002300
   m_VertexData:
     serializedVersion: 3
-    m_VertexCount: 180
+    m_VertexCount: 36
     m_Channels:
     - stream: 0
       offset: 0
@@ -1116,8 +1916,8 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    m_DataSize: 11520
-    _typelessdata: 0000803f0000004000000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000004000000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000400000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000004000000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000400000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000400000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000040000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000040000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000040000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000400000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000400000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000004000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000400000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000400000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000400000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000040000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000040000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000400000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000080bf0000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000080bf0000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000080bf0000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000080bf0000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000080bf0000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000080bf0000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000080bf00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000080bf00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000080bf00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000080bf000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000080bf000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000080bf000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000080bf000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000080bf000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000080bf000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000080bf0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000080bf0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000080bf0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf000000000000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000080bf0000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000004000000000000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000004000000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000040000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000400000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf0000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf0000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf0000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf0000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf0000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf0000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000080bf000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000080bf000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000004000000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000004000000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000004000000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000004000000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000004000000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000004000000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000004000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000004000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000004000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000400000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000400000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000400000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000040000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000040000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f00000040000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000040000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000040000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000040000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080
+    m_DataSize: 2304
+    _typelessdata: 0000803f0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f00000000000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f000000800000803f00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000000000000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000008000000080000080bf000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000000000000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f00000000000080bf0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f00000000000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f000000000000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f0000803f0000008000000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000000000000080000080bf00000080000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f43000000000000008000000000000000000000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f4300000000000000800000803f0000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080000000000000803f0000803f00000080000000800000803f000000000000000000000000000080bf00007f4300007f4300007f4300007f430000000000000080
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -1172,7 +1972,7 @@ Mesh:
     m_UVInfo: 0
   m_LocalAABB:
     m_Center: {x: 0.5, y: 0.5, z: 0.5}
-    m_Extent: {x: 1.5, y: 1.5, z: 1.5}
+    m_Extent: {x: 0.5, y: 0.5, z: 0.5}
   m_MeshUsageFlags: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 

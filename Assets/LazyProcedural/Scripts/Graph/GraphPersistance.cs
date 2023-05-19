@@ -47,7 +47,14 @@ namespace LazyProcedural
             //First pass to create nodes
             foreach (NodePersistanceData nodeData in graphData.Nodes)
             {
-                Node node = new Node(nodeData.Id,nodeData.Name, Type.GetType(nodeData.Type), nodeData.Position, nodeData.ChangedParams.Select(x => new ChangedParameterInfo { accessIndex = x.AccessIndex, isExpression = x.IsExpression, value = ConvertValue(x.ValueType, x.Value) }).ToArray());
+                Node node = new Node(
+                    nodeData.Id,
+                    nodeData.Name,
+                    Type.GetType(nodeData.Type),
+                    nodeData.Position,
+                    nodeData.CreatedParams.Select(x => new CreatedParameterInfo { accessIndex = x.AccessIndex, parameterName = x.Name }).ToArray(),
+                    nodeData.ChangedParams.Select(x => new ChangedParameterInfo { accessIndex = x.AccessIndex, isExpression = x.IsExpression, value = ConvertValue(x.ValueType, x.Value) }).ToArray()
+                    );
                 nodes.Add(node);
             }
 
@@ -85,7 +92,17 @@ namespace LazyProcedural
                 nodeData.Id = node.id;
                 nodeData.Position = node.GetPosition().position;
                 nodeData.Type = node.nodeData.GetType().FullName;
-                nodeData.ChangedParams = node.changedDataParams.Select(x => new ChangedParameterData { AccessIndex = x.accessIndex, IsExpression = x.isExpression, Value = x.value.ToString(), ValueType = x.value.GetType().FullName }).ToArray();
+                nodeData.CreatedParams = node.createdDataParams.Select(x =>
+                 {
+                     return new CreatedParameterData { AccessIndex = x.accessIndex, Name = x.parameterName };
+                 }).ToArray();
+                nodeData.ChangedParams = node.changedDataParams.Select(x =>
+                {
+                    UnityEngine.Object castedObj = null;
+                    bool isUnityObj = x.value != null && typeof(UnityEngine.Object).IsAssignableFrom(x.value.GetType());
+                    if (isUnityObj) castedObj = ((UnityEngine.Object)x.value);
+                    return new ChangedParameterData { AccessIndex = x.accessIndex, IsExpression = x.isExpression, Value = isUnityObj ? castedObj.GetInstanceID().ToString() : x.value.ToString(), ValueType = x.value.GetType().FullName };
+                }).ToArray();
                 nodeData.Name = node.title;
 
                 List<PortPesistanceData> inPortsData = new List<PortPesistanceData>();
@@ -126,7 +143,6 @@ namespace LazyProcedural
 
             Type valueType = Type.GetType(valueTypeString);
 
-
             if (valueType == typeof(System.Single) || valueType == typeof(float))
             {
                 value = float.Parse(valueString);
@@ -159,11 +175,26 @@ namespace LazyProcedural
             {
                 value = Vector4D.Parse(valueString);
             }
+            //As the current domain cannot get Unity Types this first string validation happens (assuming all unity engine data below is an object)
+            else if (valueTypeString.StartsWith("UnityEngine") || typeof(UnityEngine.Object).IsAssignableFrom(valueType))
+            {
+                value = FindObjectFromInstanceID(int.Parse(valueString));
+            }
 
             return value;
         }
 
+
+        public static UnityEngine.Object FindObjectFromInstanceID(int iid)
+        {
+            return (UnityEngine.Object)typeof(UnityEngine.Object)
+                    .GetMethod("FindObjectFromInstanceID", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+                    .Invoke(null, new object[] { iid });
+
+        }
     }
+
+
 
     [Serializable]
     public class GraphPersistanceData
@@ -181,6 +212,7 @@ namespace LazyProcedural
         public string Type;
 
         public ChangedParameterData[] ChangedParams = new ChangedParameterData[0];
+        public CreatedParameterData[] CreatedParams = new CreatedParameterData[0];
         public PortPesistanceData[] InPorts = new PortPesistanceData[0];
         public PortPesistanceData[] OutPorts = new PortPesistanceData[0];
     }
@@ -208,6 +240,13 @@ namespace LazyProcedural
         public bool IsExpression;
         public string Value;
         public string ValueType;
+    }
+
+    [Serializable]
+    public class CreatedParameterData
+    {
+        public int[] AccessIndex;
+        public string Name;
     }
 
 

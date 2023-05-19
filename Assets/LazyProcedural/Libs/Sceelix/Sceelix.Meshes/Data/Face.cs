@@ -617,14 +617,14 @@ namespace Sceelix.Meshes.Data
             var lineSegments = edges.Select(x => new LineSegment2D(alignedScope.ToScopePosition(x.V0.Position).ToVector2D(), alignedScope.ToScopePosition(x.V1.Position).ToVector2D())).ToList();
 
             for (int i = 0; i < lineSegments.Count; i++)
-            for (int j = i + 1; j < lineSegments.Count; j++)
-            {
-                var neighbour = j == i + 1 || i == 0 && j == lineSegments.Count - 1;
+                for (int j = i + 1; j < lineSegments.Count; j++)
+                {
+                    var neighbour = j == i + 1 || i == 0 && j == lineSegments.Count - 1;
 
-                var hasIntersection = lineSegments[i].Intersects(lineSegments[j], !neighbour);
-                if (hasIntersection)
-                    return true;
-            }
+                    var hasIntersection = lineSegments[i].Intersects(lineSegments[j], !neighbour);
+                    if (hasIntersection)
+                        return true;
+                }
 
             return false;
         }
@@ -679,7 +679,7 @@ namespace Sceelix.Meshes.Data
         /// </summary>
         /// <param name="vertexPositions">Set of 3D vectors</param>
         public Face(params Vector3D[] vertexPositions)
-            : this((IEnumerable<Vector3D>) vertexPositions)
+            : this((IEnumerable<Vector3D>)vertexPositions)
         {
         }
 
@@ -922,8 +922,8 @@ namespace Sceelix.Meshes.Data
 
                 if (HasHoles)
                     foreach (CircularList<Vertex> circularList in Holes)
-                    foreach (Vertex vertex in circularList)
-                        yield return vertex;
+                        foreach (Vertex vertex in circularList)
+                            yield return vertex;
             }
         }
 
@@ -991,17 +991,25 @@ namespace Sceelix.Meshes.Data
 
 
         [EntityProperty(HandleType = typeof(SceeList))]
-        public Material Material
+        public UnityEngine.Material Material
         {
             get
             {
-                var material = Attributes.TryGet(MaterialKey) as Material;
+                var material = Attributes.TryGet(MaterialKey) as UnityEngine.Material;
                 if (material != null)
                     return material;
 
-                return new ColorMaterial(Color.White);
+                return CreateDefaultMaterial();
             }
             set { Attributes.TrySet(MaterialKey, value, true); }
+        }
+
+        public static UnityEngine.Material CreateDefaultMaterial()
+        {
+            if (UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset == null)
+                return new UnityEngine.Material(UnityEngine.Shader.Find("Standard"));
+            else
+                return new UnityEngine.Material(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.defaultMaterial);
         }
 
 

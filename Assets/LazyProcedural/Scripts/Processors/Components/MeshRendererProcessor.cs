@@ -25,7 +25,7 @@ namespace Sceelix.Processors
             if (meshRenderer == null)
                 meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
-            Material[] materials= meshEntity.Faces.Select(x => x.Material).Distinct().Select(x=> materialProcessor.Process(x)).ToArray();
+            UnityEngine.Material[] materials= meshEntity.Faces.Select(x => x.Material).Distinct().Select(x=> materialProcessor.Process(x)).ToArray();
 
             meshRenderer.materials = materials;
 
