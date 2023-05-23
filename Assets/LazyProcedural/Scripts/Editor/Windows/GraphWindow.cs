@@ -149,6 +149,7 @@ namespace LazyProcedural
             graph.AddEdges(loadedGraph.Item2);
 
             graph.OnNodeSelected += OnNodeSelected;
+            graph.OnNodesUnselected += OnNodesUnselected;
 
             graph.OnGraphStructureChanged += OnGraphStructureChanged;
         }
@@ -172,6 +173,12 @@ namespace LazyProcedural
 
             OpenContextWindow();
             _contextWindow.BuildNodeInfo(node);
+        }
+
+        private void OnNodesUnselected()
+        {
+            if(_contextWindow != null)
+                _contextWindow.ResetNodeInfo();
         }
 
         private async void OnGraphStructureChanged()
@@ -270,6 +277,9 @@ namespace LazyProcedural
 
         private void SetupExtraWindows()
         {
+            //MiniMap minimap = new MiniMap();
+            //graph.Add(minimap);
+
             //_contextWindow = new ContextWindow(this);
             //_contextWindow.visible = false;
             //graph.Add(_contextWindow);

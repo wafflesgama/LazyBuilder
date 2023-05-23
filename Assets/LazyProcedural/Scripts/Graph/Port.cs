@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 using SceelixData = Sceelix.Core.IO;
 using System.Reflection;
 using Sceelix.Core.Annotations;
+using Sceelix.Core.Data;
 
 namespace LazyProcedural
 {
@@ -33,7 +34,7 @@ namespace LazyProcedural
         //}
         public Port(SceelixData.Output outputData, bool directAccess, int[] accessIndex) : base(DEF_ORIENTATION, Direction.Output, Capacity.Multi, outputData.EntityType)
         {
-            id= Guid.NewGuid().ToString();
+            id = Guid.NewGuid().ToString();
             //title = outputData.Description;
             this.outputData = outputData;
             this.isDirectAccessPort = directAccess;
@@ -64,6 +65,8 @@ namespace LazyProcedural
             EdgeConnectorListener listener = new EdgeConnectorListener();
             m_EdgeConnector = new EdgeConnector<Edge>(listener);
             this.AddManipulator(m_EdgeConnector);
+            AssignPortShape();
+            portColor = AssignPortColor();
         }
 
         private void SetupLabel()
@@ -72,6 +75,36 @@ namespace LazyProcedural
             var portType = attribute != null ? attribute.Name : this.portType.Name;
             this.portName = portType;
         }
+
+        private void AssignPortShape()
+        {
+            if (capacity == Capacity.Single || direction == Direction.Output) return;
+
+            var connector = this.contentContainer.Q("connector");
+
+            connector.style.borderBottomLeftRadius = 1;
+            connector.style.borderBottomRightRadius = 1;
+            connector.style.borderTopLeftRadius = 1;
+            connector.style.borderTopRightRadius = 1;
+        }
+        public Color AssignPortColor()
+        {
+            if (portType == typeof(Sceelix.Meshes.Data.MeshEntity))
+                return new Color(1f, 0.52f, 0.52f);  //Redish pink
+
+            if (typeof(Sceelix.Actors.Data.IActor).IsAssignableFrom(portType))
+                return new Color(1f, 0.72f, 0.52f);  // Orange
+
+            if (typeof(IEntity).IsAssignableFrom(portType))
+                return new Color(1f, 0.87f, 0.52f);  //Yellow
+
+            //if()
+            //    return new Color(0.33f, 0.73f, 0.97f); //Blue
+
+
+            return Color.white;
+        }
+
 
 
         //override on

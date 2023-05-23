@@ -1,24 +1,59 @@
 {
     "Nodes": [
         {
-            "Id": "878a65ca9402b374fa5fb11ca51823a6",
+            "Id": "6abec90d587a37943846e4f7c69492c2",
             "Name": "Random",
             "Position": {
-                "x": 909.0,
-                "y": 410.0
+                "x": 420.0,
+                "y": 124.0
             },
             "Type": "Sceelix.Core.Procedures.RandomProcedure",
-            "ChangedParams": [],
-            "CreatedParams": [],
+            "ChangedParams": [
+                {
+                    "AccessIndex": [
+                        1,
+                        0,
+                        2
+                    ],
+                    "IsExpression": false,
+                    "Value": "s",
+                    "ValueType": "System.String"
+                },
+                {
+                    "AccessIndex": [
+                        1,
+                        0,
+                        1,
+                        0
+                    ],
+                    "IsExpression": false,
+                    "Value": "a",
+                    "ValueType": "System.String"
+                }
+            ],
+            "CreatedParams": [
+                {
+                    "AccessIndex": [
+                        1
+                    ],
+                    "Name": "Integer"
+                },
+                {
+                    "AccessIndex": [
+                        1
+                    ],
+                    "Name": "Bool"
+                }
+            ],
             "InPorts": [
                 {
-                    "Id": "8f036ec1-c183-40bf-bc1f-250c0067d4a2",
+                    "Id": "cdc9b975-d863-4f13-aa21-7a7477cc0a8c",
                     "Connections": []
                 }
             ],
             "OutPorts": [
                 {
-                    "Id": "11d3d072-fa55-4d6c-9dd7-a9611126bcc5",
+                    "Id": "f6eb96ff-d948-4b25-816f-7b703377eb62",
                     "Connections": []
                 }
             ]

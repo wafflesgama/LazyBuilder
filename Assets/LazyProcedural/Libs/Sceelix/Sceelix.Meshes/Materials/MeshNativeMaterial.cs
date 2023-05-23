@@ -24,15 +24,15 @@ namespace Sceelix.Meshes.Procedures
         /// </summary>
         private readonly ListParameter<ObjectParameter<Material>> _parameterMaterials = new ListParameter<ObjectParameter<Material>>("Materials");
 
-        /// <summary>
-        /// The Material component to be applied 
-        /// </summary>
-        private readonly ObjectParameter<Material> _parameterMaterial = new ObjectParameter<Material>("Material");
+        ///// <summary>
+        ///// The Material component to be applied 
+        ///// </summary>
+        //private readonly ObjectParameter<Material> _parameterMaterial = new ObjectParameter<Material>("Material");
 
         protected override MeshEntity Process(MeshEntity entity)
         {
 
-            entity.Materials = _parameterMaterials.Items.Select(objParam => objParam.Value).ToArray();
+            entity.Materials = _parameterMaterials.Items.Where(objParam => objParam.Value != null).Select(objParam => objParam.Value).ToArray();
             //entity.Material = _parameterMaterial.Value;
 
             return entity;

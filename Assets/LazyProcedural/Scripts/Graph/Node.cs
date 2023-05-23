@@ -39,6 +39,7 @@ namespace LazyProcedural
         public List<CreatedParameterInfo> createdDataParams { get; private set; }
 
         public event NodeEvent OnNodeSelected;
+        public event NodeEvent OnNodeUnselected;
 
         private List<(Sceelix.Core.IO.InputReference, int[])> inputsToAdd;
         private List<(Sceelix.Core.IO.OutputReference, int[])> outputsToAdd;
@@ -190,12 +191,18 @@ namespace LazyProcedural
             //First Add the direct access ports
             for (int i = 0; i < nodeData.Inputs.Count; i++)
             {
+                //Do not add if it is duplicate
+                if (inPorts.Any(x => x.inputData == nodeData.Inputs[i].Input)) continue;
+
                 var port = new Port(nodeData.Inputs[i].Input, true, new int[] { i });
                 inPorts.Add(port);
             }
 
             for (int i = 0; i < nodeData.Outputs.Count; i++)
             {
+                //Do not add if it is duplicate
+                if (outPorts.Any(x => x.outputData == nodeData.Outputs[i].Output)) continue;
+
                 var port = new Port(nodeData.Outputs[i].Output, true, new int[] { i });
                 outPorts.Add(port);
             }
@@ -217,7 +224,7 @@ namespace LazyProcedural
             foreach (var input in inputsToAdd)
             {
                 //Do not add if it is duplicate
-                if (inPorts.Any(x => x.inputData.Identifier == input.Item1.Identifier)) continue;
+                if (inPorts.Any(x => x.inputData == input.Item1.Input)) continue;
                 var port = new Port(input.Item1.Input, false, input.Item2);
                 inPorts.Add(port);
             }
@@ -225,7 +232,7 @@ namespace LazyProcedural
             foreach (var output in outputsToAdd)
             {
                 //Do not add if it is duplicate
-                if (outPorts.Any(x => x.outputData.Identifier == output.Item1.Identifier)) continue;
+                if (outPorts.Any(x => x.outputData == output.Item1.Output)) continue;
                 var port = new Port(output.Item1.Output, false, output.Item2);
                 outPorts.Add(port);
             }
@@ -297,17 +304,41 @@ namespace LazyProcedural
 
         public void RemoveCreatedDataParameter(CreatedParameterInfo createdToRemoveParameterInfo)
         {
+            //Get its subparameters 
             var paramsOfRemoved = changedDataParams.Where(x => createdToRemoveParameterInfo.accessIndex.Except(x.accessIndex).Count() <= 0).ToList();
+            //To delete them 
             changedDataParams = changedDataParams.Except(paramsOfRemoved).ToList();
 
-            var paramInfo = createdDataParams.FirstOrDefault(x => x.accessIndex.SequenceEqual(createdToRemoveParameterInfo.accessIndex) && createdToRemoveParameterInfo.parameterName == x.parameterName);
-            createdDataParams.Remove(paramInfo);
+            //Drop last index since it is the specific index of it
+            var baseAccess = createdToRemoveParameterInfo.accessIndex.Take(createdToRemoveParameterInfo.accessIndex.Count() - 1);
 
+            //The last index of access 
+            var specificAccessIndex = createdToRemoveParameterInfo.accessIndex[createdToRemoveParameterInfo.accessIndex.Length - 1];
+            var specificAcessIndexDepth = createdToRemoveParameterInfo.accessIndex.Length - 1;
+
+            foreach (var changedDataParam in changedDataParams)
+            {
+                //Check if it is a preceding parameter of the specific index
+                if (changedDataParam.accessIndex.Length <= specificAcessIndexDepth || changedDataParam.accessIndex[specificAcessIndexDepth] <= specificAccessIndex) continue;
+
+                //If it is - subtract one index to replace for the deleted parameter  (O,  O,  X, O-1, O-1)
+                changedDataParam.accessIndex[specificAcessIndexDepth]--;
+            }
+
+
+            //Finally Get the Parameter
+            var paramInfo = createdDataParams.FirstOrDefault(x => x.accessIndex.SequenceEqual(baseAccess) && createdToRemoveParameterInfo.parameterName == x.parameterName);
+
+            //And delete it
+            createdDataParams.Remove(paramInfo);
         }
 
 
         public override void OnUnselected()
         {
+            if (OnNodeUnselected != null)
+                OnNodeUnselected.Invoke(this);
+
             base.OnUnselected();
         }
         public override void OnSelected()

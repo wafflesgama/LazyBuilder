@@ -32,7 +32,7 @@ public class ContextWindow : EditorWindow
 
     private ScrollView _parametersContainer;
 
-    private bool initialized=false;
+    private bool initialized = false;
     public ContextWindow(GraphWindow graphWindow)
     {
         _graphWindow = graphWindow;
@@ -84,14 +84,25 @@ public class ContextWindow : EditorWindow
     {
         //_root.Q("addButton").visible = false;
     }
-    public void BuildNodeInfo(Node node)
-    {
-        _typeLabel.text = node.typeTitle;
-        _nameField.value = node.title;
 
+    public void ResetNodeInfo()
+    {
+        _typeLabel.text = "";
+        _nameField.value = "";
 
         if (currentNameChangeCallback != null)
             _nameField.UnregisterValueChangedCallback(currentNameChangeCallback);
+
+        _parametersContainer.Clear();
+
+    }
+    public void BuildNodeInfo(Node node)
+    {
+        ResetNodeInfo();
+
+        _typeLabel.text = node.typeTitle;
+        _nameField.value = node.title;
+
 
         currentNameChangeCallback = x =>
          {
@@ -100,8 +111,10 @@ public class ContextWindow : EditorWindow
         _nameField.RegisterValueChangedCallback(currentNameChangeCallback);
 
 
+
+
         //Build Paramters
-        _parametersContainer.Clear();
+
         var accessingIndex = new List<int>();
         accessingIndex.Add(0);
         for (int i = 0; i < node.nodeData.Parameters.Count; i++)
@@ -318,7 +331,8 @@ public class ContextWindow : EditorWindow
                 popupField.value = defaultLabel;
                 BuildNodeInfo(node);
 
-                node.CreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName= value.newValue });    
+                node.CreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = value.newValue });
+                node.RefreshNode();
                 _graphWindow.OnGraphValueUpdated();
             });
 
@@ -345,11 +359,33 @@ public class ContextWindow : EditorWindow
 
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 BuildNodeInfo(node);
+                node.RefreshNode();
                 _graphWindow.OnGraphValueUpdated();
             });
 
             field.AddToClassList("selectList");
             field = popupField;
+        }
+        else if (parameterType == typeof(ChoiceParameter))
+        {
+            var choiceParam = (ChoiceParameter)parameter;
+            PopupField<string> popupField = new PopupField<string>();
+            popupField.choices = choiceParam.Choices.ToList();
+            popupField.value = choiceParam.Value;
+            popupField.label = parameter.Label;
+
+            popupField.RegisterValueChangedCallback(value =>
+            {
+                parameter.Set(value.newValue);
+
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                BuildNodeInfo(node);
+                node.RefreshNode();
+
+                _graphWindow.OnGraphValueUpdated();
+            });
+            field = popupField;
+
         }
         else
         if (parameterType.ToString().Contains(typeof(SelectListParameter).ToString()))
@@ -368,6 +404,8 @@ public class ContextWindow : EditorWindow
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 BuildNodeInfo(node);
+                node.RefreshNode();
+
                 _graphWindow.OnGraphValueUpdated();
             });
 
@@ -442,6 +480,8 @@ public class ContextWindow : EditorWindow
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 BuildNodeInfo(node);
+                node.RefreshNode();
+
                 _graphWindow.OnGraphValueUpdated();
             });
             field = enumField;
@@ -529,14 +569,16 @@ public class ContextWindow : EditorWindow
             field = stringField;
         }
 
-        if (parameter.Root!= parameter && parameter.Root.GetType().ToString().Contains(typeof(ListParameter).ToString()))
+        if (parameter.Root != parameter && parameter.Root.GetType().ToString().Contains(typeof(ListParameter).ToString()))
         {
             contextMenuOperations.Add("Delete Attribute", (x) =>
             {
                 var listParameter = (ListParameter)parameter.Root;
-                node.RemoveCreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = parameter.Label});
+                node.RemoveCreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = parameter.Label });
                 listParameter.Remove(parameter);
                 BuildNodeInfo(node);
+                node.RefreshNode();
+
             });
         }
 

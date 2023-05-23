@@ -7,6 +7,7 @@ using Sceelix.Meshes.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Sceelix.Meshes.Procedures
 {
@@ -24,21 +25,36 @@ namespace Sceelix.Meshes.Procedures
         private readonly Output<MeshEntity> _output = new Output<MeshEntity>("Output");
 
         /// <summary>
-        /// The Mesh component to be loaded 
+        /// The Mesh components to be loaded 
         /// </summary>
-        private readonly ObjectParameter<Mesh> _parameterMesh = new ObjectParameter<Mesh>("Mesh");
+        //private readonly ObjectParameter<Mesh> _parameterMesh = new ObjectParameter<Mesh>("Mesh");
+        private readonly ListParameter<ObjectParameter<Mesh>> _parameterMeshes = new ListParameter<ObjectParameter<Mesh>>("Meshes");
 
         protected override void Run()
         {
-            //GameObject ab = UnityEngine.Resources.Load<GameObject>("bag");
+            //GameObject ab = UnityEngine.Resources.Load<GameObject>("bag");    
 
             //Mesh body = ab.GetComponent<MeshFilter>().sharedMesh;
 
-            ProcessMesh(_parameterMesh.Value);
+            ProcessMeshes(_parameterMeshes.Items.Select(x => x.Value));
 
         }
 
-        private void ProcessMesh(Mesh mesh)
+        private void ProcessMeshes(IEnumerable<Mesh> meshes)
+        {
+            List<Face> faces = new List<Face>();
+            foreach (Mesh mesh in meshes)
+            {
+                if (mesh == null) continue;
+
+                faces.AddRange(LoadMesh(mesh));
+            }
+
+            MeshEntity meshEntity = new MeshEntity(faces, BoxScope.Identity);
+            _output.Write(meshEntity);
+        }
+
+        private List<Face> LoadMesh(Mesh mesh)
         {
             List<Face> faces = new List<Face>();
 
@@ -100,10 +116,9 @@ namespace Sceelix.Meshes.Procedures
                     face.Material = mat;
                     faces.Add(face);
                 }
-            }
 
-            MeshEntity meshEntity = new MeshEntity(faces);
-            _output.Write(meshEntity);
+            }
+            return faces;
         }
 
 

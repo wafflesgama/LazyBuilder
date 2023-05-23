@@ -7,12 +7,21 @@ using UnityEngine.UIElements;
 using Sceelix.Core.Procedures;
 using UnityEngine;
 using Sceelix.Meshes.Procedures;
+using System.Linq;
 
 namespace LazyProcedural
 {
     public class Graph : UnityGraph.GraphView
     {
+
+        //public struct GraphChangedEvent
+        //{
+        //    public bool nodeDeletion;
+        //}
+        //public delegate void GraphChangedHandler(GraphChangedEvent e);
+
         public event NodeEvent OnNodeSelected;
+        public event Action OnNodesUnselected;
         public event Action OnGraphStructureChanged;
 
         public Graph()
@@ -88,7 +97,7 @@ namespace LazyProcedural
         {
             foreach (var node in nodes)
             {
-                node.OnNodeSelected += Node_OnNodeSelected;
+                node.OnNodeSelected += Node_OnSelected;
                 AddElement(node);
             }
         }
@@ -107,7 +116,8 @@ namespace LazyProcedural
             pos = contentViewContainer.WorldToLocal(pos);
             node.SetPosition(new Rect(pos, node.GetPosition().size));
 
-            node.OnNodeSelected += Node_OnNodeSelected;
+            node.OnNodeSelected += Node_OnSelected;
+            node.OnNodeUnselected += Node_OnUnselected;
             AddElement(node);
 
             OnGraphStructureChanged.TryInvoke();
@@ -128,11 +138,19 @@ namespace LazyProcedural
             AddElement(edge);
         }
 
-        private void Node_OnNodeSelected(Node node)
+        private void Node_OnSelected(Node node)
         {
             if (OnNodeSelected != null)
                 OnNodeSelected.Invoke(node);
 
+        }
+
+        private void Node_OnUnselected(Node node)
+        {
+            if (selection.ToArray().Where(x => x!= node && x.GetType() == typeof(Node)).Any()) return;
+
+            //If there are no more elements in the list raise event
+            OnNodesUnselected.TryInvoke();
         }
 
         public bool CheckTypeCompatiblity(Type inType, Type outType)
@@ -184,7 +202,8 @@ namespace LazyProcedural
             pos = contentViewContainer.WorldToLocal(pos);
             node.SetPosition(new Rect(pos, sourceNode.GetPosition().size));
 
-            node.OnNodeSelected += Node_OnNodeSelected;
+            node.OnNodeSelected += Node_OnSelected;
+            node.OnNodeUnselected += Node_OnUnselected;
             AddElement(node);
 
         }
