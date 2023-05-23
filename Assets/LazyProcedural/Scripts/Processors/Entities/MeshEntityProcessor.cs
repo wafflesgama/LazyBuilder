@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Sceelix.Actors.Data;
 using Sceelix.Core.Data;
 using Sceelix.Meshes.Data;
 using UnityEngine;
@@ -22,6 +23,13 @@ namespace Sceelix.Processors
         public void Process(RecycleObject recycleObject)
         {
             recycleObject.gameObject.name = "Mesh Entity";
+            recycleObject.gameObject.transform.position = Vector3.zero;
+
+            //var baseEntity = (IActor)recycleObject.entity;
+            //recycleObject.gameObject.transform.position = baseEntity.BoxScope.Translation.FlipYZ().ToVector3();
+
+            //recycleObject.gameObject.transform.rotation = baseEntity.
+
             //gameObject.isStatic = true;
 
             ////fill in the name, static, enabled, tag and layer fields

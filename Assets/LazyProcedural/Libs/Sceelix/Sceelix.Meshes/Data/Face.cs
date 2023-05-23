@@ -996,10 +996,10 @@ namespace Sceelix.Meshes.Data
             get
             {
                 var material = Attributes.TryGet(MaterialKey) as UnityEngine.Material;
-                if (material != null)
+                //if (material != null)
                     return material;
 
-                return CreateDefaultMaterial();
+                //return CreateDefaultMaterial();
             }
             set { Attributes.TrySet(MaterialKey, value, true); }
         }

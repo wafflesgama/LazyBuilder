@@ -1,59 +1,85 @@
 {
     "Nodes": [
         {
-            "Id": "6abec90d587a37943846e4f7c69492c2",
-            "Name": "Random",
+            "Id": "efe323a85a7561249ad10b7b4e1a454a",
+            "Name": "Path Create",
             "Position": {
-                "x": 420.0,
-                "y": 124.0
+                "x": 461.0,
+                "y": 175.0
             },
-            "Type": "Sceelix.Core.Procedures.RandomProcedure",
+            "Type": "Sceelix.Paths.Procedures.PathCreateProcedure",
             "ChangedParams": [
                 {
                     "AccessIndex": [
-                        1,
+                        0,
                         0,
                         2
                     ],
                     "IsExpression": false,
-                    "Value": "s",
-                    "ValueType": "System.String"
+                    "Value": "4",
+                    "ValueType": "System.Int32"
                 },
                 {
                     "AccessIndex": [
-                        1,
-                        0,
-                        1,
                         0
                     ],
                     "IsExpression": false,
-                    "Value": "a",
+                    "Value": "Voronoi",
                     "ValueType": "System.String"
                 }
             ],
-            "CreatedParams": [
+            "CreatedParams": [],
+            "InPorts": [],
+            "OutPorts": [
+                {
+                    "Id": "51eaa452-b50d-4683-a5e4-5a0542871be0",
+                    "Connections": [
+                        {
+                            "DestinationNodeId": "14505185d1b132f4f8a065d0e605aab5",
+                            "DestinationPortIndex": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "14505185d1b132f4f8a065d0e605aab5",
+            "Name": "Mesh Create",
+            "Position": {
+                "x": 791.0,
+                "y": 160.0
+            },
+            "Type": "Sceelix.Meshes.Procedures.MeshCreateProcedure",
+            "ChangedParams": [
                 {
                     "AccessIndex": [
-                        1
+                        0
                     ],
-                    "Name": "Integer"
+                    "IsExpression": false,
+                    "Value": "From Path",
+                    "ValueType": "System.String"
                 },
                 {
                     "AccessIndex": [
+                        0,
+                        0,
                         1
                     ],
-                    "Name": "Bool"
+                    "IsExpression": false,
+                    "Value": "3.55",
+                    "ValueType": "System.Single"
                 }
             ],
+            "CreatedParams": [],
             "InPorts": [
                 {
-                    "Id": "cdc9b975-d863-4f13-aa21-7a7477cc0a8c",
+                    "Id": "883fcdb1-38cc-45c9-8bc5-2502c5e491ca",
                     "Connections": []
                 }
             ],
             "OutPorts": [
                 {
-                    "Id": "f6eb96ff-d948-4b25-816f-7b703377eb62",
+                    "Id": "4164f3a9-6645-4d5c-abba-fe73a373f6da",
                     "Connections": []
                 }
             ]

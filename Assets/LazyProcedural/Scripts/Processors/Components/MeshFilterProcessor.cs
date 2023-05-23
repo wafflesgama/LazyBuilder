@@ -16,7 +16,7 @@ namespace Sceelix.Processors
     {
         public void Process(IEntity entity, GameObject gameObject)
         {
-            Dictionary<Material, int> materialToMaterialData = new Dictionary<Material, int>();
+            Dictionary<Material,int> materialSlots = new Dictionary<Material, int>();
 
             MeshEntity meshEntity = entity as MeshEntity;
 
@@ -30,26 +30,32 @@ namespace Sceelix.Processors
             int indexerValue = 0;
 
             List<List<int>> subMeshT = new List<List<int>>();
+            subMeshT.Add(new List<int>());
+
             List<Vector2> uv = new List<Vector2>();
             List<Vector3> v = new List<Vector3>();
             List<Vector3> n = new List<Vector3>();
             List<Vector4> t = new List<Vector4>();
             List<UnityEngine.Color> c = new List<UnityEngine.Color>();
-            List<Material> materials = new List<Material>();
 
             var m = new Mesh();
             m.name = "Mesh";
 
             foreach (Face face in meshEntity)
             {
-                int index;
-
-                if (!materialToMaterialData.TryGetValue(face.Material, out index))
+                int index = 0;
+                
+                //Try getting the value of the entry
+                if (face.Material != null && !materialSlots.TryGetValue(face.Material,out index))
                 {
-                    index = materialToMaterialData.Count;
-                    materialToMaterialData.Add(face.Material, index);
-                    materials.Add(face.Material);
-                    subMeshT.Add(new List<int>());
+                    //If no value exists creates a neew slow
+
+                    index = materialSlots.Count;
+                    materialSlots.Add(face.Material,index);
+                    
+                    //Add only ir order is above 0, since the first array has been added beforehand
+                    if (index > 0)
+                        subMeshT.Add(new List<int>());
                 }
 
                 List<FaceTriangle> faceTriangles = face.Triangulate();

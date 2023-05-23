@@ -41,8 +41,8 @@ namespace LazyProcedural
         public event NodeEvent OnNodeSelected;
         public event NodeEvent OnNodeUnselected;
 
-        private List<(Sceelix.Core.IO.InputReference, int[])> inputsToAdd;
-        private List<(Sceelix.Core.IO.OutputReference, int[])> outputsToAdd;
+        private List<(Sceelix.Core.IO.InputReference, bool, int[])> inputsToAdd;
+        private List<(Sceelix.Core.IO.OutputReference, bool, int[])> outputsToAdd;
 
 
 
@@ -188,27 +188,30 @@ namespace LazyProcedural
 
         private void RegisterPorts()
         {
-            //First Add the direct access ports
+            inputsToAdd = new List<(Sceelix.Core.IO.InputReference, bool, int[])>();
+            outputsToAdd = new List<(Sceelix.Core.IO.OutputReference, bool, int[])>();
+
+            //First get the direct access ports
             for (int i = 0; i < nodeData.Inputs.Count; i++)
             {
-                //Do not add if it is duplicate
-                if (inPorts.Any(x => x.inputData == nodeData.Inputs[i].Input)) continue;
+                ////Do not add if it is duplicate
+                //if (inPorts.Any(x => x.inputData == nodeData.Inputs[i].Input)) continue;
 
-                var port = new Port(nodeData.Inputs[i].Input, true, new int[] { i });
-                inPorts.Add(port);
+                inputsToAdd.Add((nodeData.Inputs[i], true, new int[] { i }));
+                //var port = new Port(nodeData.Inputs[i].Input, true, new int[] { i });
+                //inPorts.Add(port);
             }
 
             for (int i = 0; i < nodeData.Outputs.Count; i++)
             {
-                //Do not add if it is duplicate
-                if (outPorts.Any(x => x.outputData == nodeData.Outputs[i].Output)) continue;
+                ////Do not add if it is duplicate
+                //if (outPorts.Any(x => x.outputData == nodeData.Outputs[i].Output)) continue;
 
-                var port = new Port(nodeData.Outputs[i].Output, true, new int[] { i });
-                outPorts.Add(port);
+                outputsToAdd.Add((nodeData.Outputs[i], true, new int[] { i }));
+                //var port = new Port(nodeData.Outputs[i].Output, true, new int[] { i });
+                //outPorts.Add(port);
             }
 
-            inputsToAdd = new List<(Sceelix.Core.IO.InputReference, int[])>();
-            outputsToAdd = new List<(Sceelix.Core.IO.OutputReference, int[])>();
             List<int> accessIndex = new List<int>();
             accessIndex.Add(0);
 
@@ -220,12 +223,12 @@ namespace LazyProcedural
             }
 
 
-            //Then add the new ports of nested access
+            //Then add the all the ports
             foreach (var input in inputsToAdd)
             {
                 //Do not add if it is duplicate
                 if (inPorts.Any(x => x.inputData == input.Item1.Input)) continue;
-                var port = new Port(input.Item1.Input, false, input.Item2);
+                var port = new Port(input.Item1.Input, input.Item2, input.Item3);
                 inPorts.Add(port);
             }
 
@@ -233,9 +236,17 @@ namespace LazyProcedural
             {
                 //Do not add if it is duplicate
                 if (outPorts.Any(x => x.outputData == output.Item1.Output)) continue;
-                var port = new Port(output.Item1.Output, false, output.Item2);
+                var port = new Port(output.Item1.Output, output.Item2, output.Item3);
                 outPorts.Add(port);
             }
+
+            //Get the ports to delete
+            var inPortsToDelete = inPorts.Where(x => !inputsToAdd.Any(y => y.Item1.Input == x.inputData)).ToList();
+            var outPortsToDelete = outPorts.Where(x => !outputsToAdd.Any(y => y.Item1.Output == x.outputData)).ToList();
+
+            //Remove them from list
+            inPorts = inPorts.Except(inPortsToDelete).ToList();
+            outPorts = outPorts.Except(outPortsToDelete).ToList();
 
         }
 
@@ -247,14 +258,14 @@ namespace LazyProcedural
             {
                 var finalList = accessIndex.ToList();
                 finalList.Add(i);
-                inputsToAdd.Add((parameter.Inputs[i], finalList.ToArray()));
+                inputsToAdd.Add((parameter.Inputs[i], false, finalList.ToArray()));
             }
 
             for (int i = 0; i < parameter.Outputs.Count; i++)
             {
                 var finalList = accessIndex.ToList();
                 finalList.Add(i);
-                outputsToAdd.Add((parameter.Outputs[i], finalList.ToArray()));
+                outputsToAdd.Add((parameter.Outputs[i], false, finalList.ToArray()));
             }
 
             for (int i = 0; i < parameter.Parameters.Count; i++)
@@ -286,6 +297,8 @@ namespace LazyProcedural
             this.RefreshExpandedState();
             this.RefreshPorts();
         }
+
+
 
         public void ChangedDataParameter(ChangedParameterInfo changedParameterInfo)
         {

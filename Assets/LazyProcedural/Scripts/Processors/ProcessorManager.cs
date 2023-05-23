@@ -31,7 +31,7 @@ namespace Sceelix.Processors
         {
             var requiredObjects = Require(entities);
 
-            var objecReuseInfos = component.GetObjectReuseInfo_Greedy(requiredObjects);
+            var objecReuseInfos = component.GetObjectReuseInfo_Greedy(requiredObjects).ToList();
 
             //var missingObjects = objecReuseInfo.Where(x => x.ExistingObject == null);
 
@@ -48,11 +48,16 @@ namespace Sceelix.Processors
                     recycleObjectsAdded.Add(objecReuseInfo.recycledObject);
                 }
 
-                foreach (var componentToRemove in objecReuseInfo.ComponentsToRemove)
+                var componentsToRemove = objecReuseInfo.ComponentsToRemove.ToList();
+                foreach (var componentToRemove in componentsToRemove)
                 {
                     if (componentToRemove == typeof(Transform)) continue;
 
+#if UNITY_EDITOR
+                    GameObject.DestroyImmediate(((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove))));
+#else
                     component.DestroyComponent((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove)));
+#endif
                     objecReuseInfo.recycledObject.components.Remove(componentToRemove);
                 }
 

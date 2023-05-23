@@ -25,9 +25,9 @@ namespace Sceelix.Processors
             if (meshRenderer == null)
                 meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
-            UnityEngine.Material[] materials= meshEntity.Faces.Select(x => x.Material).Distinct().Select(x=> materialProcessor.Process(x)).ToArray();
+            UnityEngine.Material[] materials = meshEntity.Faces.Select(x => x.Material).Distinct().Select(x => materialProcessor.Process(x)).Distinct().ToArray();
 
-            meshRenderer.materials = materials;
+            meshRenderer.sharedMaterials = materials;
 
             ////GenericData[] genericMaterials = genericGameComponent.Get<GenericData[]>("Materials");
             //var materialTokens = jtoken["Materials"].Children().ToList();

@@ -444,20 +444,34 @@ namespace Sceelix.Meshes.Data
             }
             set
             {
+                if (value.Length == 0) return;
+
                 Dictionary<UnityEngine.Material, int> keyValuePairs = new Dictionary<UnityEngine.Material, int>();
-                int currentIndex = -1;
+                int? nullSlotIndex = null;
+                int currentIndex = -1, materialIndex;
                 foreach (Face face in _faces)
                 {
-                    if (!keyValuePairs.ContainsKey(face.Material))
+                    if (face.Material != null && !keyValuePairs.ContainsKey(face.Material))
                     {
-                        if (currentIndex + 1 >= value.Length)
-                            continue;
+                        //Skip assigning materials if value list has no more elements
+                        if (currentIndex + 1 >= value.Length) continue;
 
                         currentIndex++;
                         keyValuePairs.Add(face.Material, currentIndex);
                     }
+                    if (face.Material == null)
+                    {
+                        //if (!nullSlotIndex.HasValue)
+                        //{
+                        //    currentIndex++;
+                        //    nullSlotIndex = currentIndex;
+                        //}
+                        //materialIndex = nullSlotIndex.Value;
+                        materialIndex = 0;
+                    }
+                    else
+                        materialIndex = keyValuePairs[face.Material];
 
-                    var materialIndex = keyValuePairs[face.Material];
                     face.Material = value[materialIndex];
                 }
             }
