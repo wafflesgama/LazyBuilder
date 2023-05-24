@@ -177,7 +177,7 @@ namespace LazyProcedural
 
         private void OnNodesUnselected()
         {
-            if(_contextWindow != null)
+            if (_contextWindow != null)
                 _contextWindow.ResetNodeInfo();
         }
 
@@ -379,6 +379,11 @@ namespace LazyProcedural
             if (e.ctrlKey && e.keyCode == KeyCode.S)
             {
                 SaveGraph();
+            }
+            else
+            if (e.ctrlKey && e.keyCode == KeyCode.G)
+            {
+                graph.GroupSelection();
             }
 
             else if (e.keyCode == KeyCode.Space)

@@ -147,13 +147,18 @@ namespace LazyProcedural
                     {
                         foreach (var edge in outPort.connections)
                         {
+
                             Node inNode = (Node)edge.input.node;
-                            //int inIndex = inNode.GetPortIndex((Port)edge.input);
-                            //int outIndex = node.GetPortIndex((Port)edge.output);
+                            
                             Port castedInPort = (Port)edge.input;
                             Port castedOutPort = (Port)edge.output;
 
+                            Edge castedEdge= edge as Edge;
+
                             var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
+
+                            castedEdge.SetInNumber(executionResult.Count());
+                            castedEdge.SetOutNumber(executionResult.Count());
 
                             //Append a clone of the current Node result to the input of the connected Node
                             GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x=>x.DeepClone()));

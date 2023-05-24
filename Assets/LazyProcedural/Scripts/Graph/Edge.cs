@@ -2,18 +2,106 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
+using UnityGraph = UnityEditor.Experimental.GraphView;
+using UnityEngine.UIElements;
 
 namespace LazyProcedural
 {
     using static UnityEditor.Experimental.GraphView.Port;
-
     public class Edge : UnityEditor.Experimental.GraphView.Edge
     {
+        public Label inNumber;
+        public Label outNumber;
+
+
+        private const int NUMBER_MARGIN_VERTICAL = 10;
+        private const int NUMBER_MARGIN_HORIZONTAL = 24;
+        public Edge(Port output, Port input)
+        {
+            this.output = output;
+            this.input = input;
+
+            SetupExtraUI();
+        }
+        public Edge(UnityGraph.Edge edgeSource)
+        {
+            output = edgeSource.output;
+            input = edgeSource.input;
+            SetupExtraUI();
+        }
+
+        public Edge()
+        {
+            SetupExtraUI();
+        }
+
+
+        private void OnEdgeControlGeometryChanged(GeometryChangedEvent evt)
+        {
+            if (edgeControl.from.y < edgeControl.to.y)
+            {
+                inNumber.style.top = NUMBER_MARGIN_VERTICAL;
+                inNumber.style.bottom = StyleKeyword.Auto;
+
+                outNumber.style.top = StyleKeyword.Auto;
+                outNumber.style.bottom = NUMBER_MARGIN_VERTICAL;
+            }
+            else
+            {
+                inNumber.style.top = StyleKeyword.Auto;
+                inNumber.style.bottom = NUMBER_MARGIN_VERTICAL;
+
+                outNumber.style.top = NUMBER_MARGIN_VERTICAL;
+                outNumber.style.bottom = StyleKeyword.Auto;
+            }
+        }
+
+        public void SetInNumber(int value)
+        {
+            inNumber.text= value.ToString();
+        }
+
+        public void SetOutNumber(int value)
+        {
+            outNumber.text= value.ToString();
+        }
+
         public override void OnPortChanged(bool isInput)
         {
             base.OnPortChanged(isInput);
+
         }
+        public void SetupExtraUI()
+        {
+            edgeControl.RegisterCallback<GeometryChangedEvent>(OnEdgeControlGeometryChanged);
+
+            inNumber = new Label();
+            inNumber.text = "";
+
+            outNumber = new Label();
+            outNumber.text = "";
+
+            inNumber.style.position = Position.Absolute;
+            outNumber.style.position = Position.Absolute;
+
+            inNumber.style.left = NUMBER_MARGIN_HORIZONTAL;
+            outNumber.style.right = NUMBER_MARGIN_HORIZONTAL;
+
+
+            inNumber.style.color = edgeControl.inputColor;
+            outNumber.style.color = edgeControl.outputColor;
+
+            edgeControl.Add(inNumber);
+            edgeControl.Add(outNumber);
+
+
+
+            //contentContainer.Add(inNumber);
+        }
+
     }
+
+
 
     public class EdgeConnectorListener : IEdgeConnectorListener
     {

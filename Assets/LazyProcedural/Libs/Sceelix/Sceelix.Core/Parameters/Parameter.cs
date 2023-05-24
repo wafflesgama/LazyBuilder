@@ -43,7 +43,7 @@ namespace Sceelix.Core.Parameters
 
         protected Parameter(string label)
         {
-            
+
             Label = label;
             Description = CommentLoader.GetComment(GetType()).Summary;
         }
@@ -126,6 +126,22 @@ namespace Sceelix.Core.Parameters
             set;
         }
 
+        public enum ExpressionStates
+        {
+            EMPTY,
+            VALID,
+            ERROR
+        }
+
+        /// <summary>
+        /// The current state of the expression
+        /// </summary>
+        public ExpressionStates ExpressionState
+        {
+            get;
+            set;
+        } = ExpressionStates.EMPTY;
+
 
         /// <summary>
         /// Indicates if the parameter will be visible and accessible externally. Default is true.
@@ -182,9 +198,9 @@ namespace Sceelix.Core.Parameters
 
                 while (parent is Parameter)
                 {
-                    yield return (Parameter) parent;
+                    yield return (Parameter)parent;
 
-                    parent = ((Parameter) parent).Parent;
+                    parent = ((Parameter)parent).Parent;
                 }
             }
         }
@@ -210,9 +226,9 @@ namespace Sceelix.Core.Parameters
             get
             {
                 if (Parent is Procedure)
-                    return (Procedure) Parent;
+                    return (Procedure)Parent;
 
-                return ((Parameter) Parent).Procedure;
+                return ((Parameter)Parent).Procedure;
             }
         }
 
@@ -241,7 +257,7 @@ namespace Sceelix.Core.Parameters
                 var parameter = this;
 
                 while (parameter.Parent is Parameter)
-                    parameter = (Parameter) parameter.Parent;
+                    parameter = (Parameter)parameter.Parent;
 
                 return parameter;
             }
@@ -457,7 +473,7 @@ namespace Sceelix.Core.Parameters
         public void Set(object value)
         {
             if (value is Func<IEntity, object>)
-                _entityExpression = (Func<IEntity, object>) value;
+                _entityExpression = (Func<IEntity, object>)value;
             else
                 SetData(value);
         }

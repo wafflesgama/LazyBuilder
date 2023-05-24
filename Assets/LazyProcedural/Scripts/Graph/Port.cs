@@ -43,7 +43,7 @@ namespace LazyProcedural
             SetupLabel();
         }
 
-        public Port(SceelixData.Input inputData, bool directAccess, int[] accessIndex) : base(DEF_ORIENTATION, Direction.Input, inputData.InputNature == SceelixData.InputNature.Single ? Capacity.Single : Capacity.Multi, inputData.EntityType)
+        public Port(SceelixData.Input inputData, bool directAccess, int[] accessIndex) : base(DEF_ORIENTATION, Direction.Input, Capacity.Multi, inputData.EntityType)
         {
             id = Guid.NewGuid().ToString();
             //title = inputData.Description;
@@ -78,7 +78,7 @@ namespace LazyProcedural
 
         private void AssignPortShape()
         {
-            if (capacity == Capacity.Single || direction == Direction.Output) return;
+            if (direction == Direction.Output || inputData.InputNature== SceelixData.InputNature.Single) return;
 
             var connector = this.contentContainer.Q("connector");
 

@@ -72,7 +72,7 @@ namespace LazyProcedural
                     {
                         Node inNode = nodes.FirstOrDefault(x => x.id == connection.DestinationNodeId);
                         Port inPort = inNode.inPorts[connection.DestinationPortIndex];
-                        Edge edge = new Edge { output = currentPort, input = inPort };
+                        Edge edge = new Edge ( currentPort, inPort );
                         edges.Add(edge);
                     }
                     currentPortIndex++;

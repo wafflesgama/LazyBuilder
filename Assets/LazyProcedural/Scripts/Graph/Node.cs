@@ -34,6 +34,8 @@ namespace LazyProcedural
         public List<Port> inPorts { get; private set; } = new List<Port>();
         public List<Port> outPorts { get; private set; } = new List<Port>();
 
+        public UnityGraph.Group group { get; set; }
+
         public Procedure nodeData { get; private set; }
         public List<ChangedParameterInfo> changedDataParams { get; private set; }
         public List<CreatedParameterInfo> createdDataParams { get; private set; }

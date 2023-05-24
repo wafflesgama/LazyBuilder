@@ -26,6 +26,7 @@ namespace LazyProcedural
 
         public Graph()
         {
+
             //Must be this order to properly work
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
@@ -39,13 +40,44 @@ namespace LazyProcedural
 
 
             this.graphViewChanged = new GraphViewChanged(OnGraphViewChanged);
-           
+
         }
 
 
         private GraphViewChange OnGraphViewChanged(UnityGraph.GraphViewChange change)
         {
             if (change.edgesToCreate == null && change.elementsToRemove == null) return change;
+
+            if (change.edgesToCreate != null && change.edgesToCreate.Count > 0)
+            {
+                List<UnityGraph.Edge> edges = new List<UnityGraph.Edge>();
+                foreach (var unityEdge in change.edgesToCreate)
+                {
+                    edges.Add(new Edge(unityEdge));
+                }
+
+                change.edgesToCreate = edges;
+            }
+
+            if (change.elementsToRemove != null)
+            {
+                foreach (var elementToRemove in change.elementsToRemove)
+                {
+                    if (elementToRemove.GetType() == typeof(UnityGraph.Group))
+                    {
+                        UnityGraph.Group castedGroup = (UnityGraph.Group)elementToRemove;
+
+                        foreach (var node in castedGroup.containedElements)
+                        {
+                            var castedNode = (Node)node;
+                            castedNode.group = null;
+                            node.RemoveFromHierarchy();
+                            Add(node);
+                        }
+
+                    }
+                }
+            }
 
             OnGraphStructureChanged.TryInvoke();
 
@@ -134,10 +166,28 @@ namespace LazyProcedural
         }
         public void AddEdge(Port outPort, Port inPort)
         {
-            var edge = new Edge { output = outPort, input = inPort };
+            var edge = new Edge(outPort, inPort);
             AddElement(edge);
         }
 
+        public void GroupSelection()
+        {
+            var nodesToGroup = this.selection.Where(x => x.GetType() == typeof(Node) && ((Node)x).group == null);
+
+            if (!nodesToGroup.Any()) return;
+
+            UnityGraph.Group group = new UnityGraph.Group();
+            group.title = "New Group";
+            group.AddElements(nodesToGroup.Select(x => (Node)x));
+
+            foreach (var nodeToGroup in nodesToGroup)
+            {
+                var castedNode = (Node)nodeToGroup;
+                castedNode.group = group;
+            }
+
+            AddElement(group);
+        }
         private void Node_OnSelected(Node node)
         {
             if (OnNodeSelected != null)
@@ -147,7 +197,7 @@ namespace LazyProcedural
 
         private void Node_OnUnselected(Node node)
         {
-            if (selection.ToArray().Where(x => x!= node && x.GetType() == typeof(Node)).Any()) return;
+            if (selection.ToArray().Where(x => x != node && x.GetType() == typeof(Node)).Any()) return;
 
             //If there are no more elements in the list raise event
             OnNodesUnselected.TryInvoke();

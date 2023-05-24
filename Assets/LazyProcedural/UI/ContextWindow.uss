@@ -9,9 +9,29 @@
 
 #titleLabel{
     font-size:20px;
-    font-style:italic;
 }
 
+.expression > Label{
+    -unity-font-style: bold-and-italic;
+}
+
+.expression> TextInput{
+    background-color:#3A5D6F;
+        border-color: #6C81A9;
+}
+
+
+.valid-exp> TextInput{
+    /*Green*/
+  background-color:#3E5A46;
+    border-color: #6C8574;
+}
+
+.error-exp> TextInput{
+    /*Red*/
+  background-color:#873B33;
+  border-color: #A9726F;
+}
 
 Foldout > Toggle > VisualElement {
   align-items:center;
@@ -45,6 +65,11 @@ Foldout > Toggle > VisualElement {
 
 .addList > Label {
     flex-grow: 1;
+}
+
+.unity-base-popup-field__text {
+    padding-left:8px;
+    padding-right:8px;
 }
 
 .addList > .unity-popup-field__input > .unity-base-popup-field__text {

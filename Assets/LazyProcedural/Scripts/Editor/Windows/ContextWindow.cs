@@ -103,13 +103,15 @@ public class ContextWindow : EditorWindow
         _typeLabel.text = node.typeTitle;
         _nameField.value = node.title;
 
-
         currentNameChangeCallback = x =>
-         {
-             node.title = x.newValue;
-         };
+           {
+               if (x.newValue == "") return;
+               node.title = x.newValue;
+           };
         _nameField.RegisterValueChangedCallback(currentNameChangeCallback);
 
+
+        var _headerContainer = _nameField.parent;
 
 
 
@@ -218,6 +220,9 @@ public class ContextWindow : EditorWindow
         else
     if (parameterRef.IsExpression)
         {
+            string validExpressionClass = "valid-exp";
+            string errorExpressionClass = "error-exp";
+
             TextField stringField = new TextField();
 
             stringField.label = parameter.Label;
@@ -243,11 +248,46 @@ public class ContextWindow : EditorWindow
             });
             stringField.RegisterCallback<FocusOutEvent>(x =>
             {
-                parameterRef.ApplyRawExpression();
+                try
+                {
+                    parameterRef.ApplyRawExpression();
+
+                }
+                catch (Exception ex)
+                {
+                    parameter.ExpressionState = Parameter.ExpressionStates.ERROR;
+                    field.AddToClassList(errorExpressionClass);
+
+                    if (field.ClassListContains(validExpressionClass))
+                        field.RemoveFromClassList(validExpressionClass);
+                    throw ex;
+                }
+
+
+                parameter.ExpressionState = Parameter.ExpressionStates.VALID;
+
+                field.AddToClassList(validExpressionClass);
+
+                if (field.ClassListContains(errorExpressionClass))
+                    field.RemoveFromClassList(errorExpressionClass);
+
                 _graphWindow.OnGraphValueUpdated();
             });
             field = stringField;
+
             field.AddToClassList("expression");
+
+            switch (parameter.ExpressionState)
+            {
+                case Parameter.ExpressionStates.VALID:
+                    if (!field.ClassListContains(validExpressionClass))
+                        field.AddToClassList(validExpressionClass);
+                    break; ;
+                case Parameter.ExpressionStates.ERROR:
+                    if (!field.ClassListContains(errorExpressionClass))
+                        field.AddToClassList(errorExpressionClass);
+                    break;
+            }
         }
 
         else

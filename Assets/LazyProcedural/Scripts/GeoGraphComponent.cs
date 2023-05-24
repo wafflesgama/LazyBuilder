@@ -22,7 +22,7 @@ public class GeoGraphComponent : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            existingObjects.Add(new RecycleObject(child.gameObject));
+            AddRecycleObject(new RecycleObject(child.gameObject));
         }
     }
 
@@ -113,7 +113,24 @@ public class GeoGraphComponent : MonoBehaviour
 
     public void AddRecycleObjects(IEnumerable<RecycleObject> objectsToAdd)
     {
-        existingObjects.AddRange(objectsToAdd);
+        foreach (var objectToAdd in objectsToAdd)
+            AddRecycleObject(objectToAdd);
+    }
+
+    public void AddRecycleObject(RecycleObject recycleObject)
+    {
+        // Find the index to insert the recycleObject based on the number of components
+        int index = existingObjects.FindIndex(obj => obj.components.Count > recycleObject.components.Count);
+        if (index == -1)
+        {
+            // If no object has more components, insert at the end
+            existingObjects.Add(recycleObject);
+        }
+        else
+        {
+            // Insert at the found index
+            existingObjects.Insert(index, recycleObject);
+        }
     }
 
 
