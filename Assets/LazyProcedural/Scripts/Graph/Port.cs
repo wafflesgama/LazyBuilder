@@ -67,18 +67,56 @@ namespace LazyProcedural
             this.AddManipulator(m_EdgeConnector);
             AssignPortShape();
             portColor = AssignPortColor();
+
+            contentContainer.style.marginBottom = 5;
+            contentContainer.style.alignItems = Align.FlexStart;
+
+            contentContainer.Q("connector").style.marginTop = 3;
         }
 
         private void SetupLabel()
         {
             var attribute = this.portType.GetCustomAttribute<EntityAttribute>();
+            var portLabel = outputData != null ? outputData.Label : inputData.Label;
+
             var portType = attribute != null ? attribute.Name : this.portType.Name;
-            this.portName = portType;
+            //this.portName = $"{portLabel} ({portType})";
+            this.portName = portLabel;
+
+            var portNameLabel = contentContainer.Q("type");
+
+
+
+            Label portTypeLabel = new Label();
+            portTypeLabel.text = $"({portType})";
+            portTypeLabel.style.fontSize = 8;
+            portTypeLabel.style.marginTop = -2;
+            portTypeLabel.style.paddingRight = 3;
+            portTypeLabel.style.paddingLeft = 3;
+            portTypeLabel.style.color = new Color(0.56f, 0.56f, 0.56f);
+            portTypeLabel.style.width = Length.Percent(100);
+
+            var labelsContainer = new VisualElement();
+
+            if (outputData != null)
+            {
+                labelsContainer.style.alignContent = Align.FlexEnd;
+                portTypeLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+               
+
+            }
+
+            labelsContainer.Add(portNameLabel);
+            labelsContainer.Add(portTypeLabel);
+
+            contentContainer.Add(labelsContainer);
+
+
         }
 
         private void AssignPortShape()
         {
-            if (direction == Direction.Output || inputData.InputNature== SceelixData.InputNature.Single) return;
+            if (direction == Direction.Output || inputData.InputNature == SceelixData.InputNature.Single) return;
 
             var connector = this.contentContainer.Q("connector");
 
