@@ -9,6 +9,8 @@ using UnityEngine.UIElements;
 using Sceelix.Core.Procedures;
 using Sceelix.Processors;
 using UnityEditor.Experimental.GraphView;
+using System.Threading;
+using System;
 
 namespace LazyProcedural
 {
@@ -23,6 +25,8 @@ namespace LazyProcedural
 
         private GenerationManager generationManager;
         private ProcessorManager processorManager;
+        private CancellationTokenSource cancellationTokenSource;
+
         private GeoGraphComponent graphComponent;
         private GraphPersistance graphPersistance;
 
@@ -124,9 +128,11 @@ namespace LazyProcedural
         {
             PathFactory.Init();
 
-            generationManager = new GenerationManager();
+            cancellationTokenSource = new CancellationTokenSource();
 
-            processorManager = new ProcessorManager();
+            generationManager = new GenerationManager(cancellationTokenSource.Token);
+
+            processorManager = new ProcessorManager(cancellationTokenSource.Token);
 
             graphPersistance = new GraphPersistance();
 
@@ -163,7 +169,8 @@ namespace LazyProcedural
             pos = _root.ChangeCoordinatesTo(_root.parent, pos - this.position.position);
             graph.AddNode(nodeInfo, pos);
 
-            RunGraph();
+            //RunGraph();
+            RunGraphAsync();
         }
 
 
@@ -185,12 +192,15 @@ namespace LazyProcedural
         {
             //Delaying to graph process the structure changes
             await Task.Delay(3);
-            RunGraph();
+            //RunGraph();
+            RunGraphAsync();
         }
 
         public void OnGraphValueUpdated()
         {
-            RunGraph();
+            //RunGraph();
+            RunGraphAsync();
+
         }
 
         private void SaveGraph()
@@ -347,7 +357,7 @@ namespace LazyProcedural
             //Header Items
             _saveButton.clicked += SaveGraph;
             _showContextButton.clicked += OpenCloseContextWindow;
-            _runButton.clicked += RunGraph;
+            _runButton.clicked += RunGraphAsync;
 
             //Footer Menu Items
             _aboutDrop.RegisterValueChangedCallback(x => OnAboutMenuChanged(x.newValue));
@@ -394,7 +404,8 @@ namespace LazyProcedural
 
             else if ((e.keyCode == KeyCode.Return))
             {
-                RunGraph();
+                //RunGraph();
+                RunGraphAsync();
             }
         }
 
@@ -510,15 +521,41 @@ namespace LazyProcedural
             graph.DuplicateSelection(mousePos);
         }
 
-        private void RunGraph()
+        private async void RunGraphAsync()
         {
             if (graphComponent == null)
                 graphComponent = GraphComponentFinder.FindComponent();
 
-            var meshes = generationManager.ExecuteGraph(graph.nodes.ToList());
+            var generationTask = generationManager.ExecuteGraphAsync(graph.nodes.ToList());
 
-            processorManager.Populate(meshes, graphComponent);
+            try
+            {
+                var meshes = await generationTask;
+
+                // Check if cancellation was requested before proceeding to the processor
+                if (!cancellationTokenSource.IsCancellationRequested)
+                {
+                    await processorManager.PopulateAsync(meshes, graphComponent);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Handle cancellation if needed
+                Debug.Log("Graph execution was canceled.");
+            }
         }
+
+
+
+        //private void RunGraph()
+        //{
+        //    if (graphComponent == null)
+        //        graphComponent = GraphComponentFinder.FindComponent();
+
+        //    var meshes = generationManager.ExecuteGraph(graph.nodes.ToList());
+
+        //    processorManager.Populate(meshes, graphComponent);
+        //}
 
 
         public void FocusOnGraph()

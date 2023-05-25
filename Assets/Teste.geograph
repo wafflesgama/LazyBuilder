@@ -1,0 +1,61 @@
+{
+    "Nodes": [
+        {
+            "Id": "e950e42837d668f4b89d153e71d8eac3",
+            "Name": "Mesh Create",
+            "Position": {
+                "x": 502.0,
+                "y": 275.0
+            },
+            "Type": "Sceelix.Meshes.Procedures.MeshCreateProcedure",
+            "ChangedParams": [
+                {
+                    "AccessIndex": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "IsExpression": false,
+                    "Value": "12.81",
+                    "ValueType": "System.Single"
+                }
+            ],
+            "CreatedParams": [],
+            "InPorts": [],
+            "OutPorts": [
+                {
+                    "Id": "44e6e242-2b8f-4f79-a381-68178fb1ebf3",
+                    "Connections": [
+                        {
+                            "DestinationNodeId": "d2fab4472c5e9ba478bf14e57c675b49",
+                            "DestinationPortIndex": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "d2fab4472c5e9ba478bf14e57c675b49",
+            "Name": "Copy",
+            "Position": {
+                "x": 824.0,
+                "y": 320.0
+            },
+            "Type": "Sceelix.Core.Procedures.CopyProcedure",
+            "ChangedParams": [],
+            "CreatedParams": [],
+            "InPorts": [
+                {
+                    "Id": "1f831819-62d8-4c32-b3ec-3e6678ef0e12",
+                    "Connections": []
+                }
+            ],
+            "OutPorts": [
+                {
+                    "Id": "16a6128c-4e98-453d-8ad4-697d6301a477",
+                    "Connections": []
+                }
+            ]
+        }
+    ]
+}

@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class RecycleObject
 {
+    public int id;
     public GameObject gameObject { get; set; }
     public IEntity entity { get; set; }
     public List<Type> components { get; set; }
@@ -19,6 +20,8 @@ public class RecycleObject
     public RecycleObject(GameObject gameObject)
     {
         this.gameObject = gameObject;
+
+        id = gameObject.GetInstanceID();
         components = gameObject.GetComponents(typeof(Component)).Select(x => x.GetType()).ToList();
     }
 
@@ -30,7 +33,7 @@ public class RecycleObject
         RecycleObject other = obj as RecycleObject;
 
 
-        return this.gameObject.GetInstanceID() == other.gameObject.GetInstanceID();
+        return id == other.id;
     }
 
     public bool HasComponents(IEnumerable<Type> componentsRequired)

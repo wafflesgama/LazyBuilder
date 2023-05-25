@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityGraph = UnityEditor.Experimental.GraphView;
 
@@ -19,6 +21,7 @@ namespace LazyProcedural
         private static ProcedureEnvironment environment;
         private static bool initialized = false;
 
+        private CancellationToken cancellationToken;
 
         private Dictionary<Node, int> executionOrderMatrix;
         public static void Init()
@@ -33,14 +36,24 @@ namespace LazyProcedural
             initialized = true;
         }
 
-        public GenerationManager()
+        public GenerationManager(CancellationToken cancellationToken)
         {
+            this.cancellationToken = cancellationToken;
             Init();
         }
 
         public List<IEntity> ExecuteGraph(List<UnityGraph.Node> nodes)
         {
             return ExecuteGraph(nodes.Select(x => (Node)x).ToList());
+        }
+        public async Task<List<IEntity>> ExecuteGraphAsync(List<UnityGraph.Node> nodes)
+        {
+            return await Task.Run(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                return ExecuteGraph(nodes.Select(x => (Node)x).ToList());
+            }, cancellationToken);
         }
 
         public List<IEntity> ExecuteGraph(List<Node> nodes)
@@ -92,6 +105,9 @@ namespace LazyProcedural
 
         private void DFS_EvaluateExecutionOrder(Node currentNode, int order)
         {
+            if (cancellationToken.IsCancellationRequested)
+                cancellationToken.ThrowIfCancellationRequested();
+
             order++;
 
             if (!executionOrderMatrix.ContainsKey(currentNode))
@@ -113,6 +129,9 @@ namespace LazyProcedural
             {
                 foreach (var outNode in nodesOfOrder)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                        cancellationToken.ThrowIfCancellationRequested();
+
                     outNode.nodeData.Execute();
 
                     //If is terminal Node then append all the output to results
@@ -147,13 +166,15 @@ namespace LazyProcedural
                     {
                         foreach (var edge in outPort.connections)
                         {
+                            if (cancellationToken.IsCancellationRequested)
+                                cancellationToken.ThrowIfCancellationRequested();
 
                             Node inNode = (Node)edge.input.node;
-                            
+
                             Port castedInPort = (Port)edge.input;
                             Port castedOutPort = (Port)edge.output;
 
-                            Edge castedEdge= edge as Edge;
+                            Edge castedEdge = edge as Edge;
 
                             var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
 
@@ -161,7 +182,7 @@ namespace LazyProcedural
                             castedEdge.SetOutNumber(executionResult.Count());
 
                             //Append a clone of the current Node result to the input of the connected Node
-                            GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x=>x.DeepClone()));
+                            GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x => x.DeepClone()));
                         }
                     }
                 }

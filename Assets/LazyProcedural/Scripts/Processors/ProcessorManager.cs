@@ -1,9 +1,10 @@
 using Sceelix.Core.Data;
 using Sceelix.Loading;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Sceelix.Processors
@@ -25,66 +26,69 @@ namespace Sceelix.Processors
             processors = rawProcessors.ToDictionary(type => ((ProcessorAttribute)type.GetCustomAttributes(typeof(ProcessorAttribute), true)[0]).Type, type => type);
         }
 
-
-
-        public void Populate(IEnumerable<IEntity> entities, GeoGraphComponent component)
+        public async Task PopulateAsync(IEnumerable<IEntity> entities, GeoGraphComponent component, CancellationToken cancellationToken)
         {
             var requiredObjects = Require(entities);
 
-            var objecReuseInfos = component.GetObjectReuseInfo_Greedy(requiredObjects).ToList();
-
-            //var missingObjects = objecReuseInfo.Where(x => x.ExistingObject == null);
-
+            var objecReuseInfos = component.GetObjectReuseInfo_Greedy(requiredObjects);
 
             List<RecycleObject> recycleObjectsAdded = new List<RecycleObject>();
 
-            foreach (var objecReuseInfo in objecReuseInfos)
-            {
+            await UnityMainThreadDispatcher.Instance.RunOnMainThreadAsync(async () =>
+{
+    foreach (var objecReuseInfo in objecReuseInfos)
+    {
+        if (cancellationToken.IsCancellationRequested)
+            break;
 
-                if (objecReuseInfo.recycledObject.gameObject == null)
-                {
-                    GameObject gameObjectToAdd = new GameObject("Empty");
-                    objecReuseInfo.recycledObject.gameObject = gameObjectToAdd;
-                    recycleObjectsAdded.Add(objecReuseInfo.recycledObject);
-                }
+        if (objecReuseInfo.recycledObject.gameObject == null)
+        {
+            GameObject gameObjectToAdd = new GameObject("Empty");
+            objecReuseInfo.recycledObject.gameObject = gameObjectToAdd;
+            recycleObjectsAdded.Add(objecReuseInfo.recycledObject);
+        }
 
-                var componentsToRemove = objecReuseInfo.ComponentsToRemove.ToList();
-                foreach (var componentToRemove in componentsToRemove)
-                {
-                    if (componentToRemove == typeof(Transform)) continue;
+        var componentsToRemove = objecReuseInfo.ComponentsToRemove.ToList();
+        foreach (var componentToRemove in componentsToRemove)
+        {
+            if (componentToRemove == typeof(Transform)) continue;
 
 #if UNITY_EDITOR
-                    GameObject.DestroyImmediate(((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove))));
+            GameObject.DestroyImmediate(((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove))));
 #else
-                    component.DestroyComponent((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove)));
+            component.DestroyComponent((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove)));
 #endif
-                    objecReuseInfo.recycledObject.components.Remove(componentToRemove);
-                }
+            objecReuseInfo.recycledObject.components.Remove(componentToRemove);
+        }
 
-                foreach (var componentToAdd in objecReuseInfo.ComponentsToAdd)
-                {
-                    if (componentToAdd == typeof(Transform)) continue;
+        foreach (var componentToAdd in objecReuseInfo.ComponentsToAdd)
+        {
+            if (componentToAdd == typeof(Transform)) continue;
 
-                    objecReuseInfo.recycledObject.gameObject.AddComponent(componentToAdd);
-                    objecReuseInfo.recycledObject.components.Add(componentToAdd);
+            objecReuseInfo.recycledObject.gameObject.AddComponent(componentToAdd);
+            objecReuseInfo.recycledObject.components.Add(componentToAdd);
+        }
+    }
+    // Reset all the parenting of the objects
+    objecReuseInfos.ForEach(objecReuseInfo => objecReuseInfo.recycledObject.gameObject.transform.parent = component.transform);
+}).ConfigureAwait(false);
 
-                }
-            }
+            await ProcessAsync(objecReuseInfos.Select(x => x.recycledObject), cancellationToken);
 
-            //Reset all the parenting of the objects
-            objecReuseInfos.ForEach(objecReuseInfo => objecReuseInfo.recycledObject.gameObject.transform.parent = component.transform);
-
-            //Then process all the entitties in the respective RecycledObjects
-            Process(objecReuseInfos.Select(x => x.recycledObject));
-
-            //Destroy objects in excess
-            if (destructiveProcess)
+            // Destroy objects in excess
+            if (destructiveProcess && !cancellationToken.IsCancellationRequested)
             {
-                var surplus = component.GetRecycleObjectsSurplus(objecReuseInfos);
-                component.RemoveRecycleObjects(surplus);
+                var surplus = await component.GetRecycleObjectsSurplusAsync(objecReuseInfos);
+                await UnityMainThreadDispatcher.Instance().RunOnMainThreadAsync(() =>
+                {
+                    component.RemoveRecycleObjects(surplus);
+                });
             }
 
-            component.AddRecycleObjects(recycleObjectsAdded);
+            await UnityMainThreadDispatcher.Instance.RunOnMainThreadAsync(() =>
+            {
+                component.AddRecycleObjects(recycleObjectsAdded);
+            });
         }
 
         private List<RecycleObject> Require(IEnumerable<IEntity> entities)
@@ -110,25 +114,5 @@ namespace Sceelix.Processors
 
             return result;
         }
-
-        private void Process(IEnumerable<RecycleObject> recycledObjects)
-        {
-            foreach (RecycleObject recycledObject in recycledObjects)
-            {
-                Type entityType = recycledObject.entity.GetType();
-                bool hasProcessor = processors.ContainsKey(entityType);
-
-                if (!hasProcessor)
-                {
-                    Debug.LogError($"{entityType.Name} Processor not implemented or is missing a ProcessorAttribute");
-                    break;
-                }
-
-                IProcessor processor = (IProcessor)Activator.CreateInstance(processors[entityType]);
-                processor.Process(recycledObject);
-            }
-
-        }
-
     }
 }
