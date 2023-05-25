@@ -576,19 +576,19 @@ public class ContextWindow : EditorWindow
 
             stringField.label = parameter.Label;
             stringField.value = parameterValue != null ? parameterValue.ToString() : "";
-            stringField.RegisterValueChangedCallback(value =>
+          
+
+            stringField.RegisterCallback<FocusOutEvent>(x =>
             {
-                //ParameterReference param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
-                //AttributeParameter attrParam = (AttributeParameter)parameter;
-                //attrParam.EntityEvaluation;
-                parameter.Set(value.newValue);
-                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                parameter.Set(stringField.value);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = stringField.value });
                 //param.Set(value.newValue);
                 //procedure.
                 //procedure.A
                 _graphWindow.OnGraphValueUpdated();
             });
-            field = stringField;
+
+                field = stringField;
         }
         else
         {
@@ -596,11 +596,14 @@ public class ContextWindow : EditorWindow
 
             stringField.label = parameter.Label;
             stringField.value = parameterValue != null ? parameterValue.ToString() : "";
-            stringField.RegisterValueChangedCallback(value =>
+           
+            stringField.RegisterCallback<FocusOutEvent>(x =>
             {
-                //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
-                parameter.Set(value.newValue);
-                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                parameter.Set(stringField.value);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = stringField.value });
+                //param.Set(value.newValue);
+                //procedure.
+                //procedure.A
                 _graphWindow.OnGraphValueUpdated();
             });
 
