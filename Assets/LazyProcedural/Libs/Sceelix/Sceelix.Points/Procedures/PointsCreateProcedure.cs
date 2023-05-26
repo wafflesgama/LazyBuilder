@@ -73,7 +73,7 @@ namespace Sceelix.Points.Procedures
             /// List of locations of the points.
             /// </summary>
             private readonly ListParameter _parameterPoints = new ListParameter("Points",
-                () => new Vector3DParameter("Point") {Description = "Location of the point."});
+                () => new Vector3DParameter("Point") { Description = "Location of the point." });
 
 
 
@@ -140,9 +140,9 @@ namespace Sceelix.Points.Procedures
                 var spacing = _parameterSpacing.Value;
 
                 for (int i = 0; i < columns; i++)
-                for (int j = 0; j < rows; j++)
-                for (int k = 0; k < layers; k++)
-                    pointEntities.Add(new PointEntity(new Vector3D(i, j, k) * spacing));
+                    for (int j = 0; j < rows; j++)
+                        for (int k = 0; k < layers; k++)
+                            pointEntities.Add(new PointEntity(new Vector3D(i, j, k) * spacing));
 
                 return pointEntities;
             }
@@ -245,15 +245,15 @@ namespace Sceelix.Points.Procedures
                 var heightLayer = surfaceEntity.GetLayer<HeightLayer>();
 
                 for (int i = 0; i < surfaceEntity.NumColumns; i++)
-                for (int j = 0; j < surfaceEntity.NumRows; j++)
-                {
-                    var position = heightLayer.GetPosition(new Coordinate(i, j));
-                    var entity = new PointEntity(position);
+                    for (int j = 0; j < surfaceEntity.NumRows; j++)
+                    {
+                        var position = heightLayer.GetPosition(new Coordinate(i, j));
+                        var entity = new PointEntity(position);
 
-                    _attributeIndex[entity] = position.ToVector2D();
+                        _attributeIndex[entity] = position.ToVector2D();
 
-                    yield return entity;
-                }
+                        yield return entity;
+                    }
             }
         }
 
@@ -269,7 +269,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public abstract IEnumerable<PointEntity> CreatePoints(int seed);
+            public abstract IEnumerable<PointEntity> CreatePoints(int seed, int maxPoints);
         }
 
         #region Rectangle
@@ -288,7 +288,7 @@ namespace Sceelix.Points.Procedures
             /// The (minimum) distance between the points. <br/>
             /// In practice, the value will vary between distance and 2 x distance. 
             /// </summary>
-            private readonly FloatParameter _parameterMinDistance = new FloatParameter("Distance", 1) {MinValue = 0};
+            private readonly FloatParameter _parameterMinDistance = new FloatParameter("Distance", 1) { MinValue = 0 };
 
 
 
@@ -299,9 +299,10 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public override IEnumerable<PointEntity> CreatePoints(int seed)
+            public override IEnumerable<PointEntity> CreatePoints(int seed, int maxValue)
             {
-                var locations = GeneratePoisson(seed, _parameterSize.Value, _parameterMinDistance.Value);
+                IEnumerable<Vector2D> locations = GeneratePoisson(seed, _parameterSize.Value, _parameterMinDistance.Value);
+                locations = locations.Take(maxValue);
                 foreach (Vector2D location in locations) yield return new PointEntity(new Vector3D(location));
             }
 
@@ -313,10 +314,10 @@ namespace Sceelix.Points.Procedures
 
                 var pointList = new List<Vector2D>();
 
-                var cellSize = (float) (minDistance / Math.Sqrt(2));
+                var cellSize = (float)(minDistance / Math.Sqrt(2));
 
                 //spatial data structure where we will store the indication if there's room available
-                var grid = new Vector2D?[(int) Math.Ceiling(size.X / cellSize), (int) Math.Ceiling(size.Y / cellSize)];
+                var grid = new Vector2D?[(int)Math.Ceiling(size.X / cellSize), (int)Math.Ceiling(size.Y / cellSize)];
 
                 var rectangle = new BoundingRectangle(0, 0, size.X, size.Y);
 
@@ -375,7 +376,7 @@ namespace Sceelix.Points.Procedures
                 var newX = point.X + radius * Math.Cos(angle);
                 var newY = point.Y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new Vector2D((float)newX, (float)newY);
             }
 
 
@@ -383,7 +384,7 @@ namespace Sceelix.Points.Procedures
             private bool HasPointInNeighbourhood(Vector2D?[,] grid, Vector2D point, float minDistance, float cellSize, Vector2D size)
             {
                 var coordinate = PositionToCoordinates(point, cellSize);
-                var cellDistance = (int) Math.Ceiling(minDistance / cellSize);
+                var cellDistance = (int)Math.Ceiling(minDistance / cellSize);
 
                 int startX = Math.Max(coordinate.X - cellDistance, 0);
                 int startY = Math.Max(coordinate.Y - cellDistance, 0);
@@ -393,20 +394,20 @@ namespace Sceelix.Points.Procedures
 
                 //get the neighbourhood if the point in the grid
                 for (int i = startX; i < endX; i++)
-                for (int j = startY; j < endY; j++)
-                {
-                    var cell = grid[i, j];
-
-                    //if there's a value in the cell
-                    if (cell.HasValue)
+                    for (int j = startY; j < endY; j++)
                     {
-                        var value = cell.Value;
+                        var cell = grid[i, j];
 
-                        //and that cell is actually closer than the allowed minimum...
-                        if (value.DistanceTo(point) < minDistance)
-                            return true;
+                        //if there's a value in the cell
+                        if (cell.HasValue)
+                        {
+                            var value = cell.Value;
+
+                            //and that cell is actually closer than the allowed minimum...
+                            if (value.DistanceTo(point) < minDistance)
+                                return true;
+                        }
                     }
-                }
 
                 return false;
             }
@@ -415,7 +416,7 @@ namespace Sceelix.Points.Procedures
 
             private Coordinate PositionToCoordinates(Vector2D point, float cellSize)
             {
-                return new Coordinate((int) (point.X / cellSize), (int) (point.Y / cellSize));
+                return new Coordinate((int)(point.X / cellSize), (int)(point.Y / cellSize));
             }
         }
 
@@ -473,7 +474,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public override IEnumerable<PointEntity> CreatePoints(int seed)
+            public override IEnumerable<PointEntity> CreatePoints(int seed, int maxPoints)
             {
                 var mesh = _input.Read();
                 Random random = new Random(seed);
@@ -482,8 +483,8 @@ namespace Sceelix.Points.Procedures
 
                 List<BoxScope> scopes = new List<BoxScope>();
 
-                PointOctTree pointOctTree = new PointOctTree((int) Math.Ceiling(minDistance), 5);
-
+                PointOctTree pointOctTree = new PointOctTree((int)Math.Ceiling(minDistance), 5);
+                int pointsAdded = 0;
 
                 foreach (Face face in mesh.Faces)
                 {
@@ -494,12 +495,15 @@ namespace Sceelix.Points.Procedures
                     var currentPoints = new Queue<Vector2D>();
                     currentPoints.Enqueue(boundaryVertices.First());
                     //scopes.Add(new BoxScope(planarScope, translation: planarScope.ToWorldPosition(new Vector3D(boundaryVertices.First()))));
-                    while (!currentPoints.IsEmpty())
+                    while (!currentPoints.IsEmpty() && pointsAdded <= maxPoints)
                     {
                         var currentPoint = currentPoints.Dequeue();
                         for (int i = 0; i < pointsToTest; i++)
                         {
+                            if (pointsAdded > maxPoints) break;
+
                             Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
+                            pointsAdded++;
 
                             //check that the point is in the image region
                             //and no points exists in the point's neighborhood
@@ -547,7 +551,7 @@ namespace Sceelix.Points.Procedures
                 var newX = point.X + radius * Math.Cos(angle);
                 var newY = point.Y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new Vector2D((float)newX, (float)newY);
             }
 
 
@@ -572,7 +576,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public abstract IEnumerable<PointEntity> CreatePoints(int seed, SurfaceEntity surfaceEntity);
+            public abstract IEnumerable<PointEntity> CreatePoints(int seed, int maxPoints, SurfaceEntity surfaceEntity);
         }
 
         /// <summary>
@@ -595,24 +599,24 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public override IEnumerable<PointEntity> CreatePoints(int seed, SurfaceEntity surfaceEntity)
+            public override IEnumerable<PointEntity> CreatePoints(int seed, int maxPoints, SurfaceEntity surfaceEntity)
             {
                 Random random = new Random(seed);
                 int pointsToTest = 30;
                 float minDistance = _parameterDistance.Value;
+                int pointsAdded = 0;
 
                 var heightLayer = surfaceEntity.GetLayer<HeightLayer>();
                 var surfaceRectangle = surfaceEntity.BoundingRectangle;
 
-
-                PointQuadTree pointQuadTree = new PointQuadTree((int) Math.Ceiling(minDistance), 5);
+                PointQuadTree pointQuadTree = new PointQuadTree((int)Math.Ceiling(minDistance), 5);
 
                 var currentPoints = new Queue<Vector2D>();
                 var firstPoint = new Vector2D(random.Float(surfaceRectangle.Min.X, surfaceRectangle.Max.X), random.Float(surfaceRectangle.Min.Y, surfaceRectangle.Max.Y));
                 currentPoints.Enqueue(firstPoint);
                 pointQuadTree.AddItem(firstPoint);
 
-                while (!currentPoints.IsEmpty())
+                while (!currentPoints.IsEmpty() && pointsAdded <= maxPoints)
                 {
                     var currentPoint = currentPoints.Dequeue();
 
@@ -624,7 +628,9 @@ namespace Sceelix.Points.Procedures
 
                     for (int i = 0; i < pointsToTest; i++)
                     {
+                        if (pointsAdded > maxPoints) break;
                         Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
+                        pointsAdded++;
 
                         //check that the point is in the image region
                         //and no points exists in the point's neighborhood
@@ -657,7 +663,7 @@ namespace Sceelix.Points.Procedures
                 var newX = point.X + radius * Math.Cos(angle);
                 var newY = point.Y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new Vector2D((float)newX, (float)newY);
             }
 
 
@@ -682,23 +688,23 @@ namespace Sceelix.Points.Procedures
             /// Index of the layer which contains the intensity information. Should be a floating-point based layer, such as a height or blend layer.<br/>
             /// By default, the index 0 means the height layer.
             /// </summary>
-            private readonly IntParameter _parameterLayerIndex = new IntParameter("Index", 0) {MinValue = 0};
+            private readonly IntParameter _parameterLayerIndex = new IntParameter("Index", 0) { MinValue = 0 };
 
             /// <summary>
             /// The layer value below which no points will be placed (in a 0-1 relative range). 
             /// This works as a mask, meaning that, for instance, in those areas where the layer value is below this value, no points will be placed.
             /// </summary>
-            private readonly FloatParameter _parameterThreshold = new FloatParameter("Min. Threshold", 0.1f) {MinValue = 0, MaxValue = 1};
+            private readonly FloatParameter _parameterThreshold = new FloatParameter("Min. Threshold", 0.1f) { MinValue = 0, MaxValue = 1 };
 
             /// <summary>
             /// The minimum distance between the generated points. This corresponds to the layer areas with highest values, creating therefore areas with higher point density.
             /// </summary>
-            private readonly FloatParameter _parameterMinDistance = new FloatParameter("Min. Distance", 5) {MinValue = 0};
+            private readonly FloatParameter _parameterMinDistance = new FloatParameter("Min. Distance", 5) { MinValue = 0 };
 
             /// <summary>
             /// The maximum distance between the generated points. This corresponds to the layer areas with lowest values, creating therefore areas with lower point density.
             /// </summary>
-            private readonly FloatParameter _parameterMaxDistance = new FloatParameter("Max. Distance", 10) {MinValue = 0};
+            private readonly FloatParameter _parameterMaxDistance = new FloatParameter("Max. Distance", 10) { MinValue = 0 };
 
             /// <summary>
             /// The actual distance calculated for the point.
@@ -714,7 +720,7 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public override IEnumerable<PointEntity> CreatePoints(int seed, SurfaceEntity surface)
+            public override IEnumerable<PointEntity> CreatePoints(int seed, int maxPoints, SurfaceEntity surface)
             {
                 //check the inputs
                 var surfaceLayers = surface.Layers.ToList();
@@ -732,14 +738,14 @@ namespace Sceelix.Points.Procedures
 
                 Random random = new Random(seed);
 
-                var cellSize = (float) (topMinDistance / Math.Sqrt(2));
-                var cellDistance = (int) Math.Ceiling(topMinDistance / cellSize);
+                var cellSize = (float)(topMinDistance / Math.Sqrt(2));
+                var cellDistance = (int)Math.Ceiling(topMinDistance / cellSize);
 
                 var rectangle = surface.BoundingRectangle;
 
 
                 //spatial data structure where we will store the indication if there's room available
-                var grid = new List<PositionDistance>[(int) Math.Ceiling(rectangle.Width / cellSize), (int) Math.Ceiling(rectangle.Height / cellSize)];
+                var grid = new List<PositionDistance>[(int)Math.Ceiling(rectangle.Width / cellSize), (int)Math.Ceiling(rectangle.Height / cellSize)];
 
                 var minValue = floatLayer.MinValue;
                 var threshold = _parameterThreshold.Value;
@@ -756,23 +762,27 @@ namespace Sceelix.Points.Procedures
 
                 //the first point is random within the bounds
                 var firstPoint = new Vector2D(random.Float(rectangle.Min.X, rectangle.Max.X), random.Float(rectangle.Min.Y, rectangle.Max.Y));
-                var firstPositionDistance = new PositionDistance {Position = firstPoint, Distance = interFunc(floatLayer.GetGenericValue(firstPoint))};
+                var firstPositionDistance = new PositionDistance { Position = firstPoint, Distance = interFunc(floatLayer.GetGenericValue(firstPoint)) };
                 currentPoints.Enqueue(firstPositionDistance);
 
                 //store it in the grid, too
                 var firstCoordinates = PositionToCoordinates(firstPoint, cellSize, rectangle.Min);
-                grid[firstCoordinates[0], firstCoordinates[1]] = new List<PositionDistance> {firstPositionDistance};
+                grid[firstCoordinates[0], firstCoordinates[1]] = new List<PositionDistance> { firstPositionDistance };
 
-                while (!currentPoints.IsEmpty())
+                int pointsAdded = 0;
+
+                while (!currentPoints.IsEmpty() && pointsAdded <= maxPoints)
                 {
                     var currentPoint = currentPoints.Dequeue();
                     for (int i = 0; i < PointsToTest; i++)
                     {
+                        if (pointsAdded > maxPoints) break;
                         Vector2D newPoint = GenerateRandomPointAround(random, currentPoint.Position, currentPoint.Distance);
+                        pointsAdded++;
 
                         //determine the new minimum distance
                         var layerValue = floatLayer.GetGenericValue(newPoint);
-                        var newPositionDistance = new PositionDistance {Position = newPoint, Distance = interFunc(layerValue)};
+                        var newPositionDistance = new PositionDistance { Position = newPoint, Distance = interFunc(layerValue) };
 
                         //if the point is valid
                         //check that the point is in the image region
@@ -794,7 +804,7 @@ namespace Sceelix.Points.Procedures
                             var coordinate = PositionToCoordinates(newPoint, cellSize, rectangle.Min);
 
                             if (grid[coordinate[0], coordinate[1]] == null)
-                                grid[coordinate[0], coordinate[1]] = new List<PositionDistance> {newPositionDistance};
+                                grid[coordinate[0], coordinate[1]] = new List<PositionDistance> { newPositionDistance };
                             else
                                 grid[coordinate[0], coordinate[1]].Add(newPositionDistance);
                         }
@@ -820,7 +830,7 @@ namespace Sceelix.Points.Procedures
                 var newX = point.X + radius * Math.Cos(angle);
                 var newY = point.Y + radius * Math.Sin(angle);
 
-                return new Vector2D((float) newX, (float) newY);
+                return new Vector2D((float)newX, (float)newY);
             }
 
 
@@ -838,34 +848,34 @@ namespace Sceelix.Points.Procedures
 
                 //get the neighbourhood if the point in the grid
                 for (int i = startX; i < endX; i++)
-                for (int j = startY; j < endY; j++)
-                {
-                    var cell = grid[NormalizeIndex(i, maxX), NormalizeIndex(j, maxY)];
+                    for (int j = startY; j < endY; j++)
+                    {
+                        var cell = grid[NormalizeIndex(i, maxX), NormalizeIndex(j, maxY)];
 
-                    //if there's a value in the cell
-                    if (cell != null)
-                        foreach (PositionDistance existingPositionDistance in cell)
-                        {
-                            var calculablePosition = existingPositionDistance.Position;
+                        //if there's a value in the cell
+                        if (cell != null)
+                            foreach (PositionDistance existingPositionDistance in cell)
+                            {
+                                var calculablePosition = existingPositionDistance.Position;
 
-                            if (i < 0)
-                                calculablePosition -= new Vector2D(rectangle.Width, 0);
-                            else if (i >= maxX)
-                                calculablePosition += new Vector2D(rectangle.Width, 0);
+                                if (i < 0)
+                                    calculablePosition -= new Vector2D(rectangle.Width, 0);
+                                else if (i >= maxX)
+                                    calculablePosition += new Vector2D(rectangle.Width, 0);
 
-                            if (j < 0)
-                                calculablePosition -= new Vector2D(0, rectangle.Height);
-                            else if (j >= maxY)
-                                calculablePosition += new Vector2D(0, rectangle.Height);
+                                if (j < 0)
+                                    calculablePosition -= new Vector2D(0, rectangle.Height);
+                                else if (j >= maxY)
+                                    calculablePosition += new Vector2D(0, rectangle.Height);
 
-                            var distanceBetweenPoints = calculablePosition.DistanceTo(positionDistance.Position);
+                                var distanceBetweenPoints = calculablePosition.DistanceTo(positionDistance.Position);
 
-                            //and that cell is actually closer than the allowed minimum...
-                            if (distanceBetweenPoints < existingPositionDistance.Distance
-                                && distanceBetweenPoints < positionDistance.Distance)
-                                return true;
-                        }
-                }
+                                //and that cell is actually closer than the allowed minimum...
+                                if (distanceBetweenPoints < existingPositionDistance.Distance
+                                    && distanceBetweenPoints < positionDistance.Distance)
+                                    return true;
+                            }
+                    }
 
                 return false;
             }
@@ -888,7 +898,7 @@ namespace Sceelix.Points.Procedures
 
             private int[] PositionToCoordinates(Vector2D point, float cellSize, Vector2D min)
             {
-                return new[] {(int) ((point.X - min.X) / cellSize), (int) ((point.Y - min.Y) / cellSize)};
+                return new[] { (int)((point.X - min.X) / cellSize), (int)((point.Y - min.Y) / cellSize) };
             }
 
 
@@ -970,12 +980,12 @@ namespace Sceelix.Points.Procedures
 
 
 
-            public override IEnumerable<PointEntity> CreatePoints(int seed)
+            public override IEnumerable<PointEntity> CreatePoints(int seed, int maxPoints)
             {
                 var surfaceEntity = _input.Read();
                 _output.Write(surfaceEntity);
 
-                return _parameterDistance.SelectedItem.CreatePoints(seed, surfaceEntity);
+                return _parameterDistance.SelectedItem.CreatePoints(seed, maxPoints, surfaceEntity);
             }
         }
 
@@ -993,6 +1003,11 @@ namespace Sceelix.Points.Procedures
             private readonly IntParameter _parameterSeed = new IntParameter("Seed", 1000);
 
             /// <summary>
+            /// The maximum number of points cap
+            /// </summary>
+            private readonly IntParameter _maxPoints = new IntParameter("MaxPoints", 1000);
+
+            /// <summary>
             /// Area on which the points are to be distributed.
             /// </summary>
             private readonly SelectListParameter<ScatterPointsParameter> _parameterScatter = new SelectListParameter<ScatterPointsParameter>("Area", "Rectangle");
@@ -1008,7 +1023,7 @@ namespace Sceelix.Points.Procedures
 
             protected internal override IEnumerable<PointEntity> CreatePoints()
             {
-                return _parameterScatter.SelectedItem.CreatePoints(_parameterSeed.Value);
+                return _parameterScatter.SelectedItem.CreatePoints(_parameterSeed.Value, _maxPoints.Value);
             }
         }
 
