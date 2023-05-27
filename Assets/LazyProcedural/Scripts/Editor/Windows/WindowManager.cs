@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LazyProcedural
 {
-    public class WindowManager : EditorWindow
+    public  class WindowManager: EditorWindow
     {
         public static SceneView sceneWindow { get; private set; }
 
@@ -56,12 +56,22 @@ namespace LazyProcedural
             graphWindow.Show();
         }
 
-
-        private static void GetSceneWindow()
+        public static void DockToWindow(EditorWindow parentWindow, EditorWindow targetWindow, float width, float height)
         {
-            if (sceneWindow != null) return;
+            var parentPosition = parentWindow.position;
+            var targetPosition = new Rect(parentPosition.xMax, parentPosition.y, width, height);
 
-            sceneWindow = GetWindow<SceneView>();
+            // Adjust targetPosition to fit within the parent window's bounds
+            if (targetPosition.xMax > parentPosition.xMax)
+            {
+                targetPosition.x = parentPosition.xMax;
+            }
+            if (targetPosition.yMax > parentPosition.yMax)
+            {
+                targetPosition.y = parentPosition.yMax - targetPosition.height;
+            }
+
+            targetWindow.position = targetPosition;
         }
 
     }

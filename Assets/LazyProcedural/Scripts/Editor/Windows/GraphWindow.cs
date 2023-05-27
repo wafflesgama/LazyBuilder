@@ -52,6 +52,7 @@ namespace LazyProcedural
 
         //Windows
         private ContextWindow _contextWindow;
+        private Blackboard _globalParametersBoard;
 
         //Messages
 
@@ -90,17 +91,6 @@ namespace LazyProcedural
             SetupBaseUI();
             SetupExtraWindows();
 
-
-            //Blackboard b = new Blackboard(graph);
-            //b.
-
-            //graph.Add(b);
-
-            //Blackboard b2 = new Blackboard(graph);
-            //graph.Add(b2);
-
-            //Blackboard b3 = new Blackboard(graph);
-            //graph.Add(b3);
 
             SetupBindings();
             SetupPatchedDropdowns();
@@ -213,10 +203,25 @@ namespace LazyProcedural
         private void OpenContextWindow()
         {
             if (_contextWindow == null)
+            {
                 _contextWindow = new ContextWindow(this);
+                _contextWindow.Show();
+                try
+                {
+                    WindowDocker.Dock(this, _contextWindow, WindowDocker.DockPosition.Right);
+                }
+                catch (System.Exception)
+                {
+                    WindowManager.DockToWindow(this, _contextWindow, 500, 500);
+                }
+            }
+            else
+            {
+                _contextWindow.Show();
+
+            }
 
 
-            _contextWindow.Show();
             //_contextWindow.visible = true;
         }
         private void CloseContextWindow()
@@ -277,6 +282,11 @@ namespace LazyProcedural
 
         private void SetupExtraWindows()
         {
+
+            //_globalParametersBoard = new GlobalParametersWindow(this, graph);
+            //graph.Add(_globalParametersBoard);
+
+           
             //MiniMap minimap = new MiniMap();
             //graph.Add(minimap);
 
