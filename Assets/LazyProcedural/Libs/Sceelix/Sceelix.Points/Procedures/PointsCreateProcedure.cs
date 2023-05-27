@@ -503,7 +503,6 @@ namespace Sceelix.Points.Procedures
                             if (pointsAdded > maxPoints) break;
 
                             Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
-                            pointsAdded++;
 
                             //check that the point is in the image region
                             //and no points exists in the point's neighborhood
@@ -515,6 +514,8 @@ namespace Sceelix.Points.Procedures
                                 {
                                     //update containers
                                     currentPoints.Enqueue(newPoint);
+                                    pointsAdded++;
+
 
                                     //add the point to our list of results
                                     pointOctTree.AddItem(newPoint3D);
@@ -630,7 +631,6 @@ namespace Sceelix.Points.Procedures
                     {
                         if (pointsAdded > maxPoints) break;
                         Vector2D newPoint = GenerateRandomPointAround(random, currentPoint, minDistance);
-                        pointsAdded++;
 
                         //check that the point is in the image region
                         //and no points exists in the point's neighborhood
@@ -639,6 +639,7 @@ namespace Sceelix.Points.Procedures
                             {
                                 //update containers
                                 currentPoints.Enqueue(newPoint);
+                                pointsAdded++;
                                 pointQuadTree.AddItem(newPoint);
                             }
                     }
@@ -778,7 +779,7 @@ namespace Sceelix.Points.Procedures
                     {
                         if (pointsAdded > maxPoints) break;
                         Vector2D newPoint = GenerateRandomPointAround(random, currentPoint.Position, currentPoint.Distance);
-                        pointsAdded++;
+                      
 
                         //determine the new minimum distance
                         var layerValue = floatLayer.GetGenericValue(newPoint);
@@ -791,6 +792,7 @@ namespace Sceelix.Points.Procedures
                         {
                             //update containers
                             currentPoints.Enqueue(newPositionDistance);
+                            pointsAdded++;
 
                             //return the point
                             if (maskCheckFunc(layerValue))
