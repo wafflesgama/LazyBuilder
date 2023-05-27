@@ -9,7 +9,6 @@ using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Geometry;
 using Sceelix.Mathematics.Spatial;
 using Sceelix.Meshes.Exceptions;
-using Sceelix.Meshes.Materials;
 using Sceelix.Meshes.Operations;
 
 namespace Sceelix.Meshes.Data
