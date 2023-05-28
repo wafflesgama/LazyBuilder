@@ -307,6 +307,12 @@ namespace LazyProcedural
             if (!changedDataParams.Any(x => x.accessIndex.SequenceEqual(changedParameterInfo.accessIndex)))
                 changedDataParams.Add(new ChangedParameterInfo { accessIndex = changedParameterInfo.accessIndex });
 
+            //Get its subparameters 
+            var subParameters = changedDataParams.Where(x => changedParameterInfo.accessIndex.Except(x.accessIndex).Count() <= 0 && x.accessIndex.Length > changedParameterInfo.accessIndex.Length).ToList();
+
+            //To delete them 
+            changedDataParams = changedDataParams.Except(subParameters).ToList();
+
             var param = changedDataParams.FirstOrDefault(x => x.accessIndex.SequenceEqual(changedParameterInfo.accessIndex));
             param.value = changedParameterInfo.value;
             param.isExpression = changedParameterInfo.isExpression;
@@ -320,9 +326,10 @@ namespace LazyProcedural
         public void RemoveCreatedDataParameter(CreatedParameterInfo createdToRemoveParameterInfo)
         {
             //Get its subparameters 
-            var paramsOfRemoved = changedDataParams.Where(x => createdToRemoveParameterInfo.accessIndex.Except(x.accessIndex).Count() <= 0).ToList();
+            var subParameters = changedDataParams.Where(x => createdToRemoveParameterInfo.accessIndex.Except(x.accessIndex).Count() <= 0 && x.accessIndex.Length > createdToRemoveParameterInfo.accessIndex.Length).ToList();
+
             //To delete them 
-            changedDataParams = changedDataParams.Except(paramsOfRemoved).ToList();
+            changedDataParams = changedDataParams.Except(subParameters).ToList();
 
             //Drop last index since it is the specific index of it
             var baseAccess = createdToRemoveParameterInfo.accessIndex.Take(createdToRemoveParameterInfo.accessIndex.Count() - 1);
