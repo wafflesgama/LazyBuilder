@@ -314,35 +314,6 @@ namespace Sceelix.Mathematics.Data
         }
 
 
-
-        //  User-defined conversion from double to Digit
-        public static implicit operator Point(Vector2D vector)
-        {
-            return new Point((int)vector.X, (int)vector.Y);
-        }
-
-
-
-        public static implicit operator Size(Vector2D vector)
-        {
-            return new Size((int)vector.X, (int)vector.Y);
-        }
-
-
-
-        //  User-defined conversion from double to Digit
-        public static implicit operator Vector2D(Point point)
-        {
-            return new Vector2D(point.X, point.Y);
-        }
-
-
-
-        public static implicit operator Vector2D(Size size)
-        {
-            return new Vector2D(size.Width, size.Height);
-        }
-
         public static Vector2D Parse(string s)
         {
             var stringValue = s;

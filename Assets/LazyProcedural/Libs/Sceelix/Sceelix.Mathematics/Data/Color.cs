@@ -174,22 +174,6 @@ namespace Sceelix.Mathematics.Data
 
 
 
-        public static implicit operator System.Drawing.Color(Color color)
-        {
-            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
-        }
-
-
-
-        public static implicit operator Color(System.Drawing.Color color)
-        {
-            return new Color(color.R, color.G, color.B, color.A);
-        }
-
-
-        
-
-
         /// <summary>
         /// Converts the color to an array of 0-255 byte values.
         /// </summary>

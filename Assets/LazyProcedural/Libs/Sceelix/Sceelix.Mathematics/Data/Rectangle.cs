@@ -78,17 +78,5 @@ namespace Sceelix.Mathematics.Data
         }
 
 
-
-        public static implicit operator System.Drawing.Rectangle(Rectangle rectangle)
-        {
-            return new System.Drawing.Rectangle((int) rectangle.X, (int) rectangle.Y, (int) rectangle.Width, (int) rectangle.Height);
-        }
-
-
-
-        public static implicit operator Rectangle(System.Drawing.Rectangle rectangle)
-        {
-            return new Rectangle(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-        }
     }
 }

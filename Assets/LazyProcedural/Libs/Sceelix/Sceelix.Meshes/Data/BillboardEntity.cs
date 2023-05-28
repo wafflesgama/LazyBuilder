@@ -2,13 +2,14 @@
 using Sceelix.Core.Annotations;
 using Sceelix.Core.Data;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Meshes.Data
 {
     [Entity("Billboard")]
     public class BillboardEntity : Entity, IActor
     {
-        public BillboardEntity(Vector2D value, Color color)
+        public BillboardEntity(Vector2D value, Mathematics.Data.Color color)
         {
             BoxScope = new BoxScope(sizes: new Vector3D(value.X, 0, value.Y));
             Color = color;
@@ -23,14 +24,14 @@ namespace Sceelix.Meshes.Data
         }
 
 
-        public Color Color
+        public Mathematics.Data.Color Color
         {
             get;
             set;
         }
 
 
-        public string Image
+        public Texture2D Image
         {
             get;
             set;

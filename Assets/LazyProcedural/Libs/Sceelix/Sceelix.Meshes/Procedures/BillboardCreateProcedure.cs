@@ -7,6 +7,7 @@ using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Parameters;
 using Sceelix.Meshes.Data;
 
+
 namespace Sceelix.Meshes.Procedures
 {
     /// <summary>
@@ -28,7 +29,7 @@ namespace Sceelix.Meshes.Procedures
         /// <summary>
         /// Image to be set as billboard.
         /// </summary>
-        private readonly FileParameter _parameterFile = new FileParameter("Image", "", BitmapExtension.SupportedFileExtensions);
+        private readonly ObjectParameter<UnityEngine.Texture2D> _parameterImage = new ObjectParameter<UnityEngine.Texture2D>();
 
         /// <summary>
         /// Size of the billboard in width (X) and height (Y).
@@ -39,7 +40,7 @@ namespace Sceelix.Meshes.Procedures
 
         protected override void Run()
         {
-            _output.Write(new BillboardEntity(_parameterSize.Value, _parameterColor.Value) {Image = _parameterFile.Value});
+            _output.Write(new BillboardEntity(_parameterSize.Value, _parameterColor.Value) { Image = _parameterImage.Value });
         }
     }
 }

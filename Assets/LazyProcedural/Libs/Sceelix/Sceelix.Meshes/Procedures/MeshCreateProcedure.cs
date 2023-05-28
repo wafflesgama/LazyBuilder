@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using Sceelix.Core.Annotations;
 using Sceelix.Core.IO;
@@ -1187,127 +1186,127 @@ namespace Sceelix.Meshes.Procedures
 
         #region Text
 
-        /// <summary>
-        /// Creates a set of faces with the shape of a given input text. 
-        /// </summary>
-        public class TextMeshParameter : PrimitiveMeshParameter
-        {
-            /// <summary>
-            /// Text Content.
-            /// </summary>
-            private readonly StringParameter _textParameter = new StringParameter("Text", "Sceelix");
+        ///// <summary>
+        ///// Creates a set of faces with the shape of a given input text. 
+        ///// </summary>
+        //public class TextMeshParameter : PrimitiveMeshParameter
+        //{
+        //    /// <summary>
+        //    /// Text Content.
+        //    /// </summary>
+        //    private readonly StringParameter _textParameter = new StringParameter("Text", "Sceelix");
 
-            /// <summary>
-            /// Font of the text.
-            /// </summary>
-            private readonly ChoiceParameter _fontParameter = new ChoiceParameter("Font", "Arial") {Choices = FontFamily.Families.Select(val => val.Name).ToArray()};
+        //    /// <summary>
+        //    /// Font of the text.
+        //    /// </summary>
+        //    private readonly ChoiceParameter _fontParameter = new ChoiceParameter("Font", "Arial") {Choices = FontFamily.Families.Select(val => val.Name).ToArray()};
 
-            /// <summary>
-            /// Size of the text.
-            /// </summary>
-            private readonly IntParameter _sizeParameter = new IntParameter("Size", 10) {MinValue = 0};
+        //    /// <summary>
+        //    /// Size of the text.
+        //    /// </summary>
+        //    private readonly IntParameter _sizeParameter = new IntParameter("Size", 10) {MinValue = 0};
 
-            /// <summary>
-            /// Font style.
-            /// </summary>
-            private readonly EnumChoiceParameter<FontStyle> _styleParameter = new EnumChoiceParameter<FontStyle>("Style", FontStyle.Regular);
+        //    /// <summary>
+        //    /// Font style.
+        //    /// </summary>
+        //    private readonly EnumChoiceParameter<FontStyle> _styleParameter = new EnumChoiceParameter<FontStyle>("Style", FontStyle.Regular);
 
-            /// <summary>
-            /// Stores the index of character in each face. The actual caracter can then be obtained in an expression from the original text.
-            /// </summary>
-            private readonly AttributeParameter<int> _attributeCharacter = new AttributeParameter<int>("Index", AttributeAccess.Write);
-
-
-
-            public TextMeshParameter()
-                : base("Text")
-            {
-            }
+        //    /// <summary>
+        //    /// Stores the index of character in each face. The actual caracter can then be obtained in an expression from the original text.
+        //    /// </summary>
+        //    private readonly AttributeParameter<int> _attributeCharacter = new AttributeParameter<int>("Index", AttributeAccess.Write);
 
 
 
-            private static void AddFaceOrHole(List<Face> faces, List<Vector3D> pointList)
-            {
-                Face face = new Face(pointList.ToArray());
-
-                if (face.Normal.Equals(-Vector3D.ZVector))
-                    faces.Add(face);
-                else
-                    faces.Last().AddHole(pointList.Select(val => new Vertex(val)));
-            }
+        //    public TextMeshParameter()
+        //        : base("Text")
+        //    {
+        //    }
 
 
 
-            protected internal override MeshEntity CreateMesh()
-            {
-                var meshEntity = CreateText(_textParameter.Value, _sizeParameter.Value, _styleParameter.Value, _fontParameter.Value, _attributeCharacter);
+        //    private static void AddFaceOrHole(List<Face> faces, List<Vector3D> pointList)
+        //    {
+        //        Face face = new Face(pointList.ToArray());
 
-                //if (_attributeCharacter.IsMapped)
-                //    StoreCharacterInformation(meshEntity);
-
-                return meshEntity;
-            }
-
-
-
-            public static MeshEntity CreateText(string text, int size, FontStyle style, string font, AttributeParameter<int> attributeCharacter = null)
-            {
-                List<Face> allFaces = new List<Face>();
-
-                float startingX = 0;
-
-                for (int i = 0; i < text.Length; i++)
-                {
-                    List<Face> faces = new List<Face>();
-                    List<Vector3D> pointList = new List<Vector3D>();
-
-                    FontFamily fontFamily = new FontFamily(font);
-                    GraphicsPath path = new GraphicsPath();
-
-                    path.AddString(text[i].ToString(), fontFamily, (int) style, size, new Point((int) startingX, 0), StringFormat.GenericDefault);
-
-                    for (int index = 0; index < path.PointCount; index++)
-                    {
-                        PointF pathPoint = path.PathPoints[index];
-                        byte pathType = path.PathTypes[index];
-
-                        if (pathType == 0 && pointList.Count > 0)
-                        {
-                            AddFaceOrHole(faces, pointList);
-
-                            pointList.Clear();
-                        }
-
-                        pointList.Add(new Vector3D(pathPoint.X, pathPoint.Y, 0));
-                    }
-
-                    if (pointList.Count > 0)
-                        AddFaceOrHole(faces, pointList);
-
-                    var boundingRectangle = new BoundingRectangle(faces.SelectMany(x => x.AllVertices).Select(x => x.Position.ToVector2D()));
-                    startingX = boundingRectangle.Max.X;
-
-                    if (attributeCharacter != null)
-                        foreach (Face face in faces)
-                            attributeCharacter[face] = i;
+        //        if (face.Normal.Equals(-Vector3D.ZVector))
+        //            faces.Add(face);
+        //        else
+        //            faces.Last().AddHole(pointList.Select(val => new Vertex(val)));
+        //    }
 
 
-                    allFaces.AddRange(faces);
-                }
+
+        //    protected internal override MeshEntity CreateMesh()
+        //    {
+        //        var meshEntity = CreateText(_textParameter.Value, _sizeParameter.Value, _styleParameter.Value, _fontParameter.Value, _attributeCharacter);
+
+        //        //if (_attributeCharacter.IsMapped)
+        //        //    StoreCharacterInformation(meshEntity);
+
+        //        return meshEntity;
+        //    }
 
 
-                MeshEntity meshEntity = new MeshEntity(allFaces);
 
-                //by default, the letters are facing down (not quite inverted), so we have to rotate it back
-                meshEntity.Rotate(180, Vector3D.XVector, Vector3D.Zero);
-                //RotateShapeProcedure.Rotate(meshEntity, Vector3D.XVector, Vector3D.Zero, (float)MathHelper.Pi, false);
+        //    public static MeshEntity CreateText(string text, int size, FontStyle style, string font, AttributeParameter<int> attributeCharacter = null)
+        //    {
+        //        List<Face> allFaces = new List<Face>();
 
-                //resets the scope
-                meshEntity.BoxScope = BoxScope.Identity;
+        //        float startingX = 0;
 
-                return meshEntity;
-            }
-        }
+        //        for (int i = 0; i < text.Length; i++)
+        //        {
+        //            List<Face> faces = new List<Face>();
+        //            List<Vector3D> pointList = new List<Vector3D>();
+
+        //            FontFamily fontFamily = new FontFamily(font);
+        //            GraphicsPath path = new GraphicsPath();
+
+        //            path.AddString(text[i].ToString(), fontFamily, (int) style, size, new Point((int) startingX, 0), StringFormat.GenericDefault);
+
+        //            for (int index = 0; index < path.PointCount; index++)
+        //            {
+        //                PointF pathPoint = path.PathPoints[index];
+        //                byte pathType = path.PathTypes[index];
+
+        //                if (pathType == 0 && pointList.Count > 0)
+        //                {
+        //                    AddFaceOrHole(faces, pointList);
+
+        //                    pointList.Clear();
+        //                }
+
+        //                pointList.Add(new Vector3D(pathPoint.X, pathPoint.Y, 0));
+        //            }
+
+        //            if (pointList.Count > 0)
+        //                AddFaceOrHole(faces, pointList);
+
+        //            var boundingRectangle = new BoundingRectangle(faces.SelectMany(x => x.AllVertices).Select(x => x.Position.ToVector2D()));
+        //            startingX = boundingRectangle.Max.X;
+
+        //            if (attributeCharacter != null)
+        //                foreach (Face face in faces)
+        //                    attributeCharacter[face] = i;
+
+
+        //            allFaces.AddRange(faces);
+        //        }
+
+
+        //        MeshEntity meshEntity = new MeshEntity(allFaces);
+
+        //        //by default, the letters are facing down (not quite inverted), so we have to rotate it back
+        //        meshEntity.Rotate(180, Vector3D.XVector, Vector3D.Zero);
+        //        //RotateShapeProcedure.Rotate(meshEntity, Vector3D.XVector, Vector3D.Zero, (float)MathHelper.Pi, false);
+
+        //        //resets the scope
+        //        meshEntity.BoxScope = BoxScope.Identity;
+
+        //        return meshEntity;
+        //    }
+        //}
 
         #endregion
 
