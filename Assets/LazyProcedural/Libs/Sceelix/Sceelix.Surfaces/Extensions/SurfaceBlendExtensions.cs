@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sceelix.Extensions;
 using Sceelix.Helpers;
 using Sceelix.Mathematics.Data;
 using Sceelix.Surfaces.Data;
+using UnityEngine;
 
 namespace Sceelix.Surfaces.Extensions
 {
@@ -23,10 +25,10 @@ namespace Sceelix.Surfaces.Extensions
                 {
                     var systemColor = colors[i, j];
 
-                    blendValues[0][i, j] = systemColor.R / 255f;
-                    blendValues[1][i, j] = systemColor.G / 255f;
-                    blendValues[2][i, j] = systemColor.B / 255f;
-                    blendValues[3][i, j] = systemColor.A / 255f;
+                    blendValues[0][i, j] = systemColor.r / 255f;
+                    blendValues[1][i, j] = systemColor.g / 255f;
+                    blendValues[2][i, j] = systemColor.b / 255f;
+                    blendValues[3][i, j] = systemColor.a / 255f;
                 }
             });
 
@@ -91,7 +93,7 @@ namespace Sceelix.Surfaces.Extensions
                         var array = colors[x, y].ToFloatArray();
                         array[currentTextureIndex - offset] = currentLayer.GetGenericValue(new Coordinate(x, y));
 
-                        colors[x, y] = new Color(array);
+                        colors[x, y] = ColorExtension.ColorFromArray(array);
                     }
                 });
             }

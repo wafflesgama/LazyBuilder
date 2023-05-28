@@ -1,5 +1,6 @@
 ﻿using Sceelix.Core.Handles;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Meshes.Handles
 {
@@ -24,7 +25,7 @@ namespace Sceelix.Meshes.Handles
         {
             get;
             set;
-        } = Color.Black;
+        } = Color.black;
 
 
         public Vector3D Direction

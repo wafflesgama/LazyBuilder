@@ -2,6 +2,7 @@ using System;
 using Sceelix.Collections;
 using Sceelix.Conversion;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Conversions
 {

@@ -5,6 +5,7 @@ using Sceelix.Core.Annotations;
 using Sceelix.Core.Attributes;
 using Sceelix.Core.Data;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Meshes.Data
 {

@@ -2,6 +2,7 @@
 using Sceelix.Core.Parameters.Infos;
 using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Parameters.Infos;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Parameters
 {
@@ -15,7 +16,7 @@ namespace Sceelix.Mathematics.Parameters
 
 
         public ColorParameter(string label)
-            : base(label, Color.White)
+            : base(label, Color.white)
         {
         }
 

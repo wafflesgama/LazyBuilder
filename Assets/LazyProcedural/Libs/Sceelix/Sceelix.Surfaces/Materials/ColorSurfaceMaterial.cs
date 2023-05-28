@@ -1,4 +1,5 @@
 ﻿using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Surfaces.Materials
 {
@@ -6,7 +7,7 @@ namespace Sceelix.Surfaces.Materials
     {
         public ColorSurfaceMaterial()
         {
-            DefaultColor = Color.White;
+            DefaultColor = Color.white;
         }
 
 

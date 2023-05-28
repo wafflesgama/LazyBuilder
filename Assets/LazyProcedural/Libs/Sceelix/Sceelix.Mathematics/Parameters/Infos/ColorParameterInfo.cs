@@ -2,6 +2,7 @@
 using Sceelix.Core.Parameters;
 using Sceelix.Core.Parameters.Infos;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Parameters.Infos
 {
@@ -10,7 +11,7 @@ namespace Sceelix.Mathematics.Parameters.Infos
         public ColorParameterInfo(string label)
             : base(label)
         {
-            FixedValue = Color.White;
+            FixedValue = Color.white;
             /*Fields.Add(new IntParameterInfo("Red") { MinValue = 0, MaxValue = 255,FixedValue = 255});
             Fields.Add(new IntParameterInfo("Green") { MinValue = 0, MaxValue = 255, FixedValue = 255 });
             Fields.Add(new IntParameterInfo("Blue") { MinValue = 0, MaxValue = 255, FixedValue = 255 });
@@ -38,7 +39,7 @@ namespace Sceelix.Mathematics.Parameters.Infos
             get
             {
                 var fixedValue = FixedValue;
-                return "new Color(" + fixedValue.R + "," + fixedValue.G + "," + fixedValue.B + "," + fixedValue.A + ")";
+                return "new Color(" + fixedValue.r + "," + fixedValue.g + "," + fixedValue.b + "," + fixedValue.a + ")";
             }
         }
 

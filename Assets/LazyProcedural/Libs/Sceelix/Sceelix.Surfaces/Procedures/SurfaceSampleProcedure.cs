@@ -11,6 +11,7 @@ using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Spatial;
 using Sceelix.Surfaces.Data;
 using Sceelix.Surfaces.Extensions;
+using UnityEngine;
 
 namespace Sceelix.Surfaces.Procedures
 {
@@ -399,10 +400,10 @@ namespace Sceelix.Surfaces.Procedures
                     case "Average":
                         var colors = coordinates.Select(coord => _colorArray[coord.X, coord.Y]).ToList();
 
-                        var red = colors.Select(x => (int) x.R).Average();
-                        var green = colors.Select(x => (int) x.G).Average();
-                        var blue = colors.Select(x => (int) x.B).Average();
-                        var alpha = colors.Select(x => (int) x.A).Average();
+                        var red = colors.Select(x => (int) x.r).Average();
+                        var green = colors.Select(x => (int) x.g).Average();
+                        var blue = colors.Select(x => (int) x.b).Average();
+                        var alpha = colors.Select(x => (int) x.a).Average();
 
                         return new Color((byte) red, (byte) green, (byte) blue, (byte) alpha);
                     case "List":
@@ -419,7 +420,7 @@ namespace Sceelix.Surfaces.Procedures
                 if (_parameterSampling.Value == "List")
                     return new SceeList();
 
-                return Color.Transparent;
+                return new Color(0,0,0,0);
             }
 
 

@@ -4,6 +4,7 @@ using Sceelix.Core.Attributes;
 using Sceelix.Core.Data;
 using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Helpers;
+using UnityEngine;
 
 namespace Sceelix.Meshes.Data
 {
@@ -61,7 +62,7 @@ namespace Sceelix.Meshes.Data
 
                 Color? vertexColor = Vertex.Color;
 
-                return vertexColor ?? Color.White;
+                return vertexColor ?? Color.white;
             }
             set { Attributes.TrySet(ColorKey, value, true); }
         }

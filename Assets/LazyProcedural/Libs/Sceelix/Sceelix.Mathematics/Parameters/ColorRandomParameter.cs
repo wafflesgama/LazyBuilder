@@ -4,6 +4,7 @@ using Sceelix.Core.Data;
 using Sceelix.Core.Parameters;
 using Sceelix.Core.Procedures;
 using Sceelix.Mathematics.Data;
+using UnityEngine;
 
 namespace Sceelix.Mathematics.Parameters
 {
@@ -34,7 +35,7 @@ namespace Sceelix.Mathematics.Parameters
 
 
 
-        public override void Execute(Random random, List<IEntity> entities)
+        public override void Execute(System.Random random, List<IEntity> entities)
         {
             switch (_parameterType.Value)
             {
@@ -55,7 +56,7 @@ namespace Sceelix.Mathematics.Parameters
                 }
                     break;
                 case "Hue":
-                    foreach (var baseEntity in entities) _attributeValue[baseEntity] = Color.HsvToRgb(random.Next(361), 1, 1);
+                    foreach (var baseEntity in entities) _attributeValue[baseEntity] = Color.HSVToRGB(random.Next(361), 1, 1);
                     break;
             }
         }

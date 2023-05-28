@@ -452,16 +452,14 @@ public class ContextWindow : EditorWindow
             field.AddToClassList("selectList");
             field = popupField;
         }
-        else if (parameterValueType == typeof(Sceelix.Mathematics.Data.Color))
+        else if (parameterValueType == typeof(Color))
         {
             ColorField colorField = new ColorField(parameter.Label + " (c)");
-            colorField.value = ((Sceelix.Mathematics.Data.Color)parameterValue).ToUnityColor();
+            colorField.value = (Color)parameterValue;
             colorField.RegisterValueChangedCallback(value =>
             {
-                //var param = GetParameterFromAcessingIndex(currentAcessingIndex, procedure);
-                Sceelix.Mathematics.Data.Color convertedValue = new Sceelix.Mathematics.Data.Color(value.newValue);
-                parameter.Set(convertedValue);
-                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
+                parameter.Set(value.newValue);
+                node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 _graphWindow.OnGraphValueUpdated();
             });
             field = colorField;

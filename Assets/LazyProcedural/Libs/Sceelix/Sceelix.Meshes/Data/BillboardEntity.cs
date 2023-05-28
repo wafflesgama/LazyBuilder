@@ -9,7 +9,7 @@ namespace Sceelix.Meshes.Data
     [Entity("Billboard")]
     public class BillboardEntity : Entity, IActor
     {
-        public BillboardEntity(Vector2D value, Mathematics.Data.Color color)
+        public BillboardEntity(Vector2D value, Color color)
         {
             BoxScope = new BoxScope(sizes: new Vector3D(value.X, 0, value.Y));
             Color = color;
@@ -24,7 +24,7 @@ namespace Sceelix.Meshes.Data
         }
 
 
-        public Mathematics.Data.Color Color
+        public Color Color
         {
             get;
             set;

@@ -71,7 +71,7 @@ namespace Sceelix.Processors
 
                         v.Add(vertex.Position.FlipYZ().ToVector3());
                         n.Add(normal.FlipYZ().ToVector3());
-                        c.Add(vertex[face].Color.ToUnityColor());
+                        c.Add(vertex[face].Color);
                         t.Add((new Vector4D(tangent, tangent.Cross(normal).Dot(binormal) > 0 ? 1f : -1f).ToVector4()));
                         uv.Add((vertex[face].UV0 * new Vector2D(1, -1)).ToVector2());
 

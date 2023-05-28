@@ -1,7 +1,7 @@
 ﻿using Sceelix.Collections;
 using Sceelix.Conversion;
 using Sceelix.Core.Annotations;
-using Sceelix.Mathematics.Data;
+using UnityEngine;
 using KVPair = System.Collections.Generic.KeyValuePair<string, object>;
 
 namespace Sceelix.Mathematics.Graphs.Functions
@@ -38,18 +38,18 @@ namespace Sceelix.Mathematics.Graphs.Functions
 
         public static object Hsva(dynamic hue, dynamic saturation, dynamic value)
         {
-            Color color = Data.Color.HsvToRgb(hue, saturation, value);
+            Color color = UnityEngine.Color.HSVToRGB(hue, saturation, value);
 
-            return new SceeList(new KVPair("Red", color.R), new KVPair("Green", color.G), new KVPair("Blue", color.B), new KVPair("Alpha", (byte) 255));
+            return new SceeList(new KVPair("Red", color.r), new KVPair("Green", color.g), new KVPair("Blue", color.b), new KVPair("Alpha", (byte) 255));
         }
 
 
 
         public static object Hsva(dynamic hue, dynamic saturation, dynamic value, dynamic alpha)
         {
-            Color color = Data.Color.HsvToRgb(hue, saturation, value);
+            Color color = UnityEngine.Color.HSVToRGB(hue, saturation, value);
 
-            return new SceeList(new KVPair("Red", color.R), new KVPair("Green", color.G), new KVPair("Blue", color.B), new KVPair("Alpha", alpha));
+            return new SceeList(new KVPair("Red", color.r), new KVPair("Green", color.g), new KVPair("Blue", color.b), new KVPair("Alpha", alpha));
         }
     }
 }

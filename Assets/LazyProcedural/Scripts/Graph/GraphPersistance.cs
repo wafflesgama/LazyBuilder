@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using Sceelix.Mathematics.Data;
+using Sceelix.Extensions;
 
 namespace LazyProcedural
 {
@@ -159,9 +160,9 @@ namespace LazyProcedural
             {
                 value = bool.Parse(valueString);
             }
-            else if (valueType == typeof(Sceelix.Mathematics.Data.Color))
+            else if (valueTypeString == "UnityEngine.Color")
             {
-                value = Sceelix.Mathematics.Data.Color.Parse(valueString);
+                value = ColorExtension.Parse(valueString);
             }
             else if (valueType == typeof(Vector2D))
             {

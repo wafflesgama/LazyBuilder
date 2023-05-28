@@ -6,7 +6,7 @@ using Sceelix.Extensions;
 using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Parameters;
 using Sceelix.Meshes.Data;
-
+using UnityEngine;
 
 namespace Sceelix.Meshes.Procedures
 {
@@ -24,7 +24,7 @@ namespace Sceelix.Meshes.Procedures
         /// <summary>
         /// Color tint of the billboard.
         /// </summary>
-        private readonly ColorParameter _parameterColor = new ColorParameter("Color", Color.Black);
+        private readonly ColorParameter _parameterColor = new ColorParameter("Color", Color.black);
 
         /// <summary>
         /// Image to be set as billboard.
