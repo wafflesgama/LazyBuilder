@@ -78,7 +78,7 @@ namespace Sceelix.Mathematics.Conversions
             return new Vector3D(
                 ConvertHelper.Convert<float>(sceelist[0]),
                 ConvertHelper.Convert<float>(sceelist[1]),
-                ConvertHelper.Convert<float>(sceelist[2]));
+                ConvertHelper.Convert<float>(sceelist[2])).FlipYZ();
         }
     }
 }
