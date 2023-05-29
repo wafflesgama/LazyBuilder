@@ -13,11 +13,12 @@ namespace LazyProcedural
     {
         public string filePath;
 
-        public (IEnumerable<Node>, IEnumerable<Edge>) LoadGraph()
+        public (IEnumerable<Node>, IEnumerable<Edge>, IEnumerable<(string, object)>) LoadGraph()
         {
             GraphPersistanceData graphData = null;
             List<Node> nodes = new List<Node>();
             List<Edge> edges = new List<Edge>();
+            List<(string, object)> globalParams = new List<(string, object)>();
 
             string basePath = Path.GetDirectoryName(Application.dataPath);
             string fullFilePath = $"{basePath}/{filePath}".AbsoluteFormat();
@@ -25,7 +26,7 @@ namespace LazyProcedural
             if (!File.Exists(fullFilePath))
             {
                 Debug.LogError("Incorrect file path");
-                return (nodes, edges);
+                return (nodes, edges, globalParams);
             }
 
 
@@ -42,7 +43,7 @@ namespace LazyProcedural
             if (graphData == null)
             {
                 //Debug.LogWarning("Empty Data");
-                return (nodes, edges);
+                return (nodes, edges, globalParams);
             }
 
             //First pass to create nodes
@@ -73,16 +74,24 @@ namespace LazyProcedural
                     {
                         Node inNode = nodes.FirstOrDefault(x => x.id == connection.DestinationNodeId);
                         Port inPort = inNode.inPorts[connection.DestinationPortIndex];
-                        Edge edge = new Edge ( currentPort, inPort );
+                        Edge edge = new Edge(currentPort, inPort);
                         edges.Add(edge);
                     }
                     currentPortIndex++;
                 }
             }
-            return (nodes, edges);
+
+            //Then Load Global Parameters
+            foreach (var globalParam in graphData.GlobalParameters)
+            {
+                globalParams.Add((globalParam.Name, ConvertValue(globalParam.ValueType, globalParam.Value)));
+            }
+
+
+            return (nodes, edges, globalParams);
         }
 
-        public void SaveGraph(IEnumerable<Node> nodes)
+        public void SaveGraph(IEnumerable<Node> nodes, IEnumerable<(string, object)> globalParameters)
         {
             GraphPersistanceData graphData = new GraphPersistanceData();
             List<NodePersistanceData> nodesData = new List<NodePersistanceData>();
@@ -130,8 +139,19 @@ namespace LazyProcedural
 
                 nodesData.Add(nodeData);
             }
-
             graphData.Nodes = nodesData.ToArray();
+
+            List<GlobalParameterPersistanceData> globalParametersData = new List<GlobalParameterPersistanceData>();
+            foreach (var globalParameter in globalParameters)
+            {
+                GlobalParameterPersistanceData paramData = new GlobalParameterPersistanceData();
+                paramData.Name = globalParameter.Item1;
+                paramData.Value = globalParameter.Item2.ToString();
+                paramData.ValueType = globalParameter.Item2.GetType().FullName;
+                globalParametersData.Add(paramData);
+            }
+            graphData.GlobalParameters = globalParametersData.ToArray();
+
             string json = JsonUtility.ToJson(graphData, true);
 
             File.WriteAllText(filePath, json);
@@ -200,8 +220,19 @@ namespace LazyProcedural
     [Serializable]
     public class GraphPersistanceData
     {
+        public string Description;
+
         public NodePersistanceData[] Nodes;
 
+        public GlobalParameterPersistanceData[] GlobalParameters;
+    }
+
+    [Serializable]
+    public class GlobalParameterPersistanceData
+    {
+        public string Name;
+        public string Value;
+        public string ValueType;
     }
 
     [Serializable]

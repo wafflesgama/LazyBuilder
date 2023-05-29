@@ -1,4 +1,5 @@
 using Sceelix.Core;
+using Sceelix.Core.Attributes;
 using Sceelix.Core.Data;
 using Sceelix.Core.Environments;
 using Sceelix.Core.IO;
@@ -19,6 +20,7 @@ namespace LazyProcedural
         private static ProcedureEnvironment environment;
         private static bool initialized = false;
 
+        private List<(GlobalAttributeKey, object)> convertedGlobalParams;
 
         private Dictionary<Node, int> executionOrderMatrix;
         public static void Init()
@@ -38,12 +40,12 @@ namespace LazyProcedural
             Init();
         }
 
-        public List<IEntity> ExecuteGraph(List<UnityGraph.Node> nodes)
+        public List<IEntity> ExecuteGraph(IEnumerable<UnityGraph.Node> nodes, IEnumerable<(string, object)> globalParameters = null)
         {
-            return ExecuteGraph(nodes.Select(x => (Node)x).ToList());
+            return ExecuteGraph(nodes.Select(x => (Node)x).ToList(), globalParameters);
         }
 
-        public List<IEntity> ExecuteGraph(List<Node> nodes)
+        public List<IEntity> ExecuteGraph(List<Node> nodes, IEnumerable<(string, object)> globalParameters)
         {
             List<IEntity> output = new List<IEntity>();
 
@@ -57,7 +59,14 @@ namespace LazyProcedural
             foreach (Node rootNode in rootNodes)
                 DFS_EvaluateExecutionOrder(rootNode, -1);
 
+            //Then order the nodes by the execution order
             List<List<Node>> nodesByExecutionOrder = ConvertMatrixToList();
+
+            //Then create the Global Params & append them
+            if (globalParameters != null)
+                convertedGlobalParams = globalParameters.Select(x => (new GlobalAttributeKey(x.Item1), x.Item2)).ToList();
+            else
+                convertedGlobalParams = new List<(GlobalAttributeKey, object)>();
 
             output = BFS_Execution(nodesByExecutionOrder);
 
@@ -108,11 +117,25 @@ namespace LazyProcedural
         private List<IEntity> BFS_Execution(List<List<Node>> nodesByExecutionOrder)
         {
             List<IEntity> result = new List<IEntity>();
+            bool rootNodePass = true;
+
+            Entity globalEntity = new Entity();
+            string globalImpulsePort = "Global Impulse";
+            foreach (var globalParam in convertedGlobalParams)
+                globalEntity.Attributes.Add(globalParam.Item1, globalParam.Item2);
+
 
             foreach (var nodesOfOrder in nodesByExecutionOrder)
             {
                 foreach (var outNode in nodesOfOrder)
                 {
+                    if (rootNodePass && convertedGlobalParams.Count > 0)
+                    {
+                        if (!outNode.nodeData.HasInputs)
+                            outNode.nodeData.SetupImpulsePorts(globalImpulsePort);
+
+                        outNode.nodeData.Inputs[globalImpulsePort].Enqueue(globalEntity);
+                    }
                     outNode.nodeData.Execute();
 
                     //If is terminal Node then append all the output to results
@@ -125,21 +148,7 @@ namespace LazyProcedural
                             var resultEntry = outPort.outputData.DequeueAll();
                             result.AddRange(resultEntry);
                         }
-                        //foreach (var output in outNode.nodeData.Outputs)
-                        //{
-                        //    if (output.Peek() == null) continue;
 
-                        //    var resultEntry = output.Dequeue();
-                        //    result.Add(resultEntry);
-                        //}
-
-                        //foreach (var output in outNode.nodeData.SubOutputs)
-                        //{
-                        //    if (output.Peek() == null) continue;
-
-                        //    var resultEntry = output.Dequeue();
-                        //    result.Add(resultEntry);
-                        //}
                         continue;
                     }
 
@@ -149,11 +158,11 @@ namespace LazyProcedural
                         {
 
                             Node inNode = (Node)edge.input.node;
-                            
+
                             Port castedInPort = (Port)edge.input;
                             Port castedOutPort = (Port)edge.output;
 
-                            Edge castedEdge= edge as Edge;
+                            Edge castedEdge = edge as Edge;
 
                             var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
 
@@ -161,10 +170,11 @@ namespace LazyProcedural
                             castedEdge.SetOutNumber(executionResult.Count());
 
                             //Append a clone of the current Node result to the input of the connected Node
-                            GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x=>x.DeepClone()));
+                            GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x => x.DeepClone()));
                         }
                     }
                 }
+                rootNodePass = false;
             }
             return result;
         }

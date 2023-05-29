@@ -574,7 +574,7 @@ public class ContextWindow : EditorWindow
 
             stringField.label = parameter.Label;
             stringField.value = parameterValue != null ? parameterValue.ToString() : "";
-          
+
 
             stringField.RegisterCallback<FocusOutEvent>(x =>
             {
@@ -586,7 +586,7 @@ public class ContextWindow : EditorWindow
                 _graphWindow.OnGraphValueUpdated();
             });
 
-                field = stringField;
+            field = stringField;
         }
         else
         {
@@ -594,7 +594,7 @@ public class ContextWindow : EditorWindow
 
             stringField.label = parameter.Label;
             stringField.value = parameterValue != null ? parameterValue.ToString() : "";
-           
+
             stringField.RegisterCallback<FocusOutEvent>(x =>
             {
                 parameter.Set(stringField.value);

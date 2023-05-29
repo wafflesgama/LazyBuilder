@@ -52,7 +52,7 @@ namespace LazyProcedural
 
         //Windows
         private ContextWindow _contextWindow;
-        private Blackboard _globalParametersBoard;
+        private GlobalParametersWindow _globalParametersBoard;
 
         //Messages
 
@@ -138,6 +138,8 @@ namespace LazyProcedural
             graph.AddNodes(loadedGraph.Item1);
             graph.AddEdges(loadedGraph.Item2);
 
+            _globalParametersBoard = new GlobalParametersWindow(this, graph, loadedGraph.Item3);
+
             graph.OnNodeSelected += OnNodeSelected;
             graph.OnNodesUnselected += OnNodesUnselected;
 
@@ -183,12 +185,21 @@ namespace LazyProcedural
             RunGraph();
         }
 
+        public void OnGraphGlobalParamUpdated()
+        {
+            RunGraph();
+        }
+
         private void SaveGraph()
         {
             if (graphPersistance.filePath == null)
                 graphPersistance.filePath = filePath;
 
-            graphPersistance.SaveGraph(graph.nodes.ToList().Select(x => (Node)x));
+            graphPersistance.SaveGraph
+            (
+                graph.nodes.ToList().Select(x => (Node)x),
+                _globalParametersBoard.Parameters.Select(x => ((x.Key, x.Value)))
+            );
         }
 
         private void OpenCloseContextWindow()
@@ -283,10 +294,10 @@ namespace LazyProcedural
         private void SetupExtraWindows()
         {
 
-            //_globalParametersBoard = new GlobalParametersWindow(this, graph);
-            //graph.Add(_globalParametersBoard);
 
-           
+            graph.Add(_globalParametersBoard);
+
+
             //MiniMap minimap = new MiniMap();
             //graph.Add(minimap);
 
@@ -380,8 +391,8 @@ namespace LazyProcedural
                 this.Close();
 
 
-
-            if (e.ctrlKey && e.keyCode == KeyCode.D)
+            //TODO: Real copy and paste
+            if (e.ctrlKey && (e.keyCode == KeyCode.D || e.keyCode == KeyCode.V))
             {
                 DuplicateSelection();
             }
@@ -525,7 +536,7 @@ namespace LazyProcedural
             if (graphComponent == null)
                 graphComponent = GraphComponentFinder.FindComponent();
 
-            var meshes = generationManager.ExecuteGraph(graph.nodes.ToList());
+            var meshes = generationManager.ExecuteGraph(graph.nodes.ToList(), _globalParametersBoard.Parameters.Select(x => (x.Key, x.Value)));
 
             processorManager.Populate(meshes, graphComponent);
         }
@@ -562,7 +573,7 @@ namespace LazyProcedural
         /// </summary>
         /// <param name="message">The displayed message</param>
         /// <param name="messageLevel">0-Info,1-Warning, 2-Error</param>
-        private async void LogMessage(string message, int messageLevel = 0)
+        public async void LogMessage(string message, int messageLevel = 0)
         {
             _debugMssg.style.opacity = 1;
             _debugMssg.text = message;
