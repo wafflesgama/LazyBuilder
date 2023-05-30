@@ -120,7 +120,7 @@ namespace LazyProcedural
             bool rootNodePass = true;
 
             Entity globalEntity = new Entity();
-            string globalImpulsePort = "Global Impulse";
+            string globalImpulsePort = Port.GLOBAL_PARAM_PORTNAME;
             foreach (var globalParam in convertedGlobalParams)
                 globalEntity.Attributes.Add(globalParam.Item1, globalParam.Item2);
 

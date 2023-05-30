@@ -15,8 +15,9 @@ namespace LazyProcedural
 {
     public class Port : UnityEditor.Experimental.GraphView.Port
     {
-        const Orientation DEF_ORIENTATION = Orientation.Horizontal;
+        public const string GLOBAL_PARAM_PORTNAME = "Global Parameters";
 
+        const Orientation DEF_ORIENTATION = Orientation.Horizontal;
         public string id;
 
         //If Port can be accessed through Inputs/Outputs or through Parameter's Inputs/Outputs

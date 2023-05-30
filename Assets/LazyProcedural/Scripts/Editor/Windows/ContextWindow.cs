@@ -182,6 +182,96 @@ public class ContextWindow : EditorWindow
         }
     }
 
+    //private VisualElement BuildField(ParameterReference parameterRef, List<int> acessingIndex, Node node)
+    //{
+    //    Procedure procedure = node.nodeData;
+    //    VisualElement field = new VisualElement();
+
+    //    Parameter parameter = parameterRef.Parameter;
+    //    Type parameterType = parameter.GetType();
+    //    object parameterValue = parameter.Get();
+
+    //    var parameterValueType = parameterValue?.GetType();
+    //    var currentAcessingIndex = acessingIndex.ToList();
+
+    //    if (parameterRef.ParameterInfo.MetaType == "Compound")
+    //    {
+    //        field = BuildCompoundField(parameter);
+    //    }
+    //    else if (parameterRef.IsExpression)
+    //    {
+    //        field = BuildExpressionField(parameter, parameterRef, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterType.ToString().Contains(typeof(ObjectListParameter<>).ToString()))
+    //    {
+    //        field = BuildObjectListField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterType.ToString().StartsWith(typeof(ObjectParameter).ToString()))
+    //    {
+    //        field = BuildObjectField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterType.ToString().Contains(typeof(ListParameter).ToString()))
+    //    {
+    //        field = BuildListField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterType.ToString().Contains(typeof(SingleOrCollectiveInputChoiceParameter<IEntity>).ToString()))
+    //    {
+    //        field = BuildChoiceField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterType == typeof(ChoiceParameter))
+    //    {
+    //        field = BuildChoiceField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterType.ToString().Contains(typeof(SelectListParameter).ToString()))
+    //    {
+    //        field = BuildSelectListField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(Color))
+    //    {
+    //        field = BuildColorField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(Vector4D))
+    //    {
+    //        field = BuildVector4Field(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(Vector3D))
+    //    {
+    //        field = BuildVector3Field(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(Vector2D))
+    //    {
+    //        field = BuildVector2Field(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType != null && parameterValueType.IsEnum)
+    //    {
+    //        field = BuildEnumField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(int))
+    //    {
+    //        field = BuildIntegerField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(float) || parameterValueType == typeof(System.Single))
+    //    {
+    //        field = BuildFloatField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterValueType == typeof(bool))
+    //    {
+    //        field = BuildToggleField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else if (parameterRef.ParameterInfo.MetaType == "Attribute")
+    //    {
+    //        field = BuildAttributeField(parameter, parameterValue, currentAcessingIndex, node);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError($"Unsupported parameter type: {parameterType}");
+    //    }
+
+    //    field.AddToClassList("parameter");
+
+    //    return field;
+    //}
+
     private VisualElement BuildField(ParameterReference parameterRef, List<int> acessingIndex, Node node)
     {
         Procedure procedure = node.nodeData;

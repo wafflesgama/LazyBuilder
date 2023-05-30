@@ -1,0 +1,35 @@
+{
+    "Description": "",
+    "Nodes": [
+        {
+            "Id": "483094a63747e93459bc12577bc04dc4",
+            "Name": "Mesh Create",
+            "Position": {
+                "x": 712.0,
+                "y": 149.0
+            },
+            "Type": "Sceelix.Meshes.Procedures.MeshCreateProcedure",
+            "ChangedParams": [],
+            "CreatedParams": [],
+            "InPorts": [],
+            "OutPorts": [
+                {
+                    "Id": "568cb4e0-e4b5-4168-b42b-583568109807",
+                    "Connections": []
+                }
+            ]
+        }
+    ],
+    "GlobalParameters": [
+        {
+            "Name": "Global Param (1)",
+            "Value": "3",
+            "ValueType": "System.Int32"
+        },
+        {
+            "Name": "Global Param (2)",
+            "Value": "RGBA(0.808, 1.000, 0.476, 1.000)",
+            "ValueType": "UnityEngine.Color"
+        }
+    ]
+}

@@ -230,6 +230,10 @@ namespace LazyProcedural
             {
                 //Do not add if it is duplicate
                 if (inPorts.Any(x => x.inputData == input.Item1.Input)) continue;
+
+                //Do not add if it is the global parameters port;
+                if (input.Item1.Input.Label == Port.GLOBAL_PARAM_PORTNAME) continue;
+
                 var port = new Port(input.Item1.Input, input.Item2, input.Item3);
                 inPorts.Add(port);
             }

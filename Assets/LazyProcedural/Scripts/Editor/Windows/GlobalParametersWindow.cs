@@ -183,7 +183,6 @@ namespace LazyProcedural
             if (this.Contains(container))
                 this.Remove(container);
 
-            _graphWindow.OnGraphGlobalParamUpdated();
         }
 
         private (VisualElement, object) CreateField(string paramName, string paramType, BlackboardField parentField, object value)
