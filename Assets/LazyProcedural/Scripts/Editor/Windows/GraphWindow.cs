@@ -130,9 +130,9 @@ namespace LazyProcedural
 
             cancellationTokenSource = new CancellationTokenSource();
 
-            generationManager = new GenerationManager(cancellationTokenSource.Token);
+            generationManager = new GenerationManager();
 
-            processorManager = new ProcessorManager(cancellationTokenSource.Token);
+            processorManager = new ProcessorManager();
 
             graphPersistance = new GraphPersistance();
 
@@ -407,6 +407,10 @@ namespace LazyProcedural
                 //RunGraph();
                 RunGraphAsync();
             }
+            else if (e.keyCode == KeyCode.Backspace)
+            {
+                cancellationTokenSource.Cancel();
+            }
         }
 
         //private void OnMouseKeyDown(MouseDownEvent e)
@@ -526,23 +530,36 @@ namespace LazyProcedural
             if (graphComponent == null)
                 graphComponent = GraphComponentFinder.FindComponent();
 
-            var generationTask = generationManager.ExecuteGraphAsync(graph.nodes.ToList());
+            //If previous generation is happening, cancel it
+            if (cancellationTokenSource != null)
+            {
+                Debug.Log("Try cancel");
+                cancellationTokenSource.Cancel();
+            }
+
+            cancellationTokenSource = new CancellationTokenSource();
+
 
             try
             {
+                var generationTask = generationManager.ExecuteGraphAsync(graph.nodes.ToList(), cancellationTokenSource.Token);
+              
                 var meshes = await generationTask;
 
                 // Check if cancellation was requested before proceeding to the processor
-                if (!cancellationTokenSource.IsCancellationRequested)
-                {
-                    await processorManager.PopulateAsync(meshes, graphComponent);
-                }
+                cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                await processorManager.PopulateAsync(meshes, graphComponent, cancellationTokenSource.Token);
+
+                cancellationTokenSource = null;
             }
             catch (OperationCanceledException)
             {
                 // Handle cancellation if needed
+
                 Debug.Log("Graph execution was canceled.");
             }
+
         }
 
 

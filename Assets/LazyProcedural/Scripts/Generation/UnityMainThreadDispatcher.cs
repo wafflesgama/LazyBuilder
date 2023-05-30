@@ -1,23 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[ExecuteAlways]
 public class UnityMainThreadDispatcher : MonoBehaviour
 {
     private static UnityMainThreadDispatcher instance;
-    private static readonly Queue<Func<Task>> queue = new Queue<Func<Task>>();
-    private static bool isProcessingQueue;
+    private static readonly Queue<Action> queue = new Queue<Action>();
+    private static float maxMsPerCycle = 5000;
 
+    private readonly Stopwatch watch = new Stopwatch();
     public static UnityMainThreadDispatcher Instance
     {
         get
         {
             if (instance == null)
             {
-                var gameObject = new GameObject("UnityMainThreadDispatcher");
-                instance = gameObject.AddComponent<UnityMainThreadDispatcher>();
-                DontDestroyOnLoad(gameObject);
+                var gameObj = GameObject.Find("UnityMainThreadDispatcher");
+                if (gameObj == null)
+                    gameObj = new GameObject("UnityMainThreadDispatcher");
+
+                instance = gameObj.AddComponent<UnityMainThreadDispatcher>();
             }
             return instance;
         }
@@ -25,29 +30,34 @@ public class UnityMainThreadDispatcher : MonoBehaviour
 
     private void Update()
     {
+        if (queue.Count == 0) return;
+
         lock (queue)
         {
-            if (queue.Count > 0)
+            watch.Reset();
+            watch.Start();
+            while (watch.ElapsedMilliseconds < maxMsPerCycle)
             {
-                isProcessingQueue = true;
+                if (queue.Count == 0) return;
+
                 var task = queue.Dequeue();
-                task.Invoke().ContinueWith(_ => { isProcessingQueue = false; });
+
+                task.Invoke();
+                UnityEngine.Debug.Log("Running Queue");
             }
-            else
-            {
-                isProcessingQueue = false;
-            }
+            watch.Stop();
         }
     }
 
-    public Task RunOnMainThreadAsync(Func<Task> action)
+    public Task RunOnMainThreadAsync(Action action)
     {
         var taskCompletionSource = new TaskCompletionSource<bool>();
+        UnityEngine.Debug.Log("Added To Queue");
         lock (queue)
         {
-            queue.Enqueue(async () =>
+            queue.Enqueue(() =>
             {
-                await action.Invoke();
+                action.Invoke();
                 taskCompletionSource.SetResult(true);
             });
         }

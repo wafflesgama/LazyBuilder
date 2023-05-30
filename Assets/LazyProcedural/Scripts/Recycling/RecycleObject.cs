@@ -9,6 +9,7 @@ public class RecycleObject
 {
     public int id;
     public GameObject gameObject { get; set; }
+    
     public IEntity entity { get; set; }
     public List<Type> components { get; set; }
 

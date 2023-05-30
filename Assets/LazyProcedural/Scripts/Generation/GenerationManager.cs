@@ -36,9 +36,8 @@ namespace LazyProcedural
             initialized = true;
         }
 
-        public GenerationManager(CancellationToken cancellationToken)
+        public GenerationManager()
         {
-            this.cancellationToken = cancellationToken;
             Init();
         }
 
@@ -46,14 +45,16 @@ namespace LazyProcedural
         {
             return ExecuteGraph(nodes.Select(x => (Node)x).ToList());
         }
-        public async Task<List<IEntity>> ExecuteGraphAsync(List<UnityGraph.Node> nodes)
+        public async Task<List<IEntity>> ExecuteGraphAsync(List<UnityGraph.Node> nodes, CancellationToken cancellationToken)
         {
+            this.cancellationToken = cancellationToken;
+
             return await Task.Run(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 return ExecuteGraph(nodes.Select(x => (Node)x).ToList());
-            }, cancellationToken);
+            });
         }
 
         public List<IEntity> ExecuteGraph(List<Node> nodes)
@@ -105,8 +106,7 @@ namespace LazyProcedural
 
         private void DFS_EvaluateExecutionOrder(Node currentNode, int order)
         {
-            if (cancellationToken.IsCancellationRequested)
-                cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
             order++;
 
@@ -129,8 +129,7 @@ namespace LazyProcedural
             {
                 foreach (var outNode in nodesOfOrder)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                        cancellationToken.ThrowIfCancellationRequested();
+                    cancellationToken.ThrowIfCancellationRequested();
 
                     outNode.nodeData.Execute();
 
