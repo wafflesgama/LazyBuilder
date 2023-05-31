@@ -1,4 +1,5 @@
 using Sceelix.Core.Data;
+using Sceelix.GameObjects;
 using Sceelix.Loading;
 using System;
 using System.Collections;
@@ -29,12 +30,9 @@ namespace Sceelix.Processors
 
         public void Populate(IEnumerable<IEntity> entities, GeoGraphComponent component)
         {
-            var requiredObjects = Require(entities);
+            List<RecycleObject> requiredObjects = Require(entities);
 
             var objecReuseInfos = component.GetObjectReuseInfo_Greedy(requiredObjects).ToList();
-
-            //var missingObjects = objecReuseInfo.Where(x => x.ExistingObject == null);
-
 
             List<RecycleObject> recycleObjectsAdded = new List<RecycleObject>();
 
@@ -104,7 +102,14 @@ namespace Sceelix.Processors
                 IProcessor processor = (IProcessor)Activator.CreateInstance(processors[entityType]);
                 var typesRequired = processor.Require(entity);
 
-                RecycleObject recycleObject = new RecycleObject { components = typesRequired.ToList(), entity = entity };
+                GameObject sourceGameObject = null;
+                if (entity.GetType() == typeof(GameObjectEntity))
+                {
+                    var gameobjectEntity = (GameObjectEntity)entity;
+                    sourceGameObject = gameobjectEntity.gameObject;
+                }
+
+                RecycleObject recycleObject = new RecycleObject { components = typesRequired.ToList(), entity = entity, sourceGameObject = sourceGameObject };
                 result.Add(recycleObject);
             }
 

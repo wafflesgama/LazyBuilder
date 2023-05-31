@@ -45,53 +45,70 @@ public class GeoGraphComponent : MonoBehaviour
         {
             ObjectReuseInfo objectReuseInfo = new ObjectReuseInfo();
 
-            // First try to find an exact match in the existing objects
-            RecycleObject matchingExistingObject = existingObjectsCopy.FirstOrDefault(o => o.HasComponents(requiredObject.components));
-            if (matchingExistingObject != null)
+            //If this recycle object is intantiating from another 
+            if (requiredObject.sourceGameObject != null)
             {
-                objectReuseInfo.recycledObject = matchingExistingObject;
-                objectReuseInfo.recycledObject.entity = requiredObject.entity;
+                RecycleObject sameSourceObject = existingObjectsCopy.FirstOrDefault(o => o.sourceGameObject == requiredObject.sourceGameObject);
 
-                existingObjectsCopy.Remove(matchingExistingObject);
+                if (sameSourceObject != null)
+                {
+                    objectReuseInfo.recycledObject = sameSourceObject;
+                    objectReuseInfo.recycledObject.entity = requiredObject.entity;
+                }
             }
             else
             {
-                if (existingObjectsCopy.Count > 0)
+                // First try to find an exact match in the existing objects
+                RecycleObject matchingExistingObject = existingObjectsCopy.FirstOrDefault(o => o.HasComponents(requiredObject.components));
+                if (matchingExistingObject != null)
                 {
-                    // If no exact match is found, try to find an existing object that has the most components in common
-                    int maxCommonComponents = -1;
-                    foreach (RecycleObject existingObject in existingObjectsCopy)
-                    {
-                        int commonComponentsCount = existingObject.components.Intersect(requiredObject.components).Count();
-                        if (commonComponentsCount > maxCommonComponents)
-                        {
-                            maxCommonComponents = commonComponentsCount;
-                            objectReuseInfo.recycledObject = existingObject;
-                            objectReuseInfo.recycledObject.entity = requiredObject.entity;
-                        }
-                    }
-
-
-                    // Remove the existing object from the list of available existing objects
-                    existingObjectsCopy.Remove(objectReuseInfo.recycledObject);
-
-                    // Determine which components need to be added and removed to reuse the existing object
-                    objectReuseInfo.ComponentsToRemove = objectReuseInfo.recycledObject.components.Except(requiredObject.components);
-                    objectReuseInfo.ComponentsToAdd = requiredObject.components.Except(objectReuseInfo.recycledObject.components);
+                    objectReuseInfo.recycledObject = matchingExistingObject;
+                    objectReuseInfo.recycledObject.entity = requiredObject.entity;
                 }
                 else
                 {
-                    //If there are no more object to recycle create one entry with all the necessary components
-                    objectReuseInfo.recycledObject = new RecycleObject { gameObject = null, entity = requiredObject.entity };
-                    objectReuseInfo.ComponentsToAdd = requiredObject.components;
+                    if (existingObjectsCopy.Count > 0)
+                    {
+                        // If no exact match is found, try to find an existing object that has the most components in common
+                        int maxCommonComponents = -1;
+                        foreach (RecycleObject existingObject in existingObjectsCopy)
+                        {
+                            int commonComponentsCount = existingObject.components.Intersect(requiredObject.components).Count();
+                            if (commonComponentsCount > maxCommonComponents)
+                            {
+                                maxCommonComponents = commonComponentsCount;
+                                objectReuseInfo.recycledObject = existingObject;
+                                objectReuseInfo.recycledObject.entity = requiredObject.entity;
+                            }
+                        }
+
+                        // Determine which components need to be added and removed to reuse the existing object
+                        objectReuseInfo.ComponentsToRemove = objectReuseInfo.recycledObject.components.Except(requiredObject.components);
+                        objectReuseInfo.ComponentsToAdd = requiredObject.components.Except(objectReuseInfo.recycledObject.components);
+                    }
+
                 }
             }
 
+            //If there are no more object to recycle create one entry with all the necessary components
+            if (objectReuseInfo.recycledObject == null)
+            {
+                objectReuseInfo.recycledObject = new RecycleObject { gameObject = null, entity = requiredObject.entity };
+                objectReuseInfo.ComponentsToAdd = requiredObject.components;
+            }
+
+            // Remove the existing object from the list of available existing objects (If it was recycled)
+            if (objectReuseInfo.recycledObject.gameObject != null)
+                existingObjectsCopy.Remove(objectReuseInfo.recycledObject);
+
+            //Finally adds to the list
             objectsToReuseInfo.Add(objectReuseInfo);
         }
 
         return objectsToReuseInfo;
     }
+
+
 
     public List<RecycleObject> GetRecycleObjectsSurplus(List<ObjectReuseInfo> objectsReused)
     {

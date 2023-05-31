@@ -8,6 +8,7 @@ using UnityEngine;
 public class RecycleObject
 {
     public GameObject gameObject { get; set; }
+    public GameObject sourceGameObject { get; set; }    
     public IEntity entity { get; set; }
     public List<Type> components { get; set; }
 

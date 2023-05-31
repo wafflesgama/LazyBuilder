@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Sceelix.Surfaces.Procedures
 {
     /// <summary>
-    /// Assign a Material to a Surface
+    /// Assign a Material to a s
     /// </summary>
     [Procedure("e7a1fccf-9331-4d76-8911-ce398b26299a", Label = "Surface Material", Category = "Surface")]
     public class SurfaceMaterialProcedure : TransferProcedure<SurfaceEntity>
