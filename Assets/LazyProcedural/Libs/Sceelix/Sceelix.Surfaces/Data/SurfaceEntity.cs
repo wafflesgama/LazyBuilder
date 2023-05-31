@@ -8,7 +8,7 @@ using Sceelix.Core.Data;
 using Sceelix.Mathematics.Data;
 using Sceelix.Mathematics.Helpers;
 using Sceelix.Mathematics.Spatial;
-using Sceelix.Surfaces.Materials;
+using UnityEngine;
 
 namespace Sceelix.Surfaces.Data
 {
@@ -29,7 +29,7 @@ namespace Sceelix.Surfaces.Data
         /// <summary>
         /// Material that defines show to render this 
         /// </summary>
-        private Material _material = new DefaultSurfaceMaterial();
+        private Material _material;
 
         private Vector2D _origin;
 
@@ -250,7 +250,7 @@ namespace Sceelix.Surfaces.Data
 
             clone._cellSize = _cellSize;
             clone._origin = _origin;
-            clone._material = (Material) _material.DeepClone();
+            clone._material = (Material) _material;
 
             return clone;
         }

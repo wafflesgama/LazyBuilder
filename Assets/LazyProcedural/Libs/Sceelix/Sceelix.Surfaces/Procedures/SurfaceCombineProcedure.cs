@@ -118,7 +118,7 @@ namespace Sceelix.Surfaces.Procedures
             {
                 var firstSurface = groupingSurfaces.First();
 
-                superSurfaceEntity = new SurfaceEntity(firstSurface.NumColumns, firstSurface.NumRows, firstSurface.CellSize) {Origin = firstSurface.Origin, Material = (Material) groupingSurfaces.First().Material.DeepClone()};
+                superSurfaceEntity = new SurfaceEntity(firstSurface.NumColumns, firstSurface.NumRows, firstSurface.CellSize) {Origin = firstSurface.Origin, Material =  groupingSurfaces.First().Material};
 
                 numColumns = firstSurface.NumColumns;
                 numRows = firstSurface.NumRows;
@@ -136,7 +136,7 @@ namespace Sceelix.Surfaces.Procedures
 
 
                     //create the new surface that will enclose the information of all the previous ones
-                    superSurfaceEntity = new SurfaceEntity(numColumns, numRows, cellSize) {Origin = intersection.Min.ToVector2D(), Material = (Material) groupingSurfaces.First().Material.DeepClone()};
+                    superSurfaceEntity = new SurfaceEntity(numColumns, numRows, cellSize) {Origin = intersection.Min.ToVector2D(), Material =  groupingSurfaces.First().Material};
                 }
                 else
                 {
@@ -156,7 +156,7 @@ namespace Sceelix.Surfaces.Procedures
                 numRows = (int) (totalBoundingBox.Length / cellSize) + 1;
 
                 //create the new surface that will enclose the information of all the previous ones
-                superSurfaceEntity = new SurfaceEntity(numColumns, numRows, cellSize) {Origin = totalBoundingBox.Min.ToVector2D(), Material = (Material) groupingSurfaces.First().Material.DeepClone()};
+                superSurfaceEntity = new SurfaceEntity(numColumns, numRows, cellSize) {Origin = totalBoundingBox.Min.ToVector2D(), Material =  groupingSurfaces.First().Material};
             }
 
 

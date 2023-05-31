@@ -39,13 +39,13 @@ namespace Sceelix.Surfaces.Parameters
                 surfaceEntity = new SurfaceEntity(layer.NumColumns, layer.NumRows, parent.CellSize)
                 {
                     Origin = parent.Origin,
-                    Material = (Material) parent.Material.DeepClone()
+                    Material =  parent.Material
                 };
             else
                 surfaceEntity = new SurfaceEntity(parent.NumColumns, parent.NumRows, parent.CellSize)
                 {
                     Origin = parent.Origin,
-                    Material = (Material) parent.Material.DeepClone()
+                    Material = parent.Material
                 };
 
             surfaceEntity.AddLayer(layer);

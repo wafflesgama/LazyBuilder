@@ -66,7 +66,7 @@ namespace Sceelix.Surfaces.Procedures
                 SurfaceEntity superSurfaceEntity = new SurfaceEntity(selectedSurface.NumColumns, selectedSurface.NumRows, selectedSurface.CellSize)
                 {
                     Origin = selectedSurface.Origin,
-                    Material = (Material) selectedSurface.Material.DeepClone()
+                    Material =  selectedSurface.Material
                 };
 
                 //reverse the list of surfaces, since value prevalence is from the last to the first

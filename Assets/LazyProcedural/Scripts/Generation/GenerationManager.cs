@@ -162,9 +162,9 @@ namespace LazyProcedural
                             Port castedInPort = (Port)edge.input;
                             Port castedOutPort = (Port)edge.output;
 
-                            Edge castedEdge = edge as Edge;
-
                             var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
+
+                            Edge castedEdge = (Edge) edge;
 
                             castedEdge.SetInNumber(executionResult.Count());
                             castedEdge.SetOutNumber(executionResult.Count());

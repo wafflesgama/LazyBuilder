@@ -14,7 +14,7 @@ namespace Sceelix.Meshes.Procedures
     /// <summary>
     /// Applies rendering materials to meshes.
     /// </summary>
-    [Procedure("ab33c263-352e-4917-a7ec-0686aebc079c", Label = "Mesh Native Material", Category = "Mesh")]
+    [Procedure("ab33c263-352e-4917-a7ec-0686aebc079c", Label = "Mesh Material", Category = "Mesh")]
     public class MeshNativeMaterial : TransferProcedure<MeshEntity>
     {
 

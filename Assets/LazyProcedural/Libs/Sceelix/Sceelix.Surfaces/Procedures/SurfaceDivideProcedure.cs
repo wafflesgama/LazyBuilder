@@ -60,7 +60,7 @@ namespace Sceelix.Surfaces.Procedures
                     var newSurfaceEntity = new SurfaceEntity(originalSurfaceEntity.NumColumns, originalSurfaceEntity.NumRows, originalSurfaceEntity.CellSize)
                     {
                         Origin = originalSurfaceEntity.Origin,
-                        Material = (Material) originalSurfaceEntity.Material.DeepClone()
+                        Material = originalSurfaceEntity.Material
                     };
 
                     foreach (var splitParameterLayer in layerGroup)

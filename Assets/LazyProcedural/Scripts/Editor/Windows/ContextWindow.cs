@@ -593,10 +593,10 @@ public class ContextWindow : EditorWindow
             });
             field = integerField;
         }
-        else if (parameterValueType == typeof(float) || parameterValueType == typeof(System.Single))
+        else if (parameterValueType == typeof(float) || parameterValueType == typeof(System.Single) || parameterValueType == typeof(double))
         {
             FloatField floatField = new FloatField(parameter.Label + " (f)");
-            floatField.value = (float)parameterValue;
+            floatField.value = Convert.ToSingle(parameterValue);
             floatField.RegisterValueChangedCallback(value =>
             {
                 parameter.Set(value.newValue);

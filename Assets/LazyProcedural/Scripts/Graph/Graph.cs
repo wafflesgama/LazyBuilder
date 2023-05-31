@@ -159,9 +159,10 @@ namespace LazyProcedural
         {
             foreach (var edge in edges)
             {
-                //AddElement(edge);
-                var unityEdge = edge.input.ConnectTo(edge.output);
-                AddElement(unityEdge);
+                //The node to be valid and visually functional it is required to be created via this function
+                var trueEdge = edge.input.ConnectTo<Edge>(edge.output);
+         
+                AddElement(trueEdge);
             }
         }
         public void AddEdge(Port outPort, Port inPort)

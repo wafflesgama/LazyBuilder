@@ -35,4 +35,12 @@ public class MaterialProcessor
         else
             return new Material(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.defaultUIOverdrawMaterial);
     }
+
+    public static Material CreateDefaultTerrainMaterial()
+    {
+        if (UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset == null)
+            return new Material(Shader.Find("Nature/Terrain/Standard"));
+        else
+            return new Material(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.defaultTerrainMaterial);
+    }
 }

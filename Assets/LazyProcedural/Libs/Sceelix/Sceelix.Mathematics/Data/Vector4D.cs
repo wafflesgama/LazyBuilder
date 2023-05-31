@@ -365,7 +365,7 @@ namespace Sceelix.Mathematics.Data
         public static Vector4D Parse(string s)
         {
             var stringValue = s;
-            stringValue = stringValue.Replace("(", "");
+            stringValue = stringValue.Replace("v(", "");
             stringValue = stringValue.Replace(")", "");
 
             var splittedValues = stringValue.Split(',');

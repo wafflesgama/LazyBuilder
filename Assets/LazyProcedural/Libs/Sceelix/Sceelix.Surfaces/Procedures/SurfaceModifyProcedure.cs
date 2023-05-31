@@ -450,7 +450,7 @@ namespace Sceelix.Surfaces.Procedures
                 var newSurface = new SurfaceEntity(columns, rows, newCellSize)
                 {
                     Origin = surfaceEntity.Origin,
-                    Material = (Material) surfaceEntity.Material.DeepClone()
+                    Material = surfaceEntity.Material
                 };
 
                 surfaceEntity.Attributes.SetAttributesTo(newSurface.Attributes);
