@@ -34,7 +34,7 @@ public class RecycleObject
         return this.gameObject.GetInstanceID() == other.gameObject.GetInstanceID();
     }
 
-    public bool HasComponents(IEnumerable<Type> componentsRequired)
+    public bool HasExactComponents(IEnumerable<Type> componentsRequired)
     {
         return components.Intersect(componentsRequired).Count() == componentsRequired.Count();
     }

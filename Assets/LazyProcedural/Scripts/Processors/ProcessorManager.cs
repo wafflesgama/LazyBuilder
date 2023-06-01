@@ -39,10 +39,13 @@ namespace Sceelix.Processors
             foreach (var objecReuseInfo in objecReuseInfos)
             {
 
+                //If Recycled Object's GObj is null- it is marked as to create one
                 if (objecReuseInfo.recycledObject.gameObject == null)
                 {
                     GameObject gameObjectToAdd = new GameObject("Empty");
                     objecReuseInfo.recycledObject.gameObject = gameObjectToAdd;
+
+                    //and mark the necessary components to add
                     recycleObjectsAdded.Add(objecReuseInfo.recycledObject);
                 }
 
@@ -51,11 +54,8 @@ namespace Sceelix.Processors
                 {
                     if (componentToRemove == typeof(Transform)) continue;
 
-#if UNITY_EDITOR
-                    GameObject.DestroyImmediate(((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove))));
-#else
-                    component.DestroyComponent((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove)));
-#endif
+                    DestroyComponent(((objecReuseInfo.recycledObject.gameObject.GetComponent(componentToRemove))));
+
                     objecReuseInfo.recycledObject.components.Remove(componentToRemove);
                 }
 
@@ -66,6 +66,15 @@ namespace Sceelix.Processors
                     objecReuseInfo.recycledObject.gameObject.AddComponent(componentToAdd);
                     objecReuseInfo.recycledObject.components.Add(componentToAdd);
 
+                }
+
+                //If no source instancing object is available check for unwanted children
+                if (objecReuseInfo.recycledObject.sourceGameObject == null && objecReuseInfo.recycledObject.gameObject.transform.childCount > 0)
+                {
+                    foreach (Transform child in objecReuseInfo.recycledObject.gameObject.transform)
+                    {
+                        DestroyComponent(child.gameObject);
+                    }
                 }
             }
 
@@ -133,6 +142,15 @@ namespace Sceelix.Processors
                 processor.Process(recycledObject);
             }
 
+        }
+
+        private void DestroyComponent(UnityEngine.Object obj)
+        {
+#if UNITY_EDITOR
+            GameObject.DestroyImmediate(obj);
+#else
+            GameObject.Destroy(obj);
+#endif
         }
 
     }

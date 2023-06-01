@@ -59,7 +59,7 @@ public class GeoGraphComponent : MonoBehaviour
             else
             {
                 // First try to find an exact match in the existing objects
-                RecycleObject matchingExistingObject = existingObjectsCopy.FirstOrDefault(o => o.HasComponents(requiredObject.components));
+                RecycleObject matchingExistingObject = existingObjectsCopy.FirstOrDefault(o => o.HasExactComponents(requiredObject.components));
                 if (matchingExistingObject != null)
                 {
                     objectReuseInfo.recycledObject = matchingExistingObject;
@@ -82,19 +82,24 @@ public class GeoGraphComponent : MonoBehaviour
                             }
                         }
 
-                        // Determine which components need to be added and removed to reuse the existing object
-                        objectReuseInfo.ComponentsToRemove = objectReuseInfo.recycledObject.components.Except(requiredObject.components);
-                        objectReuseInfo.ComponentsToAdd = requiredObject.components.Except(objectReuseInfo.recycledObject.components);
                     }
 
                 }
+                objectReuseInfo.recycledObject.sourceGameObject = null;
             }
+
 
             //If there are no more object to recycle create one entry with all the necessary components
             if (objectReuseInfo.recycledObject == null)
             {
                 objectReuseInfo.recycledObject = new RecycleObject { gameObject = null, entity = requiredObject.entity };
                 objectReuseInfo.ComponentsToAdd = requiredObject.components;
+            }
+            else
+            {
+                // Determine which components need to be added and removed to reuse the existing object
+                objectReuseInfo.ComponentsToRemove = objectReuseInfo.recycledObject.components.Except(requiredObject.components);
+                objectReuseInfo.ComponentsToAdd = requiredObject.components.Except(objectReuseInfo.recycledObject.components);
             }
 
             // Remove the existing object from the list of available existing objects (If it was recycled)
