@@ -416,7 +416,6 @@ namespace Sceelix.Mathematics.Data
 
         public override string ToString()
         {
-            //return string.Format("X: {0}, Y: {1}, Z: {2}", _x.ToString(CultureInfo.InvariantCulture), _y.ToString(CultureInfo.InvariantCulture), _z.ToString(CultureInfo.InvariantCulture));
             return string.Format("v({0},{1},{2})", X.ToString(CultureInfo.InvariantCulture), Y.ToString(CultureInfo.InvariantCulture), Z.ToString(CultureInfo.InvariantCulture));
         }
 

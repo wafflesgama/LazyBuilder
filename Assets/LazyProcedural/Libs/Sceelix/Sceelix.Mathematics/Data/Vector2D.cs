@@ -179,7 +179,7 @@ namespace Sceelix.Mathematics.Data
 
         public override string ToString()
         {
-            return string.Format("X: {0}, Y: {1}", X.ToString(CultureInfo.InvariantCulture), Y.ToString(CultureInfo.InvariantCulture));
+            return string.Format("v({0},{1})", X.ToString(CultureInfo.InvariantCulture), Y.ToString(CultureInfo.InvariantCulture));
         }
 
 
