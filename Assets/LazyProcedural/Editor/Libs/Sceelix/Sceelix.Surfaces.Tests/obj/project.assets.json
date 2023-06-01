@@ -1,0 +1,306 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.6.1": {
+      "Sceelix/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/Sceelix.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.dll": {}
+        }
+      },
+      "Sceelix.Actors/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Mathematics": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Actors.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Actors.dll": {}
+        }
+      },
+      "Sceelix.Core/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Core.dll": {}
+        }
+      },
+      "Sceelix.Designer/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Designer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Designer.dll": {}
+        }
+      },
+      "Sceelix.Designer.Actors/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Actors": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Designer": "1.0.0",
+          "Sceelix.Designer.Graphs": "1.0.0",
+          "Sceelix.Designer.ProjectExplorer": "1.0.0",
+          "Sceelix.Designer.Renderer3D": "1.0.0",
+          "Sceelix.Mathematics": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Designer.Actors.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Designer.Actors.dll": {}
+        }
+      },
+      "Sceelix.Designer.Graphs/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Designer": "1.0.0",
+          "Sceelix.Designer.ProjectExplorer": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Designer.Graphs.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Designer.Graphs.dll": {}
+        }
+      },
+      "Sceelix.Designer.ProjectExplorer/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Designer": "1.0.0",
+          "Sceelix.Mathematics": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Designer.ProjectExplorer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Designer.ProjectExplorer.dll": {}
+        }
+      },
+      "Sceelix.Designer.Renderer3D/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Designer": "1.0.0",
+          "Sceelix.Designer.Graphs": "1.0.0",
+          "Sceelix.Designer.ProjectExplorer": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Designer.Renderer3D.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Designer.Renderer3D.dll": {}
+        }
+      },
+      "Sceelix.Designer.Surfaces/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Actors": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Designer": "1.0.0",
+          "Sceelix.Designer.Actors": "1.0.0",
+          "Sceelix.Designer.ProjectExplorer": "1.0.0",
+          "Sceelix.Designer.Renderer3D": "1.0.0",
+          "Sceelix.Mathematics": "1.0.0",
+          "Sceelix.Meshes": "1.0.0",
+          "Sceelix.Surfaces": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Designer.Surfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Designer.Surfaces.dll": {}
+        }
+      },
+      "Sceelix.Mathematics/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Mathematics.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Mathematics.dll": {}
+        }
+      },
+      "Sceelix.Meshes/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Actors": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Mathematics": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Meshes.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Meshes.dll": {}
+        }
+      },
+      "Sceelix.Surfaces/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Sceelix": "1.0.0",
+          "Sceelix.Actors": "1.0.0",
+          "Sceelix.Core": "1.0.0",
+          "Sceelix.Mathematics": "1.0.0",
+          "Sceelix.Meshes": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Sceelix.Surfaces.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Sceelix.Surfaces.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Sceelix/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix/Sceelix.csproj",
+      "msbuildProject": "../Sceelix/Sceelix.csproj"
+    },
+    "Sceelix.Actors/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Actors/Sceelix.Actors.csproj",
+      "msbuildProject": "../Sceelix.Actors/Sceelix.Actors.csproj"
+    },
+    "Sceelix.Core/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Core/Sceelix.Core.csproj",
+      "msbuildProject": "../Sceelix.Core/Sceelix.Core.csproj"
+    },
+    "Sceelix.Designer/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Designer/Sceelix.Designer.csproj",
+      "msbuildProject": "../Sceelix.Designer/Sceelix.Designer.csproj"
+    },
+    "Sceelix.Designer.Actors/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Designer.Actors/Sceelix.Designer.Actors.csproj",
+      "msbuildProject": "../Sceelix.Designer.Actors/Sceelix.Designer.Actors.csproj"
+    },
+    "Sceelix.Designer.Graphs/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Designer.Graphs/Sceelix.Designer.Graphs.csproj",
+      "msbuildProject": "../Sceelix.Designer.Graphs/Sceelix.Designer.Graphs.csproj"
+    },
+    "Sceelix.Designer.ProjectExplorer/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Designer.ProjectExplorer/Sceelix.Designer.ProjectExplorer.csproj",
+      "msbuildProject": "../Sceelix.Designer.ProjectExplorer/Sceelix.Designer.ProjectExplorer.csproj"
+    },
+    "Sceelix.Designer.Renderer3D/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Designer.Renderer3D/Sceelix.Designer.Renderer3D.csproj",
+      "msbuildProject": "../Sceelix.Designer.Renderer3D/Sceelix.Designer.Renderer3D.csproj"
+    },
+    "Sceelix.Designer.Surfaces/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Designer.Surfaces/Sceelix.Designer.Surfaces.csproj",
+      "msbuildProject": "../Sceelix.Designer.Surfaces/Sceelix.Designer.Surfaces.csproj"
+    },
+    "Sceelix.Mathematics/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Mathematics/Sceelix.Mathematics.csproj",
+      "msbuildProject": "../Sceelix.Mathematics/Sceelix.Mathematics.csproj"
+    },
+    "Sceelix.Meshes/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Meshes/Sceelix.Meshes.csproj",
+      "msbuildProject": "../Sceelix.Meshes/Sceelix.Meshes.csproj"
+    },
+    "Sceelix.Surfaces/1.0.0": {
+      "type": "project",
+      "path": "../Sceelix.Surfaces/Sceelix.Surfaces.csproj",
+      "msbuildProject": "../Sceelix.Surfaces/Sceelix.Surfaces.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6.1": [
+      "Sceelix >= 1.0.0",
+      "Sceelix.Core >= 1.0.0",
+      "Sceelix.Designer.Surfaces >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\super\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Projects\\Sceelix\\Source\\Sceelix.Surfaces.Tests\\Sceelix.Surfaces.Tests.csproj",
+      "projectName": "Sceelix.Surfaces.Tests",
+      "projectPath": "C:\\Projects\\Sceelix\\Source\\Sceelix.Surfaces.Tests\\Sceelix.Surfaces.Tests.csproj",
+      "packagesPath": "C:\\Users\\super\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\Sceelix\\Source\\Sceelix.Surfaces.Tests\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Projects\\Sceelix\\Source\\NuGet.Config",
+        "C:\\Users\\super\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net461"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net461": {
+          "targetAlias": "net461",
+          "projectReferences": {
+            "C:\\Projects\\Sceelix\\Source\\Sceelix.Core\\Sceelix.Core.csproj": {
+              "projectPath": "C:\\Projects\\Sceelix\\Source\\Sceelix.Core\\Sceelix.Core.csproj"
+            },
+            "C:\\Projects\\Sceelix\\Source\\Sceelix.Designer.Surfaces\\Sceelix.Designer.Surfaces.csproj": {
+              "projectPath": "C:\\Projects\\Sceelix\\Source\\Sceelix.Designer.Surfaces\\Sceelix.Designer.Surfaces.csproj"
+            },
+            "C:\\Projects\\Sceelix\\Source\\Sceelix\\Sceelix.csproj": {
+              "projectPath": "C:\\Projects\\Sceelix\\Source\\Sceelix\\Sceelix.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net461": {
+        "targetAlias": "net461",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
