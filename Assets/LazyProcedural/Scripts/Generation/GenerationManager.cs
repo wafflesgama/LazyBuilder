@@ -103,6 +103,8 @@ namespace LazyProcedural
         {
             order++;
 
+            if (currentNode == null) return;
+
             if (!executionOrderMatrix.ContainsKey(currentNode))
                 executionOrderMatrix.Add(currentNode, order);
             else
