@@ -24,6 +24,7 @@ namespace Sceelix.Processors
                 if (recycleObject.sourceGameObject == goEntity.gameObject)
                     instance = recycleObject.gameObject;
             }
+               
 
             //In case of no source GameObject OR mismatched source GameObject
             if (instance == null)
@@ -50,6 +51,9 @@ namespace Sceelix.Processors
 
 
             instance.transform.position = goEntity.BoxScope.Translation.FlipYZ().ToVector3();
+
+            //Append the soruce to the new GameObject
+            recycleObject.sourceGameObject = goEntity.gameObject;
         }
 
         public IEnumerable<Type> Require(IEntity input)
