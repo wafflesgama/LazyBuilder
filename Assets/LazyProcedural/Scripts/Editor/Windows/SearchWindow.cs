@@ -239,8 +239,8 @@ namespace LazyProcedural
             }
 
 
-
-            HiglightProcedure(0);
+            if (filteredProcedures.Any())
+                HiglightProcedure(0);
         }
 
 
