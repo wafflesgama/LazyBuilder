@@ -28,6 +28,7 @@ namespace LazyProcedural
 
         //-----Header Area
         private Button _saveButton;
+        //private VisualElement _saveButtonIcon;
         private Button _showContextButton;
         private Button _runButton;
 
@@ -72,10 +73,17 @@ namespace LazyProcedural
         //const string SETTING_DELETESTORED_TITLE = "Delete Stored Items";
         //const string SETTING_DELETESTORED_DESC = "Are you sure you want to delete all the fetched built/stored items?";
 
+        const string UNSAVED_CHANGES_TITLE = "Unsaved Changes";
+        const string UNSAVED_CHANGES_DESC = "This Graph contains unsaved changes. Do you want to save them?";
+        const string UNSAVED_CHANGES_OK = "Save changes";
+        const string UNSAVED_CHANGES_NOK = "Don't save";
+        const string UNSAVED_CHANGES_CANCEL = "Cancel";
+
         const string CONFIRM_MSG = "Go Ahead";
         const string CANCEL_MSG = "Cancel";
 
-        bool initialized;
+        private bool initialized;
+        private bool unsavedChanges;
         private void OnFocus()
         {
             if (!initialized)
@@ -150,10 +158,11 @@ namespace LazyProcedural
 
         public void AddNode(ProcedureInfo nodeInfo)
         {
-
             var pos = addMousePos;
             pos = _root.ChangeCoordinatesTo(_root.parent, pos - this.position.position);
-            graph.AddNode(nodeInfo, pos);
+            var node = graph.AddNode(nodeInfo, pos);
+
+            node.Select(graph, false);
 
             RunGraph();
         }
@@ -165,6 +174,8 @@ namespace LazyProcedural
 
             OpenContextWindow();
             _contextWindow.BuildNodeInfo(node);
+
+            node.Focus();
         }
 
         private void OnNodesUnselected()
@@ -175,6 +186,8 @@ namespace LazyProcedural
 
         private async void OnGraphStructureChanged()
         {
+            unsavedChanges = true;
+
             //Delaying to graph process the structure changes
             await Task.Delay(3);
             RunGraph();
@@ -182,16 +195,20 @@ namespace LazyProcedural
 
         public void OnGraphValueUpdated()
         {
+            unsavedChanges = true;
             RunGraph();
         }
 
         public void OnGraphGlobalParamUpdated()
         {
+            unsavedChanges = true;
             RunGraph();
         }
 
         private void SaveGraph()
         {
+            unsavedChanges = false;
+
             if (graphPersistance.filePath == null)
                 graphPersistance.filePath = filePath;
 
@@ -200,6 +217,8 @@ namespace LazyProcedural
                 graph.nodes.ToList().Select(x => (Node)x),
                 _globalParametersBoard.Parameters.Select(x => ((x.Key, x.Value)))
             );
+
+            LogMessage("Graph saved successfully!");
         }
 
         private void OpenCloseContextWindow()
@@ -244,13 +263,22 @@ namespace LazyProcedural
         }
 
 
+
+
+
         private void OnDestroy()
         {
+            if (unsavedChanges)
+            {
+                bool result = EditorUtility.DisplayDialog(UNSAVED_CHANGES_TITLE, UNSAVED_CHANGES_DESC, UNSAVED_CHANGES_OK, UNSAVED_CHANGES_NOK);
+               //= DialogueWindow.DisplayDialogue(UNSAVED_CHANGES_TITLE, UNSAVED_CHANGES_DESC, UNSAVED_CHANGES_OK, UNSAVED_CHANGES_NOK);
+
+                if (result)
+                    SaveGraph();
+            }
+
             CloseContextWindow();
         }
-
-
-
 
 
         #region Base UI
@@ -263,6 +291,8 @@ namespace LazyProcedural
             var visualTree = (VisualTreeAsset)AssetDatabase.LoadAssetAtPath(
                 PathFactory.BuildUiFilePath(PathFactory.GRAPH_WINDOW_LAYOUT_FILE), typeof(VisualTreeAsset));
 
+
+
             visualTree.CloneTree(_root);
 
             graph.style.width = new StyleLength(new Length(100, LengthUnit.Percent));
@@ -271,22 +301,9 @@ namespace LazyProcedural
             _graph = _root.Q("Graph");
             _graph.Add(graph);
 
-            //graphvi
 
-            //this.
-
-
-            //var b = new UnityEditor.Experimental.GraphView.GraphViewBlackboardWindow();
-            //b.SelectGraphViewFromWindow(this, graph);
-            //b.Show();
-            //b.SelectGraphViewFromWindow()
-            //b.SelectGraphViewFromWindow(graph);
-            //b.visible = true;
-            //b.style.height = 220f;
-            //b.style.width = 100f;
-            //graph.ReleaseBlackboard(b);
-            //var blackB = graph.GetBlackboard();
-            //blackB.showInMiniMap = true;
+            var styleSheet = (StyleSheet)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.GRAPH_WINDOW_LAYOUT_FILE, false), typeof(StyleSheet));
+            _root.styleSheets.Add(styleSheet);
 
 
         }
@@ -313,6 +330,7 @@ namespace LazyProcedural
 
             //-----Header Area
             _saveButton = (Button)_root.Q("SaveBttn");
+            //_saveButtonIcon = _root.Q("SaveBttnIcon");
             _showContextButton = (Button)_root.Q("ShowContextBttn");
             _runButton = (Button)_root.Q("RunBttn");
 
@@ -356,6 +374,8 @@ namespace LazyProcedural
 
             //_searchBttnIcon.style.backgroundImage = (Texture2D)EditorGUIUtility.IconContent("d_Search Icon").image;
 
+            //_saveButtonIcon.style.backgroundImage = (Texture2D)EditorGUIUtility.IconContent("d_SaveAs").image;
+
             _settingsIcon.style.backgroundImage = (Texture2D)EditorGUIUtility.IconContent("d__Popup@2x").image;
             _aboutIcon.style.backgroundImage = (Texture2D)EditorGUIUtility.IconContent("d_console.infoicon.sml").image;
 
@@ -364,6 +384,7 @@ namespace LazyProcedural
 
         private void SetupCallbacks()
         {
+
 
             //Header Items
             _saveButton.clicked += SaveGraph;
@@ -472,29 +493,29 @@ namespace LazyProcedural
         }
         private void OnSettingsMenuChanged(string option)
         {
-            switch (option)
-            {
-                //case SETTINGS_RESETPREF_MSG:
-                //    if (EditorUtility.DisplayDialog(SETTING_RESETPREF_TITLE, SETTING_RESETPREF_DESC, CONFIRM_MSG, CANCEL_MSG))
-                //        ResetPreferences();
-                //    break;
+            //switch (option)
+            //{
+            //    //case SETTINGS_RESETPREF_MSG:
+            //    //    if (EditorUtility.DisplayDialog(SETTING_RESETPREF_TITLE, SETTING_RESETPREF_DESC, CONFIRM_MSG, CANCEL_MSG))
+            //    //        ResetPreferences();
+            //    //    break;
 
-                //case SETTINGS_CLEARTEMP_MSG:
-                //    if (EditorUtility.DisplayDialog(SETTING_DELETETEMP_TITLE, SETTING_DELETETEMP_DESC, CONFIRM_MSG, CANCEL_MSG))
-                //    {
-                //        RemoveAllTempFiles();
-                //        AssetDatabase.Refresh();
-                //    }
-                //    break;
+            //    //case SETTINGS_CLEARTEMP_MSG:
+            //    //    if (EditorUtility.DisplayDialog(SETTING_DELETETEMP_TITLE, SETTING_DELETETEMP_DESC, CONFIRM_MSG, CANCEL_MSG))
+            //    //    {
+            //    //        RemoveAllTempFiles();
+            //    //        AssetDatabase.Refresh();
+            //    //    }
+            //    //    break;
 
-                //case SETTINGS_CLEARSTORED_MSG:
-                //    if (EditorUtility.DisplayDialog(SETTING_DELETESTORED_TITLE, SETTING_DELETESTORED_DESC, CONFIRM_MSG, CANCEL_MSG))
-                //    {
-                //        RemoveAllStoredItems();
-                //        AssetDatabase.Refresh();
-                //    }
-                //    break;
-            }
+            //    //case SETTINGS_CLEARSTORED_MSG:
+            //    //    if (EditorUtility.DisplayDialog(SETTING_DELETESTORED_TITLE, SETTING_DELETESTORED_DESC, CONFIRM_MSG, CANCEL_MSG))
+            //    //    {
+            //    //        RemoveAllStoredItems();
+            //    //        AssetDatabase.Refresh();
+            //    //    }
+            //    //    break;
+            //}
 
             _settingdDrop.value = "";
         }

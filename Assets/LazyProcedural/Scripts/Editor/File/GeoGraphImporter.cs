@@ -25,12 +25,11 @@ namespace LazyProcedural
         //private string TYPE = "Example";
 
 
-        [MenuItem("Assets/Create/Lazy Procedural/Example Graph", false, 1)]
+        [MenuItem("Assets/Create/Lazy Procedural/Empty Graph", false, 1)]
         public static void CreateNewAsset()
         {
             TextAsset asset = new TextAsset("");
-            //ProjectWindowUtil.CreateAsset("", "");
-            ProjectWindowUtil.CreateAsset(asset, "Graph.geograph");
+            ProjectWindowUtil.CreateAsset(asset, "New Graph.geograph");
         }
     }
 

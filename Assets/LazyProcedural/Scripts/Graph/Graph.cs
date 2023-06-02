@@ -135,7 +135,7 @@ namespace LazyProcedural
         }
 
 
-        public void AddNode(ProcedureInfo procedureInfo, Vector2 pos)
+        public Node AddNode(ProcedureInfo procedureInfo, Vector2 pos)
         {
             //if (!procedureInfo.Type.IsSubclassOf(typeof(Procedure)))
             //{
@@ -153,6 +153,8 @@ namespace LazyProcedural
             AddElement(node);
 
             OnGraphStructureChanged.TryInvoke();
+
+            return node;
         }
 
         public void AddEdges(IEnumerable<Edge> edges)

@@ -29,21 +29,22 @@ namespace LazyProcedural
                 return (nodes, edges, globalParams);
             }
 
-
+            string rawText = null;
             try
             {
-                var json = File.ReadAllText(fullFilePath);
-                graphData = JsonUtility.FromJson<GraphPersistanceData>(json);
+                rawText = File.ReadAllText(fullFilePath);
+                graphData = JsonUtility.FromJson<GraphPersistanceData>(rawText);
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
-            }
-
-            if (graphData == null)
-            {
-                //Debug.LogWarning("Empty Data");
-                return (nodes, edges, globalParams);
+                //If the file is empty or partially complete
+                if (rawText.Length < 3)
+                {
+                    graphData= new GraphPersistanceData();
+                    WriteGraph(graphData);
+                }
+                else
+                    Debug.LogException(ex);
             }
 
             //First pass to create nodes
@@ -152,8 +153,12 @@ namespace LazyProcedural
             }
             graphData.GlobalParameters = globalParametersData.ToArray();
 
-            string json = JsonUtility.ToJson(graphData, true);
+            WriteGraph(graphData);
+        }
 
+        private void WriteGraph(GraphPersistanceData graphData)
+        {
+            string json = JsonUtility.ToJson(graphData, true);
             File.WriteAllText(filePath, json);
         }
 

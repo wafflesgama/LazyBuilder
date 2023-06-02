@@ -186,7 +186,6 @@ namespace LazyProcedural
             Dictionary<Button, Action> unsortedButtonsList = new Dictionary<Button, Action>();
             categories = new List<Foldout>();
             _bodyList.Clear();
-            Button focusBttn = null;
 
             foreach (var procedure in filteredProcedures)
             {
@@ -199,7 +198,6 @@ namespace LazyProcedural
                     graphWindow.AddNode(procedure);
                     _parentWindow.FocusOnGraph();
                     this.Close();
-                    //b.userData
                 };
 
                 b.clicked += clickFunction;
