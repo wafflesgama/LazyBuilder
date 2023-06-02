@@ -85,7 +85,9 @@ public class GeoGraphComponent : MonoBehaviour
                     }
 
                 }
-                objectReuseInfo.recycledObject.sourceGameObject = null;
+
+                if (objectReuseInfo.recycledObject != null)
+                    objectReuseInfo.recycledObject.sourceGameObject = null;
             }
 
 

@@ -2,34 +2,143 @@
     "Description": "",
     "Nodes": [
         {
-            "Id": "483094a63747e93459bc12577bc04dc4",
-            "Name": "Mesh Create",
+            "Id": "4c23ac6e1b2ea104b911c90df6079b83",
+            "Name": "Actor Insert",
             "Position": {
-                "x": 712.0,
-                "y": 149.0
+                "x": 945.0,
+                "y": 440.0
             },
-            "Type": "Sceelix.Meshes.Procedures.MeshCreateProcedure",
-            "ChangedParams": [],
+            "Type": "Sceelix.Actors.Procedures.ActorInsertProcedure",
+            "ChangedParams": [
+                {
+                    "AccessIndex": [
+                        0
+                    ],
+                    "IsExpression": false,
+                    "Value": "One to Many",
+                    "ValueType": "System.String"
+                }
+            ],
+            "CreatedParams": [],
+            "InPorts": [
+                {
+                    "Id": "7c7ebd06-64ea-4807-acea-154d5b1dc5c7",
+                    "Connections": []
+                },
+                {
+                    "Id": "b82c86ea-e653-4d25-8444-dfeffa7b012b",
+                    "Connections": []
+                }
+            ],
+            "OutPorts": [
+                {
+                    "Id": "10d655d9-a44e-4d4b-94a1-d43e63279e2a",
+                    "Connections": []
+                },
+                {
+                    "Id": "2d6b42ec-6ea3-4d1d-9362-fbf4a2ae006d",
+                    "Connections": []
+                }
+            ]
+        },
+        {
+            "Id": "b0565907cd1504345afd7b8ac2213d83",
+            "Name": "Points Create",
+            "Position": {
+                "x": 743.0,
+                "y": 469.0
+            },
+            "Type": "Sceelix.Points.Procedures.PointsCreateProcedure",
+            "ChangedParams": [
+                {
+                    "AccessIndex": [
+                        0
+                    ],
+                    "IsExpression": false,
+                    "Value": "Random",
+                    "ValueType": "System.String"
+                },
+                {
+                    "AccessIndex": [
+                        0,
+                        0,
+                        2,
+                        0,
+                        0
+                    ],
+                    "IsExpression": false,
+                    "Value": "v(16.59,10)",
+                    "ValueType": "Sceelix.Mathematics.Data.Vector2D"
+                },
+                {
+                    "AccessIndex": [
+                        0,
+                        0,
+                        1
+                    ],
+                    "IsExpression": false,
+                    "Value": "10",
+                    "ValueType": "System.Int32"
+                },
+                {
+                    "AccessIndex": [
+                        0,
+                        0,
+                        2,
+                        0,
+                        1
+                    ],
+                    "IsExpression": false,
+                    "Value": "5.01",
+                    "ValueType": "System.Single"
+                }
+            ],
             "CreatedParams": [],
             "InPorts": [],
             "OutPorts": [
                 {
-                    "Id": "568cb4e0-e4b5-4168-b42b-583568109807",
-                    "Connections": []
+                    "Id": "452201ff-dd7f-4cc2-a0d7-cdee676a48c1",
+                    "Connections": [
+                        {
+                            "DestinationNodeId": "4c23ac6e1b2ea104b911c90df6079b83",
+                            "DestinationPortIndex": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "83cdb20f0874618448ffa4f31b79f98d",
+            "Name": "GameObject Create",
+            "Position": {
+                "x": 708.0,
+                "y": 305.0
+            },
+            "Type": "Sceelix.GameObjects.Procedures.GameObjectCreateProcedure",
+            "ChangedParams": [
+                {
+                    "AccessIndex": [
+                        0
+                    ],
+                    "IsExpression": false,
+                    "Value": "21818",
+                    "ValueType": "UnityEngine.GameObject"
+                }
+            ],
+            "CreatedParams": [],
+            "InPorts": [],
+            "OutPorts": [
+                {
+                    "Id": "d73f5335-136a-4e2c-a12c-907341ee89bb",
+                    "Connections": [
+                        {
+                            "DestinationNodeId": "4c23ac6e1b2ea104b911c90df6079b83",
+                            "DestinationPortIndex": 0
+                        }
+                    ]
                 }
             ]
         }
     ],
-    "GlobalParameters": [
-        {
-            "Name": "Global Param (1)",
-            "Value": "3",
-            "ValueType": "System.Int32"
-        },
-        {
-            "Name": "Global Param (2)",
-            "Value": "RGBA(0.808, 1.000, 0.476, 1.000)",
-            "ValueType": "UnityEngine.Color"
-        }
-    ]
+    "GlobalParameters": []
 }

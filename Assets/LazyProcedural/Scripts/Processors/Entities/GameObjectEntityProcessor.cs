@@ -51,7 +51,12 @@ namespace Sceelix.Processors
 
             instance.name = "GameObject Entity";
 
+            //Apply Translation
             instance.transform.position = goEntity.BoxScope.Translation.FlipYZ().ToVector3();
+
+            //Apply Rotation
+            instance.transform.up= goEntity.BoxScope.ZAxis.FlipYZ().ToVector3();
+            instance.transform.forward= goEntity.BoxScope.YAxis.FlipYZ().ToVector3();
 
             //Append the soruce to the new GameObject
             recycleObject.sourceGameObject = goEntity.gameObject;

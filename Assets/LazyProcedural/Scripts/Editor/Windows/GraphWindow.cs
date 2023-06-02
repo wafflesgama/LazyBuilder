@@ -122,7 +122,7 @@ namespace LazyProcedural
 
             ProcedureInfoManager.Init();
 
-            graphComponent = GraphComponentFinder.FindComponent();
+            graphComponent = GraphComponentFinder.FindOrCreateComponent();
 
         }
         private void InitGraph()

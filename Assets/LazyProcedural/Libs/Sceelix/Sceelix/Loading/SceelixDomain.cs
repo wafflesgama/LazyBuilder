@@ -46,13 +46,9 @@ namespace Sceelix.Loading
             get
             {
                 var alllTypes = new ReadOnlyCollection<Type>(_sceelixAssemblies.SelectMany(x => x.GetTypes()).ToList());
-                var test = true;
                 var filteredTypes = alllTypes.Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Sceelix")).ToList();
                 var filteredTypes2 = filteredTypes.Distinct().ToList();
-                test = true;
                 return new ReadOnlyCollection<Type>(filteredTypes2);
-                //return new ReadOnlyCollection<Type>(_sceelixAssemblies.SelectMany(x => x.GetTypes()).Where(x=>x.IsClass && x.Namespace.StartsWith("Sceelix")).ToList()); 
-
             }
         }
 

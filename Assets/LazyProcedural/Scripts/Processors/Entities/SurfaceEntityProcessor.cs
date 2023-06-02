@@ -73,6 +73,8 @@ namespace Sceelix.Processors
             terrainData.SetHoles(0, 0, terrainHoles);
 
 
+           
+
 
             //var materialToken = jtoken["Material"];
             //if (materialToken != null)
@@ -122,6 +124,9 @@ namespace Sceelix.Processors
 
             //ReadTerrainParameters(context, terrain, jtoken);
             //ReadTreeInstances(context, terrain, jtoken);
+
+            //Apply Translation
+            gameObject.transform.position = surfaceEntity.BoxScope.Translation.FlipYZ().ToVector3();
         }
 
 

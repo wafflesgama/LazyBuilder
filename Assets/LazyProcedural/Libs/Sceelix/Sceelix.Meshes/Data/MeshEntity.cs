@@ -447,7 +447,6 @@ namespace Sceelix.Meshes.Data
                 if (value.Length == 0) return;
 
                 Dictionary<UnityEngine.Material, int> keyValuePairs = new Dictionary<UnityEngine.Material, int>();
-                int? nullSlotIndex = null;
                 int currentIndex = -1, materialIndex;
                 foreach (Face face in _faces)
                 {
@@ -461,12 +460,6 @@ namespace Sceelix.Meshes.Data
                     }
                     if (face.Material == null)
                     {
-                        //if (!nullSlotIndex.HasValue)
-                        //{
-                        //    currentIndex++;
-                        //    nullSlotIndex = currentIndex;
-                        //}
-                        //materialIndex = nullSlotIndex.Value;
                         materialIndex = 0;
                     }
                     else
