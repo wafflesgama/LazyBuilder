@@ -82,7 +82,6 @@ namespace LazyProcedural
         const string CONFIRM_MSG = "Go Ahead";
         const string CANCEL_MSG = "Cancel";
 
-        private bool initialized;
         private bool unsavedChanges;
 
         private async void OnEnable()
@@ -123,7 +122,6 @@ namespace LazyProcedural
 
             LogMessage("Setup finished");
 
-            initialized = true;
 
         }
 
@@ -176,11 +174,13 @@ namespace LazyProcedural
         }
 
 
-        private void OnNodeSelected(Node node)
+        private async void OnNodeSelected(Node node)
         {
             if (graph.selection.Count > 1) return;
 
             OpenContextWindow();
+
+            await Task.Delay(2);
             _contextWindow.BuildNodeInfo(node);
 
             node.Focus();

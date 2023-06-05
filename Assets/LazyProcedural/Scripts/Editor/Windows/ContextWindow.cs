@@ -20,9 +20,9 @@ using System.Threading.Tasks;
 public class ContextWindow : EditorWindow
 {
     public GraphWindow graphWindow;
-    
+
     private VisualElement _root;
-    
+
     private EventCallback<ChangeEvent<string>> currentNameChangeCallback;
 
 
@@ -86,6 +86,8 @@ public class ContextWindow : EditorWindow
 
     public void ResetNodeInfo()
     {
+        if (_typeLabel == null) return;
+
         _typeLabel.text = "";
         _nameField.value = "";
 
@@ -111,6 +113,7 @@ public class ContextWindow : EditorWindow
 
 
         var _headerContainer = _nameField.parent;
+
 
 
 

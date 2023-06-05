@@ -12,15 +12,17 @@ namespace LazyProcedural
 {
     public class SearchWindow : EditorWindow
     {
+
         public bool paramsInit;
         public GraphWindow parentWindow;
-        public IEnumerable<ProcedureInfo> procedures { 
-            get { return procedures; } 
+        public IEnumerable<ProcedureInfo> procedures
+        {
+            get { return procedures; }
             set
             {
                 allProcedures = value.OrderBy(x => x.Label);
                 filteredProcedures = allProcedures;
-            } 
+            }
         }
 
         private VisualElement _root;
@@ -62,7 +64,7 @@ namespace LazyProcedural
         //    this.cancel = cancel;
         //}
 
-        private async void  OnEnable()
+        private async void OnEnable()
         {
             for (int i = 0; i < 5000; i++)
             {
