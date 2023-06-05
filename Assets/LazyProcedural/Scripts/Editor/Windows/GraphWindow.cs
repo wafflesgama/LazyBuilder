@@ -464,7 +464,7 @@ namespace LazyProcedural
             var searchWindow = EditorWindow.CreateInstance<SearchWindow>();
 
             searchWindow.procedures = ProcedureInfoManager.ProceduresInfo;
-            searchWindow.graphWindow = this;
+            searchWindow.parentWindow = this;
             searchWindow.paramsInit = true;
 
             addMousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);

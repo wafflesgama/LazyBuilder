@@ -38,8 +38,6 @@ namespace LazyProcedural
 
         private List<Foldout> categories;
 
-        public GraphWindow graphWindow;
-
         private IEnumerable<ProcedureInfo> allProcedures;
         private IEnumerable<ProcedureInfo> filteredProcedures;
 
@@ -214,7 +212,7 @@ namespace LazyProcedural
 
                 Action clickFunction = () =>
                 {
-                    graphWindow.AddNode(procedure);
+                    parentWindow.AddNode(procedure);
                     parentWindow.FocusOnGraph();
                     this.Close();
                 };
