@@ -84,11 +84,20 @@ namespace LazyProcedural
 
         private bool initialized;
         private bool unsavedChanges;
-        private void OnFocus()
+
+        private async void OnEnable()
         {
-            if (!initialized)
-                Setup();
+            for (int i = 0; i < 5000; i++)
+            {
+                if (string.IsNullOrEmpty(filePath))
+                    await Task.Delay(1);
+                else
+                    break;
+            }
+            Setup();
+
         }
+
 
         private void Setup()
         {
@@ -135,7 +144,6 @@ namespace LazyProcedural
         }
         private void InitGraph()
         {
-
             graph = new Graph();
 
             if (graphPersistance.filePath == null)
@@ -234,7 +242,9 @@ namespace LazyProcedural
         {
             if (_contextWindow == null)
             {
-                _contextWindow = new ContextWindow(this);
+
+                _contextWindow = EditorWindow.CreateInstance<ContextWindow>();
+                _contextWindow.graphWindow = this;
                 _contextWindow.Show();
                 try
                 {
@@ -271,7 +281,7 @@ namespace LazyProcedural
             if (unsavedChanges)
             {
                 bool result = EditorUtility.DisplayDialog(UNSAVED_CHANGES_TITLE, UNSAVED_CHANGES_DESC, UNSAVED_CHANGES_OK, UNSAVED_CHANGES_NOK);
-               //= DialogueWindow.DisplayDialogue(UNSAVED_CHANGES_TITLE, UNSAVED_CHANGES_DESC, UNSAVED_CHANGES_OK, UNSAVED_CHANGES_NOK);
+                //= DialogueWindow.DisplayDialogue(UNSAVED_CHANGES_TITLE, UNSAVED_CHANGES_DESC, UNSAVED_CHANGES_OK, UNSAVED_CHANGES_NOK);
 
                 if (result)
                     SaveGraph();
@@ -451,17 +461,15 @@ namespace LazyProcedural
 
         private void OpenSearch()
         {
+            var searchWindow = EditorWindow.CreateInstance<SearchWindow>();
 
-            var searchWindow = new SearchWindow(ProcedureInfoManager.ProceduresInfo, this);
+            searchWindow.procedures = ProcedureInfoManager.ProceduresInfo;
             searchWindow.graphWindow = this;
-
-            searchWindow.ShowPopup();
+            searchWindow.paramsInit = true;
 
             addMousePos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
-
-
-
             searchWindow.position = new Rect(addMousePos, searchWindow.position.size);
+            searchWindow.ShowPopup();
         }
 
 

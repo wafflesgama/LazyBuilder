@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,8 +12,18 @@ namespace LazyProcedural
 {
     public class SearchWindow : EditorWindow
     {
+        public bool paramsInit;
+        public GraphWindow parentWindow;
+        public IEnumerable<ProcedureInfo> procedures { 
+            get { return procedures; } 
+            set
+            {
+                allProcedures = value.OrderBy(x => x.Label);
+                filteredProcedures = allProcedures;
+            } 
+        }
+
         private VisualElement _root;
-        private GraphWindow _parentWindow;
 
         public bool sucess;
 
@@ -33,19 +44,15 @@ namespace LazyProcedural
         private Dictionary<Button, Action> buttonsList;
         private int currentHighlightedProcedure;
 
-        private bool initialized;
 
         private static string lastSearch = "";
 
         private StyleColor? defaultProcedureColor;
 
-        public SearchWindow(IEnumerable<ProcedureInfo> procedures, GraphWindow parentWindow)
-        {
-            titleContent.text = "Add Node";
-            allProcedures = procedures.OrderBy(x => x.Label);
-            filteredProcedures = allProcedures;
-            _parentWindow = parentWindow;
-        }
+        //public SearchWindow(IEnumerable<ProcedureInfo> procedures, GraphWindow parentWindow)
+        //{
+        //    this.parentWindow = parentWindow;
+        //}
 
         //public void Init(string title, string message, string ok, string cancel, string defaultLabel)
         //{
@@ -55,10 +62,17 @@ namespace LazyProcedural
         //    this.cancel = cancel;
         //}
 
-        private void OnFocus()
+        private async void  OnEnable()
         {
-            if (!initialized)
-                Setup();
+            for (int i = 0; i < 5000; i++)
+            {
+                if (!paramsInit)
+                    await Task.Delay(1);
+                else
+                    break;
+            }
+
+            Setup();
         }
 
         private void Setup()
@@ -76,11 +90,14 @@ namespace LazyProcedural
 
             SetupProcedures();
 
+            titleContent.text = "Add Node";
+
             _searchField.value = lastSearch;
             _searchField.SelectAll();
             _searchField.Focus();
 
-            initialized = true;
+
+            paramsInit = true;
         }
 
 
@@ -156,7 +173,7 @@ namespace LazyProcedural
         {
             if (e.keyCode == KeyCode.Escape)
             {
-                _parentWindow.FocusOnGraph();
+                parentWindow.FocusOnGraph();
                 this.Close();
             }
 
@@ -196,7 +213,7 @@ namespace LazyProcedural
                 Action clickFunction = () =>
                 {
                     graphWindow.AddNode(procedure);
-                    _parentWindow.FocusOnGraph();
+                    parentWindow.FocusOnGraph();
                     this.Close();
                 };
 

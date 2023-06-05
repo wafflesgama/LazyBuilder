@@ -11,6 +11,13 @@ namespace LazyProcedural
 {
     public class GraphPersistance
     {
+
+        public static void SaveDefaultGraph(string filePath)
+        {
+            GraphPersistanceData graphData = new GraphPersistanceData();
+            WriteGraph(filePath, graphData);
+        }
+
         public string filePath;
 
         public (IEnumerable<Node>, IEnumerable<Edge>, IEnumerable<(string, object)>) LoadGraph()
@@ -37,14 +44,22 @@ namespace LazyProcedural
             }
             catch (Exception ex)
             {
+#if UNITY_EDITOR
                 //If the file is empty or partially complete
-                if (rawText.Length < 3)
+                if (UnityEditor.EditorUtility.DisplayDialog(
+                    "Invalid Graph Data",
+                    "The selected graph contains invalid/unreadable data. Do you wish to overwrite it with a valid empty graph?",
+                    "Overwrite",
+                    "Cancel"))
                 {
-                    graphData= new GraphPersistanceData();
-                    WriteGraph(graphData);
+                    graphData = new GraphPersistanceData();
+                    WriteGraph(filePath, graphData);
                 }
                 else
                     Debug.LogException(ex);
+#else
+                Debug.LogException(ex);
+#endif
             }
 
             //First pass to create nodes
@@ -153,10 +168,10 @@ namespace LazyProcedural
             }
             graphData.GlobalParameters = globalParametersData.ToArray();
 
-            WriteGraph(graphData);
+            WriteGraph(filePath, graphData);
         }
 
-        private void WriteGraph(GraphPersistanceData graphData)
+        private static void WriteGraph(string filePath, GraphPersistanceData graphData)
         {
             string json = JsonUtility.ToJson(graphData, true);
             File.WriteAllText(filePath, json);
@@ -225,11 +240,11 @@ namespace LazyProcedural
     [Serializable]
     public class GraphPersistanceData
     {
-        public string Description;
+        public string Description = "";
 
-        public NodePersistanceData[] Nodes;
+        public NodePersistanceData[] Nodes = new NodePersistanceData[0];
 
-        public GlobalParameterPersistanceData[] GlobalParameters;
+        public GlobalParameterPersistanceData[] GlobalParameters = new GlobalParameterPersistanceData[0];
     }
 
     [Serializable]
@@ -273,7 +288,7 @@ namespace LazyProcedural
     [Serializable]
     public class ChangedParameterData
     {
-        public int[] AccessIndex;
+        public int[] AccessIndex = new int[0];
         public bool IsExpression;
         public string Value;
         public string ValueType;
@@ -282,7 +297,7 @@ namespace LazyProcedural
     [Serializable]
     public class CreatedParameterData
     {
-        public int[] AccessIndex;
+        public int[] AccessIndex = new int[0];
         public string Name;
     }
 

@@ -62,6 +62,16 @@ namespace LazyProcedural
 
             string fileText = File.ReadAllText(ctx.assetPath);
 
+            //If the file does not start with "%YAML" it means its already processed
+            if (!fileText.StartsWith("%YAML"))
+            {
+                //Only thing missing is assign it an icon
+                Texture2D icon = Utils.FetchImage(PathFactory.BuildImageFilePath(PathFactory.ICON_FULL_FILE, true));
+                TextAsset desc = new TextAsset("Geometry Graph for Lazy Procedural Builder");
+                ctx.AddObjectToAsset("Description", desc, icon);
+                return;
+            }
+
             //Hardcoded to match the TYPE Variable name size (plus the " ")
             //var type = fileText.Substring(fileText.IndexOf("TYPE:") + 5);
 
@@ -70,10 +80,7 @@ namespace LazyProcedural
 
             //data = CreateDefaultGraph(type);
 
-            Texture2D icon = Utils.FetchImage(PathFactory.BuildImageFilePath(PathFactory.ICON_FULL_FILE, true));
-            TextAsset desc = new TextAsset("Geometry Graph for Lazy Procedural Builder");
-            ctx.AddObjectToAsset("Description", desc, icon);
-            //ctx.AddObjectToAsset("Graph", data, icon);
+            GraphPersistance.SaveDefaultGraph(ctx.assetPath);
         }
 
         private string CreateDefaultGraph(string type)

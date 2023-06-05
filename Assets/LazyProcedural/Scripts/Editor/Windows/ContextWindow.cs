@@ -15,14 +15,14 @@ using Sceelix.Mathematics.Data;
 using System;
 using Sceelix.Core.Data;
 using UnityGraph = UnityEditor.Experimental.GraphView;
+using System.Threading.Tasks;
 
 public class ContextWindow : EditorWindow
 {
+    public GraphWindow graphWindow;
+    
     private VisualElement _root;
-
-    private GraphWindow _graphWindow;
-
-
+    
     private EventCallback<ChangeEvent<string>> currentNameChangeCallback;
 
 
@@ -32,23 +32,22 @@ public class ContextWindow : EditorWindow
 
     private ScrollView _parametersContainer;
 
-    private bool initialized = false;
-    public ContextWindow(GraphWindow graphWindow)
-    {
-        _graphWindow = graphWindow;
-    }
 
-    private void OnFocus()
+    private async void OnEnable()
     {
+        for (int i = 0; i < 5000; i++)
+        {
+            if (graphWindow == null)
+                await Task.Delay(1);
+            else
+                break;
+        }
         Setup();
     }
 
+
     private void Setup()
     {
-        if (initialized) return;
-
-        initialized = true;
-
         SetupBaseUI();
         StripDefaultElements();
         SetupBindings();
@@ -339,7 +338,7 @@ public class ContextWindow : EditorWindow
                 if (field.ClassListContains(errorExpressionClass))
                     field.RemoveFromClassList(errorExpressionClass);
 
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = stringField;
 
@@ -377,7 +376,7 @@ public class ContextWindow : EditorWindow
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
 
                 if (value.newValue != null)
-                    _graphWindow.OnGraphValueUpdated();
+                    graphWindow.OnGraphValueUpdated();
 
             });
 
@@ -401,7 +400,7 @@ public class ContextWindow : EditorWindow
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
 
                 if (value.newValue != null)
-                    _graphWindow.OnGraphValueUpdated();
+                    graphWindow.OnGraphValueUpdated();
 
             });
 
@@ -437,7 +436,7 @@ public class ContextWindow : EditorWindow
 
                 node.CreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = value.newValue });
                 node.RefreshNode();
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
 
 
@@ -461,7 +460,7 @@ public class ContextWindow : EditorWindow
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 BuildNodeInfo(node);
                 node.RefreshNode();
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
 
             field.AddToClassList("selectList");
@@ -483,7 +482,7 @@ public class ContextWindow : EditorWindow
                 BuildNodeInfo(node);
                 node.RefreshNode();
 
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = popupField;
 
@@ -506,7 +505,7 @@ public class ContextWindow : EditorWindow
                 BuildNodeInfo(node);
                 node.RefreshNode();
 
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
 
             field.AddToClassList("selectList");
@@ -520,7 +519,7 @@ public class ContextWindow : EditorWindow
             {
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = colorField;
 
@@ -534,7 +533,7 @@ public class ContextWindow : EditorWindow
                 Vector4D convertedValue = new Vector4D(value.newValue);
                 parameter.Set(convertedValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = vector3Field;
 
@@ -548,7 +547,7 @@ public class ContextWindow : EditorWindow
                 Vector3D convertedValue = new Vector3D(value.newValue).FlipYZ();
                 parameter.Set(convertedValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = vector3Field;
 
@@ -562,7 +561,7 @@ public class ContextWindow : EditorWindow
                 Vector2D convertedValue = new Vector2D(value.newValue);
                 parameter.Set(convertedValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = convertedValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = vector3Field;
 
@@ -577,7 +576,7 @@ public class ContextWindow : EditorWindow
                 BuildNodeInfo(node);
                 node.RefreshNode();
 
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = enumField;
         }
@@ -589,7 +588,7 @@ public class ContextWindow : EditorWindow
             {
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = integerField;
         }
@@ -601,7 +600,7 @@ public class ContextWindow : EditorWindow
             {
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = floatField;
 
@@ -614,7 +613,7 @@ public class ContextWindow : EditorWindow
             {
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
             field = toggleField;
         }
@@ -631,7 +630,7 @@ public class ContextWindow : EditorWindow
             {
                 parameter.Set(stringField.value);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = stringField.value });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
 
             field = stringField;
@@ -647,7 +646,7 @@ public class ContextWindow : EditorWindow
             {
                 parameter.Set(stringField.value);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = stringField.value });
-                _graphWindow.OnGraphValueUpdated();
+                graphWindow.OnGraphValueUpdated();
             });
 
             field = stringField;

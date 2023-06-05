@@ -46,9 +46,10 @@ namespace LazyProcedural
 
             //GetSceneWindow();
 
-            GraphWindow graphWindow = new GraphWindow { filePath= path};
+            
+            GraphWindow graphWindow = CreateWindow<GraphWindow>();
+            graphWindow.filePath = path;
             //GraphWindow graphWindow = CreateWindow<GraphWindow>();
-            //graphWindow.filePath = path;
 
             Texture2D icon = Utils.FetchImage(PathFactory.BuildImageFilePath(PathFactory.ICON_SMALL_FILE, true));
 
