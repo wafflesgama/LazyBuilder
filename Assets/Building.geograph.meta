@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Building.geograph.meta
 guid: 06df6ddcfc6c4184599a65ef4046da37
+========
+guid: 27a5b468831cddb4e977295c6f427023
+>>>>>>>> Sceelix-Integration:Assets/Teste.geograph.meta
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -8,4 +12,3 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: b6e00b42ebf23dd459f291f6e5d4b18d, type: 3}
-  graph: {instanceID: 0}

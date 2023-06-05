@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="padding-left: 8px; padding-right: 8px; padding-bottom: 4px;">
+        <ui:VisualElement name="General" style="margin-top: 3px; padding-right: 8px;">
+            <ui:VisualElement style="flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 4px; margin-top: 8px;">
+                <ui:Label text="General" display-tooltip-when-elided="true" style="font-size: 16px; padding-left: 4px; margin-right: 10px; color: rgb(207, 207, 207); -unity-font-style: normal; opacity: 0.8;" />
+                <ui:VisualElement style="background-color: rgba(255, 255, 255, 0.67); flex-grow: 1; height: 1px; display: none; opacity: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement>
+                <ui:VisualElement style="flex-direction: row; padding-left: 2px; padding-right: 4px;">
+                    <ui:Label text="Type" display-tooltip-when-elided="true" name="Label" style="min-width: 150px;" />
+                    <ui:Label text="Mesh Create" display-tooltip-when-elided="true" name="TypeLabel" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:TextField picking-mode="Ignore" label="Name" value="filler text" text="Mesh Create" readonly="false" name="NameField" style="flex-direction: row;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 4px; margin-top: 25px;">
+                <ui:Label text="Parameters" display-tooltip-when-elided="true" style="font-size: 16px; padding-left: 4px; margin-right: 10px; color: rgb(207, 207, 207); -unity-font-style: normal; opacity: 0.8;" />
+                <ui:VisualElement style="background-color: rgba(255, 255, 255, 0.67); flex-grow: 1; height: 1px; display: none; opacity: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:ScrollView name="Params" class="parameterContainer" style="flex-grow: 1; margin-top: 2px; padding-right: 8px;" />
+    </ui:VisualElement>
+</ui:UXML>

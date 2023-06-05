@@ -1,0 +1,103 @@
+
+#addButton {
+    visibility: hidden;
+}
+
+#subTitleLabel {
+    visibility: hidden;
+}
+
+#titleLabel{
+    font-size:20px;
+}
+
+.expression > Label{
+    -unity-font-style: bold-and-italic;
+}
+
+.expression> TextInput{
+    background-color:#3A5D6F;
+        border-color: #6C81A9;
+}
+
+
+.valid-exp> TextInput{
+    /*Green*/
+  background-color:#3E5A46;
+    border-color: #6C8574;
+}
+
+.error-exp> TextInput{
+    /*Red*/
+  background-color:#873B33;
+  border-color: #A9726F;
+}
+
+Foldout > Toggle > VisualElement {
+  align-items:center;
+  align-content:center;
+  padding-top:5px;
+}
+    Foldout > Toggle > VisualElement > .unity-toggle__checkmark {
+        margin-top: 9px !important;
+        padding-top: 5px;
+    }
+
+.parameter {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.dropdown-parameter {
+    margin-left: 3px;
+    padding-left: 2px;
+    padding-top: 0;
+}
+
+.addList > .unity-popup-field__input {
+    min-width: 30px;
+    max-width: 30px;
+    flex-grow: 0;
+    padding-left: 8px;
+    /*background-color: red;*/
+    font-size: 16px !important;
+}
+
+.addList > Label {
+    flex-grow: 1;
+}
+
+.unity-base-popup-field__text {
+    padding-left:8px;
+    padding-right:8px;
+}
+
+.addList > .unity-popup-field__input > .unity-base-popup-field__text {
+}
+
+.addList > .unity-popup-field__input > .unity-base-popup-field__arrow {
+    display: none;
+}
+
+/*Label:not(#titleLabel) {
+    background-color: red;
+}*/
+
+#titleLabel {
+    color: red !important;
+    font-size: 15px;
+}
+
+.parameter> Label:hover {
+    background-color: rgb(66, 66, 66);
+    -unity-text-outline: 20 white;
+    -unity-font-style: italic
+}
+
+#titleLabel:hover {
+    background-color: transparent !important;
+}
+
+#subTitleLabel:hover {
+    background-color: transparent !important;
+}

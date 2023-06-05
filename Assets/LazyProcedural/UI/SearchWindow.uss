@@ -1,0 +1,50 @@
+
+.unity-text-field > .unity-base-field__input{
+     background-color: transparent;
+     border-color: transparent;
+}
+
+Label{
+         font-size: 13;
+}
+
+.category > Toggle{
+    padding-top:5;
+    padding-bottom:5;
+}
+
+.category > Toggle:hover{
+         background-color: rgb(66, 66, 66);
+
+}
+
+.category > Toggle:focus{
+         background-color: rgb(43, 93, 135);
+}
+
+
+/*.category:select{
+          background-color: rgb(43, 93, 135);
+}*/
+
+.unity-button {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 0;
+        padding-top:5;
+    padding-bottom:5;
+    font-size: 13;
+}
+
+.unity-button > .unity-text{
+text-align: middle-left;
+
+}
+
+.unity-button:hover{
+      background-color: rgb(66, 66, 66);
+}
+
+.unity-button:focus{
+            background-color: rgb(43, 93, 135);
+}
