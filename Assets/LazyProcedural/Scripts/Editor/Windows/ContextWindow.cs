@@ -544,7 +544,7 @@ public class ContextWindow : EditorWindow
         else if (parameterValueType == typeof(Vector3D))
         {
             Vector3Field vector3Field = new Vector3Field(parameter.Label + " (v3)");
-            vector3Field.value = ((Vector3D)parameterValue).ToVector3();
+            vector3Field.value = ((Vector3D)parameterValue).FlipYZ().ToVector3();
             vector3Field.RegisterValueChangedCallback(value =>
             {
                 Vector3D convertedValue = new Vector3D(value.newValue).FlipYZ();
