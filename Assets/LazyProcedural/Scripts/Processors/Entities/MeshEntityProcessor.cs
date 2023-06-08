@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using Sceelix.Actors.Data;
 using Sceelix.Core.Data;
 using Sceelix.Meshes.Data;

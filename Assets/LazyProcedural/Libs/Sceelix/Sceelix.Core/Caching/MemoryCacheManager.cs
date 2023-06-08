@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using Sceelix.Core.Graphs;
 using Sceelix.Core.IO;
 using Sceelix.Core.Procedures;
 using Sceelix.Core.Resources;
 using Sceelix.Core.Utils;
+using UnityEngine;
 
 namespace Sceelix.Core.Caching
 {
@@ -68,7 +68,7 @@ namespace Sceelix.Core.Caching
 
             var procedureTypePart = procedure.ExecutionNode.Node.ProcedureAttribute.Guid;
 
-            var parameterPart = JsonConvert.SerializeObject(procedure.Parameters.Select(x => new KeyValuePair<string, object>(x.Label, x.Get())));
+            var parameterPart = JsonUtility.ToJson(procedure.Parameters.Select(x => new KeyValuePair<string, object>(x.Label, x.Get())));
 
             return procedureTypePart + ":" + parameterPart;
         }
