@@ -29,6 +29,18 @@ For now you can download & import manually the ***.unitypackage** in the [Releas
 
 <br/>
 
+
+## Quickstart 🛫
+
+**Before importing Lazy Builder:**
+- Make sure that you are using Unity 2020.3 or above 
+- Make sure that the ***Api Compatibility*** is set to ***Net 4.x*** or ***Net Framework*** (in Edit> Project Settings> Player Api Compatibility Level) 
+
+Follow [this tutorial](https://docs.google.com/presentation/d/1rUGbXzxXKXIvSs6e_vvyMhGzZoylVPB5) for some simple exercises to get you started.
+
+
+<br/>
+
 ## Contribute ☕
 If you found out this tool useful and/or want to help this project continue its development you can [buy me a coffee](https://www.buymeacoffee.com/guilhermeGama)!
 
