@@ -63,7 +63,12 @@ Foldout > Toggle > VisualElement {
     font-size: 16px !important;
 }
 
+.compound > TextInput{
+       display: none;
+}
+
 .addList > Label {
+    padding-left: 0px;
     flex-grow: 1;
 }
 
@@ -73,6 +78,7 @@ Foldout > Toggle > VisualElement {
 }
 
 .addList > .unity-popup-field__input > .unity-base-popup-field__text {
+    padding-left: 0px;
 }
 
 .addList > .unity-popup-field__input > .unity-base-popup-field__arrow {

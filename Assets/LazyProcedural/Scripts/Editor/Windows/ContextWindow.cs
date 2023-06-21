@@ -133,13 +133,25 @@ public class ContextWindow : EditorWindow
     {
         Procedure procedure = node.nodeData;
 
-        bool isSelectList = parameter.ParameterInfo.MetaType == "Select";
-        bool isSingleCollectiveChoice = parameter.ParameterInfo.MetaType == "Choice";
+        bool isSelectList=false, isSingleCollectiveChoice=false;
+        try
+        {
+            isSelectList = parameter.ParameterInfo.MetaType == "Select";
+            isSingleCollectiveChoice = parameter.ParameterInfo.MetaType == "Choice";
+        }
+        catch (Exception ex)
+        {
+
+        }
 
         if (!parameter.ParameterInfo.IsPublic) return;
 
         if (parameter.Parameters.Count == 0)
         {
+
+            //If a compound parameter does not have children do not add it
+            if (parameter.ParameterInfo.MetaType == "Compound") return;
+
             var field = BuildField(parameter, accessingIndex, node);
             container.Add(field);
             return;
@@ -147,6 +159,7 @@ public class ContextWindow : EditorWindow
 
 
         Foldout foldout = new Foldout();
+        //A foldout parameter will not be created if it is the selected value of the parent List
         if (!descendedFromSelectList)
         {
             if (container != _root)
@@ -283,6 +296,7 @@ public class ContextWindow : EditorWindow
 
         Parameter parameter = parameterRef.Parameter;
         Type parameterType = parameter.GetType();
+
         object parameterValue = parameter.Get();
 
 
@@ -296,9 +310,11 @@ public class ContextWindow : EditorWindow
         {
             TextField stringField = new TextField();
 
+
             stringField.label = parameter.Label;
 
             field = stringField;
+            field.AddToClassList("compound");
         }
         else
     if (parameterRef.IsExpression)
@@ -606,6 +622,36 @@ public class ContextWindow : EditorWindow
                 graphWindow.OnGraphValueUpdated();
             });
             field = floatField;
+
+        }
+        else if (parameterType.ToString().Contains(typeof(OptionalListParameter).ToString()))
+        {
+
+            OptionalListParameter optionalListParameter = (OptionalListParameter)parameter;
+
+            if (optionalListParameter.GetAvailableFunctions().Count() == 1)
+            {
+
+                Toggle toggleField = new Toggle(parameter.Label + " (b)");
+                toggleField.value = optionalListParameter.HasValue;
+                toggleField.RegisterValueChangedCallback(value =>
+                {
+                    //Creation
+                    if (value.newValue)
+                    {
+                        optionalListParameter.Add(optionalListParameter.GetAvailableFunctions().First());
+                    }
+                    //Deletion
+                    else
+                    {
+                        optionalListParameter.Remove(optionalListParameter.Items[0]);
+                    }
+                    BuildNodeInfo(node);
+                    //node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
+                    graphWindow.OnGraphValueUpdated();
+                });
+                field = toggleField;
+            }
 
         }
         else if (parameterValueType == typeof(bool))
