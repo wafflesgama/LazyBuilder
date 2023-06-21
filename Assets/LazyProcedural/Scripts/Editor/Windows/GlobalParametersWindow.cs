@@ -169,7 +169,7 @@ namespace LazyProcedural
 
             Parameters.Add(name, paramValue);
 
-            //_graphWindow.OnGraphGlobalParamUpdated();
+            //_graphWindow.ongraph();
         }
 
         private void RemovedGlobalParameter(DetachFromPanelEvent evnt)
@@ -299,13 +299,13 @@ namespace LazyProcedural
             blackboardField.text = parameterName;
             blackboardField.name = parameterName;
 
-            _graphWindow.OnGraphGlobalParamUpdated();
+            _graphWindow.OnGraphGlobalParamStructureUpdated();
         }
 
         public void EditParameterValue(BlackboardField blackboardField, object value)
         {
             Parameters[blackboardField.name] = value;
-            _graphWindow.OnGraphGlobalParamUpdated();
+            _graphWindow.OnGraphGlobalParameterValueUpdated();
         }
     }
 }

@@ -5,6 +5,7 @@ using Sceelix.Core.Environments;
 using Sceelix.Core.IO;
 using Sceelix.Core.Parameters;
 using Sceelix.Loading;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,10 @@ namespace LazyProcedural
 
         private List<(GlobalAttributeKey, object)> convertedGlobalParams;
 
-        private Dictionary<Node, int> executionOrderMatrix;
+        private Dictionary<Node, int> executionNodesOrder;
+        private List<List<Node>> executionOrderMatrix;
+
+        private Dictionary<Port, (Edge, int)> inPortNumbers;
         public static void Init()
         {
             if (initialized) return;
@@ -44,31 +48,46 @@ namespace LazyProcedural
         {
             return ExecuteGraph(nodes.Select(x => (Node)x).ToList(), globalParameters);
         }
-
-        public List<IEntity> ExecuteGraph(List<Node> nodes, IEnumerable<(string, object)> globalParameters)
+        public void CalculateGraphOrder(IEnumerable<UnityGraph.Node> nodes)
         {
-            List<IEntity> output = new List<IEntity>();
+            CalculateGraphOrder(nodes.Select(x => (Node)x).ToList());
+        }
+
+        public void CalculateGraphOrder(List<Node> nodes)
+        {
 
             List<Node> rootNodes = GetRootNodes(nodes);
 
-            if (rootNodes == null || rootNodes.Count == 0) return output;
+            executionNodesOrder = new Dictionary<Node, int>();
+            executionOrderMatrix = new List<List<Node>>();
 
-            executionOrderMatrix = new Dictionary<Node, int>();
+            if (rootNodes == null || rootNodes.Count == 0) return;
+
 
             //Firstly evaluate the execution orders
             foreach (Node rootNode in rootNodes)
                 DFS_EvaluateExecutionOrder(rootNode, -1);
 
             //Then order the nodes by the execution order
-            List<List<Node>> nodesByExecutionOrder = ConvertMatrixToList();
+            executionOrderMatrix = ConvertMatrixToList();
+        }
 
-            //Then create the Global Params & append them
+        public List<IEntity> ExecuteGraph(List<Node> nodes, IEnumerable<(string, object)> globalParameters)
+        {
+            List<IEntity> output = new List<IEntity>();
+
+            inPortNumbers = new Dictionary<Port, (Edge, int)>();
+
+            foreach (var node in nodes)
+                node.ClearProcessedState();
+
+            //Create the Global Params to later append them
             if (globalParameters != null)
                 convertedGlobalParams = globalParameters.Select(x => (new GlobalAttributeKey(x.Item1), x.Item2)).ToList();
             else
                 convertedGlobalParams = new List<(GlobalAttributeKey, object)>();
 
-            output = BFS_Execution(nodesByExecutionOrder);
+            output = BFS_Execution(executionOrderMatrix);
 
             return output;
         }
@@ -76,7 +95,7 @@ namespace LazyProcedural
         private List<List<Node>> ConvertMatrixToList()
         {
 
-            var numOrders = executionOrderMatrix.Values.Max() + 1;
+            var numOrders = executionNodesOrder.Values.Max() + 1;
             List<List<Node>> nodesByExecutionOrder = new List<List<Node>>();
             for (int i = 0; i < numOrders; i++)
             {
@@ -84,7 +103,7 @@ namespace LazyProcedural
             }
 
 
-            foreach (var item in executionOrderMatrix)
+            foreach (var item in executionNodesOrder)
             {
                 //if (nodesByExecutionOrder[item.Value] == null)
                 //    nodesByExecutionOrder.Add(new List<Node>());
@@ -105,11 +124,11 @@ namespace LazyProcedural
 
             if (currentNode == null) return;
 
-            if (!executionOrderMatrix.ContainsKey(currentNode))
-                executionOrderMatrix.Add(currentNode, order);
+            if (!executionNodesOrder.ContainsKey(currentNode))
+                executionNodesOrder.Add(currentNode, order);
             else
                 //Keep only the highests orders
-                executionOrderMatrix[currentNode] = executionOrderMatrix[currentNode] > order ? executionOrderMatrix[currentNode] : order;
+                executionNodesOrder[currentNode] = executionNodesOrder[currentNode] > order ? executionNodesOrder[currentNode] : order;
 
             foreach (var outPort in currentNode.outPorts)
                 foreach (var edge in outPort.connections)
@@ -138,7 +157,16 @@ namespace LazyProcedural
 
                         outNode.nodeData.Inputs[globalImpulsePort].Enqueue(globalEntity);
                     }
-                    outNode.nodeData.Execute();
+                    try
+                    {
+                        outNode.nodeData.Execute();
+                        outNode.SetProcessedSate(success: true);
+                    }
+                    catch (Exception ex)
+                    {
+                        outNode.SetProcessedSate(success: false);
+                        Debug.LogException(ex);
+                    }
 
                     //If is terminal Node then append all the output to results
                     if (outNode.GetTotalConnectedPorts(inPorts: false) == 0)
@@ -166,10 +194,25 @@ namespace LazyProcedural
 
                             var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
 
-                            Edge castedEdge = (Edge) edge;
+                            var resultEntityNum = executionResult.Count();
+
+                            Edge castedEdge = (Edge)edge;
+
+                            if (!inPortNumbers.ContainsKey(castedInPort))
+                            {
+                                inPortNumbers.Add(castedInPort, (castedEdge, resultEntityNum));
+                                castedEdge.SetOutNumber(resultEntityNum);
+
+                            }
+                            else
+                            {
+                                //Add this result to the existing number
+                                inPortNumbers[castedInPort] = (inPortNumbers[castedInPort].Item1, inPortNumbers[castedInPort].Item2 + resultEntityNum);
+                                //And set it
+                                inPortNumbers[castedInPort].Item1.SetOutNumber(inPortNumbers[castedInPort].Item2);
+                            }
 
                             castedEdge.SetInNumber(executionResult.Count());
-                            castedEdge.SetOutNumber(executionResult.Count());
 
                             //Append a clone of the current Node result to the input of the connected Node
                             GetInput(inNode, castedInPort).Input.Enqueue(executionResult.Select(x => x.DeepClone()));

@@ -170,7 +170,7 @@ namespace LazyProcedural
 
             node.Select(graph, false);
 
-            RunGraph();
+            RunGraph(preCalculated: false);
         }
 
 
@@ -198,19 +198,26 @@ namespace LazyProcedural
 
             //Delaying to graph process the structure changes
             await Task.Delay(3);
-            RunGraph();
+
+            RunGraph(preCalculated: false);
         }
 
         public void OnGraphValueUpdated()
         {
             unsavedChanges = true;
-            RunGraph();
+            RunGraph(preCalculated:true);
         }
 
-        public void OnGraphGlobalParamUpdated()
+        public void OnGraphGlobalParamStructureUpdated()
         {
             unsavedChanges = true;
-            RunGraph();
+            RunGraph(preCalculated: false) ;
+        }
+
+        public void OnGraphGlobalParameterValueUpdated()
+        {
+            unsavedChanges = true;
+            RunGraph(preCalculated: true);
         }
 
         private void SaveGraph()
@@ -399,7 +406,7 @@ namespace LazyProcedural
             //Header Items
             _saveButton.clicked += SaveGraph;
             _showContextButton.clicked += OpenCloseContextWindow;
-            _runButton.clicked += RunGraph;
+            _runButton.clicked += ()=>  RunGraph(preCalculated: false);
 
             //Footer Menu Items
             _aboutDrop.RegisterValueChangedCallback(x => OnAboutMenuChanged(x.newValue));
@@ -446,7 +453,7 @@ namespace LazyProcedural
 
             else if ((e.keyCode == KeyCode.Return))
             {
-                RunGraph();
+                RunGraph(preCalculated: false);
             }
         }
 
@@ -560,10 +567,15 @@ namespace LazyProcedural
             graph.DuplicateSelection(mousePos);
         }
 
-        private void RunGraph()
+      
+
+        private void RunGraph(bool preCalculated = false)
         {
             if (graphComponent == null)
                 graphComponent = GraphComponentFinder.FindComponent();
+
+            if (!preCalculated)
+                generationManager.CalculateGraphOrder(graph.nodes.ToList());
 
             var meshes = generationManager.ExecuteGraph(graph.nodes.ToList(), _globalParametersBoard.Parameters.Select(x => (x.Key, x.Value)));
 

@@ -46,7 +46,7 @@ namespace LazyProcedural
         private List<(Sceelix.Core.IO.InputReference, bool, int[])> inputsToAdd;
         private List<(Sceelix.Core.IO.OutputReference, bool, int[])> outputsToAdd;
 
-
+        private VisualElement _divider;
 
         //New Node Constrcutor
         public Node(ProcedureInfo nodeDataInfo)
@@ -163,6 +163,10 @@ namespace LazyProcedural
 
         private void SetupExtraUI()
         {
+            var styleSheet = (StyleSheet)AssetDatabase.LoadAssetAtPath(PathFactory.BuildUiFilePath(PathFactory.NODE_LAYOUT_FILE, false), typeof(StyleSheet));
+            mainContainer.styleSheets.Add(styleSheet);
+
+
             var titleLabel = titleContainer.Q("title-label");
 
             Label subTitleLabel = new Label();
@@ -183,7 +187,22 @@ namespace LazyProcedural
 
             titleContainer.Add(titlesContainer);
             titleContainer.Add(buttonsContainer);
+
+            _divider = contentContainer.Q("divider");
+            _divider.style.borderBottomWidth = 0;
+            _divider.style.height = 3;
             //titleContainer.Add(colapseButton);
+        }
+
+        public void ClearProcessedState()
+        {
+            _divider.name = "divider";
+        }
+
+        public void SetProcessedSate(bool success)
+        {
+            _divider.name = success ? "divider_success" : "divider_error";
+
         }
 
         //public void AddCo

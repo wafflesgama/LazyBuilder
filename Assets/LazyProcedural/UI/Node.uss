@@ -1,0 +1,14 @@
+#divider {
+    /*Gray*/
+    background-color: #616161;
+}
+
+#divider_error {
+    /*Red*/
+    background-color: #F16B63;
+}
+
+#divider_success {
+    /*Green*/
+    background-color: #79B374;
+}

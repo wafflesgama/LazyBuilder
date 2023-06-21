@@ -427,10 +427,11 @@ namespace Sceelix.Core.Procedures
             }
             catch (Exception ex)
             {
-                Logger.Log(ex,LogType.Error);
 
                 foreach (var input in _inputs)
                     _unprocessedEntities.AddRange(input.RoundEntities);
+
+                throw ex;
             }
 
             //now, get the entities that were outputted during the procedure execution
