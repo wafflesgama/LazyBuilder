@@ -2,6 +2,7 @@ using Sceelix.Conversion;
 using Sceelix.Core.Data;
 using Sceelix.Core.Parameters.Infos;
 using Sceelix.Core.Procedures;
+using System;
 
 namespace Sceelix.Core.Parameters
 {
@@ -59,7 +60,28 @@ namespace Sceelix.Core.Parameters
 
         public T Value
         {
-            get { return (T) Get(); }
+
+            get
+            {
+
+                object rawValue = Get();
+                T value = default(T);
+                try
+                {
+                    value = (T)rawValue;
+                }
+                catch (InvalidCastException e)
+                {
+                    UnityEngine.Debug.LogWarning($"Parameter {this.Label} - the required of type was {typeof(T).FullName} and but it has a {rawValue.GetType().FullName} value");
+                }
+                catch (Exception e)
+                {
+                    UnityEngine.Debug.LogException(e);
+                }
+
+                return value;
+
+            }
             set { Set(value); }
         }
 
@@ -67,7 +89,7 @@ namespace Sceelix.Core.Parameters
 
         public new T Get(IEntity entity)
         {
-            return (T) base.Get(entity);
+            return (T)base.Get(entity);
         }
 
 
@@ -87,7 +109,7 @@ namespace Sceelix.Core.Parameters
             }
             else
             {
-                var primitiveArgument = (PrimitiveParameterInfo<T>) argument;
+                var primitiveArgument = (PrimitiveParameterInfo<T>)argument;
 
                 Set(primitiveArgument.FixedValue);
             }

@@ -9,6 +9,8 @@ using UnityEngine.UIElements;
 using Sceelix.Core.Procedures;
 using Sceelix.Processors;
 using UnityEditor.Experimental.GraphView;
+using System.Reflection;
+using System;
 
 namespace LazyProcedural
 {
@@ -147,7 +149,7 @@ namespace LazyProcedural
             if (graphPersistance.filePath == null)
                 graphPersistance.filePath = filePath;
 
-            var loadedGraph = graphPersistance.LoadGraph();
+            var loadedGraph = graphPersistance.LoadGraph(graph);
 
             graph.AddNodes(loadedGraph.Item1);
             graph.AddEdges(loadedGraph.Item2);
@@ -205,13 +207,13 @@ namespace LazyProcedural
         public void OnGraphValueUpdated()
         {
             unsavedChanges = true;
-            RunGraph(preCalculated:true);
+            RunGraph(preCalculated: true);
         }
 
         public void OnGraphGlobalParamStructureUpdated()
         {
             unsavedChanges = true;
-            RunGraph(preCalculated: false) ;
+            RunGraph(preCalculated: false);
         }
 
         public void OnGraphGlobalParameterValueUpdated()
@@ -406,7 +408,7 @@ namespace LazyProcedural
             //Header Items
             _saveButton.clicked += SaveGraph;
             _showContextButton.clicked += OpenCloseContextWindow;
-            _runButton.clicked += ()=>  RunGraph(preCalculated: false);
+            _runButton.clicked += () => RunGraph(preCalculated: false);
 
             //Footer Menu Items
             _aboutDrop.RegisterValueChangedCallback(x => OnAboutMenuChanged(x.newValue));
@@ -565,14 +567,18 @@ namespace LazyProcedural
             mousePos = _root.ChangeCoordinatesTo(_root.parent, mousePos - this.position.position);
 
             graph.DuplicateSelection(mousePos);
+
+            RunGraph(preCalculated: false);
         }
 
-      
+
 
         private void RunGraph(bool preCalculated = false)
         {
             if (graphComponent == null)
                 graphComponent = GraphComponentFinder.FindComponent();
+
+            ClearLogConsole();
 
             if (!preCalculated)
                 generationManager.CalculateGraphOrder(graph.nodes.ToList());
@@ -639,6 +645,15 @@ namespace LazyProcedural
             }
 
             _debugMssg.text = "";
+        }
+
+
+        public static void ClearLogConsole()
+        {
+            Assembly assembly = Assembly.GetAssembly(typeof(Editor));
+            Type logEntries = assembly.GetType("UnityEditor.LogEntries");
+            MethodInfo clearConsoleMethod = logEntries.GetMethod("Clear");
+            clearConsoleMethod.Invoke(new object(), null);
         }
 
         #endregion Utils

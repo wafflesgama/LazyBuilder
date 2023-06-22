@@ -131,28 +131,17 @@ public class ContextWindow : EditorWindow
 
     private void BuildNodeParameter(VisualElement container, ParameterReference parameter, bool descendedFromSelectList, List<int> accessingIndex, Node node)
     {
-        Procedure procedure = node.nodeData;
+        Sceelix.Core.Parameters.Infos.ParameterInfo parameterInfo = parameter.ParameterInfo;
+        bool isSelectList = parameterInfo.MetaType == "Select";
 
-        bool isSelectList=false, isSingleCollectiveChoice=false;
-        try
-        {
-            isSelectList = parameter.ParameterInfo.MetaType == "Select";
-            isSingleCollectiveChoice = parameter.ParameterInfo.MetaType == "Choice";
-        }
-        catch (Exception ex)
-        {
-
-        }
-
-        if (!parameter.ParameterInfo.IsPublic) return;
+        if (!parameterInfo.IsPublic) return;
 
         if (parameter.Parameters.Count == 0)
         {
-
             //If a compound parameter does not have children do not add it
-            if (parameter.ParameterInfo.MetaType == "Compound") return;
+            if (parameterInfo.MetaType == "Compound") return;
 
-            var field = BuildField(parameter, accessingIndex, node);
+            var field = BuildField(parameter,parameterInfo, accessingIndex, node);
             container.Add(field);
             return;
         }
@@ -166,8 +155,6 @@ public class ContextWindow : EditorWindow
                 foldout.style.marginLeft = 15;
 
             foldout.text = " ";
-            //foldoutContainer.Add(foldout);
-
 
             var toggle = foldout.Q<Toggle>();
             var toggleChild = toggle.Q<VisualElement>();
@@ -180,7 +167,7 @@ public class ContextWindow : EditorWindow
             var toggleChildLabel = toggleChild.Q<Label>();
 
 
-            var field2 = BuildField(parameter, accessingIndex, node);
+            var field2 = BuildField(parameter,parameterInfo, accessingIndex, node);
             field2.AddToClassList("dropdown-parameter");
 
             toggleChildLabel.Add(field2);
@@ -209,7 +196,7 @@ public class ContextWindow : EditorWindow
     //    var parameterValueType = parameterValue?.GetType();
     //    var currentAcessingIndex = acessingIndex.ToList();
 
-    //    if (parameterRef.ParameterInfo.MetaType == "Compound")
+    //    if (parameterInfo.MetaType == "Compound")
     //    {
     //        field = BuildCompoundField(parameter);
     //    }
@@ -273,7 +260,7 @@ public class ContextWindow : EditorWindow
     //    {
     //        field = BuildToggleField(parameter, parameterValue, currentAcessingIndex, node);
     //    }
-    //    else if (parameterRef.ParameterInfo.MetaType == "Attribute")
+    //    else if (parameterInfo.MetaType == "Attribute")
     //    {
     //        field = BuildAttributeField(parameter, parameterValue, currentAcessingIndex, node);
     //    }
@@ -287,7 +274,7 @@ public class ContextWindow : EditorWindow
     //    return field;
     //}
 
-    private VisualElement BuildField(ParameterReference parameterRef, List<int> acessingIndex, Node node)
+    private VisualElement BuildField(ParameterReference parameterRef, Sceelix.Core.Parameters.Infos.ParameterInfo parameterInfo, List<int> acessingIndex, Node node)
     {
         Procedure procedure = node.nodeData;
 
@@ -306,7 +293,7 @@ public class ContextWindow : EditorWindow
 
 
         //If it is a Compound Tree field (i.e the Attribute Header)
-        if (parameterRef.ParameterInfo.MetaType == "Compound")
+        if (parameterInfo.MetaType == "Compound")
         {
             TextField stringField = new TextField();
 
@@ -667,7 +654,7 @@ public class ContextWindow : EditorWindow
             field = toggleField;
         }
         //If it is an Attribute parameter of an addable List
-        else if (parameterRef.ParameterInfo.MetaType == "Attribute")
+        else if (parameterInfo.MetaType == "Attribute")
         {
             TextField stringField = new TextField();
 
