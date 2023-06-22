@@ -131,8 +131,12 @@ namespace LazyProcedural
                 executionNodesOrder[currentNode] = executionNodesOrder[currentNode] > order ? executionNodesOrder[currentNode] : order;
 
             foreach (var outPort in currentNode.outPorts)
+            {
+                if (outPort.isMuted) continue;
+
                 foreach (var edge in outPort.connections)
                     DFS_EvaluateExecutionOrder((Node)edge.input.node, order);
+            }
         }
 
         private List<IEntity> BFS_Execution(List<List<Node>> nodesByExecutionOrder)

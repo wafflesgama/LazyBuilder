@@ -20,7 +20,7 @@ namespace LazyProcedural
 
         public string filePath;
 
-        public (IEnumerable<Node>, IEnumerable<Edge>, IEnumerable<(string, object)>) LoadGraph()
+        public (IEnumerable<Node>, IEnumerable<Edge>, IEnumerable<(string, object)>) LoadGraph(Graph graph)
         {
             GraphPersistanceData graphData = null;
             List<Node> nodes = new List<Node>();
@@ -71,7 +71,8 @@ namespace LazyProcedural
                     Type.GetType(nodeData.Type),
                     nodeData.Position,
                     nodeData.CreatedParams.Select(x => new CreatedParameterInfo { accessIndex = x.AccessIndex, parameterName = x.Name }).ToArray(),
-                    nodeData.ChangedParams.Select(x => new ChangedParameterInfo { accessIndex = x.AccessIndex, isExpression = x.IsExpression, value = ConvertValue(x.ValueType, x.Value) }).ToArray()
+                    nodeData.ChangedParams.Select(x => new ChangedParameterInfo { accessIndex = x.AccessIndex, isExpression = x.IsExpression, value = ConvertValue(x.ValueType, x.Value) }).ToArray(),
+                    graph
                     );
                 nodes.Add(node);
             }

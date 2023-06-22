@@ -21,13 +21,18 @@ namespace LazyProcedural
         public string id;
 
         //If Port can be accessed through Inputs/Outputs or through Parameter's Inputs/Outputs
-        public bool isDirectAccessPort;
+        public bool isDirectAccessPort { get; private set; }
+
+        public bool isMuted { get; private set; } = false;
+
 
         //The index array to access through Parameter's Inputs/Outputs
         public int[] accessIndex;
 
         public SceelixData.Output outputData;
         public SceelixData.Input inputData;
+
+        private ContextualMenuManipulator contextMenu;
 
         //public static Port Create(bool inPort, bool singleEntry, Type type)
         //{
@@ -66,14 +71,19 @@ namespace LazyProcedural
             EdgeConnectorListener listener = new EdgeConnectorListener();
             m_EdgeConnector = new EdgeConnector<Edge>(listener);
             this.AddManipulator(m_EdgeConnector);
-            AssignPortShape();
-            portColor = AssignPortColor();
+            UpdatePortShape();
+            UpdatePortColor();
 
             contentContainer.style.marginBottom = 5;
             contentContainer.style.alignItems = Align.FlexStart;
 
             contentContainer.Q("connector").style.marginTop = 3;
+
+            UpdateContextMenu();
+
         }
+
+
 
         private void SetupLabel()
         {
@@ -103,8 +113,16 @@ namespace LazyProcedural
             {
                 labelsContainer.style.alignContent = Align.FlexEnd;
                 portTypeLabel.style.unityTextAlign = TextAnchor.MiddleRight;
-               
+            }
 
+
+
+            //Interactor to Tackle Unity issue of port not selectable via the connector (only on input ports)
+            if (this.direction == Direction.Input)
+            {
+                var interactor = new VisualElement();
+                interactor.name = "interactor";
+                labelsContainer.Add(interactor);
             }
 
             labelsContainer.Add(portNameLabel);
@@ -115,7 +133,7 @@ namespace LazyProcedural
 
         }
 
-        private void AssignPortShape()
+        private void UpdatePortShape()
         {
             if (direction == Direction.Output || inputData.InputNature == SceelixData.InputNature.Single) return;
 
@@ -126,22 +144,59 @@ namespace LazyProcedural
             connector.style.borderTopLeftRadius = 1;
             connector.style.borderTopRightRadius = 1;
         }
-        public Color AssignPortColor()
+        public void UpdatePortColor(bool disabled = false)
         {
+            Color color = Color.white;
+
+            if (disabled)
+                color = new Color(0.65f, 0.65f, 0.65f);
+            else if (isMuted)
+                color = new Color(0.3f, 0.3f, 0.3f);
+            else
             if (portType == typeof(Sceelix.Meshes.Data.MeshEntity))
-                return new Color(1f, 0.52f, 0.52f);  //Redish pink
-
+                color = new Color(1f, 0.52f, 0.52f);  //Redish pink
+            else
             if (typeof(Sceelix.Actors.Data.IActor).IsAssignableFrom(portType))
-                return new Color(1f, 0.72f, 0.52f);  // Orange
-
+                color = new Color(1f, 0.72f, 0.52f);  // Orange
+            else
             if (typeof(IEntity).IsAssignableFrom(portType))
-                return new Color(1f, 0.87f, 0.52f);  //Yellow
+                color = new Color(1f, 0.87f, 0.52f);  //Yellow
 
-            //if()
-            //    return new Color(0.33f, 0.73f, 0.97f); //Blue
+            portColor = color;
+        }
 
+        private void MutePort()
+        {
+            isMuted = true;
+            UpdatePortColor();
+            ((Node)this.node).graph.GraphStructureChanged();
 
-            return Color.white;
+            UpdateContextMenu();
+        }
+
+        private void UnmutePort()
+        {
+            isMuted = false;
+            UpdatePortColor();
+            ((Node)this.node).graph.GraphStructureChanged();
+
+            UpdateContextMenu();
+        }
+
+        private void UpdateContextMenu()
+        {
+            if (contextMenu != null)
+                this.RemoveManipulator(contextMenu);
+
+            contextMenu = new ContextualMenuManipulator((ContextualMenuPopulateEvent evt) =>
+            {
+                if (isMuted)
+                    evt.menu.AppendAction("UnMute", (x) => UnmutePort());
+                else
+                    evt.menu.AppendAction("Mute", (x) => MutePort());
+            });
+            this.AddManipulator(contextMenu);
+
         }
 
 

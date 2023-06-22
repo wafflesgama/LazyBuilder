@@ -79,11 +79,15 @@ namespace LazyProcedural
                 }
             }
 
-            OnGraphStructureChanged.TryInvoke();
+            GraphStructureChanged();
 
             return change;
         }
 
+        public void GraphStructureChanged()
+        {
+            OnGraphStructureChanged.TryInvoke();
+        }
 
 
         public override List<UnityGraph.Port> GetCompatiblePorts(UnityGraph.Port startPort, NodeAdapter nodeAdapter)
@@ -143,7 +147,7 @@ namespace LazyProcedural
             //    return;
             //}
 
-            var node = new Node(procedureInfo);
+            var node = new Node(procedureInfo,this);
 
             pos = contentViewContainer.WorldToLocal(pos);
             node.SetPosition(new Rect(pos, node.GetPosition().size));
@@ -152,7 +156,7 @@ namespace LazyProcedural
             node.OnNodeUnselected += Node_OnUnselected;
             AddElement(node);
 
-            OnGraphStructureChanged.TryInvoke();
+            GraphStructureChanged();
 
             return node;
         }
@@ -163,7 +167,7 @@ namespace LazyProcedural
             {
                 //The node to be valid and visually functional it is required to be created via this function
                 var trueEdge = edge.input.ConnectTo<Edge>(edge.output);
-         
+
                 AddElement(trueEdge);
             }
         }
@@ -250,7 +254,7 @@ namespace LazyProcedural
 
         public void DuplicateNode(Node sourceNode, Vector2 pos)
         {
-            Node node = new Node(sourceNode);
+            Node node = new Node(sourceNode,this);
 
             pos = contentViewContainer.WorldToLocal(pos);
             node.SetPosition(new Rect(pos, sourceNode.GetPosition().size));

@@ -34,6 +34,8 @@ namespace LazyProcedural
         public List<Port> inPorts { get; private set; } = new List<Port>();
         public List<Port> outPorts { get; private set; } = new List<Port>();
 
+        public Graph graph { get; private set; }
+
         public UnityGraph.Group group { get; set; }
 
         public Procedure nodeData { get; private set; }
@@ -49,8 +51,9 @@ namespace LazyProcedural
         private VisualElement _divider;
 
         //New Node Constrcutor
-        public Node(ProcedureInfo nodeDataInfo)
+        public Node(ProcedureInfo nodeDataInfo, Graph graph)
         {
+            
             id = GUID.Generate().ToString();
 
             typeTitle = nodeDataInfo.Label;
@@ -61,6 +64,7 @@ namespace LazyProcedural
             createdDataParams = new List<CreatedParameterInfo>();
             nodeData = (Procedure)Activator.CreateInstance(nodeDataInfo.Type);
 
+            this.graph = graph;
             SetupExtraUI();
             RefreshNode();
         }
@@ -68,7 +72,7 @@ namespace LazyProcedural
 
 
         //Copy Constructor
-        public Node(Node sourceNode, bool linkedCopy = false)
+        public Node(Node sourceNode, Graph graph, bool linkedCopy = false)
         {
             id = GUID.Generate().ToString();
 
@@ -78,6 +82,7 @@ namespace LazyProcedural
 
             changedDataParams = new List<ChangedParameterInfo>();
             createdDataParams = new List<CreatedParameterInfo>();
+            this.graph = graph;
 
             if (linkedCopy)
                 nodeData = sourceNode.nodeData;
@@ -111,7 +116,7 @@ namespace LazyProcedural
         }
 
         //Load Constructor
-        public Node(string id, string name, Type nodeDataType, Vector2 position, CreatedParameterInfo[] createdParams, ChangedParameterInfo[] changedParams)
+        public Node(string id, string name, Type nodeDataType, Vector2 position, CreatedParameterInfo[] createdParams, ChangedParameterInfo[] changedParams,Graph graph)
         {
             this.id = id;
             ProcedureInfo nodeDataInfo = ProcedureInfoManager.GetProcedure(nodeDataType);
@@ -127,6 +132,7 @@ namespace LazyProcedural
             changedDataParams = new List<ChangedParameterInfo>();
             createdDataParams = new List<CreatedParameterInfo>();
 
+            this.graph = graph;
 
             foreach (var createdDataParam in createdParams)
             {

@@ -2,6 +2,23 @@
     /*Gray*/
     background-color: #616161;
 }
+/*
+#input > Port > VisualElement{
+    color: red;
+    margin-left: 5px;
+    width:50px;
+}*/
+
+#input > Port > VisualElement > #interactor {
+    color: red;
+    min-width: 10px;
+    width: 10px;
+    height:10px;
+    position: absolute;
+    left:-13px;
+    top:2px;
+
+}
 
 #divider_error {
     /*Red*/
