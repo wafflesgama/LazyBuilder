@@ -192,7 +192,7 @@ namespace Sceelix.Points.Parameters
         /// <summary>
         /// Method to connect the points into the path.
         /// </summary>
-        private readonly SelectListParameter<PathFromPointsMethodParameter> _parameterMethod = new SelectListParameter<PathFromPointsMethodParameter>("Method", "Delaunay");
+        private readonly SelectListParameter<PathFromPointsMethodParameter> _parameterMethod = new SelectListParameter<PathFromPointsMethodParameter>("Method", "Sequence");
 
 
 

@@ -30,6 +30,21 @@ namespace Sceelix.Mathematics.Data
 
 
         /// <summary>
+        /// Creates a boxscope with the Y vector facing the specified diretion
+        /// </summary>
+        /// <param name="forward"></param> The desired forward direction
+        public BoxScope(Vector3D forward, Vector3D translation)
+        {
+
+            YAxis = forward.Normalize();
+            XAxis = Vector3D.Cross(Vector3D.ZVector, forward).Normalize();
+            ZAxis = Vector3D.Cross(YAxis, XAxis).Normalize();
+
+            Translation = translation;
+            Sizes = Vector3D.Zero;
+        }
+
+        /// <summary>
         /// Creates a custom boxscope based on the given axis directions and translation.
         /// Sizes are initialized to 0.
         /// </summary>
@@ -240,7 +255,6 @@ namespace Sceelix.Mathematics.Data
         {
             return XAxis * scopeDirection.X + YAxis * scopeDirection.Y + ZAxis * scopeDirection.Z;
         }
-
 
 
         /// <summary>

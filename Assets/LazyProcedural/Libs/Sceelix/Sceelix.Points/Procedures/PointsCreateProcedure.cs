@@ -162,6 +162,11 @@ namespace Sceelix.Points.Procedures
             /// </summary>
             private readonly SingleInput<PathEntity> _inputPath = new SingleInput<PathEntity>("Path");
 
+            /// <summary>
+            /// Attribute that will store the name the name of the section in the face.
+            /// Values can be "Inside", "Joint" or "Path" and can be extracted with a "Mesh Subselect" node.
+            /// </summary>
+            private readonly AttributeParameter<Vector3D> _attributeDirection = new AttributeParameter<Vector3D>("Direction", AttributeAccess.Write);
 
 
             public FromPathParameter()
@@ -175,7 +180,12 @@ namespace Sceelix.Points.Procedures
             {
                 foreach (PathVertex pathVertex in _inputPath.Read().Vertices)
                 {
-                    var pointEntity = new PointEntity(pathVertex.Position);
+                    //var pointEntity = new PointEntity(pathVertex.Position);
+                    var pointEntity = new PointEntity(new BoxScope(pathVertex.Edges[0].Direction, pathVertex.Position));
+
+                    //pointEntity.BoxScope.or
+                    //_attributeDirection[pointEntity] = pathVertex.Edges[0].Direction;
+
                     pathVertex.Attributes.SetAttributesTo(pointEntity.Attributes);
                     yield return pointEntity;
                 }
@@ -779,7 +789,7 @@ namespace Sceelix.Points.Procedures
                     {
                         if (pointsAdded > maxPoints) break;
                         Vector2D newPoint = GenerateRandomPointAround(random, currentPoint.Position, currentPoint.Distance);
-                      
+
 
                         //determine the new minimum distance
                         var layerValue = floatLayer.GetGenericValue(newPoint);
