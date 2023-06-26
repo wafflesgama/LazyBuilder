@@ -10,6 +10,7 @@ using SceelixData = Sceelix.Core.IO;
 using System.Reflection;
 using Sceelix.Core.Annotations;
 using Sceelix.Core.Data;
+using System.Linq;
 
 namespace LazyProcedural
 {
@@ -60,11 +61,24 @@ namespace LazyProcedural
             SetupLabel();
 
         }
-        //public Port(bool inPort, bool singleEntry, Type type) : base(DEF_ORIENTATION, inPort ? Direction.Input : Direction.Output, singleEntry ? Capacity.Single : Capacity.Multi, type)
-        //{
 
 
-        //}
+        public bool IsTerminalPort()
+        {
+            if (direction == Direction.Input) return false;
+
+            return !connections.Where(x => (x.input as Port).isMuted == false).Any() && !isMuted;
+            //return direction== Direction.Input ? (x => x.connected && !x.isMuted).Count() : this.outPorts.Where(x => x.connected && !x.isMuted).Count();
+        }
+
+        public void ClearConnectionNumbers()
+        {
+            foreach (var connection in connections)
+            {
+                Edge castedConnection = connection as Edge;
+                castedConnection.ClearNumbers();
+            }
+        }
 
         private void SetupUIPort()
         {

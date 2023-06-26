@@ -56,6 +56,12 @@ namespace LazyProcedural
             }
         }
 
+        public void ClearNumbers()
+        {
+            inNumber.text = "";
+            outNumber.text = "";
+        }
+
         public void SetInNumber(int value)
         {
             inNumber.text= value.ToString();

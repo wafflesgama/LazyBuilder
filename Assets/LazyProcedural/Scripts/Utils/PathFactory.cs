@@ -32,6 +32,7 @@ namespace LazyProcedural
 
         public const string DIALOGUE_LAYOUT_FILE = "DialogueLayout";
 
+        public const string GRAPH_NEW_FILE = "New GeoGraph";
         public const string GRAPH_TYPE = "geograph";
         public const string MATERIAL_TYPE = "mat";
 
@@ -112,6 +113,11 @@ namespace LazyProcedural
         }
 
         #endregion Local Paths
+
+        public static string RelativeToAbsolutePath(string relativePath)
+        {
+            return $"{absoluteToolPath}/{relativePath}".AbsoluteFormat();
+        }
 
 
 

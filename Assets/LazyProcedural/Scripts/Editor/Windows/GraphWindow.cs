@@ -11,12 +11,16 @@ using Sceelix.Processors;
 using UnityEditor.Experimental.GraphView;
 using System.Reflection;
 using System;
+using System.IO;
 
 namespace LazyProcedural
 {
     public class GraphWindow : UnityEditor.Experimental.GraphView.GraphViewEditorWindow
     {
+        public static Dictionary<string, ContextWindow> contextWindows;
+
         public string filePath;
+        public string graphName { get { return Path.GetFileNameWithoutExtension(filePath); } }
 
         private VisualElement _root;
         private Graph graph;
@@ -30,6 +34,7 @@ namespace LazyProcedural
 
         //-----Header Area
         private Button _saveButton;
+        private Button _saveAsButton;
         //private VisualElement _saveButtonIcon;
         private Button _showContextButton;
         private Button _runButton;
@@ -55,6 +60,7 @@ namespace LazyProcedural
 
         //Windows
         private ContextWindow _contextWindow;
+
         private GlobalParametersWindow _globalParametersBoard;
 
         //Messages
@@ -129,6 +135,7 @@ namespace LazyProcedural
 
         private void InitVariables()
         {
+
             PathFactory.Init();
 
             generationManager = new GenerationManager();
@@ -140,6 +147,9 @@ namespace LazyProcedural
             ProcedureInfoManager.Init();
 
             graphComponent = GraphComponentFinder.FindOrCreateComponent();
+
+
+
 
         }
         private void InitGraph()
@@ -160,6 +170,9 @@ namespace LazyProcedural
             graph.OnNodesUnselected += OnNodesUnselected;
 
             graph.OnGraphStructureChanged += OnGraphStructureChanged;
+
+            OnGraphStructureChanged();
+
         }
 
 
@@ -221,13 +234,31 @@ namespace LazyProcedural
             unsavedChanges = true;
             RunGraph(preCalculated: true);
         }
+        private void SaveAsGraph()
+        {
+            var startingPath = Path.GetDirectoryName(filePath);
+            string path = EditorUtility.SaveFilePanel("Save As", startingPath, PathFactory.GRAPH_NEW_FILE, PathFactory.GRAPH_TYPE);
+            if (string.IsNullOrEmpty(path)) return;
 
+            filePath = path;
+            graphPersistance.filePath = path;
+
+            SaveGraph();
+
+            titleContent.text = Path.GetFileNameWithoutExtension(path);
+
+            //Refresh to file appear in the project window
+            AssetDatabase.Refresh();
+
+        }
         private void SaveGraph()
         {
             unsavedChanges = false;
 
             if (graphPersistance.filePath == null)
                 graphPersistance.filePath = filePath;
+
+
 
             graphPersistance.SaveGraph
             (
@@ -251,10 +282,21 @@ namespace LazyProcedural
         {
             if (_contextWindow == null)
             {
+                var name = graphName;
+                if (!contextWindows.ContainsKey(name))
+                {
+                    _contextWindow = EditorWindow.CreateInstance<ContextWindow>();
+                }
+                else
+                {
+                    _contextWindow = contextWindows[name];
+                }
 
-                _contextWindow = EditorWindow.CreateInstance<ContextWindow>();
+                _contextWindow.graphName = name;
                 _contextWindow.graphWindow = this;
                 _contextWindow.Show();
+
+                //Docking attempt
                 try
                 {
                     WindowDocker.Dock(this, _contextWindow, WindowDocker.DockPosition.Right);
@@ -275,7 +317,13 @@ namespace LazyProcedural
         }
         private void CloseContextWindow()
         {
-            if (_contextWindow == null) return;
+            if (_contextWindow == null)
+            {
+                if (!contextWindows.ContainsKey(name))
+                    return;
+
+                _contextWindow = contextWindows[name];
+            }
 
             _contextWindow.Close();
             //_contextWindow.visible = false;
@@ -331,6 +379,12 @@ namespace LazyProcedural
         {
 
 
+            if (contextWindows == null)
+            {
+                //Find all open Context windows
+                contextWindows = Resources.FindObjectsOfTypeAll<ContextWindow>().ToDictionary(x => x.graphName, x => x);
+            }
+
             graph.Add(_globalParametersBoard);
 
 
@@ -349,6 +403,7 @@ namespace LazyProcedural
 
             //-----Header Area
             _saveButton = (Button)_root.Q("SaveBttn");
+            _saveAsButton = (Button)_root.Q("SaveAsBttn");
             //_saveButtonIcon = _root.Q("SaveBttnIcon");
             _showContextButton = (Button)_root.Q("ShowContextBttn");
             _runButton = (Button)_root.Q("RunBttn");
@@ -407,6 +462,7 @@ namespace LazyProcedural
 
             //Header Items
             _saveButton.clicked += SaveGraph;
+            _saveAsButton.clicked += SaveAsGraph;
             _showContextButton.clicked += OpenCloseContextWindow;
             _runButton.clicked += () => RunGraph(preCalculated: false);
 

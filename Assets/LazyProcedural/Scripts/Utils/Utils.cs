@@ -64,6 +64,11 @@ namespace LazyProcedural
             return char.ToUpper(source);
         }
 
+        public static string ToFullString(this List<int> list)
+        {
+           return  string.Join(",", list.ToArray());
+        }
+
 
         public static string[] GetFiles(string path, bool createDir = false)
         {

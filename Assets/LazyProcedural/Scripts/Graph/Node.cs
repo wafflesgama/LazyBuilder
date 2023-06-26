@@ -31,6 +31,8 @@ namespace LazyProcedural
         public string id { get; private set; }
         public string typeTitle { get; private set; }
 
+        public IEnumerable<Port> ports { get { return inPorts.Concat(outPorts); } }
+
         public List<Port> inPorts { get; private set; } = new List<Port>();
         public List<Port> outPorts { get; private set; } = new List<Port>();
 
@@ -53,7 +55,7 @@ namespace LazyProcedural
         //New Node Constrcutor
         public Node(ProcedureInfo nodeDataInfo, Graph graph)
         {
-            
+
             id = GUID.Generate().ToString();
 
             typeTitle = nodeDataInfo.Label;
@@ -97,6 +99,8 @@ namespace LazyProcedural
                     ListParameter listParam = (ListParameter)param.Parameter;
                     listParam.Add(createdDataParam.parameterName);
                 }
+                CheckDepthGen();
+                nodeData.UpdateParameterPorts();
 
                 foreach (var changeParam in sourceNode.changedDataParams)
                 {
@@ -116,7 +120,7 @@ namespace LazyProcedural
         }
 
         //Load Constructor
-        public Node(string id, string name, Type nodeDataType, Vector2 position, CreatedParameterInfo[] createdParams, ChangedParameterInfo[] changedParams,Graph graph)
+        public Node(string id, string name, Type nodeDataType, Vector2 position, CreatedParameterInfo[] createdParams, ChangedParameterInfo[] changedParams, Graph graph)
         {
             this.id = id;
             ProcedureInfo nodeDataInfo = ProcedureInfoManager.GetProcedure(nodeDataType);
@@ -414,9 +418,24 @@ namespace LazyProcedural
         }
         public int GetTotalConnectedPorts(bool inPorts)
         {
-            return inPorts ? this.inPorts.Where(x => x.connected).Count() : this.outPorts.Where(x => x.connected).Count();
+            return inPorts ? this.inPorts.Where(x => x.connected && !x.isMuted).Count() : this.outPorts.Where(x => x.connected && !x.isMuted).Count();
         }
 
+
+        private void CheckDepthGen()
+        {
+            for (int i = 0; i < nodeData.Parameters.Count; i++)
+            {
+                CheckDepth(nodeData.Parameters[i]);
+            }
+        }
+        private void CheckDepth(ParameterReference v)
+        {
+            for (int i = 0; i < v.Parameters.Count; i++)
+            {
+                CheckDepth(v.Parameters[i]);
+            }
+        }
 
         private ParameterReference GetParameterFromAcessingIndex(List<int> acessingIndex)
         {
@@ -424,6 +443,7 @@ namespace LazyProcedural
 
             ParameterReference reference = nodeData.Parameters[acessingIndex[0]];
             bool firstElement = true;
+            int i = 0;
             foreach (var index in acessingIndex)
             {
                 if (firstElement)
@@ -432,10 +452,21 @@ namespace LazyProcedural
                     continue;
                 }
 
-                reference = reference.Parameters[index];
+                try
+                {
+                    reference = reference.Parameters[index];
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Error on node {this.title} with accessing index {acessingIndex.ToFullString()} (sepecific depth: {i}, value:{index})");
+                    throw ex;
+                }
+                i++;
             }
 
             return reference;
         }
     }
+   
 }

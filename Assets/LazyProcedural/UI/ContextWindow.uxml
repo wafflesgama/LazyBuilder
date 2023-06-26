@@ -1,21 +1,21 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="padding-left: 8px; padding-right: 8px; padding-bottom: 4px;">
-        <ui:VisualElement name="General" style="margin-top: 3px; padding-right: 8px;">
-            <ui:VisualElement style="flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 4px; margin-top: 8px;">
-                <ui:Label text="General" display-tooltip-when-elided="true" style="font-size: 16px; padding-left: 4px; margin-right: 10px; color: rgb(207, 207, 207); -unity-font-style: normal; opacity: 0.8;" />
-                <ui:VisualElement style="background-color: rgba(255, 255, 255, 0.67); flex-grow: 1; height: 1px; display: none; opacity: 1;" />
+    <ui:VisualElement name="VisualElement" style="padding-left: 0; padding-right: 0; padding-bottom: 4px; margin-top: 3px;">
+        <ui:VisualElement name="General" style="margin-top: 0; padding-right: 0;">
+            <ui:VisualElement style="flex-direction: column; justify-content: flex-start; align-items: stretch; margin-bottom: 4px; margin-top: 0; background-color: rgb(75, 75, 75); padding-top: 3px; padding-bottom: 0;">
+                <ui:Label text="General" display-tooltip-when-elided="true" name="GeneralLabel" style="font-size: 16px; padding-left: 4px; margin-right: 10px; color: rgb(207, 207, 207); -unity-font-style: normal; opacity: 0.8; padding-bottom: 2px;" />
+                <ui:VisualElement style="height: 2px; background-color: rgb(31, 31, 31);" />
             </ui:VisualElement>
-            <ui:VisualElement>
+            <ui:VisualElement name="General_Node" style="padding-left: 8px; padding-right: 8px; padding-top: 2px;">
+                <ui:TextField picking-mode="Ignore" label="Name" value="filler text" text="Mesh Create" readonly="false" name="NameField" style="flex-direction: row; margin-bottom: 5px;" />
                 <ui:VisualElement style="flex-direction: row; padding-left: 2px; padding-right: 4px;">
                     <ui:Label text="Type" display-tooltip-when-elided="true" name="Label" style="min-width: 150px;" />
-                    <ui:Label text="Mesh Create" display-tooltip-when-elided="true" name="TypeLabel" style="flex-grow: 1;" />
+                    <ui:Label text="Mesh Create" display-tooltip-when-elided="true" name="TypeLabel" style="flex-grow: 1; margin-left: 2px;" />
                 </ui:VisualElement>
-                <ui:TextField picking-mode="Ignore" label="Name" value="filler text" text="Mesh Create" readonly="false" name="NameField" style="flex-direction: row;" />
             </ui:VisualElement>
-            <ui:VisualElement style="flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 4px; margin-top: 25px;">
-                <ui:Label text="Parameters" display-tooltip-when-elided="true" style="font-size: 16px; padding-left: 4px; margin-right: 10px; color: rgb(207, 207, 207); -unity-font-style: normal; opacity: 0.8;" />
-                <ui:VisualElement style="background-color: rgba(255, 255, 255, 0.67); flex-grow: 1; height: 1px; display: none; opacity: 1;" />
-            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: column; justify-content: flex-start; align-items: stretch; margin-bottom: 4px; margin-top: 18px; background-color: rgb(75, 75, 75); padding-top: 3px;">
+            <ui:Label text="Parameters" display-tooltip-when-elided="true" name="ParametersLabel" style="font-size: 16px; padding-left: 4px; margin-right: 10px; color: rgb(207, 207, 207); -unity-font-style: normal; opacity: 0.8; padding-bottom: 2px;" />
+            <ui:VisualElement style="height: 2px; background-color: rgb(31, 31, 31);" />
         </ui:VisualElement>
         <ui:ScrollView name="Params" class="parameterContainer" style="flex-grow: 1; margin-top: 2px; padding-right: 8px;" />
     </ui:VisualElement>

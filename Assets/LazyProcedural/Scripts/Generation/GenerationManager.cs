@@ -79,7 +79,13 @@ namespace LazyProcedural
             inPortNumbers = new Dictionary<Port, (Edge, int)>();
 
             foreach (var node in nodes)
+            {
                 node.ClearProcessedState();
+                foreach (var port in node.ports)
+                {
+                    port.ClearConnectionNumbers();
+                }
+            }
 
             //Create the Global Params to later append them
             if (globalParameters != null)
@@ -161,6 +167,7 @@ namespace LazyProcedural
 
                         outNode.nodeData.Inputs[globalImpulsePort].Enqueue(globalEntity);
                     }
+
                     try
                     {
                         outNode.nodeData.Execute();
@@ -172,22 +179,21 @@ namespace LazyProcedural
                         Debug.LogException(ex);
                     }
 
-                    //If is terminal Node then append all the output to results
-                    if (outNode.GetTotalConnectedPorts(inPorts: false) == 0)
+
+                    foreach (var outPort in outNode.outPorts)
                     {
-                        foreach (var outPort in outNode.outPorts)
+                        //If is terminal Port  append  the output to results
+                        if (outPort.IsTerminalPort())
                         {
                             if (outPort.outputData.Peek() == null) continue;
 
                             var resultEntry = outPort.outputData.DequeueAll();
                             result.AddRange(resultEntry);
+
+                            continue;
                         }
 
-                        continue;
-                    }
 
-                    foreach (var outPort in outNode.outPorts)
-                    {
                         foreach (var edge in outPort.connections)
                         {
 
@@ -195,6 +201,9 @@ namespace LazyProcedural
 
                             Port castedInPort = (Port)edge.input;
                             Port castedOutPort = (Port)edge.output;
+
+                            //Is the out port is muted to not append the result (This only happens in merging branch that one of them is not muted)
+                            if (castedOutPort.isMuted) continue;
 
                             var executionResult = GetOutput(outNode, castedOutPort).PeekAll();
 

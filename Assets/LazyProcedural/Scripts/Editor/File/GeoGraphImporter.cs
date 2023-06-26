@@ -29,7 +29,7 @@ namespace LazyProcedural
         public static void CreateNewAsset()
         {
             TextAsset asset = new TextAsset("");
-            ProjectWindowUtil.CreateAsset(asset, "New GeoGraph.geograph");
+            ProjectWindowUtil.CreateAsset(asset, $"{PathFactory.GRAPH_NEW_FILE}.{PathFactory.GRAPH_TYPE}");
         }
     }
 

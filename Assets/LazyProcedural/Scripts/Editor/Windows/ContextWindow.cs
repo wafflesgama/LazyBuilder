@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 
 public class ContextWindow : EditorWindow
 {
+    public string graphName;
+
     public GraphWindow graphWindow;
 
     private VisualElement _root;
@@ -141,7 +143,7 @@ public class ContextWindow : EditorWindow
             //If a compound parameter does not have children do not add it
             if (parameterInfo.MetaType == "Compound") return;
 
-            var field = BuildField(parameter,parameterInfo, accessingIndex, node);
+            var field = BuildField(parameter, parameterInfo, accessingIndex, node);
             container.Add(field);
             return;
         }
@@ -167,7 +169,7 @@ public class ContextWindow : EditorWindow
             var toggleChildLabel = toggleChild.Q<Label>();
 
 
-            var field2 = BuildField(parameter,parameterInfo, accessingIndex, node);
+            var field2 = BuildField(parameter, parameterInfo, accessingIndex.ToList(), node);
             field2.AddToClassList("dropdown-parameter");
 
             toggleChildLabel.Add(field2);
@@ -180,7 +182,7 @@ public class ContextWindow : EditorWindow
         {
             accessingIndex[accessingIndex.Count - 1] = i;
             var childParameter = parameter.Parameters[i];
-            BuildNodeParameter(descendedFromSelectList ? container : foldout, childParameter, isSelectList, accessingIndex, node);
+            BuildNodeParameter(descendedFromSelectList ? container : foldout, childParameter, isSelectList, accessingIndex.ToList(), node);
         }
     }
 
@@ -438,11 +440,12 @@ public class ContextWindow : EditorWindow
 
                 listParameter.Add(value.newValue);
                 popupField.value = defaultLabel;
-                BuildNodeInfo(node);
 
                 node.CreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = value.newValue });
                 node.RefreshNode();
                 graphWindow.OnGraphValueUpdated();
+
+                BuildNodeInfo(node);
             });
 
 
@@ -604,6 +607,11 @@ public class ContextWindow : EditorWindow
             floatField.value = Convert.ToSingle(parameterValue);
             floatField.RegisterValueChangedCallback(value =>
             {
+                var test = procedure.Parameters;
+                for (int i = 0; i < test.Count; i++)
+                {
+                    CheckDepth(test[i]);
+                }
                 parameter.Set(value.newValue);
                 node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
                 graphWindow.OnGraphValueUpdated();
@@ -616,6 +624,7 @@ public class ContextWindow : EditorWindow
 
             OptionalListParameter optionalListParameter = (OptionalListParameter)parameter;
 
+            //Single option list parameter - make it a toggle checkbox
             if (optionalListParameter.GetAvailableFunctions().Count() == 1)
             {
 
@@ -626,12 +635,16 @@ public class ContextWindow : EditorWindow
                     //Creation
                     if (value.newValue)
                     {
-                        optionalListParameter.Add(optionalListParameter.GetAvailableFunctions().First());
+                        string paramName = optionalListParameter.GetAvailableFunctions().First();
+                        optionalListParameter.Add(paramName);
+                        node.CreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = paramName });
                     }
                     //Deletion
                     else
                     {
-                        optionalListParameter.Remove(optionalListParameter.Items[0]);
+                        var param = optionalListParameter.Items[0];
+                        optionalListParameter.Remove(param);
+                        node.RemoveCreatedDataParameter(new CreatedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), parameterName = param.Label });
                     }
                     BuildNodeInfo(node);
                     //node.ChangedDataParameter(new ChangedParameterInfo { accessIndex = currentAcessingIndex.ToArray(), isExpression = false, value = value.newValue });
@@ -722,7 +735,13 @@ public class ContextWindow : EditorWindow
         return field;
     }
 
-
+    private void CheckDepth(ParameterReference v)
+    {
+        for (int i = 0; i < v.Parameters.Count; i++)
+        {
+            CheckDepth(v.Parameters[i]);
+        }
+    }
 
 
 }
